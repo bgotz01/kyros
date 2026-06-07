@@ -17,6 +17,7 @@ export const NAV_SECTIONS: {
             items: [
                 { label: 'Trend', href: '/cycle', sub: 'Phase Clock' },
                 { label: 'Cycles', href: '/cycle/cycles', sub: 'Macro Narrative' },
+                { label: 'Mega-Bubble', href: '/cycle/mega-bubble', sub: 'Historical Peaks' },
             ],
         },
         {

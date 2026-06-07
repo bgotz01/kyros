@@ -24,11 +24,9 @@ function fmtVal(v: number | null): string {
 
 function PercentileBar({ value }: { value: number }) {
     const color =
-        value >= 80 ? '#f87171' :
-            value >= 60 ? '#fb923c' :
-                value <= 20 ? '#4ade80' :
-                    value <= 40 ? '#86efac' :
-                        'rgba(255,255,255,0.25)';
+        value <= 5 || value >= 95 ? '#f87171' :
+            value <= 10 || value >= 90 ? '#fbbf24' :
+                '#4ade80';
 
     return (
         <div className="relative h-1 flex-1 rounded-full overflow-hidden"
@@ -44,12 +42,11 @@ function MetricRow({ s }: { s: PercentileShift }) {
     const up = (s.delta ?? 0) > 0;
     const deltaColor = up ? '#f87171' : '#4ade80';
 
+    const pct = s.currentPercentile ?? 50;
     const pctColor =
-        (s.currentPercentile ?? 50) >= 80 ? '#f87171' :
-            (s.currentPercentile ?? 50) >= 60 ? '#fb923c' :
-                (s.currentPercentile ?? 50) <= 20 ? '#4ade80' :
-                    (s.currentPercentile ?? 50) <= 40 ? '#86efac' :
-                        'rgba(255,255,255,0.25)';
+        pct <= 5 || pct >= 95 ? '#f87171' :
+            pct <= 10 || pct >= 90 ? '#fbbf24' :
+                '#4ade80';
 
     return (
         <div className="flex items-center gap-3 py-2 border-b last:border-0"
