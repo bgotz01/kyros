@@ -1,26 +1,214 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------
+   Kyros — material palette
+   Obsidian black · deep charcoal · white marble · brushed bronze ·
+   platinum. Carved stone enhanced with advanced technology.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Obsidian — the ground the interface is carved out of */
+  --color-obsidian: #08090a;
+  --color-obsidian-800: #0c0e10;
+
+  /* Deep charcoal — panels, raised surfaces */
+  --color-charcoal: #141719;
+  --color-charcoal-700: #1b1f22;
+  --color-charcoal-600: #23282c;
+
+  /* Stone — hairlines and dividers */
+  --color-stone-line: #2a3034;
+  --color-stone-line-strong: #3a4247;
+
+  /* White marble — primary text, warm rather than clinical */
+  --color-marble: #f2efe8;
+  --color-marble-dim: #d5d1c8;
+
+  /* Platinum — secondary text, instrument readouts */
+  --color-platinum: #a8b1b7;
+  --color-platinum-dim: #6f797f;
+
+  /* Brushed bronze — the single accent. Used sparingly. */
+  --color-bronze: #b08d57;
+  --color-bronze-bright: #cba876;
+  --color-bronze-dim: #7a6039;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Motion — slow and intentional. Nothing bounces. */
+  --ease-mechanical: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-obsidian);
+  --color-foreground: var(--color-marble);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-obsidian);
+  color: var(--color-marble);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-bronze-dim);
+  color: var(--color-marble);
+}
+
+/* Focus is a carved outline, never a glow */
+:focus-visible {
+  outline: 1px solid var(--color-bronze);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Markdown rendered by the agents. Typeset as a research note: dense,
+   hairline rules, no rounded corners, bronze only where it carries
+   meaning.
+   ------------------------------------------------------------------ */
+
+.prose-kyros > *:first-child {
+  margin-top: 0;
+}
+
+.prose-kyros > *:last-child {
+  margin-bottom: 0;
+}
+
+.prose-kyros p,
+.prose-kyros ul,
+.prose-kyros ol,
+.prose-kyros blockquote,
+.prose-kyros pre,
+.prose-kyros table {
+  margin-block: 0.85em;
+}
+
+.prose-kyros h1,
+.prose-kyros h2,
+.prose-kyros h3,
+.prose-kyros h4 {
+  margin-block: 1.5em 0.6em;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-platinum);
+}
+
+.prose-kyros strong {
+  font-weight: 500;
+  color: var(--color-marble);
+}
+
+.prose-kyros em {
+  font-style: italic;
+  color: var(--color-marble);
+}
+
+.prose-kyros a {
+  color: var(--color-bronze-bright);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-kyros ul,
+.prose-kyros ol {
+  padding-left: 1.15em;
+}
+
+.prose-kyros ul {
+  list-style: none;
+}
+
+.prose-kyros ul > li::before {
+  content: "—";
+  margin-left: -1.15em;
+  margin-right: 0.5em;
+  color: var(--color-bronze-dim);
+}
+
+.prose-kyros ol {
+  list-style: decimal;
+}
+
+.prose-kyros li {
+  margin-block: 0.35em;
+}
+
+.prose-kyros li::marker {
+  color: var(--color-bronze-dim);
+}
+
+.prose-kyros blockquote {
+  border-left: 1px solid var(--color-bronze-dim);
+  padding-left: 1.1em;
+  font-family: var(--font-serif);
+  font-size: 1.05em;
+  color: var(--color-marble);
+}
+
+.prose-kyros code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--color-bronze-bright);
+}
+
+.prose-kyros pre {
+  overflow-x: auto;
+  border: 1px solid var(--color-stone-line);
+  background: var(--color-obsidian-800);
+  padding: 0.9em 1.1em;
+}
+
+.prose-kyros pre code {
+  color: var(--color-marble-dim);
+}
+
+.prose-kyros hr {
+  margin-block: 1.6em;
+  border: 0;
+  border-top: 1px solid var(--color-stone-line);
+}
+
+.prose-kyros table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+
+.prose-kyros th,
+.prose-kyros td {
+  border: 1px solid var(--color-stone-line);
+  padding: 0.5em 0.8em;
+  text-align: left;
+}
+
+.prose-kyros th {
+  font-family: var(--font-sans);
+  font-size: 0.75em;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-platinum);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
 }
