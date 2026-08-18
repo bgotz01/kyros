@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,15 +31,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
     >
-      <body className="flex h-full flex-col bg-obsidian text-marble">
+      <body className="flex min-h-screen flex-col bg-obsidian text-marble">
         <Navbar />
         {/* Below the navbar: sidebar + page content side by side */}
-        <div className="flex min-h-0 flex-1">
+        <div className="flex flex-1">
           <Sidebar />
           <main className="flex min-w-0 flex-1 flex-col">{children}</main>
         </div>
+        <Footer />
       </body>
     </html>
   );

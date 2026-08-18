@@ -1,11 +1,15 @@
 // ─── client-side persistence & streaming ─────────────────────────────────────
-// Kyros has no database yet, so sessions and agent preferences live in
-// localStorage. Every function here is a no-op on the server.
+// Agent preferences and selection live in localStorage (UI config).
+// Sessions and memory are persisted to Postgres via API routes.
 
 import type {
     AgentConfig,
     AgentMessage,
+    CouncilMemory,
     CouncilMode,
+    DistilledMemory,
+    MemoryCategory,
+    MemoryEntry,
     PageRefMeta,
     SavedSession,
     Turn,
@@ -13,9 +17,9 @@ import type {
 } from './types';
 import { AGENT_COUNT, defaultAgentConfigs } from './types';
 
-const SESSIONS_KEY = 'kyros_council_sessions_v1';
-// Bumped when the default personas change, so stored copies of the old ones
-// don't outlive them.
+// ─── localStorage helpers ────────────────────────────────────────────────────
+// Used only for preferences and selection — small, ephemeral UI state.
+
 const PREFS_KEY = 'kyros_council_prefs_v3';
 const SELECTION_KEY = 'kyros_council_selection_v1';
 
@@ -33,18 +37,15 @@ function write(key: string, value: unknown): void {
     if (typeof window === 'undefined') return;
     try {
         localStorage.setItem(key, JSON.stringify(value));
-    } catch {
-        /* quota exceeded — losing a session beats crashing the page */
-    }
+    } catch { /* quota exceeded */ }
 }
 
-// ─── preferences ─────────────────────────────────────────────────────────────
+// ─── preferences (localStorage) ──────────────────────────────────────────────
 
 export function loadPreferences(): AgentConfig[] {
     const stored = read<AgentConfig[] | null>(PREFS_KEY, null);
     const defaults = defaultAgentConfigs();
     if (!Array.isArray(stored) || stored.length !== defaults.length) return defaults;
-    // Merge rather than trust: a stored entry missing a field falls back to its default.
     return defaults.map((d, i) => ({
         model: typeof stored[i]?.model === 'string' ? stored[i].model : d.model,
         systemPrompt: typeof stored[i]?.systemPrompt === 'string' ? stored[i].systemPrompt : d.systemPrompt,
@@ -55,12 +56,8 @@ export function savePreferences(agents: AgentConfig[]): void {
     write(PREFS_KEY, agents);
 }
 
-// ─── agent selection ─────────────────────────────────────────────────────────
-// Which agents speak. Kept apart from the persona preferences so a stored
-// selection survives a personas bump, and so an empty set stays empty rather
-// than being helpfully repopulated.
+// ─── agent selection (localStorage) ──────────────────────────────────────────
 
-/** Defaults to Agent I alone — one voice unless the analyst convenes more. */
 export function loadSelection(): Set<number> {
     const stored = read<number[] | null>(SELECTION_KEY, null);
     if (!Array.isArray(stored)) return new Set([0]);
@@ -72,37 +69,43 @@ export function saveSelection(selected: Set<number>): void {
     write(SELECTION_KEY, [...selected].sort());
 }
 
-// ─── sessions ────────────────────────────────────────────────────────────────
+// ─── sessions (Postgres via API) ─────────────────────────────────────────────
 
-export function loadSessions(): SavedSession[] {
-    const rows = read<SavedSession[]>(SESSIONS_KEY, []);
-    if (!Array.isArray(rows)) return [];
-    return rows.sort((a, b) => b.savedAt.localeCompare(a.savedAt));
+/** Fetch all sessions from the server, newest first. */
+export async function fetchSessions(): Promise<SavedSession[]> {
+    const res = await fetch('/api/sessions');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as SavedSession[];
 }
 
-function persistSessions(sessions: SavedSession[]): void {
-    // Cap the archive so localStorage never fills up silently.
-    write(SESSIONS_KEY, sessions.slice(0, 60));
+/** Persist (create or update) a session. Returns the saved session. */
+export async function persistSession(session: SavedSession): Promise<SavedSession> {
+    const res = await fetch('/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(session),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as SavedSession;
 }
 
-export function upsertSession(session: SavedSession): SavedSession[] {
-    const rest = loadSessions().filter((s) => s.id !== session.id);
-    const next = [session, ...rest].sort((a, b) => b.savedAt.localeCompare(a.savedAt));
-    persistSessions(next);
-    return next;
+/** Delete a session by id. */
+export async function removeSession(id: string): Promise<void> {
+    await fetch(`/api/sessions?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
 }
 
-export function deleteSession(id: string): SavedSession[] {
-    const next = loadSessions().filter((s) => s.id !== id);
-    persistSessions(next);
-    return next;
+/** Rename a session. Returns the updated session. */
+export async function renameSessionApi(id: string, title: string): Promise<SavedSession> {
+    const res = await fetch('/api/sessions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, title }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as SavedSession;
 }
 
-export function renameSession(id: string, title: string): SavedSession[] {
-    const next = loadSessions().map((s) => (s.id === id ? { ...s, title: title.trim() || null } : s));
-    persistSessions(next);
-    return next;
-}
+// ─── session helpers (pure, no I/O) ──────────────────────────────────────────
 
 export function newSessionId(): string {
     return typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -148,23 +151,11 @@ export interface StreamPayload {
     refIds?: string[];
 }
 
-// ─── references ──────────────────────────────────────────────────────────────
-
-/** The catalogue of attachable references — metadata only. */
-export async function fetchRefs(): Promise<PageRefMeta[]> {
-    const res = await fetch('/api/context');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as PageRefMeta[];
-}
-
 export interface StreamResult {
     content: string;
-    /** Null when the provider returned no usage on the final chunk. */
     usage: Usage | null;
 }
 
-/** POSTs to /api/chat and resolves with the complete response plus what it
- *  cost, calling `onDelta` with the accumulated text as it arrives. */
 export async function streamChat(
     payload: StreamPayload,
     onDelta: (partial: string) => void,
@@ -182,9 +173,7 @@ export async function streamChat(
         try {
             const body = (await res.json()) as { error?: string };
             if (body.error) detail = body.error;
-        } catch {
-            /* body wasn't JSON — keep the status line */
-        }
+        } catch { /* not JSON */ }
         throw new Error(detail);
     }
     if (!res.body) throw new Error('No response body');
@@ -209,7 +198,7 @@ export async function streamChat(
             try {
                 parsed = JSON.parse(raw) as { delta?: string; error?: string; usage?: Usage };
             } catch {
-                continue; // partial frame — the next read completes it
+                continue;
             }
             if (parsed.error) throw new Error(parsed.error);
             if (parsed.usage) usage = parsed.usage;
@@ -220,4 +209,144 @@ export async function streamChat(
         }
     }
     return { content: full, usage };
+}
+
+// ─── references ──────────────────────────────────────────────────────────────
+
+export async function fetchRefs(): Promise<PageRefMeta[]> {
+    const res = await fetch('/api/context');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as PageRefMeta[];
+}
+
+// ─── memory (Postgres via API) ────────────────────────────────────────────────
+
+/** Fetch the full memory store and enabled setting from the server. */
+export async function fetchMemory(): Promise<CouncilMemory & { enabled: boolean }> {
+    const res = await fetch('/api/memory');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as CouncilMemory & { enabled: boolean };
+}
+
+/** Persist a single entry (create or update). */
+export async function persistMemoryEntry(entry: MemoryEntry): Promise<MemoryEntry> {
+    const res = await fetch('/api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as MemoryEntry;
+}
+
+/** Delete a memory entry by id. */
+export async function deleteMemoryEntryApi(id: string): Promise<void> {
+    await fetch(`/api/memory?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+}
+
+/** Update memory settings (enabled toggle, lastDistilledAt). */
+export async function patchMemorySettings(
+    patch: { enabled?: boolean; lastDistilledAt?: string },
+): Promise<void> {
+    await fetch('/api/memory', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+    });
+}
+
+/** Merge distilled items into Postgres (bulk upsert, dedup by text on server).
+ *  Returns the full updated memory. */
+export async function mergeDistilledApi(
+    distilled: DistilledMemory,
+    sessionId: string,
+    existingTexts: Set<string>,
+): Promise<CouncilMemory> {
+    const now = new Date().toISOString();
+    const toAdd: MemoryEntry[] = [];
+
+    const push = (category: MemoryCategory, items: string[]) => {
+        for (const text of items) {
+            if (!text.trim()) continue;
+            if (existingTexts.has(text.trim().toLowerCase())) continue;
+            toAdd.push({ id: newMemoryId(), category, text: text.trim(), addedAt: now, sessionId });
+            existingTexts.add(text.trim().toLowerCase());
+        }
+    };
+
+    push('theme', distilled.themes ?? []);
+    push('preference', distilled.preferences ?? []);
+    push('good_idea', distilled.good_ideas ?? []);
+    push('dismissed', distilled.dismissed ?? []);
+    push('question', distilled.questions ?? []);
+
+    await fetch('/api/memory', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entries: toAdd, lastDistilledAt: now }),
+    });
+
+    // Re-fetch the canonical state from the server.
+    const result = await fetchMemory();
+    return { entries: result.entries, lastDistilledAt: result.lastDistilledAt };
+}
+
+export function newMemoryId(): string {
+    return typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? `m_${crypto.randomUUID()}`
+        : `m_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+/** Build a system-prompt block from the in-memory store (pure, no I/O). */
+export function buildMemoryBlock(memory: CouncilMemory): string {
+    const { entries } = memory;
+    if (entries.length === 0) return '';
+
+    const byCategory = (cat: MemoryCategory) => entries.filter((e) => e.category === cat);
+
+    const sections: string[] = [
+        '─── ANALYST MEMORY ─────────────────────────────────────────────────────────',
+        'The following is a persistent record of what the analyst has found valuable,',
+        'dismissed, or is consistently returning to. Use it as calibration — not as',
+        'a script. Do not narrate the memory back to the analyst.',
+        '',
+    ];
+
+    const render = (label: string, cat: MemoryCategory) => {
+        const items = byCategory(cat);
+        if (items.length === 0) return;
+        sections.push(`${label}:`);
+        items.forEach((e) => sections.push(`  — ${e.text}`));
+        sections.push('');
+    };
+
+    render('Recurring themes', 'theme');
+    render('Stated preferences', 'preference');
+    render('Ideas worth developing', 'good_idea');
+    render('Dismissed angles (do not re-suggest)', 'dismissed');
+    render('Standing open questions', 'question');
+
+    sections.push('─── END OF ANALYST MEMORY ───────────────────────────────────────────────────');
+    return sections.join('\n');
+}
+
+/** Calls /api/distill to extract structured memory items from a transcript. */
+export async function distillSession(
+    transcript: string,
+    model: string,
+): Promise<DistilledMemory> {
+    const res = await fetch('/api/distill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript, model }),
+    });
+    if (!res.ok) {
+        let detail = `HTTP ${res.status}`;
+        try {
+            const body = (await res.json()) as { error?: string };
+            if (body.error) detail = body.error;
+        } catch { /* not JSON */ }
+        throw new Error(detail);
+    }
+    return (await res.json()) as DistilledMemory;
 }

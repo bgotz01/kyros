@@ -204,43 +204,66 @@ function DetailModal({
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="flex max-h-[85vh] w-full max-w-2xl flex-col border border-stone-line-strong bg-charcoal"
+                className="relative flex max-h-[85vh] w-full max-w-2xl flex-col border border-stone-line-strong bg-charcoal"
             >
+                {/* close button */}
+                <button
+                    type="button"
+                    onClick={onClose}
+                    aria-label="Close"
+                    className="absolute right-4 top-4 z-10 flex h-7 w-7 items-center justify-center text-platinum-dim transition-colors duration-300 ease-mechanical hover:text-marble"
+                >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                        <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                    </svg>
+                </button>
+
                 {/* header */}
-                <header className="flex shrink-0 items-start justify-between gap-4 border-b border-stone-line px-6 py-4">
+                <header className="flex shrink-0 items-start justify-between gap-4 border-b border-stone-line px-6 py-4 pr-12">
                     <div className="flex flex-col gap-1">
-                        <h2 className="font-serif text-xl font-light tracking-[0.1em] text-marble">{entry.label}</h2>
+                        <h2 className="font-serif text-2xl font-light tracking-[0.1em] text-marble">{entry.label}</h2>
                         <div className="flex flex-wrap items-center gap-3">
                             <CategoryDot category={entry.category} />
-                            <span className="font-sans text-[0.58rem] uppercase tracking-[0.22em] text-platinum-dim">{entry.category}</span>
-                            <span className="font-mono text-[0.58rem] tracking-[0.14em] text-platinum-dim">{formatYear(entry.year, entry.month)}</span>
+                            <span className="font-sans text-[0.68rem] uppercase tracking-[0.22em] text-platinum-dim">{entry.category}</span>
+                            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-platinum-dim">{formatYear(entry.year, entry.month)}</span>
                         </div>
                     </div>
                     <div className="flex shrink-0 flex-col items-end gap-0.5">
                         <div className="flex items-baseline gap-1.5">
-                            <span className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-platinum-dim">I³</span>
-                            <span className="font-serif text-3xl font-light leading-none text-bronze-bright">{i3Score}</span>
+                            <span className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-platinum-dim">I³</span>
+                            <span className="font-serif text-4xl font-light leading-none text-bronze-bright tabular-nums" style={{ minWidth: '3.5ch' }}>{i3Score}</span>
                         </div>
-                        <span className="font-sans text-[0.56rem] uppercase tracking-[0.14em] text-platinum-dim">{i3Band(i3Score)}</span>
-                        <div className="mt-1 flex items-center gap-3">
-                            <SaveIndicator state={saveState} />
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="font-sans text-[0.56rem] uppercase tracking-[0.28em] text-platinum-dim transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
-                            >
-                                Close
-                            </button>
-                        </div>
+                        <span className="font-sans text-[0.65rem] uppercase tracking-[0.14em] text-platinum-dim">{i3Band(i3Score)}</span>
                     </div>
                 </header>
 
                 <div className="flex-1 overflow-y-auto">
+                    {/* description + previous paradigm */}
+                    {(entry.description || entry.previousParadigm) && (
+                        <div className="flex flex-col gap-4 border-b border-stone-line px-6 py-5">
+                            {entry.description && (
+                                <p className="text-sm leading-relaxed tracking-[0.03em] text-platinum">
+                                    {entry.description}
+                                </p>
+                            )}
+                            {entry.previousParadigm && (
+                                <div className="flex gap-3">
+                                    <span className="mt-0.5 shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-bronze-dim">
+                                        Before
+                                    </span>
+                                    <p className="text-[0.74rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
+                                        {entry.previousParadigm}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {/* three dimension cards */}
                     <div className="grid grid-cols-3 gap-3 border-b border-stone-line p-5">
                         {dims.map(({ key, label, score }) => (
                             <div key={key} className="flex flex-col gap-2 border border-stone-line p-3">
-                                <span className="font-sans text-[0.55rem] uppercase tracking-[0.2em] text-platinum-dim">{label}</span>
+                                <span className="font-sans text-[0.65rem] uppercase tracking-[0.2em] text-platinum-dim">{label}</span>
                                 <ScoreStepper value={score} onChange={(v) => onScoreChange(key, v)} />
                                 <span className="h-px w-full overflow-hidden bg-stone-line">
                                     <span
@@ -248,7 +271,7 @@ function DetailModal({
                                         style={{ width: `${score * 10}%`, background: 'var(--color-bronze-dim)' }}
                                     />
                                 </span>
-                                <p className="font-sans text-[0.6rem] leading-relaxed tracking-[0.03em] text-platinum">
+                                <p className="font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-platinum">
                                     {entry.rationale[key]}
                                 </p>
                             </div>
@@ -258,17 +281,22 @@ function DetailModal({
                     {/* thesis */}
                     <div className="border-b border-stone-line px-6 py-4">
                         <div className="border-l-2 border-bronze-dim pl-4">
-                            <p className="font-sans text-[0.68rem] leading-relaxed tracking-[0.04em] text-marble">{entry.thesis}</p>
+                            <p className="font-sans text-sm leading-relaxed tracking-[0.04em] text-marble">{entry.thesis}</p>
                         </div>
                     </div>
 
                     {/* consequence */}
                     {entry.consequenceYear && (
                         <div className="flex items-start gap-3 px-6 py-4">
-                            <span className="mt-px font-mono text-[0.58rem] tracking-[0.1em] text-bronze">{entry.consequenceYear}</span>
-                            <p className="font-sans text-[0.64rem] leading-relaxed tracking-[0.04em] text-platinum">{entry.consequenceNote}</p>
+                            <span className="mt-px font-mono text-[0.68rem] tracking-[0.1em] text-bronze">{entry.consequenceYear}</span>
+                            <p className="font-sans text-[0.74rem] leading-relaxed tracking-[0.04em] text-platinum">{entry.consequenceNote}</p>
                         </div>
                     )}
+                </div>
+
+                {/* footer — fixed height so save indicator never shifts layout */}
+                <div className="flex h-8 shrink-0 items-center border-t border-stone-line px-6">
+                    <SaveIndicator state={saveState} />
                 </div>
             </div>
         </div>
@@ -501,15 +529,15 @@ export default function AiImpactNewPage() {
             {/* header */}
             <header className="shrink-0 border-b border-stone-line px-8 py-4">
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-                    <h1 className="font-serif text-xl font-light tracking-[0.16em] text-marble">AI IMPACT</h1>
-                    <span className="font-mono text-[0.72rem] tracking-[0.22em] text-bronze">y = I³</span>
-                    <p className="hidden font-mono text-[0.6rem] tracking-[0.14em] text-platinum-dim lg:block">
+                    <h1 className="font-serif text-2xl font-light tracking-[0.16em] text-marble">AI IMPACT</h1>
+                    <span className="font-mono text-sm tracking-[0.22em] text-bronze">y = I³</span>
+                    <p className="hidden font-mono text-[0.7rem] tracking-[0.14em] text-platinum-dim lg:block">
                         {I3_MIN_YEAR}–{I3_MAX_YEAR} · {I3_DATA.length} developments · 0–1,000
                     </p>
                     <button
                         type="button"
                         onClick={() => setFrameworkOpen(true)}
-                        className="font-sans text-[0.58rem] uppercase tracking-[0.22em] text-platinum-dim transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
+                        className="font-sans text-[0.68rem] uppercase tracking-[0.22em] text-platinum-dim transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
                     >
                         Framework
                     </button>
@@ -519,7 +547,7 @@ export default function AiImpactNewPage() {
                         <button
                             type="button"
                             onClick={() => setActiveCategories(new Set(I3_CATEGORIES))}
-                            className={`font-sans text-[0.58rem] uppercase tracking-[0.22em] transition-colors duration-500 ease-mechanical ${allActive ? 'text-bronze' : 'text-platinum-dim hover:text-platinum'}`}
+                            className={`font-sans text-[0.68rem] uppercase tracking-[0.22em] transition-colors duration-500 ease-mechanical ${allActive ? 'text-bronze' : 'text-platinum-dim hover:text-platinum'}`}
                         >
                             All
                         </button>
@@ -527,7 +555,7 @@ export default function AiImpactNewPage() {
                             const on = activeCategories.has(cat);
                             return (
                                 <button key={cat} type="button" onClick={() => toggleCategory(cat)}
-                                    className={`flex items-center gap-1.5 border px-2.5 py-1 font-sans text-[0.55rem] uppercase tracking-[0.18em] transition-colors duration-500 ease-mechanical ${on ? 'border-stone-line-strong text-platinum' : 'border-transparent text-platinum-dim hover:text-platinum'}`}>
+                                    className={`flex items-center gap-1.5 border px-2.5 py-1 font-sans text-[0.65rem] uppercase tracking-[0.18em] transition-colors duration-500 ease-mechanical ${on ? 'border-stone-line-strong text-platinum' : 'border-transparent text-platinum-dim hover:text-platinum'}`}>
                                     <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: I3_CATEGORY_COLORS[cat], opacity: on ? 1 : 0.3 }} />
                                     {cat}
                                 </button>

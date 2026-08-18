@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Council sessions ─────────────────────────────────────────────────────────
+
+model Session {
+  id        String   @id @default(cuid())
+  mode      String   // 'parallel' | 'cascade' | 'loop'
+  title     String?
+  savedAt   DateTime @default(now())
+
+  /// Serialised Turn[] or AgentMessage[][] — stored as JSON until we add
+  /// relational turn tables.
+  turnsJson           Json     @default("[]")
+  parallelMessagesJson Json?
+
+  /// Snapshot of agent configs used in this session.
+  agentsJson Json @default("[]")
+
+  /// Reference ids attached when the session ran.
+  refIds Json @default("[]")
+
+  /// Which agent indices were active (0-2).
+  selectedIdxs Json @default("[]")
+
+  memoryEntries MemoryEntry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([savedAt(sort: Desc)])
+}
+
+// ─── Memory ───────────────────────────────────────────────────────────────────
+
+model MemoryEntry {
+  id       String         @id @default(cuid())
+  category MemoryCategory
+  text     String
+  addedAt  DateTime       @default(now())
+
+  /// The session this entry was distilled from, if any.
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([addedAt(sort: Desc)])
+}
+
+enum MemoryCategory {
+  theme
+  preference
+  good_idea
+  dismissed
+  question
+}
+
+// ─── Memory settings ──────────────────────────────────────────────────────────
+// Single-row config. Keyed by a stable singleton id so upsert is trivial.
+
+model MemorySettings {
+  id              String   @id @default("singleton")
+  enabled         Boolean  @default(false)
+  lastDistilledAt DateTime?
+
+  updatedAt DateTime @updatedAt
+}

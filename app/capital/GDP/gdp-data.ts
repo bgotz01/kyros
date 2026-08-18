@@ -1,0 +1,388 @@
+export type GDPEntry = {
+    rank: number;
+    country: string;
+    value: number; // USD billions
+};
+
+export type GDPYear = {
+    year: number;
+    economies: GDPEntry[];
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NOMINAL GDP
+// USD billions
+// Source: Wikipedia historical GDP table
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const nominalGDP: GDPYear[] = [
+    {
+        year: 1960,
+        economies: [
+            { rank: 1, country: "United States", value: 521 },
+            { rank: 2, country: "Soviet Union", value: 142 },
+            { rank: 3, country: "West Germany", value: 92 },
+            { rank: 4, country: "United Kingdom", value: 72 },
+            { rank: 5, country: "France", value: 62 },
+            { rank: 6, country: "China", value: 61 },
+            { rank: 7, country: "Japan", value: 44 },
+            { rank: 8, country: "Canada", value: 41 },
+            { rank: 9, country: "Italy", value: 40 },
+            { rank: 10, country: "India", value: 37 },
+        ],
+    },
+    {
+        year: 1965,
+        economies: [
+            { rank: 1, country: "United States", value: 712 },
+            { rank: 2, country: "Soviet Union", value: 367 },
+            { rank: 3, country: "West Germany", value: 125 },
+            { rank: 4, country: "France", value: 102 },
+            { rank: 5, country: "United Kingdom", value: 101 },
+            { rank: 6, country: "Japan", value: 91 },
+            { rank: 7, country: "China", value: 70 },
+            { rank: 8, country: "Italy", value: 68 },
+            { rank: 9, country: "India", value: 61 },
+            { rank: 10, country: "Canada", value: 54 },
+        ],
+    },
+    {
+        year: 1970,
+        economies: [
+            { rank: 1, country: "United States", value: 1076 },
+            { rank: 2, country: "Soviet Union", value: 433 },
+            { rank: 3, country: "Japan", value: 209 },
+            { rank: 4, country: "West Germany", value: 209 },
+            { rank: 5, country: "France", value: 146 },
+            { rank: 6, country: "United Kingdom", value: 125 },
+            { rank: 7, country: "Italy", value: 109 },
+            { rank: 8, country: "China", value: 91 },
+            { rank: 9, country: "Canada", value: 88 },
+            { rank: 10, country: "India", value: 62 },
+        ],
+    },
+    {
+        year: 1975,
+        economies: [
+            { rank: 1, country: "United States", value: 1689 },
+            { rank: 2, country: "Soviet Union", value: 689 },
+            { rank: 3, country: "Japan", value: 513 },
+            { rank: 4, country: "West Germany", value: 475 },
+            { rank: 5, country: "France", value: 356 },
+            { rank: 6, country: "United Kingdom", value: 236 },
+            { rank: 7, country: "Italy", value: 219 },
+            { rank: 8, country: "Canada", value: 173 },
+            { rank: 9, country: "China", value: 161 },
+            { rank: 10, country: "Brazil", value: 116 },
+        ],
+    },
+    {
+        year: 1980,
+        economies: [
+            { rank: 1, country: "United States", value: 2857 },
+            { rank: 2, country: "Soviet Union", value: 1212 },
+            { rank: 3, country: "Japan", value: 1129 },
+            { rank: 4, country: "West Germany", value: 857 },
+            { rank: 5, country: "France", value: 695 },
+            { rank: 6, country: "United Kingdom", value: 605 },
+            { rank: 7, country: "Italy", value: 480 },
+            { rank: 8, country: "China", value: 304 },
+            { rank: 9, country: "Canada", value: 276 },
+            { rank: 10, country: "Mexico", value: 242 },
+        ],
+    },
+    {
+        year: 1985,
+        economies: [
+            { rank: 1, country: "United States", value: 4339 },
+            { rank: 2, country: "Soviet Union", value: 2200 },
+            { rank: 3, country: "Japan", value: 1427 },
+            { rank: 4, country: "West Germany", value: 663 },
+            { rank: 5, country: "France", value: 552 },
+            { rank: 6, country: "United Kingdom", value: 537 },
+            { rank: 7, country: "Italy", value: 455 },
+            { rank: 8, country: "Canada", value: 366 },
+            { rank: 9, country: "China", value: 311 },
+            { rank: 10, country: "India", value: 234 },
+        ],
+    },
+    {
+        year: 1990,
+        economies: [
+            { rank: 1, country: "United States", value: 5963 },
+            { rank: 2, country: "Japan", value: 3186 },
+            { rank: 3, country: "Soviet Union", value: 2660 },
+            { rank: 4, country: "West Germany", value: 1604 },
+            { rank: 5, country: "France", value: 1261 },
+            { rank: 6, country: "United Kingdom", value: 1197 },
+            { rank: 7, country: "Italy", value: 1164 },
+            { rank: 8, country: "Canada", value: 596 },
+            { rank: 9, country: "Iran", value: 581 },
+            { rank: 10, country: "Spain", value: 536 },
+        ],
+    },
+    {
+        year: 1995,
+        economies: [
+            { rank: 1, country: "United States", value: 7640 },
+            { rank: 2, country: "Japan", value: 5546 },
+            { rank: 3, country: "Germany", value: 2595 },
+            { rank: 4, country: "France", value: 1596 },
+            { rank: 5, country: "United Kingdom", value: 1345 },
+            { rank: 6, country: "Italy", value: 1178 },
+            { rank: 7, country: "Brazil", value: 771 },
+            { rank: 8, country: "China", value: 738 },
+            { rank: 9, country: "Spain", value: 615 },
+            { rank: 10, country: "Canada", value: 606 },
+        ],
+    },
+    {
+        year: 2000,
+        economies: [
+            { rank: 1, country: "United States", value: 10251 },
+            { rank: 2, country: "Japan", value: 4968 },
+            { rank: 3, country: "Germany", value: 1968 },
+            { rank: 4, country: "United Kingdom", value: 1669 },
+            { rank: 5, country: "France", value: 1362 },
+            { rank: 6, country: "China", value: 1220 },
+            { rank: 7, country: "Italy", value: 1150 },
+            { rank: 8, country: "Canada", value: 745 },
+            { rank: 9, country: "Mexico", value: 742 },
+            { rank: 10, country: "Brazil", value: 655 },
+        ],
+    },
+    {
+        year: 2005,
+        economies: [
+            { rank: 1, country: "United States", value: 13039 },
+            { rank: 2, country: "Japan", value: 4831 },
+            { rank: 3, country: "Germany", value: 2895 },
+            { rank: 4, country: "United Kingdom", value: 2546 },
+            { rank: 5, country: "China", value: 2326 },
+            { rank: 6, country: "France", value: 2193 },
+            { rank: 7, country: "Italy", value: 1866 },
+            { rank: 8, country: "Canada", value: 1174 },
+            { rank: 9, country: "Spain", value: 1155 },
+            { rank: 10, country: "South Korea", value: 972 },
+        ],
+    },
+    {
+        year: 2010,
+        economies: [
+            { rank: 1, country: "United States", value: 15049 },
+            { rank: 2, country: "China", value: 6139 },
+            { rank: 3, country: "Japan", value: 5759 },
+            { rank: 4, country: "Germany", value: 3471 },
+            { rank: 5, country: "France", value: 2648 },
+            { rank: 6, country: "United Kingdom", value: 2488 },
+            { rank: 7, country: "Brazil", value: 2209 },
+            { rank: 8, country: "Italy", value: 2147 },
+            { rank: 9, country: "India", value: 1676 },
+            { rank: 10, country: "Russia", value: 1633 },
+        ],
+    },
+    {
+        year: 2015,
+        economies: [
+            { rank: 1, country: "United States", value: 18295 },
+            { rank: 2, country: "China", value: 11307 },
+            { rank: 3, country: "Japan", value: 4445 },
+            { rank: 4, country: "Germany", value: 3425 },
+            { rank: 5, country: "United Kingdom", value: 2929 },
+            { rank: 6, country: "France", value: 2443 },
+            { rank: 7, country: "India", value: 2104 },
+            { rank: 8, country: "Italy", value: 1846 },
+            { rank: 9, country: "Brazil", value: 1800 },
+            { rank: 10, country: "Canada", value: 1557 },
+        ],
+    },
+    {
+        year: 2020,
+        economies: [
+            { rank: 1, country: "United States", value: 21354 },
+            { rank: 2, country: "China", value: 15103 },
+            { rank: 3, country: "Japan", value: 5054 },
+            { rank: 4, country: "Germany", value: 3937 },
+            { rank: 5, country: "United Kingdom", value: 2699 },
+            { rank: 6, country: "India", value: 2675 },
+            { rank: 7, country: "France", value: 2646 },
+            { rank: 8, country: "Italy", value: 1906 },
+            { rank: 9, country: "South Korea", value: 1744 },
+            { rank: 10, country: "Canada", value: 1656 },
+        ],
+    },
+    {
+        year: 2025,
+        economies: [
+            { rank: 1, country: "United States", value: 30767 },
+            { rank: 2, country: "China", value: 19626 },
+            { rank: 3, country: "Germany", value: 5048 },
+            { rank: 4, country: "Japan", value: 4435 },
+            { rank: 5, country: "United Kingdom", value: 4003 },
+            { rank: 6, country: "India", value: 3916 },
+            { rank: 7, country: "France", value: 3368 },
+            { rank: 8, country: "Russia", value: 2568 },
+            { rank: 9, country: "Italy", value: 2550 },
+            { rank: 10, country: "Canada", value: 2319 },
+        ],
+    },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GDP (PPP)
+// USD billions
+// Source: Wikipedia historical GDP table
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const pppGDP: GDPYear[] = [
+    {
+        year: 1980,
+        economies: [
+            { rank: 1, country: "United States", value: 2857 },
+            { rank: 2, country: "Soviet Union", value: 2000 },
+            { rank: 3, country: "Japan", value: 1028 },
+            { rank: 4, country: "West Germany", value: 922 },
+            { rank: 5, country: "Italy", value: 623 },
+            { rank: 6, country: "France", value: 593 },
+            { rank: 7, country: "United Kingdom", value: 529 },
+            { rank: 8, country: "Brazil", value: 525 },
+            { rank: 9, country: "Mexico", value: 442 },
+            { rank: 10, country: "India", value: 366 },
+        ],
+    },
+    {
+        year: 1985,
+        economies: [
+            { rank: 1, country: "United States", value: 4339 },
+            { rank: 2, country: "Soviet Union", value: 2500 },
+            { rank: 3, country: "Japan", value: 1625 },
+            { rank: 4, country: "West Germany", value: 1262 },
+            { rank: 5, country: "Italy", value: 908 },
+            { rank: 6, country: "France", value: 830 },
+            { rank: 7, country: "United Kingdom", value: 766 },
+            { rank: 8, country: "Brazil", value: 715 },
+            { rank: 9, country: "Mexico", value: 628 },
+            { rank: 10, country: "India", value: 608 },
+        ],
+    },
+    {
+        year: 1990,
+        economies: [
+            { rank: 1, country: "United States", value: 5963 },
+            { rank: 2, country: "Soviet Union", value: 2500 },
+            { rank: 3, country: "Japan", value: 2405 },
+            { rank: 4, country: "West Germany", value: 1744 },
+            { rank: 5, country: "Italy", value: 1237 },
+            { rank: 6, country: "France", value: 1144 },
+            { rank: 7, country: "United Kingdom", value: 1054 },
+            { rank: 8, country: "China", value: 995 },
+            { rank: 9, country: "India", value: 948 },
+            { rank: 10, country: "Brazil", value: 922 },
+        ],
+    },
+    {
+        year: 1995,
+        economies: [
+            { rank: 1, country: "United States", value: 7640 },
+            { rank: 2, country: "Japan", value: 2929 },
+            { rank: 3, country: "Germany", value: 2175 },
+            { rank: 4, country: "China", value: 2024 },
+            { rank: 5, country: "Italy", value: 1488 },
+            { rank: 6, country: "France", value: 1385 },
+            { rank: 7, country: "India", value: 1371 },
+            { rank: 8, country: "Russia", value: 1323 },
+            { rank: 9, country: "United Kingdom", value: 1273 },
+            { rank: 10, country: "Brazil", value: 1205 },
+        ],
+    },
+    {
+        year: 2000,
+        economies: [
+            { rank: 1, country: "United States", value: 10251 },
+            { rank: 2, country: "Japan", value: 3351 },
+            { rank: 3, country: "China", value: 3338 },
+            { rank: 4, country: "Germany", value: 2608 },
+            { rank: 5, country: "India", value: 2000 },
+            { rank: 6, country: "Italy", value: 1799 },
+            { rank: 7, country: "France", value: 1743 },
+            { rank: 8, country: "United Kingdom", value: 1655 },
+            { rank: 9, country: "Russia", value: 1557 },
+            { rank: 10, country: "Brazil", value: 1456 },
+        ],
+    },
+    {
+        year: 2005,
+        economies: [
+            { rank: 1, country: "United States", value: 13039 },
+            { rank: 2, country: "China", value: 5985 },
+            { rank: 3, country: "Japan", value: 3986 },
+            { rank: 4, country: "India", value: 3066 },
+            { rank: 5, country: "Germany", value: 3011 },
+            { rank: 6, country: "Russia", value: 2352 },
+            { rank: 7, country: "France", value: 2126 },
+            { rank: 8, country: "Italy", value: 2111 },
+            { rank: 9, country: "United Kingdom", value: 2104 },
+            { rank: 10, country: "Brazil", value: 1883 },
+        ],
+    },
+    {
+        year: 2010,
+        economies: [
+            { rank: 1, country: "United States", value: 15049 },
+            { rank: 2, country: "China", value: 11225 },
+            { rank: 3, country: "India", value: 4730 },
+            { rank: 4, country: "Japan", value: 4370 },
+            { rank: 5, country: "Germany", value: 3510 },
+            { rank: 6, country: "Russia", value: 3077 },
+            { rank: 7, country: "Brazil", value: 2576 },
+            { rank: 8, country: "France", value: 2448 },
+            { rank: 9, country: "United Kingdom", value: 2364 },
+            { rank: 10, country: "Italy", value: 2280 },
+        ],
+    },
+    {
+        year: 2015,
+        economies: [
+            { rank: 1, country: "United States", value: 18295 },
+            { rank: 2, country: "China", value: 14835 },
+            { rank: 3, country: "India", value: 7032 },
+            { rank: 4, country: "Japan", value: 4999 },
+            { rank: 5, country: "Germany", value: 4143 },
+            { rank: 6, country: "Russia", value: 3631 },
+            { rank: 7, country: "Brazil", value: 2959 },
+            { rank: 8, country: "United Kingdom", value: 2829 },
+            { rank: 9, country: "France", value: 2811 },
+            { rank: 10, country: "Indonesia", value: 2520 },
+        ],
+    },
+    {
+        year: 2020,
+        economies: [
+            { rank: 1, country: "China", value: 22961 },
+            { rank: 2, country: "United States", value: 21354 },
+            { rank: 3, country: "India", value: 9771 },
+            { rank: 4, country: "Japan", value: 5357 },
+            { rank: 5, country: "Germany", value: 4880 },
+            { rank: 6, country: "Russia", value: 4651 },
+            { rank: 7, country: "Brazil", value: 3360 },
+            { rank: 8, country: "France", value: 3345 },
+            { rank: 9, country: "Indonesia", value: 3223 },
+            { rank: 10, country: "United Kingdom", value: 3219 },
+        ],
+    },
+    {
+        year: 2025,
+        economies: [
+            { rank: 1, country: "China", value: 41241 },
+            { rank: 2, country: "United States", value: 30767 },
+            { rank: 3, country: "India", value: 17257 },
+            { rank: 4, country: "Russia", value: 7236 },
+            { rank: 5, country: "Japan", value: 7009 },
+            { rank: 6, country: "Germany", value: 6181 },
+            { rank: 7, country: "Indonesia", value: 5047 },
+            { rank: 8, country: "Brazil", value: 4988 },
+            { rank: 9, country: "France", value: 4563 },
+            { rank: 10, country: "United Kingdom", value: 4553 },
+        ],
+    },
+];

@@ -17,16 +17,16 @@
   --color-charcoal-600: #23282c;
 
   /* Stone — hairlines and dividers */
-  --color-stone-line: #2a3034;
-  --color-stone-line-strong: #3a4247;
+  --color-stone-line: #323c42;
+  --color-stone-line-strong: #48555e;
 
   /* White marble — primary text, warm rather than clinical */
   --color-marble: #f2efe8;
   --color-marble-dim: #d5d1c8;
 
   /* Platinum — secondary text, instrument readouts */
-  --color-platinum: #a8b1b7;
-  --color-platinum-dim: #6f797f;
+  --color-platinum: #c8d0d6;
+  --color-platinum-dim: #96a1a8;
 
   /* Brushed bronze — the single accent. Used sparingly. */
   --color-bronze: #b08d57;
@@ -75,11 +75,11 @@ body {
    meaning.
    ------------------------------------------------------------------ */
 
-.prose-kyros > *:first-child {
+.prose-kyros>*:first-child {
   margin-top: 0;
 }
 
-.prose-kyros > *:last-child {
+.prose-kyros>*:last-child {
   margin-bottom: 0;
 }
 
@@ -130,7 +130,7 @@ body {
   list-style: none;
 }
 
-.prose-kyros ul > li::before {
+.prose-kyros ul>li::before {
   content: "—";
   margin-left: -1.15em;
   margin-right: 0.5em;
@@ -205,6 +205,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

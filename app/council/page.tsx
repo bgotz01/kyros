@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import AgentRail from '@/app/components/council/AgentRail';
+import MemoryModal from '@/app/components/council/MemoryModal';
 import ParallelView from '@/app/components/council/ParallelView';
 import PromptsModal from '@/app/components/council/PromptsModal';
 import RefsModal from '@/app/components/council/RefsModal';
@@ -10,24 +11,32 @@ import SessionsSidebar from '@/app/components/council/SessionsSidebar';
 import ThreadView from '@/app/components/council/ThreadView';
 import UsageModal from '@/app/components/council/UsageModal';
 import {
+    buildMemoryBlock,
     buildSession,
-    deleteSession as storageDeleteSession,
+    deleteMemoryEntryApi,
+    distillSession,
+    fetchMemory,
     fetchRefs,
+    fetchSessions,
+    mergeDistilledApi,
+    newSessionId,
+    patchMemorySettings,
+    persistMemoryEntry,
+    persistSession,
+    removeSession as apiRemoveSession,
+    renameSessionApi,
     loadPreferences,
     loadSelection,
-    loadSessions,
-    newSessionId,
-    renameSession as storageRenameSession,
     savePreferences,
     saveSelection,
     streamChat,
-    upsertSession,
     type StreamResult,
 } from '@/app/components/council/storage';
 import {
     AGENT_COUNT,
     AGENT_NAMES,
     SILENT_RESPONSE,
+    buildTranscript,
     defaultAgentConfigs,
     emptyMsgState,
     formatCost,
@@ -38,7 +47,9 @@ import {
     type AgentMessage,
     type AgentResponse,
     type AgentState,
+    type CouncilMemory,
     type CouncilMode,
+    type DistilledMemory,
     type MsgState,
     type PageRefMeta,
     type SavedSession,
@@ -114,6 +125,11 @@ export default function CouncilPage() {
     const [promptsOpen, setPromptsOpen] = useState(false);
     const [refsOpen, setRefsOpen] = useState(false);
     const [usageOpen, setUsageOpen] = useState(false);
+    const [memoryOpen, setMemoryOpen] = useState(false);
+    const [memoryEnabled, setMemoryEnabled] = useState(false);
+    const [memory, setMemory] = useState<CouncilMemory>({ entries: [] });
+    const [pendingDistilled, setPendingDistilled] = useState<DistilledMemory | null>(null);
+    const [distilling, setDistilling] = useState(false);
     const [promptTab, setPromptTab] = useState(0);
     const [input, setInput] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -149,15 +165,30 @@ export default function CouncilPage() {
         mode === 'parallel' ? parallelMsgs.some((m) => m.messages.length > 0) : turns.length > 0;
 
     // ── hydration ─────────────────────────────────────────────────────────────
-    // Preferences and the archive live in localStorage, which does not exist
-    // during SSR — reading them after mount is the only way to keep the server
-    // and first client render identical.
+    // Preferences and selection live in localStorage (UI config).
+    // Sessions and memory are fetched from Postgres — fire both in parallel.
     useEffect(() => {
         /* eslint-disable react-hooks/set-state-in-effect */
         setAgentConfigs(loadPreferences());
         setSelectedIdxs(loadSelection());
-        setSessions(loadSessions());
-        setHydrated(true);
+
+        // Fetch sessions and memory from the server in parallel.
+        let cancelled = false;
+        Promise.all([fetchSessions(), fetchMemory()])
+            .then(([fetchedSessions, fetchedMemory]) => {
+                if (cancelled) return;
+                setSessions(fetchedSessions);
+                setMemory({ entries: fetchedMemory.entries, lastDistilledAt: fetchedMemory.lastDistilledAt });
+                setMemoryEnabled(fetchedMemory.enabled);
+            })
+            .catch(() => {
+                // Server unreachable — start with empty state; user can still work.
+            })
+            .finally(() => {
+                if (!cancelled) setHydrated(true);
+            });
+
+        return () => { cancelled = true; };
         /* eslint-enable react-hooks/set-state-in-effect */
     }, []);
 
@@ -219,20 +250,25 @@ export default function CouncilPage() {
             const id = sessionIds[mode] ?? newSessionId();
             setSessionIds((prev) => (prev[mode] === id ? prev : { ...prev, [mode]: id }));
             const existing = sessions.find((s) => s.id === id);
-            setSessions(
-                upsertSession(
-                    buildSession({
-                        id,
-                        mode,
-                        title: existing?.title ?? null,
-                        agents: agentConfigs,
-                        turns: nextTurns,
-                        parallelMessages: nextParallel,
-                        refs: attachedRefs,
-                        selectedIdxs: [...selectedIdxs],
-                    }),
-                ),
-            );
+            const session = buildSession({
+                id,
+                mode,
+                title: existing?.title ?? null,
+                agents: agentConfigs,
+                turns: nextTurns,
+                parallelMessages: nextParallel,
+                refs: attachedRefs,
+                selectedIdxs: [...selectedIdxs],
+            });
+            // Optimistic update — keep UI instant.
+            setSessions((prev) => {
+                const rest = prev.filter((s) => s.id !== session.id);
+                return [session, ...rest].sort((a, b) => b.savedAt.localeCompare(a.savedAt));
+            });
+            // Persist to Postgres in the background.
+            persistSession(session).catch(() => {
+                // Network failure — local state is still correct for the session.
+            });
         },
         [mode, agentConfigs, sessions, sessionIds, attachedRefs, selectedIdxs],
     );
@@ -276,8 +312,9 @@ export default function CouncilPage() {
         pinnedToBottom.current = true;
     }
 
-    function removeSession(id: string) {
-        setSessions(storageDeleteSession(id));
+    function handleRemoveSession(id: string) {
+        // Optimistic remove from local state.
+        setSessions((prev) => prev.filter((s) => s.id !== id));
         setSessionIds((prev) => {
             const next = { ...prev };
             (Object.keys(next) as CouncilMode[]).forEach((m) => {
@@ -285,10 +322,15 @@ export default function CouncilPage() {
             });
             return next;
         });
+        apiRemoveSession(id).catch(() => { });
     }
 
-    function renameSessionTitle(id: string, title: string) {
-        setSessions(storageRenameSession(id, title));
+    function handleRenameSession(id: string, title: string) {
+        // Optimistic rename in local state.
+        setSessions((prev) =>
+            prev.map((s) => (s.id === id ? { ...s, title: title.trim() || null } : s)),
+        );
+        renameSessionApi(id, title).catch(() => { });
     }
 
     // ── configuration handlers ────────────────────────────────────────────────
@@ -312,6 +354,30 @@ export default function CouncilPage() {
     function openPrompt(idx: number) {
         setPromptTab(idx);
         setPromptsOpen(true);
+    }
+
+    // ── distill ───────────────────────────────────────────────────────────────
+    async function handleDistill() {
+        if (distilling || !hasMessages) return;
+        setDistilling(true);
+        setError(null);
+        try {
+            let transcript: string;
+            if (mode === 'parallel') {
+                transcript = buildTranscript(turnsFromParallel(parallelMsgs));
+            } else {
+                transcript = buildTranscript(turns);
+            }
+            // Use the first active agent's model for the distillation call.
+            const firstActive = [...selectedIdxs][0] ?? 0;
+            const result = await distillSession(transcript, agentConfigs[firstActive].model);
+            setPendingDistilled(result);
+            setMemoryOpen(true);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Distillation failed.');
+        } finally {
+            setDistilling(false);
+        }
     }
 
     // ── submission ────────────────────────────────────────────────────────────
@@ -344,12 +410,14 @@ export default function CouncilPage() {
         extraIdentity: string,
         onPartial: (text: string) => void,
     ): Promise<StreamResult> {
+        const memoryBlock = memoryEnabled ? buildMemoryBlock(memory) : '';
+        const fullExtra = [memoryBlock, extraIdentity].filter(Boolean).join('\n\n');
         try {
             return await streamChat(
                 {
                     messages,
                     model: agentConfigs[idx].model,
-                    systemPrompt: withIdentity(agentConfigs[idx], idx, extraIdentity),
+                    systemPrompt: withIdentity(agentConfigs[idx], idx, fullExtra),
                     refIds: attachedRefs.map((r) => r.id),
                 },
                 onPartial,
@@ -376,10 +444,10 @@ export default function CouncilPage() {
             prev.map((m, i) =>
                 speaking.includes(i)
                     ? {
-                          messages: [...m.messages, userMsg, { role: 'assistant' as const, content: '' }],
-                          loading: true,
-                          error: false,
-                      }
+                        messages: [...m.messages, userMsg, { role: 'assistant' as const, content: '' }],
+                        loading: true,
+                        error: false,
+                    }
                     : m,
             ),
         );
@@ -424,10 +492,10 @@ export default function CouncilPage() {
                 const final = byAgent.get(i);
                 return final
                     ? [
-                          ...priorPerAgent[i],
-                          userMsg,
-                          { role: 'assistant' as const, content: final.content, usage: final.usage },
-                      ]
+                        ...priorPerAgent[i],
+                        userMsg,
+                        { role: 'assistant' as const, content: final.content, usage: final.usage },
+                    ]
                     : priorPerAgent[i];
             }),
         );
@@ -597,7 +665,6 @@ export default function CouncilPage() {
     }
 
     // ── render ────────────────────────────────────────────────────────────────
-    const modeHint = MODES.find((m) => m.id === mode)!.hint;
     const activeCount = selectedIdxs.size;
 
     // Parallel keeps per-agent threads rather than shared turns; folding them
@@ -609,14 +676,14 @@ export default function CouncilPage() {
         mode === 'parallel'
             ? 'Pose a question. Each agent answers alone.'
             : activeCount === 0
-              ? 'No agents selected. Choose at least one.'
-              : mode === 'loop'
-                ? `Pose a question. The council will deliberate for ${loopRounds} ${loopRounds === 1 ? 'round' : 'rounds'}.`
-                : 'Pose a question. Each agent reads the ones before it.';
+                ? 'No agents selected. Choose at least one.'
+                : mode === 'loop'
+                    ? `Pose a question. The council will deliberate for ${loopRounds} ${loopRounds === 1 ? 'round' : 'rounds'}.`
+                    : 'Pose a question.';
 
     return (
-        // 4rem is the navbar, the extra pixel its hairline border.
-        <div className="flex h-[calc(100svh-4rem-1px)] overflow-hidden">
+        // Fill the flex-1 main column; footer sits below in the body flex column.
+        <div className="flex flex-1 overflow-hidden">
             {/* ── archive — sits left of the header, thread and composer alike ── */}
             <SessionsSidebar
                 sessions={sessions}
@@ -627,8 +694,8 @@ export default function CouncilPage() {
                 onToggle={() => setSidebarOpen((v) => !v)}
                 onNew={resetSession}
                 onRestore={restoreSession}
-                onDelete={removeSession}
-                onRename={renameSessionTitle}
+                onDelete={handleRemoveSession}
+                onRename={handleRenameSession}
             />
 
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -647,9 +714,8 @@ export default function CouncilPage() {
                                     onClick={() => setMode(m.id)}
                                     disabled={busy}
                                     title={m.hint}
-                                    className={`px-4 py-2 font-sans text-[0.62rem] uppercase tracking-[0.24em] transition-colors duration-500 ease-mechanical disabled:opacity-40 ${
-                                        mi > 0 ? 'border-l border-stone-line' : ''
-                                    } ${mode === m.id ? 'bg-charcoal text-bronze-bright' : 'text-platinum hover:text-marble'}`}
+                                    className={`px-4 py-2 font-sans text-[0.62rem] uppercase tracking-[0.24em] transition-colors duration-500 ease-mechanical disabled:opacity-40 ${mi > 0 ? 'border-l border-stone-line' : ''
+                                        } ${mode === m.id ? 'bg-charcoal text-bronze-bright' : 'text-platinum hover:text-marble'}`}
                                 >
                                     {m.label}
                                 </button>
@@ -675,9 +741,6 @@ export default function CouncilPage() {
                         )}
 
                         <div className="ml-auto flex items-center gap-6">
-                            <span className="hidden font-mono text-[0.6rem] tracking-[0.16em] text-platinum-dim xl:inline">
-                                {modeHint}
-                            </span>
                             {/* The running total doubles as the way in — one
                                 control rather than a readout beside a button. */}
                             <button
@@ -698,9 +761,8 @@ export default function CouncilPage() {
                                 type="button"
                                 onClick={() => setRefsOpen(true)}
                                 title="Attach the corpus as context for this conversation"
-                                className={`flex items-baseline gap-2.5 font-sans text-[0.62rem] uppercase tracking-[0.24em] transition-colors duration-500 ease-mechanical hover:text-bronze-bright ${
-                                    attachedRefs.length > 0 ? 'text-bronze' : 'text-platinum'
-                                }`}
+                                className={`flex items-baseline gap-2.5 font-sans text-[0.62rem] uppercase tracking-[0.24em] transition-colors duration-500 ease-mechanical hover:text-bronze-bright ${attachedRefs.length > 0 ? 'text-bronze' : 'text-platinum'
+                                    }`}
                             >
                                 References
                                 {attachedRefs.length > 0 && (
@@ -715,6 +777,43 @@ export default function CouncilPage() {
                                 className="font-sans text-[0.62rem] uppercase tracking-[0.24em] text-platinum transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
                             >
                                 Personas
+                            </button>
+                            {/* memory toggle */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const next = !memoryEnabled;
+                                    setMemoryEnabled(next);
+                                    patchMemorySettings({ enabled: next }).catch(() => { });
+                                }}
+                                title={memoryEnabled ? 'Memory active — click to disable' : 'Memory inactive — click to enable'}
+                                className={`flex items-center gap-1.5 font-sans text-[0.62rem] uppercase tracking-[0.24em] transition-colors duration-500 ease-mechanical hover:text-bronze-bright ${memoryEnabled ? 'text-bronze' : 'text-platinum'}`}
+                            >
+                                <span
+                                    aria-hidden
+                                    className={`inline-block h-1.5 w-1.5 rounded-full transition-colors duration-500 ${memoryEnabled ? 'bg-bronze' : 'bg-stone-line-strong'}`}
+                                />
+                                Memory
+                                {memory.entries.length > 0 && (
+                                    <span className="font-mono text-[0.55rem] text-platinum-dim opacity-70">
+                                        {memory.entries.length}
+                                    </span>
+                                )}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => { setPendingDistilled(null); setMemoryOpen(true); }}
+                                className="font-sans text-[0.62rem] uppercase tracking-[0.24em] text-platinum transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
+                            >
+                                Store
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleDistill}
+                                disabled={!hasMessages || busy || distilling}
+                                className="font-sans text-[0.62rem] uppercase tracking-[0.24em] text-platinum transition-colors duration-500 ease-mechanical hover:text-bronze-bright disabled:opacity-30"
+                            >
+                                {distilling ? 'Distilling…' : 'Distill'}
                             </button>
                             <button
                                 type="button"
@@ -754,8 +853,8 @@ export default function CouncilPage() {
                         )}
 
                         {/* ── composer ── */}
-                        <div className="shrink-0 border-t border-stone-line bg-obsidian px-6 sm:px-10">
-                            <div className={mode === 'parallel' ? '' : 'mx-auto w-full max-w-3xl'}>
+                        <div className="shrink-0 border-t border-stone-line bg-obsidian px-4 pb-4 sm:px-6">
+                            <div className={mode === 'parallel' ? '' : 'mx-auto w-full'}>
                                 {mode === 'loop' && loopRound > 0 && (
                                     <div className="flex items-center gap-4 pt-3">
                                         <span aria-hidden className="relative h-px flex-1 overflow-hidden bg-stone-line">
@@ -779,7 +878,7 @@ export default function CouncilPage() {
                                     </p>
                                 )}
 
-                                <form onSubmit={handleSubmit} className="flex items-end gap-5 py-5">
+                                <form onSubmit={handleSubmit} className="flex items-end justify-between gap-4 py-3">
                                     <textarea
                                         ref={textareaRef}
                                         value={input}
@@ -818,8 +917,8 @@ export default function CouncilPage() {
                                     {activeCount === 0
                                         ? 'No agents selected'
                                         : activeCount === AGENT_COUNT
-                                          ? 'All three agents respond'
-                                          : `${activeCount} of ${AGENT_COUNT} agents respond`}
+                                            ? 'All three agents respond'
+                                            : `${activeCount} of ${AGENT_COUNT} agents respond`}
                                 </p>
                             }
                         />
@@ -848,6 +947,16 @@ export default function CouncilPage() {
                     onTabChange={setPromptTab}
                     onPromptChange={setAgentPrompt}
                     onClose={() => setPromptsOpen(false)}
+                />
+            )}
+
+            {memoryOpen && (
+                <MemoryModal
+                    memory={memory}
+                    pendingDistilled={pendingDistilled}
+                    distillSessionId={sessionIds[mode] ?? undefined}
+                    onMemoryChange={(next) => setMemory(next)}
+                    onClose={() => { setMemoryOpen(false); setPendingDistilled(null); }}
                 />
             )}
         </div>

@@ -6,9 +6,29 @@ import { usePathname } from 'next/navigation';
 
 // ─── nav structure ────────────────────────────────────────────────────────────
 
-const LINKS = [
+type NavItem = {
+    href: string;
+    label: string;
+    icon: string;
+    exact?: boolean;
+    children?: Omit<NavItem, 'children'>[];
+};
+
+const LINKS: NavItem[] = [
     { href: '/ai-impact', label: 'AI Impact', icon: 'I³' },
     { href: '/theory', label: 'Theory', icon: '∴' },
+    {
+        href: '/capital',
+        label: 'Capital',
+        icon: '₡',
+        exact: true,
+        children: [
+            { href: '/capital/decades', label: 'Decades', icon: '◎' },
+            { href: '/capital/chart', label: 'Macro Chart', icon: '∿' },
+            { href: '/capital/GDP', label: 'GDP', icon: '₲' },
+            { href: '/capital/GDP/annual', label: 'GDP Annual', icon: '∑' },
+        ],
+    },
 ];
 
 const STORAGE_KEY = 'kyros:sidebar:open';
@@ -20,7 +40,6 @@ export default function Sidebar() {
     const [open, setOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
 
-    // Hydrate from localStorage after mount to avoid SSR mismatch
     useEffect(() => {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored !== null) setOpen(stored === 'true');
@@ -35,16 +54,15 @@ export default function Sidebar() {
         });
     }
 
-    function isActive(href: string) {
+    function isActive(href: string, exact?: boolean) {
+        if (exact) return pathname === href;
         return pathname === href || pathname.startsWith(href + '/');
     }
 
-    // Avoid flash of wrong state before hydration
     if (!mounted) return (
         <aside className="w-14 shrink-0 border-r border-stone-line bg-charcoal" />
     );
 
-    // Hide on routes that manage their own internal sidebar
     const SIDEBAR_EXCLUDED = ['/context', '/council'];
     if (SIDEBAR_EXCLUDED.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
         return null;
@@ -55,56 +73,13 @@ export default function Sidebar() {
             className={`relative flex shrink-0 flex-col border-r border-stone-line bg-charcoal transition-[width] duration-500 ease-mechanical ${open ? 'w-44' : 'w-14'
                 }`}
         >
-            {/* nav links */}
-            <nav aria-label="Sidebar" className="flex flex-1 flex-col gap-px py-3">
-                {LINKS.map(({ href, label, icon }) => {
-                    const active = isActive(href);
-                    return (
-                        <Link
-                            key={href}
-                            href={href}
-                            aria-current={active ? 'page' : undefined}
-                            className={`group relative flex h-10 items-center gap-3 px-3.5 transition-colors duration-300 ease-mechanical ${active
-                                ? 'text-marble'
-                                : 'text-platinum-dim hover:text-platinum'
-                                }`}
-                        >
-                            {/* active indicator bar */}
-                            {active && (
-                                <span
-                                    aria-hidden
-                                    className="absolute inset-y-1 left-0 w-px bg-bronze"
-                                />
-                            )}
-
-                            {/* icon */}
-                            <span
-                                className={`flex h-6 w-6 shrink-0 items-center justify-center font-mono text-[0.65rem] transition-colors duration-300 ${active ? 'text-bronze-bright' : 'text-platinum-dim group-hover:text-platinum'
-                                    }`}
-                            >
-                                {icon}
-                            </span>
-
-                            {/* label — fades out when collapsed */}
-                            <span
-                                className={`truncate font-sans text-[0.65rem] uppercase tracking-[0.2em] transition-[opacity,transform] duration-500 ease-mechanical ${open ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-1 opacity-0'
-                                    }`}
-                            >
-                                {label}
-                            </span>
-                        </Link>
-                    );
-                })}
-            </nav>
-
-            {/* collapse toggle */}
+            {/* collapse toggle — arrow sits on the right edge, outside the sidebar */}
             <button
                 type="button"
                 onClick={toggle}
                 aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
-                className="flex h-10 w-full items-center border-t border-stone-line px-3.5 text-platinum-dim transition-colors duration-300 ease-mechanical hover:text-platinum"
+                className="absolute -right-3 top-4 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-stone-line bg-charcoal text-platinum-dim shadow-sm transition-colors duration-300 ease-mechanical hover:text-platinum"
             >
-                {/* chevron rotates */}
                 <svg
                     width="10"
                     height="10"
@@ -121,14 +96,87 @@ export default function Sidebar() {
                         strokeLinejoin="round"
                     />
                 </svg>
-
-                <span
-                    className={`ml-3 font-sans text-[0.55rem] uppercase tracking-[0.22em] transition-[opacity] duration-300 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'
-                        }`}
-                >
-                    Collapse
-                </span>
             </button>
+
+            <nav aria-label="Sidebar" className="flex flex-1 flex-col gap-px py-3">
+                {LINKS.map((item) => {
+                    const active = isActive(item.href, item.exact);
+                    // a parent is "open" if pathname is under it
+                    const parentOpen = item.children &&
+                        (pathname === item.href || pathname.startsWith(item.href + '/'));
+
+                    return (
+                        <div key={item.href}>
+                            <NavLink item={item} active={active} sidebarOpen={open} />
+
+                            {/* children — only visible when sidebar is expanded and we're under this parent */}
+                            {item.children && parentOpen && (
+                                <div className={`flex flex-col gap-px transition-[opacity] duration-300 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
+                                    {item.children.map((child) => {
+                                        const childActive = isActive(child.href, child.exact);
+                                        return (
+                                            <div key={child.href} className="relative flex items-stretch pl-3.5">
+                                                {/* vertical connector line */}
+                                                <span aria-hidden className="absolute left-[1.375rem] top-0 bottom-0 w-px bg-stone-line" />
+                                                <NavLink
+                                                    item={child}
+                                                    active={childActive}
+                                                    sidebarOpen={open}
+                                                    indent
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </nav>
         </aside>
+    );
+}
+
+// ─── nav link ─────────────────────────────────────────────────────────────────
+
+function NavLink({
+    item,
+    active,
+    sidebarOpen,
+    indent = false,
+}: {
+    item: Omit<NavItem, 'children'>;
+    active: boolean;
+    sidebarOpen: boolean;
+    indent?: boolean;
+}) {
+    return (
+        <Link
+            href={item.href}
+            aria-current={active ? 'page' : undefined}
+            className={`group relative flex h-9 w-full items-center gap-3 transition-colors duration-300 ease-mechanical ${indent ? 'pl-4 pr-3.5' : 'px-3.5'
+                } ${active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'}`}
+        >
+            {active && !indent && (
+                <span aria-hidden className="absolute inset-y-1 left-0 w-px bg-bronze" />
+            )}
+            {active && indent && (
+                <span aria-hidden className="absolute inset-y-1 left-3.5 w-px bg-bronze" />
+            )}
+
+            <span
+                className={`flex h-5 w-5 shrink-0 items-center justify-center font-mono text-[0.6rem] transition-colors duration-300 ${active ? 'text-bronze-bright' : 'text-platinum-dim group-hover:text-platinum'
+                    }`}
+            >
+                {item.icon}
+            </span>
+
+            <span
+                className={`truncate font-sans text-[0.63rem] uppercase tracking-[0.2em] transition-[opacity,transform] duration-500 ease-mechanical ${sidebarOpen ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-1 opacity-0'
+                    } ${indent ? 'text-[0.6rem] tracking-[0.18em]' : ''}`}
+            >
+                {item.label}
+            </span>
+        </Link>
     );
 }

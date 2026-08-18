@@ -48,9 +48,8 @@ export default function SessionsSidebar({
 
     return (
         <aside
-            className={`hidden shrink-0 flex-col overflow-hidden border-r border-stone-line bg-obsidian-800 transition-[width] duration-500 ease-mechanical md:flex ${
-                open ? 'w-56' : 'w-11'
-            }`}
+            className={`hidden shrink-0 flex-col overflow-hidden border-r border-stone-line bg-obsidian-800 transition-[width] duration-500 ease-mechanical md:flex ${open ? 'w-56' : 'w-11'
+                }`}
         >
             {!open ? (
                 <button
@@ -68,7 +67,7 @@ export default function SessionsSidebar({
                 </button>
             ) : (
                 <>
-                    <div className="flex shrink-0 items-center justify-between border-b border-stone-line px-4 py-3">
+                    <div className="flex shrink-0 items-center justify-between border-b border-stone-line px-4 py-4">
                         <div className="flex items-center gap-3">
                             <button
                                 type="button"
@@ -104,9 +103,8 @@ export default function SessionsSidebar({
                                 {sessions.map((s) => (
                                     <li
                                         key={s.id}
-                                        className={`group px-4 py-3 transition-colors duration-500 ease-mechanical hover:bg-charcoal ${
-                                            s.id === activeId ? 'bg-charcoal' : ''
-                                        }`}
+                                        className={`group px-4 py-3 transition-colors duration-500 ease-mechanical hover:bg-charcoal ${s.id === activeId ? 'bg-charcoal' : ''
+                                            }`}
                                     >
                                         {editingId === s.id ? (
                                             <input
