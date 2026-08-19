@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import type { AnnualEntry } from './annual-data';
 
 // ─── shared constants ─────────────────────────────────────────────────────────
@@ -18,31 +19,31 @@ export type GDPMode = 'nominal' | 'ppp' | 'ratio';
 // ─── country colours ──────────────────────────────────────────────────────────
 
 const COUNTRY_COLORS: Record<string, string> = {
-    'United States':  '#e8a838',
-    'China':          '#e05252',
-    'Japan':          '#4a9fd4',
-    'Germany':        '#6dbf5e',
+    'United States': '#e8a838',
+    'China': '#e05252',
+    'Japan': '#4a9fd4',
+    'Germany': '#6dbf5e',
     'United Kingdom': '#b87fc4',
-    'France':         '#e8c44a',
-    'India':          '#f07840',
-    'Italy':          '#3dbfb0',
-    'Canada':         '#d4a040',
-    'South Korea':    '#5ba8e0',
-    'Brazil':         '#4abf88',
-    'Russia':         '#c46060',
-    'Australia':      '#8fc870',
-    'Spain':          '#e08858',
-    'Mexico':         '#b8c840',
-    'Netherlands':    '#60b8c8',
-    'Indonesia':      '#f0b040',
-    'Turkey':         '#e87060',
-    'Saudi Arabia':   '#d4c050',
-    'Switzerland':    '#a070d0',
-    'Argentina':      '#70c8b8',
-    'Sweden':         '#80b8e0',
-    'Poland':         '#d87840',
-    'Nigeria':        '#60c870',
-    'Iran':           '#d4a060',
+    'France': '#e8c44a',
+    'India': '#f07840',
+    'Italy': '#3dbfb0',
+    'Canada': '#d4a040',
+    'South Korea': '#5ba8e0',
+    'Brazil': '#4abf88',
+    'Russia': '#c46060',
+    'Australia': '#8fc870',
+    'Spain': '#e08858',
+    'Mexico': '#b8c840',
+    'Netherlands': '#60b8c8',
+    'Indonesia': '#f0b040',
+    'Turkey': '#e87060',
+    'Saudi Arabia': '#d4c050',
+    'Switzerland': '#a070d0',
+    'Argentina': '#70c8b8',
+    'Sweden': '#80b8e0',
+    'Poland': '#d87840',
+    'Nigeria': '#60c870',
+    'Iran': '#d4a060',
 };
 
 export function countryColor(name: string): string {
@@ -56,11 +57,11 @@ export function formatValue(v: number, mode: GDPMode, perCapita: boolean): strin
     if (perCapita) {
         // v is in raw USD
         if (v >= 100_000) return `$${(v / 1000).toFixed(0)}k`;
-        if (v >= 10_000)  return `$${(v / 1000).toFixed(1)}k`;
+        if (v >= 10_000) return `$${(v / 1000).toFixed(1)}k`;
         return `$${(v / 1000).toFixed(2)}k`;
     }
     if (v >= 10_000) return `$${(v / 1000).toFixed(1)}T`;
-    if (v >= 1_000)  return `$${(v / 1000).toFixed(2)}T`;
+    if (v >= 1_000) return `$${(v / 1000).toFixed(2)}T`;
     return `$${v.toFixed(0)}B`;
 }
 
@@ -86,10 +87,13 @@ export interface BarRow {
     country: string;
     displayValue: number;
     rank: number;
+    /** 1-based rank shown in the bar label. Defaults to rank + 1 if omitted. */
+    displayRank?: number;
 }
 
 interface BarProps {
     rank: number;
+    displayRank?: number;
     country: string;
     displayValue: number;
     maxValue: number;
@@ -99,7 +103,7 @@ interface BarProps {
     dim?: boolean;
 }
 
-export function Bar({ rank, country, displayValue, maxValue, prevY, mode, perCapita, dim }: BarProps) {
+export function Bar({ rank, displayRank, country, displayValue, maxValue, prevY, mode, perCapita, dim }: BarProps) {
     const ref = useRef<HTMLDivElement>(null);
     const targetY = rank * (BAR_HEIGHT + BAR_GAP);
 
@@ -113,7 +117,7 @@ export function Bar({ rank, country, displayValue, maxValue, prevY, mode, perCap
         el.style.transition = `transform ${TRANSITION_MS}ms cubic-bezier(0.22,0.61,0.36,1), opacity ${TRANSITION_MS / 2}ms ease`;
         el.style.opacity = dim ? '0.45' : '1';
         el.style.transform = `translateY(${targetY}px)`;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [targetY, dim]);
 
     const pct = maxValue > 0 ? (displayValue / maxValue) * 100 : 0;
@@ -131,12 +135,13 @@ export function Bar({ rank, country, displayValue, maxValue, prevY, mode, perCap
             }}
         >
             {/* label */}
-            <div
-                className="absolute left-0 flex items-center justify-end pr-4 font-sans text-[0.7rem] uppercase tracking-[0.13em]"
+            <Link
+                href={`/capital/GDP/annual/${country.replace(/\s+/g, '-')}`}
+                className="absolute left-0 flex items-center justify-end pr-4 font-sans text-[0.7rem] uppercase tracking-[0.13em] transition-colors duration-200 hover:text-bronze-bright"
                 style={{ width: LABEL_W, height: BAR_HEIGHT, color: 'var(--color-platinum)' }}
             >
                 {country}
-            </div>
+            </Link>
 
             {/* track */}
             <div
@@ -161,7 +166,7 @@ export function Bar({ rank, country, displayValue, maxValue, prevY, mode, perCap
                     className="absolute inset-y-0 left-0 flex items-center pl-2.5 font-mono text-[0.62rem] tracking-[0.1em]"
                     style={{ color: 'var(--color-charcoal)', fontWeight: 700, opacity: 0.9 }}
                 >
-                    #{rank + 1}
+                    #{displayRank ?? rank + 1}
                 </div>
             </div>
 
@@ -209,6 +214,7 @@ export function BarChart({ bars, maxValue, mode, perCapita, prevPositions, dim }
                 <Bar
                     key={bar.country}
                     rank={bar.rank}
+                    displayRank={bar.displayRank}
                     country={bar.country}
                     displayValue={bar.displayValue}
                     maxValue={maxValue}

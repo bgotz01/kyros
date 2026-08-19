@@ -453,7 +453,7 @@ export default function MacroChartPage() {
             {/* header */}
             <div className="mb-10">
                 <div className="mb-3 flex flex-wrap items-baseline gap-x-8 gap-y-2">
-                    <h1 className="font-serif text-3xl font-light tracking-[0.12em] text-marble">
+                    <h1 className="font-serif text-2xl font-light tracking-[0.16em] text-marble">
                         Macro Regimes
                     </h1>
                     <span className="font-mono text-[0.65rem] tracking-[0.2em] text-bronze">

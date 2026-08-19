@@ -1,3 +1,5 @@
+import ParadigmTable from './components/ParadigmTable';
+
 export default function CapitalPage() {
     return (
         <div className="mx-auto w-full max-w-[1100px] px-8 py-20">
@@ -5,81 +7,113 @@ export default function CapitalPage() {
             {/* ── header ──────────────────────────────────────────────────────── */}
             <div className="mb-16">
                 <div className="mb-6 flex flex-wrap items-baseline gap-x-8 gap-y-3">
-                    <h1 className="font-serif text-4xl font-light tracking-[0.12em] text-marble">
+                    <h1 className="font-serif text-5xl font-light tracking-[0.12em] text-marble">
                         Capital
                     </h1>
-                    <span className="font-mono text-[0.72rem] tracking-[0.22em] text-bronze">
-                        F = f(R, C, D)
-                    </span>
                 </div>
-                <div className="mb-4 flex flex-wrap gap-x-8 gap-y-2">
-                    {[
-                        { symbol: 'R', label: 'Return potential', desc: 'Where can scarce capital earn above-average returns?' },
-                        { symbol: 'C', label: 'Capacity', desc: 'What can absorb large flows without saturation?' },
-                        { symbol: 'D', label: 'Displacement', desc: 'What is structurally replacing the prior frontier?' },
-                    ].map(({ symbol, label, desc }) => (
-                        <div key={symbol} className="flex items-baseline gap-2">
-                            <span className="font-serif text-base font-light text-bronze-bright">{symbol}</span>
-                            <span className="font-sans text-[0.6rem] uppercase tracking-[0.18em] text-platinum">{label}</span>
-                            <span className="hidden font-sans text-[0.6rem] tracking-[0.04em] text-platinum-dim sm:inline">— {desc}</span>
-                        </div>
-                    ))}
-                </div>
-                <p className="font-sans text-[0.65rem] uppercase tracking-[0.28em] text-platinum-dim">
-                    Where the world's capital has moved — decade by decade
+                <p className="font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
+                    Where the world&apos;s capital has moved — decade by decade
                 </p>
             </div>
 
-            {/* ── table ───────────────────────────────────────────────────────── */}
-            <div className="overflow-x-auto">
+            {/* ── inflection overview ──────────────────────────────────────────── */}
+            <div className="mb-16">
+                <p className="mb-6 font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
+                    Inflection Points
+                </p>
+                <div className="flex flex-col gap-2">
+                    {DECADE_OVERVIEW.map(({ decade, label }) => (
+                        <div key={decade} className="flex items-baseline gap-4">
+                            <span className="w-12 font-mono text-[0.72rem] tracking-[0.14em] text-bronze">
+                                {decade}
+                            </span>
+                            <span className="font-mono text-[0.72rem] tracking-[0.1em] text-stone-line-strong">
+                                →
+                            </span>
+                            <span className="font-sans text-[0.82rem] leading-relaxed tracking-[0.06em] text-platinum">
+                                {label}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── paradigm table ──────────────────────────────────────────────── */}
+            <ParadigmTable />
+
+            {/* ── I³ framework ────────────────────────────────────────────────── */}
+            <div className="mt-24 overflow-x-auto">
                 <table className="w-full border-collapse">
                     <thead>
                         <tr className="border-b-2 border-stone-line-strong">
-                            <th className="pb-4 pr-8 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Decade
+                            <th className="pb-4 pr-8 text-left font-mono text-[0.72rem] tracking-[0.18em] text-platinum-dim">
+                                Law
                             </th>
-                            <th className="pb-4 pr-8 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Geography
+                            <th className="pb-4 pr-8 text-left font-mono text-[0.72rem] tracking-[0.18em] text-platinum-dim">
+                                Kyros
                             </th>
-                            <th className="pb-4 pr-8 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Theme
+                            <th className="pb-4 pr-8 text-left font-sans text-[0.85rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                What we&apos;re looking for
                             </th>
-                            <th className="pb-4 pr-8 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Sector
-                            </th>
-                            <th className="pb-4 pr-8 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Index / Asset
-                            </th>
-                            <th className="pb-4 text-left font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
-                                Narrative
+                            <th className="pb-4 text-left font-sans text-[0.85rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                Evidence
                             </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-line">
-                        {ROWS.map(({ decade, geography, theme, sector, index, mechanism }) => (
+                        {I3_ROWS.map(({ law, kyros, question, evidence }) => (
                             <tr
-                                key={decade}
+                                key={law}
                                 className="group transition-colors duration-300 ease-mechanical hover:bg-charcoal"
                             >
                                 <td className="py-5 pr-8 align-top font-mono text-[0.72rem] tracking-[0.14em] text-bronze">
-                                    {decade}
-                                </td>
-                                <td className="py-5 pr-8 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] text-platinum">
-                                    {geography}
+                                    {law}
                                 </td>
                                 <td className="py-5 pr-8 align-top font-serif text-base font-light leading-snug tracking-[0.04em] text-marble">
-                                    {theme}
+                                    {kyros}
                                 </td>
-                                <td className="py-5 pr-8 align-top text-sm leading-relaxed tracking-[0.03em] text-platinum">
-                                    {sector}
+                                <td className="py-5 pr-8 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] text-platinum">
+                                    {question}
                                 </td>
-                                <td className="py-5 pr-8 align-top font-mono text-[0.68rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
-                                    {index ?? '—'}
+                                <td className="py-5 align-top font-mono text-[0.68rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
+                                    {evidence}
                                 </td>
-                                <td className="py-5 align-top">
-                                    <span className="font-sans text-[0.6rem] uppercase tracking-[0.18em] text-bronze-bright">
-                                        {mechanism}
-                                    </span>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* ── Inversion Questions ──────────────────────────────────────────── */}
+            <div className="mt-24 overflow-x-auto">
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr className="border-b-2 border-stone-line-strong">
+                            <th className="pb-4 pr-8 text-left font-sans text-[0.85rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                Dimension
+                            </th>
+                            <th className="pb-4 pr-8 text-left font-sans text-[0.85rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                Question
+                            </th>
+                            <th className="pb-4 text-left font-sans text-[0.85rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                Examples
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-line">
+                        {INVERSION_ROWS.map(({ dimension, question, examples }) => (
+                            <tr
+                                key={dimension}
+                                className="group transition-colors duration-300 ease-mechanical hover:bg-charcoal"
+                            >
+                                <td className="py-5 pr-8 align-top font-serif text-base font-light leading-snug tracking-[0.04em] text-marble">
+                                    {dimension}
+                                </td>
+                                <td className="py-5 pr-8 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] text-platinum">
+                                    {question}
+                                </td>
+                                <td className="py-5 align-top font-mono text-[0.68rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
+                                    {examples}
                                 </td>
                             </tr>
                         ))}
@@ -90,71 +124,58 @@ export default function CapitalPage() {
     );
 }
 
-// ─── data ─────────────────────────────────────────────────────────────────────
+// ─── Decade overview ─────────────────────────────────────────────────────────
 
-const ROWS = [
+const DECADE_OVERVIEW = [
+    { decade: '1950', label: 'European reconstruction' },
+    { decade: '1960', label: 'European monetary normalization' },
+    { decade: '1970', label: 'Gold depeg' },
+    { decade: '1980', label: 'Volcker + China opens' },
+    { decade: '1990', label: 'Communist system collapses + China accelerates reforms' },
+    { decade: '2000', label: 'China WTO + Euro' },
+    { decade: '2010', label: 'GFC + QE/ZIRP' },
+    { decade: '2020', label: 'COVID policy shock + inflation/rate reversal' },
+];
+
+// ─── I³ data ──────────────────────────────────────────────────────────────────
+
+const I3_ROWS = [
     {
-        decade: '1950s',
-        geography: '🇪🇺 Europe',
-        theme: 'Postwar reconstruction',
-        sector: 'Industrial plant, machinery, infrastructure, manufacturing',
-        index: 'Europe GFD Composite',
-        mechanism: 'Rebuilding',
+        law: 'I¹',
+        kyros: 'Inversion',
+        question: 'What dominant market belief could reverse?',
+        evidence: 'Narratives, positioning, consensus',
     },
     {
-        decade: '1960s',
-        geography: '🇺🇸 United States',
-        theme: 'Corporate / multinational expansion',
-        sector: 'Consumer goods, industrials, multinational corporations',
-        index: 'U.S. Nifty 50',
-        mechanism: 'Scale',
+        law: 'I²',
+        kyros: 'Incentives',
+        question: 'Where is the economic/valuation pressure pulling capital?',
+        evidence: 'REY, P/E, yields, CPI, rates, FX valuation, spreads',
     },
     {
-        decade: '1970s',
-        geography: '🌍 Commodities',
-        theme: 'Oil / commodity complex',
-        sector: 'Energy production, oil exporters, commodity assets',
-        index: 'Gold & Oil prices',
-        mechanism: 'Scarcity',
+        law: 'I³',
+        kyros: 'Inflection',
+        question: 'What has changed that makes the alternative possible now?',
+        evidence: 'Technology, policy, geopolitics, regulation, institutional events',
+    },
+];
+
+// ─── Inversion Questions data ─────────────────────────────────────────────────
+
+const INVERSION_ROWS = [
+    {
+        dimension: 'Asset Class',
+        question: 'What kind of asset wins?',
+        examples: 'Stocks, bonds, commodities, real estate, cash',
     },
     {
-        decade: '1980s',
-        geography: '🇯🇵 Japan',
-        theme: 'Asset bubble',
-        sector: 'Equities, property, banks, industrial champions',
-        index: 'TOPIX Index',
-        mechanism: 'Asset appreciation + credit',
+        dimension: 'Geography',
+        question: 'Where does capital win?',
+        examples: 'US, Japan, Europe, EM, China',
     },
     {
-        decade: '1990s',
-        geography: '🇺🇸 United States',
-        theme: 'Technology boom',
-        sector: 'PCs, semiconductors, telecom, software, internet',
-        index: 'Nasdaq Index',
-        mechanism: 'Digitization',
-    },
-    {
-        decade: '2000s',
-        geography: '🇨🇳 China · Emerging markets',
-        theme: 'Industrialization + commodities',
-        sector: 'Factories, infrastructure, mining, energy, emerging markets',
-        index: 'BRICs & Oil prices',
-        mechanism: 'Industrialization',
-    },
-    {
-        decade: '2010s',
-        geography: '🇺🇸 United States',
-        theme: 'Platform / cloud technology',
-        sector: 'Apple, Microsoft, Google, Amazon, Meta; SaaS / private tech',
-        index: 'FAANG',
-        mechanism: 'Intangibles + network scale',
-    },
-    {
-        decade: '2020s',
-        geography: '🇺🇸 United States',
-        theme: 'AI / compute / power ecosystem',
-        sector: 'Semiconductors, datacenters, power, hyperscalers',
-        index: undefined,
-        mechanism: 'Intelligence infrastructure',
+        dimension: 'Sector / Theme',
+        question: 'What specific economic story wins?',
+        examples: 'Internet, energy, housing, financials, AI',
     },
 ];

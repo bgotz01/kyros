@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { DECADE_SLUGS, DECADE_SECTIONS } from '@/lib/capitalData';
+import { DECADE_SLUGS } from '@/lib/capitalData';
 
 // ─── layout ───────────────────────────────────────────────────────────────────
 
@@ -16,7 +16,7 @@ export default function DecadeLayout({ children }: { children: React.ReactNode }
             {/* ── page header ─────────────────────────────────────────────────── */}
             <header className="shrink-0 border-b border-stone-line px-8 py-4">
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-                    <h1 className="font-serif text-xl font-light tracking-[0.16em] text-marble">
+                    <h1 className="font-serif text-2xl font-light tracking-[0.16em] text-marble">
                         CAPITAL DECADES
                     </h1>
                     <span className="font-mono text-[0.6rem] tracking-[0.14em] text-platinum-dim">
@@ -37,9 +37,8 @@ export default function DecadeLayout({ children }: { children: React.ReactNode }
                             key={slug}
                             href={`/capital/decades/${slug}`}
                             aria-current={active ? 'page' : undefined}
-                            className={`relative shrink-0 px-3 py-3 font-mono text-[0.68rem] tracking-[0.14em] transition-colors duration-300 ease-mechanical ${
-                                active ? 'text-bronze-bright' : 'text-platinum-dim hover:text-platinum'
-                            }`}
+                            className={`relative shrink-0 px-3 py-3 font-mono text-[0.68rem] tracking-[0.14em] transition-colors duration-300 ease-mechanical ${active ? 'text-bronze-bright' : 'text-platinum-dim hover:text-platinum'
+                                }`}
                         >
                             {active && (
                                 <span
@@ -48,41 +47,6 @@ export default function DecadeLayout({ children }: { children: React.ReactNode }
                                 />
                             )}
                             {slug}
-                        </Link>
-                    );
-                })}
-            </nav>
-
-            {/* ── section sub-tabs ────────────────────────────────────────────── */}
-            <nav
-                aria-label="Sections"
-                className="flex shrink-0 items-center gap-1 border-b border-stone-line px-6"
-            >
-                {DECADE_SECTIONS.map(({ slug: section, label }) => {
-                    const href =
-                        section === ''
-                            ? `/capital/decades/${decade}`
-                            : `/capital/decades/${decade}/${section}`;
-                    const active =
-                        section === ''
-                            ? pathname === `/capital/decades/${decade}`
-                            : pathname === `/capital/decades/${decade}/${section}`;
-                    return (
-                        <Link
-                            key={label}
-                            href={href}
-                            aria-current={active ? 'page' : undefined}
-                            className={`relative shrink-0 px-3 py-2.5 font-sans text-[0.58rem] uppercase tracking-[0.22em] transition-colors duration-300 ease-mechanical ${
-                                active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'
-                            }`}
-                        >
-                            {active && (
-                                <span
-                                    aria-hidden
-                                    className="absolute inset-x-0 bottom-0 h-px bg-bronze-dim"
-                                />
-                            )}
-                            {label}
                         </Link>
                     );
                 })}

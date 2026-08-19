@@ -52,8 +52,8 @@ function SaveStatus({ status }: { status: 'idle' | 'saving' | 'saved' | 'error' 
     if (status === 'idle') return null;
     return (
         <span className={`font-mono text-[0.6rem] uppercase tracking-[0.24em] transition-opacity duration-500 ease-mechanical ${status === 'error' ? 'text-bronze-bright' :
-                status === 'saved' ? 'text-platinum-dim' :
-                    'animate-pulse text-bronze'
+            status === 'saved' ? 'text-platinum-dim' :
+                'animate-pulse text-bronze'
             }`}>
             {status === 'saving' ? 'Saving…' : status === 'saved' ? 'Saved' : '⚠ Save failed'}
         </span>
@@ -282,7 +282,7 @@ export default function ContextPage() {
                     <>
                         <header className="flex shrink-0 items-center justify-between gap-6 border-b border-stone-line px-8 py-4">
                             <div className="flex min-w-0 items-baseline gap-4">
-                                <h1 className="truncate font-serif text-xl font-light tracking-[0.12em] text-marble">
+                                <h1 className="truncate font-serif text-2xl font-light tracking-[0.16em] text-marble">
                                     {selectedRef.label}
                                 </h1>
                                 <span className="shrink-0 font-mono text-[0.58rem] tracking-[0.14em] text-platinum-dim">

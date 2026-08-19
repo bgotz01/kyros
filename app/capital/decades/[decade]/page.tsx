@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { INVESTMENT_THEMES, DECADE_SLUGS, type InvestmentTheme } from '@/lib/capitalData';
+import { DECADE_PARADIGMS, type DecadeParadigm } from './paradigm';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -9,7 +10,7 @@ export function generateStaticParams() {
 
 // ─── page ─────────────────────────────────────────────────────────────────────
 
-export default async function DecadeThemesPage({
+export default async function DecadePage({
     params,
 }: {
     params: Promise<{ decade: string }>;
@@ -18,73 +19,179 @@ export default async function DecadeThemesPage({
     const data = INVESTMENT_THEMES.find((d) => d.decade === decade);
     if (!data) notFound();
 
+    const paradigmIndex = DECADE_PARADIGMS.findIndex((p) => p.decade === decade);
+    const current = DECADE_PARADIGMS[paradigmIndex];
+    const previous = paradigmIndex > 0 ? DECADE_PARADIGMS[paradigmIndex - 1] : null;
+
     return (
         <div className="px-8 py-8">
-            <div className="mb-8 flex items-center gap-5">
+
+            {/* ── header ──────────────────────────────────────────────────────── */}
+            <div className="mb-10 flex items-center gap-5">
                 <h2 className="font-serif text-3xl font-light tracking-[0.1em] text-marble">
                     {data.decade}
                 </h2>
                 <span aria-hidden className="h-px flex-1 bg-stone-line" />
-                <span className="font-mono text-[0.6rem] tracking-[0.14em] text-platinum-dim">
-                    {data.themes.length} {data.themes.length === 1 ? 'theme' : 'themes'}
-                </span>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {data.themes.map((theme) => (
-                    <ThemeCard key={theme.name} theme={theme} />
-                ))}
-            </div>
+            {/* ── I¹ Inversion ────────────────────────────────────────────────── */}
+            <Section label="I¹" title="Inversion">
+                {current && previous ? (
+                    <ParadigmShiftTable previous={previous} current={current} />
+                ) : (
+                    <p className="font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
+                        No prior paradigm to compare.
+                    </p>
+                )}
+            </Section>
+
+            {/* ── Themes ──────────────────────────────────────────────────────── */}
+            <Section label="" title="Themes">
+                <ThemesTable themes={data.themes} />
+            </Section>
+
         </div>
     );
 }
 
-// ─── theme card ───────────────────────────────────────────────────────────────
+// ─── section wrapper ──────────────────────────────────────────────────────────
 
-function ThemeCard({ theme }: { theme: InvestmentTheme }) {
+function Section({
+    label,
+    title,
+    children,
+}: {
+    label: string;
+    title: string;
+    children: React.ReactNode;
+}) {
     return (
-        <div className="flex flex-col gap-4 border border-stone-line bg-charcoal p-5 transition-colors duration-300 ease-mechanical hover:border-stone-line-strong">
-
-            <div className="flex flex-col gap-2 border-b border-stone-line pb-4">
-                <h3 className="font-serif text-base font-light leading-snug tracking-[0.06em] text-marble">
-                    {theme.name}
-                </h3>
-                <p className="font-sans text-[0.64rem] leading-relaxed tracking-[0.04em] text-platinum">
-                    {theme.narrative}
-                </p>
-            </div>
-
-            <div className="flex flex-col gap-2">
-                <span className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim">
-                    Assets
+        <div className="mb-12">
+            <div className="mb-5 flex items-center gap-4">
+                {label && (
+                    <span className="font-mono text-[0.6rem] tracking-[0.18em] text-bronze">
+                        {label}
+                    </span>
+                )}
+                <span className="font-sans text-[0.7rem] uppercase tracking-[0.26em] text-platinum-dim">
+                    {title}
                 </span>
-                <div className="flex flex-wrap gap-1.5">
-                    {theme.assets.map((asset) => (
-                        <span
-                            key={asset}
-                            className="border border-stone-line px-2 py-0.5 font-mono text-[0.58rem] tracking-[0.08em] text-platinum"
-                        >
-                            {asset}
-                        </span>
-                    ))}
-                </div>
+                <span aria-hidden className="h-px flex-1 bg-stone-line" />
             </div>
-
-            <div className="flex flex-col gap-2">
-                <span className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim">
-                    Examples
-                </span>
-                <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    {theme.examples.map((ex) => (
-                        <span
-                            key={ex}
-                            className="font-sans text-[0.62rem] tracking-[0.06em] text-bronze"
-                        >
-                            {ex}
-                        </span>
-                    ))}
-                </div>
-            </div>
+            {children}
         </div>
+    );
+}
+
+// ─── paradigm shift table ─────────────────────────────────────────────────────
+
+function ParadigmShiftTable({
+    previous,
+    current,
+}: {
+    previous: DecadeParadigm;
+    current: DecadeParadigm;
+}) {
+    const rows = [
+        { dimension: 'Asset Class', prev: previous.assetClass, next: current.assetClass },
+        { dimension: 'Geography', prev: previous.geography, next: current.geography },
+        { dimension: 'Sector / Theme', prev: previous.sectorTheme, next: current.sectorTheme },
+    ];
+
+    return (
+        <div className="flex justify-center">
+            <table className="border-collapse" style={{ tableLayout: 'fixed', width: '480px' }}>
+                <colgroup>
+                    <col style={{ width: '140px' }} />
+                    <col style={{ width: '160px' }} />
+                    <col style={{ width: '24px' }} />
+                    <col style={{ width: '156px' }} />
+                </colgroup>
+                <thead>
+                    <tr className="border-b-2 border-stone-line-strong">
+                        <th className="pb-3 pr-4 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
+                            Dimension
+                        </th>
+                        <th className="pb-3 pr-4 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
+                            Previous
+                        </th>
+                        <th className="pb-3 pr-2 text-center font-mono text-[0.7rem] text-platinum-dim"></th>
+                        <th className="pb-3 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
+                            New
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-line">
+                    {rows.map(({ dimension, prev, next }) => {
+                        const inverted = prev !== next;
+                        return (
+                            <tr
+                                key={dimension}
+                                className="group transition-colors duration-300 ease-mechanical hover:bg-charcoal"
+                            >
+                                <td className="py-4 pr-4 align-top font-serif text-sm font-light tracking-[0.04em] text-marble">
+                                    {dimension}
+                                </td>
+                                <td className="py-4 pr-4 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
+                                    {prev}
+                                </td>
+                                <td className="py-4 pr-2 text-center align-top font-mono text-[0.72rem] text-platinum-dim">
+                                    {inverted ? '→' : '='}
+                                </td>
+                                <td className={`py-4 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] ${inverted ? 'font-medium text-bronze-bright' : 'text-platinum-dim'}`}>
+                                    {next}
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+// ─── themes table ─────────────────────────────────────────────────────────────
+
+function ThemesTable({ themes }: { themes: InvestmentTheme[] }) {
+    return (
+        <table className="w-full border-collapse">
+            <thead>
+                <tr className="border-b border-stone-line-strong">
+                    <th className="pb-2 pr-6 text-left font-sans text-[0.65rem] uppercase tracking-[0.2em] text-platinum-dim">
+                        Theme
+                    </th>
+                    <th className="pb-2 pr-6 text-left font-sans text-[0.65rem] uppercase tracking-[0.2em] text-platinum-dim">
+                        Narrative
+                    </th>
+                    <th className="pb-2 text-left font-sans text-[0.65rem] uppercase tracking-[0.2em] text-platinum-dim">
+                        Assets
+                    </th>
+                </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-line">
+                {themes.map((theme) => (
+                    <tr key={theme.name} className="group transition-colors duration-300 ease-mechanical hover:bg-charcoal">
+                        <td className="py-2.5 pr-6 align-top font-serif text-[0.8rem] font-light tracking-[0.03em] text-marble whitespace-nowrap">
+                            {theme.name}
+                        </td>
+                        <td className="py-2.5 pr-6 align-top font-sans text-[0.67rem] leading-relaxed tracking-[0.03em] text-platinum">
+                            {theme.narrative}
+                        </td>
+                        <td className="py-2.5 align-top">
+                            <div className="flex flex-wrap gap-1">
+                                {theme.assets.map((asset) => (
+                                    <span
+                                        key={asset}
+                                        className="border border-stone-line px-1.5 py-px font-mono text-[0.55rem] tracking-[0.06em] text-platinum-dim"
+                                    >
+                                        {asset}
+                                    </span>
+                                ))}
+                            </div>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     );
 }

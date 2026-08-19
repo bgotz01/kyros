@@ -115,7 +115,7 @@ export default function AnnualGDPPage() {
         [yearData, effectiveMode, perCapita],
     );
     const next10 = useMemo(
-        () => top20.slice(10).map((b, i) => ({ ...b, rank: i })),
+        () => top20.slice(10).map((b, i) => ({ ...b, rank: i, displayRank: i + 11 })),
         [top20],
     );
 
