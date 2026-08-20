@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
-import { INVESTMENT_THEMES, DECADE_SLUGS } from '@/lib/capitalData';
+import { DECADE_SLUGS } from '@/lib/capital/decades';
+import { INVESTMENT_THEMES } from '@/lib/capital/themes';
 
 export function generateStaticParams() {
     return DECADE_SLUGS.map((decade) => ({ decade }));

@@ -2,117 +2,27 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-// ─── types ────────────────────────────────────────────────────────────────────
-
-interface MacroRow {
-    month: string;
-    ten_y: number | null;
-    cpi: number | null;
-    ey5: number | null;
-    real10: number | null;
-    eyp5: number | null;
-    rey5: number | null;
-}
-
-type SeriesKey = 'ten_y' | 'cpi' | 'ey5' | 'real10' | 'eyp5' | 'rey5';
-
-// ─── series config ────────────────────────────────────────────────────────────
-
-type SeriesGroup = 'nominal' | 'relative';
-
-interface SeriesDef {
-    key: SeriesKey;
-    label: string;
-    shortLabel: string;
-    description: string;
-    color: string;
-    group: SeriesGroup;
-}
-
-const SERIES: SeriesDef[] = [
-    // Nominal
-    {
-        key: 'ten_y',
-        label: '10-Year Treasury Yield',
-        shortLabel: '10Y',
-        description: 'US 10-Year nominal yield — monthly average of daily data',
-        color: '#E8B84B',   // amber
-        group: 'nominal',
-    },
-    {
-        key: 'cpi',
-        label: 'CPI YoY',
-        shortLabel: 'CPI',
-        description: 'Consumer Price Index — year-over-year change',
-        color: '#4FC4A0',   // mint
-        group: 'nominal',
-    },
-    {
-        key: 'ey5',
-        label: 'Earnings Yield 5yr',
-        shortLabel: 'EY5',
-        description: 'S&P 500 earnings yield using 5-year rolling average earnings',
-        color: '#F07A50',   // coral
-        group: 'nominal',
-    },
-    // Relative
-    {
-        key: 'real10',
-        label: 'Real 10Y Yield',
-        shortLabel: 'R10Y',
-        description: '10-Year Treasury Yield minus CPI — real rate',
-        color: '#6AAEE8',   // sky blue
-        group: 'relative',
-    },
-    {
-        key: 'eyp5',
-        label: 'Earnings Yield Premium 5yr',
-        shortLabel: 'EYP5',
-        description: 'EY5 minus 5-year treasury yield — equity risk premium',
-        color: '#C084E8',   // violet
-        group: 'relative',
-    },
-    {
-        key: 'rey5',
-        label: 'Real Earnings Yield 5yr',
-        shortLabel: 'REY5',
-        description: 'EY5 minus CPI — real return on equities',
-        color: '#8FD46A',   // lime green
-        group: 'relative',
-    },
-];
-
-const SERIES_BY_KEY = Object.fromEntries(SERIES.map(s => [s.key, s])) as Record<SeriesKey, SeriesDef>;
-
-// ─── decade presets ───────────────────────────────────────────────────────────
-
-interface Decade {
-    label: string;
-    start: string;
-    end: string;
-}
-
-const DECADES: Decade[] = [
-    { label: 'All', start: '1960-01-01', end: '2026-12-31' },
-    { label: '1960s', start: '1960-01-01', end: '1969-12-31' },
-    { label: '1970s', start: '1970-01-01', end: '1979-12-31' },
-    { label: '1980s', start: '1980-01-01', end: '1989-12-31' },
-    { label: '1990s', start: '1990-01-01', end: '1999-12-31' },
-    { label: '2000s', start: '2000-01-01', end: '2009-12-31' },
-    { label: '2010s', start: '2010-01-01', end: '2019-12-31' },
-    { label: '2020s', start: '2020-01-01', end: '2026-12-31' },
-];
+import ChartFrame from './ChartFrame';
+import PercentileChart from './PercentileChart';
+import {
+    SERIES,
+    DECADES,
+    PAD,
+    clamp,
+    buildSegments,
+    linePath,
+    areaPath,
+    type MacroRow,
+    type SeriesKey,
+    type SeriesDef,
+    type Decade,
+} from './series';
 
 // ─── chart constants ──────────────────────────────────────────────────────────
 
-const PAD = { top: 24, right: 24, bottom: 44, left: 52 };
 const Y_TICKS = 6;
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
-
-function clamp(v: number, min: number, max: number) {
-    return Math.max(min, Math.min(max, v));
-}
 
 function niceRange(min: number, max: number): [number, number, number[]] {
     // Round outward to whole numbers, pick a clean integer step for ~5-7 ticks
@@ -170,33 +80,15 @@ function LineChart({ data, active, width, height, hovered, onHover, showGrid }: 
     const yOf = (v: number) =>
         PAD.top + plotH - clamp((v - lo) / (hi - lo), 0, 1) * plotH;
 
-    // x-axis year labels — one per year, spaced to avoid overlap
-    // x-axis labels every 5 years (1960, 1965, 1970, …)
-    // decade vertical lines at every 10th year
-    const xLabels: { i: number; label: string }[] = [];
-    const decadeLines: number[] = [];
-    for (let i = 0; i < data.length; i++) {
-        const year = parseInt(data[i].month.slice(0, 4), 10);
-        const month = parseInt(data[i].month.slice(5, 7), 10);
-        if (month === 1) {
-            if (year % 10 === 0) decadeLines.push(xOf(i));
-            if (year % 5 === 0) xLabels.push({ i, label: String(year) });
-        }
-    }
+    const shown = SERIES.filter(s => active.has(s.key));
+    const activePaths = shown.map(s => ({
+        ...s,
+        segments: buildSegments(data, row => row[s.key], xOf, yOf),
+    }));
 
-    // SVG paths per series
-    const activePaths = SERIES.filter(s => active.has(s.key)).map(s => {
-        let d = '';
-        let open = false;
-        for (let i = 0; i < data.length; i++) {
-            const v = data[i][s.key];
-            if (v == null) { open = false; continue; }
-            const x = xOf(i), y = yOf(v);
-            d += open ? ` L ${x} ${y}` : `M ${x} ${y}`;
-            open = true;
-        }
-        return { ...s, d };
-    });
+    // A single series gets a wash down to zero — with six of them it would be mud.
+    const lone = activePaths.length === 1 ? activePaths[0] : null;
+    const baseline = lo < 0 && hi > 0 ? yOf(0) : PAD.top + plotH;
 
     const hx = hovered != null ? xOf(hovered) : null;
 
@@ -213,72 +105,50 @@ function LineChart({ data, active, width, height, hovered, onHover, showGrid }: 
             onMouseLeave={() => onHover(null)}
             aria-label="Macro indicators chart"
         >
-            {/* horizontal grid */}
-            {showGrid && yTicks.map((tick, i) => {
-                const y = yOf(tick);
-                return (
-                    <g key={i}>
-                        <line
-                            x1={PAD.left} y1={y} x2={PAD.left + plotW} y2={y}
-                            stroke="var(--color-stone-line-strong)"
-                            strokeWidth={1}
-                            strokeDasharray="2 8"
-                            strokeOpacity={0.6}
-                        />
-                        <text
-                            x={PAD.left - 7} y={y}
-                            textAnchor="end" dominantBaseline="middle"
-                            fontSize={9} fontFamily="var(--font-geist-mono), monospace"
-                            fill="var(--color-platinum-dim)" letterSpacing="0.05em"
-                        >
-                            {tick}
-                        </text>
-                    </g>
-                );
-            })}
+            {lone && (
+                <defs>
+                    <linearGradient id="wash" x1="0" y1={PAD.top} x2="0" y2={baseline} gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor={lone.color} stopOpacity={0.22} />
+                        <stop offset="100%" stopColor={lone.color} stopOpacity={0.02} />
+                    </linearGradient>
+                </defs>
+            )}
 
-            {/* zero line — always rendered in red when 0 is in range */}
+            <ChartFrame
+                months={data.map(r => r.month)}
+                yTicks={yTicks}
+                xOf={xOf}
+                yOf={yOf}
+                plotW={plotW}
+                plotH={plotH}
+                height={height}
+                showGrid={showGrid}
+                unit="%"
+            />
+
+            {/* zero line — the divide between real gain and real loss */}
             {lo < 0 && hi > 0 && (
                 <line
                     x1={PAD.left} y1={yOf(0)} x2={PAD.left + plotW} y2={yOf(0)}
-                    stroke="#C0392B"
+                    stroke="#C0563F"
                     strokeWidth={1}
-                    strokeOpacity={0.7}
+                    strokeOpacity={0.8}
                 />
             )}
 
-            {/* x-axis labels */}
-            {xLabels.map(({ i, label }) => (
-                <text
-                    key={label}
-                    x={xOf(i)} y={height - 8}
-                    textAnchor="middle" fontSize={9}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    fill="var(--color-platinum-dim)" letterSpacing="0.07em"
-                >
-                    {label}
-                </text>
-            ))}
-
-            {/* decade vertical lines */}
-            {showGrid && decadeLines.map(x => (
-                <line
-                    key={x}
-                    x1={x} y1={PAD.top} x2={x} y2={PAD.top + plotH}
-                    stroke="var(--color-stone-line-strong)"
-                    strokeWidth={1}
-                    strokeOpacity={0.55}
-                />
-            ))}
+            {/* wash under a lone series */}
+            {lone && (
+                <path d={areaPath(lone.segments, baseline)} fill="url(#wash)" stroke="none" />
+            )}
 
             {/* series lines */}
             {activePaths.map(s => (
                 <path
                     key={s.key}
-                    d={s.d}
+                    d={linePath(s.segments)}
                     fill="none"
                     stroke={s.color}
-                    strokeWidth={1.5}
+                    strokeWidth={1.75}
                     strokeLinejoin="round"
                     strokeLinecap="round"
                 />
@@ -289,7 +159,7 @@ function LineChart({ data, active, width, height, hovered, onHover, showGrid }: 
                 <>
                     <line
                         x1={hx} y1={PAD.top} x2={hx} y2={PAD.top + plotH}
-                        stroke="var(--color-stone-line-strong)" strokeWidth={1}
+                        stroke="var(--color-bronze)" strokeWidth={1} strokeOpacity={0.65}
                     />
                     {SERIES.filter(s => active.has(s.key)).map(s => {
                         const v = data[hovered][s.key];
@@ -299,7 +169,7 @@ function LineChart({ data, active, width, height, hovered, onHover, showGrid }: 
                                 key={s.key}
                                 cx={hx} cy={yOf(v)} r={3.5}
                                 fill={s.color}
-                                stroke="var(--color-charcoal)" strokeWidth={1.5}
+                                stroke="var(--color-obsidian)" strokeWidth={1.5}
                             />
                         );
                     })}
@@ -329,7 +199,7 @@ function Tooltip({ row, active }: { row: MacroRow; active: Set<SeriesKey> }) {
                                 className="h-px w-4 shrink-0"
                                 style={{ background: s.color, height: 2 }}
                             />
-                            <span className="w-9 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-platinum">
+                            <span className="w-9 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-marble-dim">
                                 {s.shortLabel}
                             </span>
                             <span className="font-mono text-[0.68rem] tracking-[0.06em] text-marble tabular-nums">
@@ -377,6 +247,16 @@ function SeriesToggle({
     );
 }
 
+// ─── view modes ───────────────────────────────────────────────────────────────
+
+type ViewMode = 'value' | 'rank' | 'yoy';
+
+const VIEWS: { mode: ViewMode; label: string; hint: string }[] = [
+    { mode: 'value', label: 'Actual Values', hint: 'The reading itself, in percent' },
+    { mode: 'rank', label: 'Percentile', hint: 'Where the reading sits in its own history — 0 to 100' },
+    { mode: 'yoy', label: 'Percentile Change', hint: 'How far the percentile moved over the past year' },
+];
+
 // ─── page ─────────────────────────────────────────────────────────────────────
 
 const DEFAULT_ACTIVE: Set<SeriesKey> = new Set(['rey5']);
@@ -386,6 +266,7 @@ export default function MacroChartPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [active, setActive] = useState<Set<SeriesKey>>(DEFAULT_ACTIVE);
+    const [view, setView] = useState<ViewMode>('value');
     const [decade, setDecade] = useState<Decade>(DECADES[0]);
     const [customFrom, setCustomFrom] = useState('');
     const [customTo, setCustomTo] = useState('');
@@ -407,7 +288,7 @@ export default function MacroChartPage() {
         });
         obs.observe(el);
         return () => obs.disconnect();
-    }, []);
+    }, [view]);
 
     // fetch
     useEffect(() => {
@@ -573,8 +454,51 @@ export default function MacroChartPage() {
                 </div>
             </div>
 
-            {/* chart */}
-            <div ref={containerRef} className="relative w-full border border-stone-line bg-charcoal">
+            {/* chart panel */}
+            <div className="w-full border border-stone-line-strong bg-charcoal">
+
+                {/* panel header — what is plotted, and the view it is plotted in */}
+                <div className="flex flex-wrap items-center justify-between gap-y-3 border-b border-stone-line-strong px-4 py-3">
+                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-platinum">
+                        <span className="text-bronze">{usingCustom ? 'Custom' : decade.label}</span>
+                        {'  ·  '}
+                        {activeRange.start.slice(0, 4)}—{activeRange.end.slice(0, 4)}
+                    </p>
+                    <div className="ml-auto flex border border-stone-line-strong">
+                        {VIEWS.map((v, i) => {
+                            const on = view === v.mode;
+                            return (
+                                <button
+                                    key={v.mode}
+                                    type="button"
+                                    onClick={() => { setView(v.mode); setHovered(null); }}
+                                    title={v.hint}
+                                    aria-pressed={on}
+                                    className={`
+                                        px-4 py-2 font-sans text-[0.66rem] uppercase tracking-[0.18em]
+                                        transition-colors duration-500 ease-mechanical
+                                        ${i > 0 ? 'border-l border-stone-line-strong' : ''}
+                                        ${on
+                                            ? 'bg-bronze/15 text-bronze-bright'
+                                            : 'text-platinum hover:bg-obsidian/50 hover:text-marble'}
+                                    `}
+                                >
+                                    {v.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+            {view !== 'value' ? (
+                <PercentileChart
+                    active={active}
+                    range={activeRange}
+                    metric={view}
+                    showGrid={showGrid}
+                />
+            ) : (
+            <div ref={containerRef} className="relative w-full">
 
                 {loading && (
                     <div className="flex items-center justify-center py-32">
@@ -616,6 +540,8 @@ export default function MacroChartPage() {
                     </div>
                 )}
             </div>
+            )}
+            </div>
 
             {/* legend */}
             <div className="mt-6 grid grid-cols-2 gap-x-12 gap-y-2 sm:grid-cols-3">
@@ -624,14 +550,14 @@ export default function MacroChartPage() {
                     return (
                         <div
                             key={s.key}
-                            className={`flex items-start gap-2.5 transition-opacity duration-500 ${on ? 'opacity-100' : 'opacity-25'}`}
+                            className={`flex items-start gap-2.5 transition-opacity duration-500 ${on ? 'opacity-100' : 'opacity-45'}`}
                         >
                             <span
                                 className="mt-[5px] h-0.5 w-4 shrink-0 rounded-full"
                                 style={{ background: s.color }}
                             />
                             <div>
-                                <p className="font-sans text-[0.6rem] uppercase tracking-[0.16em] text-platinum">
+                                <p className="font-sans text-[0.6rem] uppercase tracking-[0.16em] text-marble-dim">
                                     {s.shortLabel} — {s.label}
                                 </p>
                                 <p className="font-sans text-[0.56rem] leading-relaxed tracking-[0.03em] text-platinum">

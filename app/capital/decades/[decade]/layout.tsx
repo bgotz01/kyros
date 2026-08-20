@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { DECADE_SLUGS } from '@/lib/capitalData';
+import { DECADE_SLUGS } from '@/lib/capital/decades';
 
 // ─── layout ───────────────────────────────────────────────────────────────────
 

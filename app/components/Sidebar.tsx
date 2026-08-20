@@ -6,13 +6,23 @@ import { usePathname } from 'next/navigation';
 
 // ─── nav structure ────────────────────────────────────────────────────────────
 
-type NavItem = {
+type NavLeaf = {
     href: string;
     label: string;
     icon: string;
     exact?: boolean;
-    children?: Omit<NavItem, 'children'>[];
 };
+
+/** A non-clickable heading that groups the links beneath it. */
+type NavSection = { section: string };
+
+type NavChild = NavLeaf | NavSection;
+
+type NavItem = NavLeaf & { children?: NavChild[] };
+
+function isSection(child: NavChild): child is NavSection {
+    return 'section' in child;
+}
 
 const LINKS: NavItem[] = [
     { href: '/ai-impact', label: 'AI Impact', icon: 'I³' },
@@ -23,10 +33,14 @@ const LINKS: NavItem[] = [
         icon: '₡',
         exact: true,
         children: [
+            { href: '/capital/century', label: 'Century', icon: '◈' },
             { href: '/capital/decades', label: 'Decades', icon: '◎' },
+            { href: '/capital/inversions', label: 'Inversions', icon: 'I¹' },
+            { href: '/capital/incentives', label: 'Incentives', icon: 'I²' },
+            { section: 'Data Tools' },
             { href: '/capital/chart', label: 'Macro Chart', icon: '∿' },
+            { href: '/capital/markets', label: 'Markets', icon: '⌇' },
             { href: '/capital/GDP', label: 'GDP', icon: '₲' },
-            { href: '/capital/GDP/annual', label: 'GDP Annual', icon: '∑' },
         ],
     },
 ];
@@ -113,6 +127,20 @@ export default function Sidebar() {
                             {item.children && parentOpen && (
                                 <div className={`flex flex-col gap-px transition-[opacity] duration-300 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
                                     {item.children.map((child) => {
+                                        if (isSection(child)) {
+                                            return (
+                                                <div key={child.section} className="relative flex items-stretch pl-3.5">
+                                                    {/* vertical connector line */}
+                                                    <span aria-hidden className="absolute left-[1.375rem] top-0 bottom-0 w-px bg-stone-line" />
+                                                    <span
+                                                        className={`px-4 pb-1.5 pt-4 font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim transition-opacity duration-500 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                                                    >
+                                                        {child.section}
+                                                    </span>
+                                                </div>
+                                            );
+                                        }
+
                                         const childActive = isActive(child.href, child.exact);
                                         return (
                                             <div key={child.href} className="relative flex items-stretch pl-3.5">
@@ -145,7 +173,7 @@ function NavLink({
     sidebarOpen,
     indent = false,
 }: {
-    item: Omit<NavItem, 'children'>;
+    item: NavLeaf;
     active: boolean;
     sidebarOpen: boolean;
     indent?: boolean;

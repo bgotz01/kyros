@@ -16,30 +16,7 @@ export default function CapitalPage() {
                 </p>
             </div>
 
-            {/* ── inflection overview ──────────────────────────────────────────── */}
-            <div className="mb-16">
-                <p className="mb-6 font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
-                    Inflection Points
-                </p>
-                <div className="flex flex-col gap-2">
-                    {DECADE_OVERVIEW.map(({ decade, label }) => (
-                        <div key={decade} className="flex items-baseline gap-4">
-                            <span className="w-12 font-mono text-[0.72rem] tracking-[0.14em] text-bronze">
-                                {decade}
-                            </span>
-                            <span className="font-mono text-[0.72rem] tracking-[0.1em] text-stone-line-strong">
-                                →
-                            </span>
-                            <span className="font-sans text-[0.82rem] leading-relaxed tracking-[0.06em] text-platinum">
-                                {label}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
 
-            {/* ── paradigm table ──────────────────────────────────────────────── */}
-            <ParadigmTable />
 
             {/* ── I³ framework ────────────────────────────────────────────────── */}
             <div className="mt-24 overflow-x-auto">
@@ -120,6 +97,11 @@ export default function CapitalPage() {
                     </tbody>
                 </table>
             </div>
+
+
+
+
+
         </div>
     );
 }

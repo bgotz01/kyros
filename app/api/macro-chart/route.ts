@@ -3,7 +3,7 @@ import { macroDb } from '@/lib/macroDb';
 // ─── GET /api/macro-chart ─────────────────────────────────────────────────────
 // Returns monthly time-series for six macro indicators.
 //
-// Nominal:  ten_y (US/TNX-Monthly), cpi, ey5
+// Nominal:  ten_y (US/TNX-Monthly), cpi, m2, ey5
 // Relative: real10, eyp5, rey5
 
 export async function GET() {
@@ -12,6 +12,7 @@ export async function GET() {
             month: string;
             ten_y: number | null;
             cpi: number | null;
+            m2: number | null;
             ey5: number | null;
             real10: number | null;
             eyp5: number | null;
@@ -35,6 +36,16 @@ export async function GET() {
                 FROM macro_time_series
                 WHERE asset_class = 'economic'
                   AND series_name  = 'CPI'
+                  AND column_name  = 'Value'
+                GROUP BY date_trunc('month', TO_DATE(date, 'YYYY-MM-DD'))
+            ),
+            m2 AS (
+                SELECT
+                    to_char(date_trunc('month', TO_DATE(date, 'YYYY-MM-DD')), 'YYYY-MM-DD') AS month,
+                    AVG(value) AS value
+                FROM macro_time_series
+                WHERE asset_class = 'economic'
+                  AND series_name  = 'M2-YoY'
                   AND column_name  = 'Value'
                 GROUP BY date_trunc('month', TO_DATE(date, 'YYYY-MM-DD'))
             ),
@@ -87,21 +98,23 @@ export async function GET() {
                 UNION SELECT month FROM rey5
             )
             SELECT
-                m.month,
+                mo.month,
                 t.value   AS ten_y,
                 c.value   AS cpi,
+                m.value   AS m2,
                 e.value   AS ey5,
                 r10.value AS real10,
                 ep.value  AS eyp5,
                 r5.value  AS rey5
-            FROM all_months m
-            LEFT JOIN ten_y  t   ON t.month   = m.month
-            LEFT JOIN cpi    c   ON c.month   = m.month
-            LEFT JOIN ey5    e   ON e.month   = m.month
-            LEFT JOIN real10 r10 ON r10.month = m.month
-            LEFT JOIN eyp5   ep  ON ep.month  = m.month
-            LEFT JOIN rey5   r5  ON r5.month  = m.month
-            ORDER BY m.month ASC
+            FROM all_months mo
+            LEFT JOIN ten_y  t   ON t.month   = mo.month
+            LEFT JOIN cpi    c   ON c.month   = mo.month
+            LEFT JOIN m2     m   ON m.month   = mo.month
+            LEFT JOIN ey5    e   ON e.month   = mo.month
+            LEFT JOIN real10 r10 ON r10.month = mo.month
+            LEFT JOIN eyp5   ep  ON ep.month  = mo.month
+            LEFT JOIN rey5   r5  ON r5.month  = mo.month
+            ORDER BY mo.month ASC
         `);
 
         return Response.json(rows);

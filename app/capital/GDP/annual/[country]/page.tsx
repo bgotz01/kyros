@@ -55,7 +55,7 @@ export default function CountryGDPPage() {
                     Country not found
                 </p>
                 <Link
-                    href="/capital/GDP/annual"
+                    href="/capital/GDP"
                     className="font-sans text-xs uppercase tracking-[0.2em] text-bronze transition-colors hover:text-bronze-bright"
                 >
                     ← Back to Rankings
@@ -74,7 +74,7 @@ export default function CountryGDPPage() {
                     {/* breadcrumb + country dropdown */}
                     <div className="flex items-baseline gap-3">
                         <Link
-                            href="/capital/GDP/annual"
+                            href="/capital/GDP"
                             className="font-sans text-[0.65rem] uppercase tracking-[0.2em] text-platinum-dim transition-colors duration-200 hover:text-marble"
                         >
                             GDP

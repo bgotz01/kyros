@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
-import { INVESTMENT_THEMES, DECADE_SLUGS, type InvestmentTheme } from '@/lib/capitalData';
-import { DECADE_PARADIGMS, type DecadeParadigm } from './paradigm';
+import { DECADE_SLUGS } from '@/lib/capital/decades';
+import { INVESTMENT_THEMES, type InvestmentTheme } from '@/lib/capital/themes';
+import { PARADIGMS } from '@/lib/capital/paradigms';
+import ParadigmShiftTable from '../../components/ParadigmShiftTable';
 
 // ─── static params ────────────────────────────────────────────────────────────
 
@@ -19,9 +21,9 @@ export default async function DecadePage({
     const data = INVESTMENT_THEMES.find((d) => d.decade === decade);
     if (!data) notFound();
 
-    const paradigmIndex = DECADE_PARADIGMS.findIndex((p) => p.decade === decade);
-    const current = DECADE_PARADIGMS[paradigmIndex];
-    const previous = paradigmIndex > 0 ? DECADE_PARADIGMS[paradigmIndex - 1] : null;
+    const paradigmIndex = PARADIGMS.findIndex((p) => p.decade === decade);
+    const current = PARADIGMS[paradigmIndex];
+    const previous = paradigmIndex > 0 ? PARADIGMS[paradigmIndex - 1] : null;
 
     return (
         <div className="px-8 py-8">
@@ -37,7 +39,12 @@ export default async function DecadePage({
             {/* ── I¹ Inversion ────────────────────────────────────────────────── */}
             <Section label="I¹" title="Inversion">
                 {current && previous ? (
-                    <ParadigmShiftTable previous={previous} current={current} />
+                    <ParadigmShiftTable
+                        previous={previous}
+                        current={current}
+                        markUnchanged
+                        layout="centered"
+                    />
                 ) : (
                     <p className="font-sans text-[0.65rem] uppercase tracking-[0.22em] text-platinum-dim">
                         No prior paradigm to compare.
@@ -79,73 +86,6 @@ function Section({
                 <span aria-hidden className="h-px flex-1 bg-stone-line" />
             </div>
             {children}
-        </div>
-    );
-}
-
-// ─── paradigm shift table ─────────────────────────────────────────────────────
-
-function ParadigmShiftTable({
-    previous,
-    current,
-}: {
-    previous: DecadeParadigm;
-    current: DecadeParadigm;
-}) {
-    const rows = [
-        { dimension: 'Asset Class', prev: previous.assetClass, next: current.assetClass },
-        { dimension: 'Geography', prev: previous.geography, next: current.geography },
-        { dimension: 'Sector / Theme', prev: previous.sectorTheme, next: current.sectorTheme },
-    ];
-
-    return (
-        <div className="flex justify-center">
-            <table className="border-collapse" style={{ tableLayout: 'fixed', width: '480px' }}>
-                <colgroup>
-                    <col style={{ width: '140px' }} />
-                    <col style={{ width: '160px' }} />
-                    <col style={{ width: '24px' }} />
-                    <col style={{ width: '156px' }} />
-                </colgroup>
-                <thead>
-                    <tr className="border-b-2 border-stone-line-strong">
-                        <th className="pb-3 pr-4 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
-                            Dimension
-                        </th>
-                        <th className="pb-3 pr-4 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
-                            Previous
-                        </th>
-                        <th className="pb-3 pr-2 text-center font-mono text-[0.7rem] text-platinum-dim"></th>
-                        <th className="pb-3 text-left font-sans text-[0.7rem] uppercase tracking-[0.2em] text-platinum-dim">
-                            New
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-stone-line">
-                    {rows.map(({ dimension, prev, next }) => {
-                        const inverted = prev !== next;
-                        return (
-                            <tr
-                                key={dimension}
-                                className="group transition-colors duration-300 ease-mechanical hover:bg-charcoal"
-                            >
-                                <td className="py-4 pr-4 align-top font-serif text-sm font-light tracking-[0.04em] text-marble">
-                                    {dimension}
-                                </td>
-                                <td className="py-4 pr-4 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
-                                    {prev}
-                                </td>
-                                <td className="py-4 pr-2 text-center align-top font-mono text-[0.72rem] text-platinum-dim">
-                                    {inverted ? '→' : '='}
-                                </td>
-                                <td className={`py-4 align-top font-sans text-[0.72rem] leading-relaxed tracking-[0.06em] ${inverted ? 'font-medium text-bronze-bright' : 'text-platinum-dim'}`}>
-                                    {next}
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
         </div>
     );
 }
