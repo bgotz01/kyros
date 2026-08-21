@@ -13,7 +13,8 @@ import {
 } from '../chart/series';
 import { logScale, linearScale, formatCompact } from './scale';
 export interface SeriesPoint {
-    month: string;
+    /** Start of the bucket this point closes, 'YYYY-MM-DD'. */
+    date: string;
     value: number | null;
 }
 
@@ -74,7 +75,7 @@ export default function SeriesChart({
     const crossesZero = scale.lo < 0 && scale.hi > 0;
     const baseline = crossesZero ? yOf(0) : PAD.top + plotH;
 
-    const { labelEvery, ruleEvery } = axisIntervals(data.map(r => r.month));
+    const { labelEvery, ruleEvery } = axisIntervals(data.map(r => r.date));
     const hx = hovered != null ? xOf(hovered) : null;
     const hoveredValue = hovered != null ? data[hovered]?.value ?? null : null;
 
@@ -103,7 +104,7 @@ export default function SeriesChart({
             </defs>
 
             <ChartFrame
-                months={data.map(r => r.month)}
+                dates={data.map(r => r.date)}
                 yTicks={scale.ticks}
                 xOf={xOf}
                 yOf={yOf}

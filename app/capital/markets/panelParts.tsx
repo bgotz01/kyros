@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import type { Resolution } from '@/lib/capital/marketIndexes';
+
 // ─── Shared panel furniture ───────────────────────────────────────────────────
 // The pieces the equity and currency panels both need: plot sizing, the hover
 // readout, the statistics cells, and the message that stands in the reserved
@@ -26,8 +28,11 @@ export function usePlotSize() {
     return { ref, dims };
 }
 
-export function monthLabel(month: string) {
-    return new Date(month + 'T00:00:00Z').toLocaleString('default', {
+/** A bucket, named at the precision it actually carries: a month on a monthly
+ *  series, a day on anything finer. */
+export function bucketLabel(date: string, resolution: Resolution = 'monthly') {
+    return new Date(date + 'T00:00:00Z').toLocaleString('default', {
+        ...(resolution === 'monthly' ? {} : { day: 'numeric' }),
         month: 'short',
         year: 'numeric',
         timeZone: 'UTC',
@@ -64,9 +69,10 @@ export function StateOverlay({
 /** The hover panel. `value` arrives already formatted — each panel quotes its
  *  subject in its own units. */
 export function Readout({
-    month, name, value, color, note,
+    date, resolution, name, value, color, note,
 }: {
-    month: string;
+    date: string;
+    resolution: Resolution;
     name: string;
     value: string;
     color: string;
@@ -75,7 +81,7 @@ export function Readout({
     return (
         <div className="border border-stone-line-strong bg-obsidian px-4 py-3">
             <p className="mb-2.5 font-mono text-[0.6rem] tracking-[0.18em] text-bronze">
-                {monthLabel(month)}
+                {bucketLabel(date, resolution)}
             </p>
             <div className="flex items-center gap-2.5">
                 <span
@@ -120,17 +126,19 @@ export function Stat({
     );
 }
 
-/** Months inside the window with no reading behind them. The plot breaks the
+/** Buckets inside the window with no reading behind them. The plot breaks the
  *  line at each one; this says how much of the window that accounts for. */
-export function GapNote({ missing, total, source }: {
+export function GapNote({ missing, total, source, resolution }: {
     missing: number;
     total: number;
     source: string;
+    resolution: Resolution;
 }) {
     if (missing === 0) return null;
+    const unit = resolution === 'monthly' ? 'months' : resolution === 'weekly' ? 'weeks' : 'days';
     return (
         <p className="border-t border-stone-line px-4 py-3 font-sans text-[0.55rem] uppercase leading-relaxed tracking-[0.16em] text-[#C0563F]">
-            {source} has no reading for {missing} of these {total} months — the line breaks where it is missing
+            {source} has no reading for {missing} of these {total} {unit} — the line breaks where it is missing
         </p>
     );
 }

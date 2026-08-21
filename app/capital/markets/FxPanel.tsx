@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import SeriesChart, { type SeriesPoint } from './SeriesChart';
-import { GapNote, Readout, Stat, StateOverlay, monthLabel, usePlotSize } from './panelParts';
-import { filterPeriod, type Period } from '@/lib/capital/marketIndexes';
+import { GapNote, Readout, Stat, StateOverlay, bucketLabel, usePlotSize } from './panelParts';
+import { periodParams, resolutionFor, type Period, type Resolution } from '@/lib/capital/marketIndexes';
 import { risingFavours, type FxMetricDef, type FxPair } from '@/lib/capital/fxPairs';
 
 // ─── Currency pair panel ──────────────────────────────────────────────────────
@@ -21,9 +21,13 @@ interface Props {
     showGrid: boolean;
 }
 
+/** Stable empty reference — a fresh [] each render would re-run the memos. */
+const EMPTY: SeriesPoint[] = [];
+
 interface Result {
-    /** `<pair>|<metric>` these rows were fetched for. */
+    /** Identifies the request these rows answer. */
     key: string;
+    resolution: Resolution;
     pair: FxPair;
     metric: FxMetricDef;
     rows: SeriesPoint[];
@@ -35,42 +39,52 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
     const [hovered, setHovered] = useState<number | null>(null);
     const { ref, dims } = usePlotSize();
 
-    const requestKey = `${pair.series}|${metric.key}`;
+    // The window and its resolution are part of the request now, so changing
+    // period refetches at the finer sampling rather than slicing what is here.
+    const resolution = resolutionFor(period);
+    const requestKey = `${pair.series}|${metric.key}|${period.label}`;
 
     useEffect(() => {
         const controller = new AbortController();
-        const key = `${pair.series}|${metric.key}`;
+        const key = `${pair.series}|${metric.key}|${period.label}`;
+        const query =
+            `pair=${encodeURIComponent(pair.series)}&metric=${metric.key}&${periodParams(period)}`;
 
-        fetch(`/api/fx?pair=${encodeURIComponent(pair.series)}&metric=${metric.key}`, {
-            signal: controller.signal,
-        })
+        fetch(`/api/fx?${query}`, { signal: controller.signal })
             .then(r => r.json())
             .then((body) => {
                 if (!Array.isArray(body?.rows)) throw new Error(body?.error ?? 'Unexpected response');
-                setResult({ key, pair, metric, rows: body.rows, error: null });
+                setResult({
+                    key, pair, metric,
+                    resolution: body.resolution ?? 'monthly',
+                    rows: body.rows,
+                    error: null,
+                });
             })
             .catch((e) => {
                 if (e.name === 'AbortError') return;
                 setResult({
                     key, pair, metric,
+                    resolution,
                     rows: [],
                     error: e.message ?? 'Failed to load currency data.',
                 });
             });
 
         return () => controller.abort();
-    }, [pair, metric]);
+    }, [pair, metric, period, resolution]);
 
     const loading = result?.key !== requestKey;
     const error = !loading ? result?.error ?? null : null;
 
     const shownPair = result?.pair ?? pair;
     const shownMetric = result?.metric ?? metric;
+    const shownResolution = result?.resolution ?? resolution;
 
-    const data = useMemo(() => filterPeriod(result?.rows ?? [], period), [result, period]);
+    const data = result?.rows ?? EMPTY;
 
     const stats = useMemo(() => {
-        const seen = data.filter(r => r.value != null) as { month: string; value: number }[];
+        const seen = data.filter(r => r.value != null) as { date: string; value: number }[];
         if (seen.length === 0) return null;
 
         const first = seen[0];
@@ -122,7 +136,8 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
                 {hoveredPoint && !loading && (
                     <div className="pointer-events-none absolute right-5 top-4">
                         <Readout
-                            month={hoveredPoint.month}
+                            date={hoveredPoint.date}
+                            resolution={shownResolution}
                             name={shownPair.shortLabel}
                             value={format(hoveredPoint.value, shownPair, shownMetric)}
                             color={shownPair.color}
@@ -134,7 +149,7 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
 
             <div className="grid grid-cols-2 gap-y-4 border-t border-stone-line-strong px-4 py-4 sm:grid-cols-4">
                 <Stat
-                    label={stats ? `Latest · ${monthLabel(stats.last.month)}` : 'Latest'}
+                    label={stats ? `Latest · ${bucketLabel(stats.last.date, shownResolution)}` : 'Latest'}
                     value={stats ? format(stats.last.value, shownPair, shownMetric) : '—'}
                 />
                 {/* Named by which currency the extreme belongs to — a high in
@@ -142,7 +157,7 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
                 <Stat
                     label={
                         stats
-                            ? `${rate ? `${shownPair.base} strongest` : 'High'} · ${stats.high.month.slice(0, 4)}`
+                            ? `${rate ? `${shownPair.base} strongest` : 'High'} · ${stats.high.date.slice(0, 4)}`
                             : 'High'
                     }
                     value={stats ? format(stats.high.value, shownPair, shownMetric) : '—'}
@@ -150,7 +165,7 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
                 <Stat
                     label={
                         stats
-                            ? `${rate ? `${shownPair.base} weakest` : 'Low'} · ${stats.low.month.slice(0, 4)}`
+                            ? `${rate ? `${shownPair.base} weakest` : 'Low'} · ${stats.low.date.slice(0, 4)}`
                             : 'Low'
                     }
                     value={stats ? format(stats.low.value, shownPair, shownMetric) : '—'}
@@ -158,7 +173,7 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
                 <Stat
                     label={
                         stats?.change != null
-                            ? `${risingFavours(shownPair)} since ${stats.first.month.slice(0, 4)}`
+                            ? `${risingFavours(shownPair)} since ${stats.first.date.slice(0, 4)}`
                             : 'Readings'
                     }
                     value={
@@ -172,7 +187,12 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
             </div>
 
             {!loading && (
-                <GapNote missing={missing} total={data.length} source={shownPair.shortLabel} />
+                <GapNote
+                    missing={missing}
+                    total={data.length}
+                    source={shownPair.shortLabel}
+                    resolution={shownResolution}
+                />
             )}
         </>
     );

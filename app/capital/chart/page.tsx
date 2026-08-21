@@ -115,7 +115,7 @@ function LineChart({ data, active, width, height, hovered, onHover, showGrid }: 
             )}
 
             <ChartFrame
-                months={data.map(r => r.month)}
+                dates={data.map(r => r.month)}
                 yTicks={yTicks}
                 xOf={xOf}
                 yOf={yOf}

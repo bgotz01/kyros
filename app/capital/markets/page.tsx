@@ -18,7 +18,12 @@ import FxPanel from './FxPanel';
 import {
     INDEXES,
     METRICS,
-    REGIONS,
+    resolutionFor,
+    type Resolution,
+    INDEX_GROUPS,
+    isConvertible,
+    isLevel,
+    metricsFor,
     ALL_PERIOD,
     DEFAULT_INDEX,
     findIndex,
@@ -48,8 +53,8 @@ const INDEX_OPTIONS: PickerOption[] = INDEXES.map(i => ({
     key: i.series,
     label: i.label,
     color: i.color,
-    group: i.region,
-    note: i.country,
+    group: i.group,
+    note: i.origin,
     listNote: String(i.from),
 }));
 
@@ -68,30 +73,31 @@ export default function MarketsPage() {
     const [metric, setMetric] = useState<MetricDef>(METRICS[0]);
     const [period, setPeriod] = useState<Period>(ALL_PERIOD);
     const [currency, setCurrency] = useState<Currency>('local');
-    const [log, setLog] = useState(true);
+    const [log, setLog] = useState(false);
     const [showGrid, setShowGrid] = useState(true);
 
     // currencies
     const [pair, setPair] = useState<FxPair>(findPair(DEFAULT_PAIR) ?? FX_PAIRS[0]);
     const [fxMetric, setFxMetric] = useState<FxMetricDef>(FX_METRICS[0]);
     const [fxPeriod, setFxPeriod] = useState<Period>(ALL_PERIOD);
-    // null defers to the pair's own default; picking a pair clears it again.
-    const [fxLog, setFxLog] = useState<boolean | null>(null);
+    const [fxLog, setFxLog] = useState(false);
     const [fxShowGrid, setFxShowGrid] = useState(true);
 
     const periods = useMemo(() => periodsFor(index.from), [index.from]);
+    // Gold and oil carry a level and returns but no volatility columns.
+    const metrics = useMemo(() => metricsFor(index), [index]);
 
     // What it would take to restate this index in dollars, and whether the
     // metric on screen can carry the conversion at all.
     const conversion = usdConversion(index.code);
-    const convertible = conversion.kind === 'available' && metric.convertible;
+    const convertible = conversion.kind === 'available' && isConvertible(metric);
     // The preference is kept even where it cannot apply, so returning to a
     // convertible index brings the dollar view back with it.
     const activeCurrency: Currency = convertible && currency === 'usd' ? 'usd' : 'local';
     // A percentage that crosses zero has no logarithm.
-    const canLog = metric.kind === 'level';
+    const canLog = isLevel(metric);
     const fxCanLog = fxMetric.kind === 'rate';
-    const fxLogOn = fxCanLog && (fxLog ?? pair.logByDefault);
+    const fxLogOn = fxCanLog && fxLog;
     // In dollars the series cannot start before the rate does.
     const startYear = activeCurrency === 'usd' && conversion.kind === 'available'
         ? Math.max(index.from, conversion.pair.from)
@@ -109,6 +115,9 @@ export default function MarketsPage() {
         if (!next) return;
         setIndex(next);
         retune(next.from, period, setPeriod);
+        // A contract with no volatility columns cannot stay on a volatility
+        // metric; fall back to the level.
+        if (!metricsFor(next).some(m => m.key === metric.key)) setMetric(METRICS[0]);
     }
 
     function selectPair(key: string) {
@@ -116,7 +125,6 @@ export default function MarketsPage() {
         if (!next) return;
         setPair(next);
         retune(next.from, fxPeriod, setFxPeriod);
-        setFxLog(null);
     }
 
     return (
@@ -133,7 +141,7 @@ export default function MarketsPage() {
                     </span>
                 </div>
                 <p className="font-sans text-[0.6rem] uppercase tracking-[0.24em] text-platinum">
-                    Monthly · {INDEXES.length} indexes · {FX_PAIRS.length} pairs · 1900–2026 · Yahoo Finance
+                    Daily source · {INDEXES.length} indexes · {FX_PAIRS.length} pairs · 1900–2026 · Yahoo Finance
                 </p>
             </div>
 
@@ -148,7 +156,7 @@ export default function MarketsPage() {
                     </span>
                     <SeriesPicker
                         options={INDEX_OPTIONS}
-                        groups={REGIONS}
+                        groups={INDEX_GROUPS}
                         value={index.series}
                         onChange={selectIndex}
                         ariaLabel="Stock market index"
@@ -177,7 +185,7 @@ export default function MarketsPage() {
                             No {conversion.code} rate in the database — {index.label} stays in {index.currency}
                         </MissingNote>
                     )}
-                    {conversion.kind === 'available' && !metric.convertible && (
+                    {conversion.kind === 'available' && !isConvertible(metric) && (
                         <p className="max-w-[24rem] text-right font-sans text-[0.55rem] uppercase leading-relaxed tracking-[0.16em] text-platinum-dim">
                             {metric.label} is measured from daily local returns — not convertible
                         </p>
@@ -188,8 +196,8 @@ export default function MarketsPage() {
             <div className="w-full border border-stone-line-strong bg-charcoal">
                 <PanelHeader
                     subject={index.shortLabel}
-                    range={period.kind === 'all' ? `From ${startYear}` : period.label}
-                    metrics={METRICS}
+                    range={`${period.kind === 'all' ? `From ${startYear}` : period.label}  ·  ${resolutionFor(period)}`}
+                    metrics={metrics}
                     activeKey={metric.key}
                     onSelect={key => setMetric(findMetric(key) ?? METRICS[0])}
                 />
@@ -204,8 +212,7 @@ export default function MarketsPage() {
             </div>
 
             <p className="mt-6 max-w-[46rem] font-sans text-[0.58rem] leading-relaxed tracking-[0.03em] text-platinum">
-                {metric.description}. The source series is daily; each point here is the
-                last trading day of its month, so the line is monthly.{' '}
+                {metric.description}. {sampling(resolutionFor(period))}{' '}
                 {canLog && log && 'Drawn on a logarithmic axis, where equal vertical distance is equal percentage move. '}
                 {activeCurrency === 'usd' && conversion.kind === 'available'
                     ? `Restated in dollars at each month's own ${conversion.pair.shortLabel} rate, so the dollar series begins in ${conversion.pair.from} where that rate begins. `
@@ -238,7 +245,7 @@ export default function MarketsPage() {
                     <div className="flex items-center gap-1">
                         <LogToggle
                             on={fxLogOn}
-                            onToggle={() => setFxLog(!fxLogOn)}
+                            onToggle={() => setFxLog(l => !l)}
                             disabled={!fxCanLog}
                             title={fxCanLog ? undefined : `${fxMetric.label} is a percentage — a log axis cannot carry it`}
                         />
@@ -253,7 +260,7 @@ export default function MarketsPage() {
             <div className="w-full border border-stone-line-strong bg-charcoal">
                 <PanelHeader
                     subject={pair.shortLabel}
-                    range={fxPeriod.kind === 'all' ? `From ${pair.from}` : fxPeriod.label}
+                    range={`${fxPeriod.kind === 'all' ? `From ${pair.from}` : fxPeriod.label}  ·  ${resolutionFor(fxPeriod)}`}
                     metrics={FX_METRICS}
                     activeKey={fxMetric.key}
                     onSelect={key => setFxMetric(findFxMetric(key) ?? FX_METRICS[0])}
@@ -271,17 +278,25 @@ export default function MarketsPage() {
                 {fxMetric.description}. The rate is {pair.quote} per {pair.base}, so the line
                 rises as {pair.base} strengthens and falls as it weakens — {pair.description}.{' '}
                 {fxLogOn && 'Drawn on a logarithmic axis, where equal vertical distance is equal percentage move. '}
-                Sampled monthly from the daily series, the same way the indexes above are.
+                {sampling(resolutionFor(fxPeriod))}
             </p>
         </div>
     );
+}
+
+/** How the daily source is sampled for the window on screen. A century only
+ *  reads as monthly closes; a decade earns a finer grain. */
+function sampling(resolution: Resolution) {
+    if (resolution === 'daily') return 'The source series is daily, and every close in the window is plotted.';
+    const bucket = resolution === 'weekly' ? 'week' : 'month';
+    return `The source series is daily; each point here is the last trading day of its ${bucket}.`;
 }
 
 /** Why the currency toggle is inert, when it is. */
 function currencyHint(conversion: ReturnType<typeof usdConversion>, metric: MetricDef) {
     if (conversion.kind === 'native') return 'Already quoted in dollars';
     if (conversion.kind === 'missing') return `No ${conversion.code} rate in the database`;
-    if (!metric.convertible) {
+    if (!isConvertible(metric)) {
         return `${metric.label} is measured from daily local-currency returns and cannot be restated in dollars`;
     }
     return `Convert at each month's ${conversion.pair.shortLabel} rate`;

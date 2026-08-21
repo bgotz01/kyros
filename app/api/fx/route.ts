@@ -1,83 +1,104 @@
 import { macroDb } from '@/lib/macroDb';
 import { findPair, findFxMetric, DEFAULT_PAIR } from '@/lib/capital/fxPairs';
+import type { Resolution, Window } from '@/lib/capital/marketIndexes';
+import { isResolution, parseWindow, seriesQuery } from '@/lib/capital/seriesQuery';
 
-// ─── GET /api/fx?pair=EURUSD&metric=rate ──────────────────────────────────────
-// Monthly series for one currency pair, sampled the same way the equity route
-// samples an index: the last reading recorded in each month.
+// ─── GET /api/fx?pair=EURUSD&metric=rate&resolution=…&from=&to= ───────────────
+// One currency pair, bucketed and windowed the same way the index route does
+// it: each bucket carries its last reading.
 //
-// `yoy` joins each month to the same month a year earlier — on the date rather
-// than by counting rows back, so a gap in the series cannot silently shift the
-// comparison onto the wrong month.
+// `yoy` compares each bucket to the one a year earlier, matched on the calendar
+// date rather than by counting buckets back, so a hole in the series cannot
+// silently shift the comparison onto the wrong period.
 //
-// Response: { pair, metric, rows: [{ month, value }] }
+// Response: { pair, metric, resolution, rows: [{ date, value }] }
 
-function query(metric: 'rate' | 'yoy') {
-    const value = metric === 'rate'
-        ? 'now.value'
-        : `CASE WHEN prior.value IS NULL OR prior.value = 0
-                THEN NULL
-                ELSE (now.value / prior.value - 1) * 100
-           END`;
-
-    return `
-        WITH present AS (
-            SELECT DISTINCT ON (date_trunc('month', TO_DATE(date, 'YYYY-MM-DD')))
-                date_trunc('month', TO_DATE(date, 'YYYY-MM-DD')) AS month,
-                value
-            FROM macro_time_series
-            WHERE asset_class = 'fx'
-              AND series_name = $1
-              AND column_name = 'Value'
-              AND value IS NOT NULL
-            ORDER BY
-                date_trunc('month', TO_DATE(date, 'YYYY-MM-DD')) ASC,
-                TO_DATE(date, 'YYYY-MM-DD') DESC
-        ),
-        -- Every month between the first reading and the last. Several of these
-        -- series have holes — USDJPY has no 2001-2006 at all — and a missing
-        -- month has to stay in the series as a null. Dropping it would let the
-        -- plot, which spaces points evenly, compress the gap out of sight.
-        monthly AS (
-            SELECT s.month, p.value
-            FROM (
-                SELECT generate_series(min(month), max(month), INTERVAL '1 month') AS month
-                FROM present
-            ) s
-            LEFT JOIN present p ON p.month = s.month
-        )
-        SELECT
-            to_char(now.month, 'YYYY-MM-DD') AS month,
-            ${value} AS value
-        FROM monthly now
-        LEFT JOIN monthly prior ON prior.month = now.month - INTERVAL '1 year'
-        ORDER BY now.month ASC
-    `;
-}
-
-type Row = { month: string; value: number | string | null };
+type Row = { date: string; value: number | string | null };
+type Point = { date: string; value: number | null };
 
 export async function GET(request: Request) {
     const params = new URL(request.url).searchParams;
 
-    // Both are checked against the catalogue before they reach SQL.
+    // Each is checked against the catalogue before reaching SQL.
     const pair = findPair(params.get('pair') ?? DEFAULT_PAIR);
     const metric = findFxMetric(params.get('metric') ?? 'rate');
+    const resolutionParam = params.get('resolution') ?? 'monthly';
+    const window = parseWindow(params);
 
     if (!pair) return Response.json({ error: 'Unknown pair' }, { status: 400 });
     if (!metric) return Response.json({ error: 'Unknown metric' }, { status: 400 });
+    if (!isResolution(resolutionParam)) {
+        return Response.json({ error: 'Unknown resolution' }, { status: 400 });
+    }
+    if (!window) return Response.json({ error: 'Bad window' }, { status: 400 });
+
+    const resolution: Resolution = resolutionParam;
 
     try {
-        const { rows } = await macroDb.query<Row>(query(metric.key), [pair.series]);
+        // A year-over-year change needs the year before the window to measure
+        // against, so the rate is fetched whole and windowed at the end.
+        const fetchWindow: Window = metric.key === 'yoy' ? { kind: 'all' } : window;
+        const q = seriesQuery('fx', pair.series, 'Value', resolution, fetchWindow);
+        const { rows } = await macroDb.query<Row>(q.text, q.params);
+
+        const rates: Point[] = rows.map(r => ({ date: r.date, value: num(r.value) }));
+        const out = metric.key === 'yoy' ? applyWindow(yearOverYear(rates), window) : rates;
 
         return Response.json({
             pair: pair.series,
             metric: metric.key,
-            rows: rows.map(r => ({ month: r.month, value: num(r.value) })),
+            resolution,
+            rows: out,
         });
     } catch (err) {
         console.error('[api/fx]', err);
         return Response.json({ error: 'Failed to load currency data' }, { status: 500 });
     }
+}
+
+/** Change against the same calendar date a year earlier. At a resolution finer
+ *  than monthly that exact date may not be a bucket, so a short search around
+ *  it finds the nearest one that is — bounded, so a real hole in the series
+ *  comes back empty rather than being measured across. */
+function yearOverYear(points: Point[]): Point[] {
+    const value = new Map(points.map(p => [p.date, p.value]));
+
+    const out = points.map(({ date, value: now }) => {
+        const target = new Date(date + 'T00:00:00Z');
+        target.setUTCFullYear(target.getUTCFullYear() - 1);
+
+        let prior: number | null = null;
+        search:
+        for (let slip = 0; slip <= 7; slip++) {
+            for (const dir of slip === 0 ? [0] : [-1, 1]) {
+                const probe = new Date(target);
+                probe.setUTCDate(probe.getUTCDate() + dir * slip);
+                const hit = value.get(probe.toISOString().slice(0, 10));
+                if (hit != null) { prior = hit; break search; }
+            }
+        }
+
+        return {
+            date,
+            value: now != null && prior != null && prior !== 0 ? (now / prior - 1) * 100 : null,
+        };
+    });
+
+    // The first year has nothing behind it — a warm-up, not a hole.
+    let lo = 0;
+    while (lo < out.length && out[lo].value == null) lo++;
+    return out.slice(lo);
+}
+
+function applyWindow(points: Point[], window: Window): Point[] {
+    if (window.kind === 'all' || points.length === 0) return points;
+    if (window.kind === 'range') {
+        return points.filter(p => p.date >= window.from && p.date <= window.to);
+    }
+    const last = new Date(points[points.length - 1].date + 'T00:00:00Z');
+    last.setUTCFullYear(last.getUTCFullYear() - window.years);
+    const cutoff = last.toISOString().slice(0, 10);
+    return points.filter(p => p.date >= cutoff);
 }
 
 function num(v: number | string | null | undefined): number | null {

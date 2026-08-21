@@ -231,7 +231,7 @@ export default function PercentileChart({ active, range, metric, showGrid }: Pro
                     )}
 
                     <ChartFrame
-                        months={data.map(r => r.month)}
+                        dates={data.map(r => r.month)}
                         yTicks={ticks}
                         xOf={xOf}
                         yOf={yOf}

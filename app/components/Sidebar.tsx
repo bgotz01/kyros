@@ -35,8 +35,10 @@ const LINKS: NavItem[] = [
         children: [
             { href: '/capital/century', label: 'Century', icon: '◈' },
             { href: '/capital/decades', label: 'Decades', icon: '◎' },
+            { section: 'I³' },
             { href: '/capital/inversions', label: 'Inversions', icon: 'I¹' },
             { href: '/capital/incentives', label: 'Incentives', icon: 'I²' },
+            { href: '/capital/inflections', label: 'Inflections', icon: 'I³' },
             { section: 'Data Tools' },
             { href: '/capital/chart', label: 'Macro Chart', icon: '∿' },
             { href: '/capital/markets', label: 'Markets', icon: '⌇' },

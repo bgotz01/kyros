@@ -119,17 +119,22 @@ export function clamp(v: number, min: number, max: number) {
  *  every 10, which is the decade grid. A span running over a century wants a
  *  coarser `labelEvery` or the readouts collide. */
 export function xAxisMarks(
-    months: string[],
+    dates: string[],
     xOf: (i: number) => number,
     labelEvery = 5,
     ruleEvery = 10,
 ) {
     const labels: { i: number; label: string }[] = [];
     const decadeLines: number[] = [];
-    for (let i = 0; i < months.length; i++) {
-        const year = parseInt(months[i].slice(0, 4), 10);
-        const month = parseInt(months[i].slice(5, 7), 10);
-        if (month !== 1) continue;
+
+    // The first bucket of each year, whatever width the buckets are. Testing
+    // for January only works on a monthly series; on a weekly one it would
+    // mark every Monday in January, and on a daily one every weekday.
+    let seen = -1;
+    for (let i = 0; i < dates.length; i++) {
+        const year = parseInt(dates[i].slice(0, 4), 10);
+        if (year === seen) continue;
+        seen = year;
         if (year % ruleEvery === 0) decadeLines.push(xOf(i));
         if (year % labelEvery === 0) labels.push({ i, label: String(year) });
     }
@@ -138,15 +143,15 @@ export function xAxisMarks(
 
 /** Year spacing that keeps roughly 6-10 readouts on the axis whatever the
  *  span — 5 years over three decades, 20 over a century. */
-export function axisIntervals(months: string[]): { labelEvery: number; ruleEvery: number } {
-    if (months.length < 2) return { labelEvery: 1, ruleEvery: 10 };
+export function axisIntervals(dates: string[]): { labelEvery: number; ruleEvery: number } {
+    if (dates.length < 2) return { labelEvery: 1, ruleEvery: 10 };
     const span =
-        parseInt(months[months.length - 1].slice(0, 4), 10) - parseInt(months[0].slice(0, 4), 10);
+        parseInt(dates[dates.length - 1].slice(0, 4), 10) - parseInt(dates[0].slice(0, 4), 10);
 
     if (span > 90) return { labelEvery: 20, ruleEvery: 20 };
     if (span > 45) return { labelEvery: 10, ruleEvery: 10 };
     if (span > 18) return { labelEvery: 5, ruleEvery: 10 };
-    if (span > 8) return { labelEvery: 2, ruleEvery: 10 };
+    if (span > 11) return { labelEvery: 2, ruleEvery: 10 };
     return { labelEvery: 1, ruleEvery: 5 };
 }
 

@@ -9,8 +9,8 @@ import { PAD, xAxisMarks } from './series';
 // the grid — shaded bands, for instance — goes in as children.
 
 interface Props {
-    /** Month column, 'YYYY-MM-DD', one per plotted point. */
-    months: string[];
+    /** Bucket column, 'YYYY-MM-DD', one per plotted point. */
+    dates: string[];
     yTicks: number[];
     xOf: (i: number) => number;
     yOf: (v: number) => number;
@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function ChartFrame({
-    months,
+    dates,
     yTicks,
     xOf,
     yOf,
@@ -42,7 +42,7 @@ export default function ChartFrame({
     ruleEvery = 10,
     children,
 }: Props) {
-    const { labels: xLabels, decadeLines } = xAxisMarks(months, xOf, labelEvery, ruleEvery);
+    const { labels: xLabels, decadeLines } = xAxisMarks(dates, xOf, labelEvery, ruleEvery);
 
     return (
         <>

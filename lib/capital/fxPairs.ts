@@ -23,11 +23,6 @@ export interface FxPair {
     from: number;
     /** Decimals the rate is quoted to. */
     decimals: number;
-    /** Whether the rate wants a log axis to start with. A currency that loses
-     *  to inflation crosses orders of magnitude and is unreadable linearly;
-     *  a major moves within a band and would waste the scale. The toggle
-     *  overrides this either way. */
-    logByDefault: boolean;
     color: string;
 }
 
@@ -42,7 +37,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'The deepest pair in the market — the dollar against the euro bloc',
         from: 2003,
         decimals: 4,
-        logByDefault: false,
         color: '#6AAEE8',   // sky blue
     },
     {
@@ -55,7 +49,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'Sterling against the dollar, through the ERM exit and the referendum',
         from: 1990,
         decimals: 4,
-        logByDefault: false,
         color: '#4FC4A0',   // mint
     },
     {
@@ -68,7 +61,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'The carry trade — the yen weakens as the rate differential widens',
         from: 1996,
         decimals: 2,
-        logByDefault: false,
         color: '#E36A6A',   // vermillion
     },
     {
@@ -81,7 +73,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'A commodity currency — the loonie tracks the oil price',
         from: 2003,
         decimals: 4,
-        logByDefault: false,
         color: '#E0819B',   // dusty rose
     },
     {
@@ -94,7 +85,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'A currency losing to inflation — the lira falls by orders of magnitude',
         from: 2005,
         decimals: 3,
-        logByDefault: true,
         color: '#C9B47A',   // sand
     },
     {
@@ -107,7 +97,6 @@ export const FX_PAIRS: FxPair[] = [
         description: 'Serial devaluation — the peso goes from parity to four figures',
         from: 2001,
         decimals: 2,
-        logByDefault: true,
         color: '#9AA9E8',   // periwinkle
     },
 ];
@@ -142,13 +131,13 @@ export const FX_METRICS: FxMetricDef[] = [
     {
         key: 'rate',
         label: 'Rate',
-        description: 'The exchange rate itself, taken at each month end',
+        description: 'The exchange rate itself',
         kind: 'rate',
     },
     {
         key: 'yoy',
         label: 'Change YoY',
-        description: 'Change in the rate against the same month a year earlier',
+        description: 'Change in the rate against the same date a year earlier',
         kind: 'percent',
     },
 ];

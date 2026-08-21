@@ -5,21 +5,36 @@
 // Shared by /api/markets — which validates every request against it, so the
 // series name never reaches SQL unchecked — and the markets page.
 
-export type Region = 'North America' | 'Europe' | 'Asia' | 'Frontier';
+export type IndexGroup =
+    | 'North America'
+    | 'Europe'
+    | 'Asia'
+    | 'Frontier'
+    | 'Commodities';
 
 export interface MarketIndex {
     /** series_name in macro_time_series. */
     series: string;
+    /** Which database holds it. The equity indexes live in macro-framework;
+     *  the commodity contracts are only complete in stockdata, whose WTI
+     *  reaches back to 2000 where macro-framework's starts in 2006. */
+    source: 'macro' | 'stock';
+    /** asset_class in that table. */
+    assetClass: 'equities' | 'commodities';
     label: string;
     shortLabel: string;
-    country: string;
-    region: Region;
+    /** Country for an index, exchange for a futures contract. */
+    origin: string;
+    group: IndexGroup;
     /** Symbol the level is quoted in. */
     currency: string;
     /** ISO code of that currency, used to find a rate back to the dollar. */
     code: string;
     /** First year the database carries a reading. */
     from: number;
+    /** Whether the realised-volatility columns exist for it. The commodity
+     *  contracts carry a level and returns only. */
+    volatility: boolean;
     color: string;
 }
 
@@ -27,142 +42,209 @@ export const INDEXES: MarketIndex[] = [
     // North America
     {
         series: 'US/GSPC',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'S&P 500',
         shortLabel: 'GSPC',
-        country: 'United States',
-        region: 'North America',
+        origin: 'United States',
+        group: 'North America',
         currency: '$',
         code: 'USD',
         from: 1960,
+        volatility: true,
         color: '#E8B84B',   // amber
     },
     {
         series: 'US/IXIC',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Nasdaq Composite',
         shortLabel: 'IXIC',
-        country: 'United States',
-        region: 'North America',
+        origin: 'United States',
+        group: 'North America',
         currency: '$',
         code: 'USD',
         from: 1971,
+        volatility: true,
         color: '#6AAEE8',   // sky blue
     },
     {
         series: 'NDX',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Nasdaq 100',
         shortLabel: 'NDX',
-        country: 'United States',
-        region: 'North America',
+        origin: 'United States',
+        group: 'North America',
         currency: '$',
         code: 'USD',
         from: 1985,
+        volatility: true,
         color: '#C084E8',   // violet
     },
     {
         series: 'US/DJI',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Dow Jones Industrial Average',
         shortLabel: 'DJI',
-        country: 'United States',
-        region: 'North America',
+        origin: 'United States',
+        group: 'North America',
         currency: '$',
         code: 'USD',
         from: 1900,
+        volatility: true,
         color: '#F07A50',   // coral
     },
     {
         series: 'US/RUT',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Russell 2000',
         shortLabel: 'RUT',
-        country: 'United States',
-        region: 'North America',
+        origin: 'United States',
+        group: 'North America',
         currency: '$',
         code: 'USD',
         from: 1988,
+        volatility: true,
         color: '#8FD46A',   // lime
     },
     {
         series: 'GSPTSE',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'S&P/TSX Composite',
         shortLabel: 'TSX',
-        country: 'Canada',
-        region: 'North America',
+        origin: 'Canada',
+        group: 'North America',
         currency: 'C$',
         code: 'CAD',
         from: 1979,
+        volatility: true,
         color: '#E0819B',   // dusty rose
     },
     // Europe
     {
         series: 'FTSE',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'FTSE 100',
         shortLabel: 'FTSE',
-        country: 'United Kingdom',
-        region: 'Europe',
+        origin: 'United Kingdom',
+        group: 'Europe',
         currency: '£',
         code: 'GBP',
         from: 1984,
+        volatility: true,
         color: '#4FC4A0',   // mint
     },
     {
         series: 'GDAXI',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'DAX',
         shortLabel: 'DAX',
-        country: 'Germany',
-        region: 'Europe',
+        origin: 'Germany',
+        group: 'Europe',
         currency: '€',
         code: 'EUR',
         from: 1987,
+        volatility: true,
         color: '#D9A05B',   // ochre
     },
     // Asia
     {
         series: 'N225',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Nikkei 225',
         shortLabel: 'N225',
-        country: 'Japan',
-        region: 'Asia',
+        origin: 'Japan',
+        group: 'Asia',
         currency: '¥',
         code: 'JPY',
         from: 1965,
+        volatility: true,
         color: '#E36A6A',   // vermillion
     },
     {
         series: 'HSI',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'Hang Seng',
         shortLabel: 'HSI',
-        country: 'Hong Kong',
-        region: 'Asia',
+        origin: 'Hong Kong',
+        group: 'Asia',
         currency: 'HK$',
         code: 'HKD',
         from: 1986,
+        volatility: true,
         color: '#57C2C6',   // teal
     },
     // Frontier
     {
         series: 'Argentina/MERV',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'S&P MERVAL',
         shortLabel: 'MERV',
-        country: 'Argentina',
-        region: 'Frontier',
+        origin: 'Argentina',
+        group: 'Frontier',
         currency: 'AR$',
         code: 'ARS',
         from: 1997,
+        volatility: true,
         color: '#9AA9E8',   // periwinkle
     },
     {
         series: 'Turkey/XU100.IS',
+        source: 'macro',
+        assetClass: 'equities',
         label: 'BIST 100',
         shortLabel: 'XU100',
-        country: 'Turkey',
-        region: 'Frontier',
+        origin: 'Turkey',
+        group: 'Frontier',
         currency: '₺',
         code: 'TRY',
         from: 1997,
+        volatility: true,
         color: '#C9B47A',   // sand
+    },
+    // Commodities — dollar-denominated futures, out of the stockdata database.
+    {
+        series: 'GC=F',
+        source: 'stock',
+        assetClass: 'commodities',
+        group: 'Commodities',
+        label: 'Gold',
+        shortLabel: 'GC',
+        origin: 'COMEX',
+        currency: '$',
+        code: 'USD',
+        from: 1975,
+        volatility: false,
+        color: '#C9A227',   // old gold
+    },
+    {
+        series: 'CL=F',
+        source: 'stock',
+        assetClass: 'commodities',
+        group: 'Commodities',
+        label: 'WTI Crude Oil',
+        shortLabel: 'CL',
+        origin: 'NYMEX',
+        currency: '$',
+        code: 'USD',
+        from: 2000,
+        volatility: false,
+        color: '#7B9EA8',   // petrol
     },
 ];
 
-export const REGIONS: Region[] = ['North America', 'Europe', 'Asia', 'Frontier'];
+export const INDEX_GROUPS: IndexGroup[] = [
+    'North America', 'Europe', 'Asia', 'Frontier', 'Commodities',
+];
 
 export const DEFAULT_INDEX = 'US/GSPC';
 
@@ -182,7 +264,9 @@ export type MetricKey =
     | 'Value_Vol63'
     | 'Value_Vol252';
 
-export type MetricKind = 'level' | 'percent';
+/** What the metric measures, which decides how it is scaled, what unit it
+ *  carries, and whether it survives a change of currency. */
+export type MetricFamily = 'level' | 'return' | 'volatility';
 
 export interface MetricDef {
     key: MetricKey;
@@ -190,12 +274,21 @@ export interface MetricDef {
     /** Caption above the y axis. */
     unit: string;
     description: string;
-    kind: MetricKind;
-    /** Whether the metric can be restated in dollars. A level converts, and a
-     *  price return between two month ends can be recomputed from converted
-     *  levels. Realised volatility cannot: it is measured from daily returns
-     *  in the local currency, and monthly rates cannot restate it. */
-    convertible: boolean;
+    family: MetricFamily;
+}
+
+/** Only a level is quoted in the series' own currency, and only a level can
+ *  take a log axis. */
+export function isLevel(metric: MetricDef) {
+    return metric.family === 'level';
+}
+
+/** A level converts to dollars directly, and a price return between two month
+ *  ends can be recomputed from converted levels. Realised volatility cannot:
+ *  it is measured from daily returns in the local currency, and monthly rates
+ *  cannot restate it. */
+export function isConvertible(metric: MetricDef) {
+    return metric.family !== 'volatility';
 }
 
 export const METRICS: MetricDef[] = [
@@ -203,54 +296,55 @@ export const METRICS: MetricDef[] = [
         key: 'Value',
         label: 'Level',
         unit: 'INDEX',
-        description: 'Closing level of the index, taken at each month end',
-        kind: 'level',
-        convertible: true,
+        description: 'The closing level of the index',
+        family: 'level',
     },
     {
         key: 'Value_Return2Y',
         label: 'Return 2Y',
         unit: '%',
         description: 'Cumulative price return over the trailing two years',
-        kind: 'percent',
-        convertible: true,
+        family: 'return',
     },
     {
         key: 'Value_Return5Y',
         label: 'Return 5Y',
         unit: '%',
         description: 'Cumulative price return over the trailing five years',
-        kind: 'percent',
-        convertible: true,
+        family: 'return',
     },
     {
         key: 'Value_Return10Y',
         label: 'Return 10Y',
         unit: '%',
         description: 'Cumulative price return over the trailing ten years',
-        kind: 'percent',
-        convertible: true,
+        family: 'return',
     },
     {
         key: 'Value_Vol63',
         label: 'Vol 63D',
         unit: '% ANN.',
         description: 'Annualised realised volatility over the trailing quarter',
-        kind: 'percent',
-        convertible: false,
+        family: 'volatility',
     },
     {
         key: 'Value_Vol252',
         label: 'Vol 252D',
         unit: '% ANN.',
         description: 'Annualised realised volatility over the trailing year',
-        kind: 'percent',
-        convertible: false,
+        family: 'volatility',
     },
 ];
 
 export function findMetric(key: string): MetricDef | undefined {
     return METRICS.find(m => m.key === key);
+}
+
+/** The metrics a given series actually has columns for. */
+export function metricsFor(index: MarketIndex): MetricDef[] {
+    return index.volatility
+        ? METRICS
+        : METRICS.filter(m => m.family !== 'volatility');
 }
 
 // ─── period presets ───────────────────────────────────────────────────────────
@@ -293,15 +387,37 @@ export function periodsFor(from: number): Period[] {
     return [ALL_PERIOD, ...decadesFor(from), ...TRAILING_PERIODS];
 }
 
-export function filterPeriod<T extends { month: string }>(rows: T[], period: Period): T[] {
-    if (period.kind === 'all' || rows.length === 0) return rows;
+/** How finely a window is worth sampling. A century only reads as monthly
+ *  closes; a single decade drawn that way is 120 points and looks bare, so a
+ *  shorter window is sampled more finely. */
+export type Resolution = 'daily' | 'weekly' | 'monthly';
 
+export function resolutionFor(period: Period): Resolution {
+    if (period.kind === 'all') return 'monthly';
+    if (period.kind === 'decade') return 'weekly';
+    return period.years <= 5 ? 'daily' : 'weekly';
+}
+
+/** The window itself, as the API takes it. */
+export type Window =
+    | { kind: 'all' }
+    | { kind: 'range'; from: string; to: string }
+    /** Measured back from the series' last reading, not from today. */
+    | { kind: 'trailing'; years: number };
+
+export function windowFor(period: Period): Window {
+    if (period.kind === 'all') return { kind: 'all' };
     if (period.kind === 'decade') {
-        return rows.filter(r => r.month >= `${period.start}-01-01` && r.month <= `${period.end}-12-31`);
+        return { kind: 'range', from: `${period.start}-01-01`, to: `${period.end}-12-31` };
     }
+    return { kind: 'trailing', years: period.years };
+}
 
-    // Trailing windows are measured back from the last reading, not from today —
-    // a series that ends in April still shows a full window.
-    const lastYear = parseInt(rows[rows.length - 1].month.slice(0, 4), 10);
-    return rows.filter(r => r.month >= `${lastYear - period.years}-01-01`);
+/** The window and resolution as query parameters. */
+export function periodParams(period: Period): string {
+    const w = windowFor(period);
+    const parts = [`resolution=${resolutionFor(period)}`];
+    if (w.kind === 'range') parts.push(`from=${w.from}`, `to=${w.to}`);
+    if (w.kind === 'trailing') parts.push(`trailing=${w.years}`);
+    return parts.join('&');
 }

@@ -3,15 +3,18 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import SeriesChart, { type SeriesPoint } from './SeriesChart';
-import { GapNote, Readout, Stat, StateOverlay, monthLabel, usePlotSize } from './panelParts';
+import { GapNote, Readout, Stat, StateOverlay, bucketLabel, usePlotSize } from './panelParts';
 import type { Currency } from './Controls';
 import { formatFull } from './scale';
 import { usdConversion } from '@/lib/capital/fxPairs';
 import {
-    filterPeriod,
+    isLevel,
     type MarketIndex,
     type MetricDef,
     type Period,
+    type Resolution,
+    periodParams,
+    resolutionFor,
 } from '@/lib/capital/marketIndexes';
 
 // ─── Equity index panel ───────────────────────────────────────────────────────
@@ -36,9 +39,13 @@ interface Props {
     showGrid: boolean;
 }
 
+/** Stable empty reference — a fresh [] each render would re-run the memos. */
+const EMPTY: SeriesPoint[] = [];
+
 interface Result {
-    /** `<index>|<metric>|<currency>` these rows were fetched for. */
+    /** Identifies the request these rows answer. */
     key: string;
+    resolution: Resolution;
     /** The selection that produced the rows, which the older ones are drawn in. */
     index: MarketIndex;
     metric: MetricDef;
@@ -52,31 +59,41 @@ export default function MarketPanel({ index, metric, period, currency, log, show
     const [hovered, setHovered] = useState<number | null>(null);
     const { ref, dims } = usePlotSize();
 
-    const requestKey = `${index.series}|${metric.key}|${currency}`;
+    // The window and its resolution are part of the request now, so changing
+    // period refetches at the finer sampling rather than slicing what is here.
+    const resolution = resolutionFor(period);
+    const requestKey = `${index.series}|${metric.key}|${currency}|${period.label}`;
 
     useEffect(() => {
         const controller = new AbortController();
-        const key = `${index.series}|${metric.key}|${currency}`;
+        const key = `${index.series}|${metric.key}|${currency}|${period.label}`;
         const query =
-            `index=${encodeURIComponent(index.series)}&metric=${metric.key}&currency=${currency}`;
+            `index=${encodeURIComponent(index.series)}&metric=${metric.key}` +
+            `&currency=${currency}&${periodParams(period)}`;
 
         fetch(`/api/markets?${query}`, { signal: controller.signal })
             .then(r => r.json())
             .then((body) => {
                 if (!Array.isArray(body?.rows)) throw new Error(body?.error ?? 'Unexpected response');
-                setResult({ key, index, metric, currency, rows: body.rows, error: null });
+                setResult({
+                    key, index, metric, currency,
+                    resolution: body.resolution ?? 'monthly',
+                    rows: body.rows,
+                    error: null,
+                });
             })
             .catch((e) => {
                 if (e.name === 'AbortError') return;
                 setResult({
                     key, index, metric, currency,
+                    resolution,
                     rows: [],
                     error: e.message ?? 'Failed to load market data.',
                 });
             });
 
         return () => controller.abort();
-    }, [index, metric, currency]);
+    }, [index, metric, currency, period, resolution]);
 
     const loading = result?.key !== requestKey;
     // An error only speaks for the selection on screen now; while a newer
@@ -88,13 +105,14 @@ export default function MarketPanel({ index, metric, period, currency, log, show
     const shownIndex = result?.index ?? index;
     const shownMetric = result?.metric ?? metric;
     const shownCurrency = result?.currency ?? currency;
+    const shownResolution = result?.resolution ?? resolution;
     // A converted level reads in dollars, whatever the index's home symbol is.
     const symbol = shownCurrency === 'usd' ? '$' : shownIndex.currency;
 
-    const data = useMemo(() => filterPeriod(result?.rows ?? [], period), [result, period]);
+    const data = result?.rows ?? EMPTY;
 
     const stats = useMemo(() => {
-        const seen = data.filter(r => r.value != null) as { month: string; value: number }[];
+        const seen = data.filter(r => r.value != null) as { date: string; value: number }[];
         if (seen.length === 0) return null;
 
         const first = seen[0];
@@ -102,7 +120,7 @@ export default function MarketPanel({ index, metric, period, currency, log, show
         const high = seen.reduce((a, b) => (b.value > a.value ? b : a));
         const low = seen.reduce((a, b) => (b.value < a.value ? b : a));
         // Only a level compounds; a return or a vol reading is already a rate.
-        const change = shownMetric.kind === 'level' && first.value !== 0
+        const change = isLevel(shownMetric) && first.value !== 0
             ? (last.value / first.value - 1) * 100
             : null;
 
@@ -127,8 +145,11 @@ export default function MarketPanel({ index, metric, period, currency, log, show
     // Only a level can take a log axis. Returns and volatility are rates
     // already, and a return series crosses zero, where a log axis has nothing
     // to say — so those stay linear whatever the toggle says.
-    const level = shownMetric.kind === 'level';
-    const useLog = level && log;
+    const level = isLevel(shownMetric);
+    // Oil printed negative in April 2020, and no log axis survives that. The
+    // caption has to agree with what is actually drawn.
+    const positive = data.every(r => r.value == null || r.value > 0);
+    const useLog = level && log && positive;
 
     return (
         <>
@@ -158,7 +179,8 @@ export default function MarketPanel({ index, metric, period, currency, log, show
                 {hoveredPoint && !loading && (
                     <div className="pointer-events-none absolute right-5 top-4">
                         <Readout
-                            month={hoveredPoint.month}
+                            date={hoveredPoint.date}
+                            resolution={shownResolution}
                             name={shownIndex.shortLabel}
                             value={readout(hoveredPoint.value, symbol, shownMetric)}
                             color={shownIndex.color}
@@ -171,19 +193,19 @@ export default function MarketPanel({ index, metric, period, currency, log, show
             {/* window statistics — always four cells, so the strip holds its height */}
             <div className="grid grid-cols-2 gap-y-4 border-t border-stone-line-strong px-4 py-4 sm:grid-cols-4">
                 <Stat
-                    label={stats ? `Latest · ${monthLabel(stats.last.month)}` : 'Latest'}
+                    label={stats ? `Latest · ${bucketLabel(stats.last.date, shownResolution)}` : 'Latest'}
                     value={stats ? readout(stats.last.value, symbol, shownMetric) : '—'}
                 />
                 <Stat
-                    label={stats ? `High · ${stats.high.month.slice(0, 4)}` : 'High'}
+                    label={stats ? `High · ${stats.high.date.slice(0, 4)}` : 'High'}
                     value={stats ? readout(stats.high.value, symbol, shownMetric) : '—'}
                 />
                 <Stat
-                    label={stats ? `Low · ${stats.low.month.slice(0, 4)}` : 'Low'}
+                    label={stats ? `Low · ${stats.low.date.slice(0, 4)}` : 'Low'}
                     value={stats ? readout(stats.low.value, symbol, shownMetric) : '—'}
                 />
                 <Stat
-                    label={stats?.change != null ? `Since ${stats.first.month.slice(0, 4)}` : 'Readings'}
+                    label={stats?.change != null ? `Since ${stats.first.date.slice(0, 4)}` : 'Readings'}
                     value={
                         stats == null ? '—'
                             : stats.change != null
@@ -194,7 +216,14 @@ export default function MarketPanel({ index, metric, period, currency, log, show
                 />
             </div>
 
-            {!loading && <GapNote missing={missing} total={data.length} source={gapSource} />}
+            {!loading && (
+                <GapNote
+                    missing={missing}
+                    total={data.length}
+                    source={gapSource}
+                    resolution={shownResolution}
+                />
+            )}
         </>
     );
 }
@@ -202,7 +231,7 @@ export default function MarketPanel({ index, metric, period, currency, log, show
 /** The reading, carrying the unit its metric is quoted in. */
 function readout(v: number | null, symbol: string, metric: MetricDef) {
     if (v == null) return '—';
-    return metric.kind === 'level'
+    return isLevel(metric)
         ? `${symbol}${formatFull(v)}`
         : `${v > 0 && metric.key.includes('Return') ? '+' : ''}${v.toFixed(1)}%`;
 }
