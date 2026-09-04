@@ -9,6 +9,7 @@ import { formatFull } from './scale';
 import { usdConversion } from '@/lib/capital/fxPairs';
 import {
     isLevel,
+    metricColor,
     type MarketIndex,
     type MetricDef,
     type Period,
@@ -65,15 +66,23 @@ export default function MarketPanel({ index, metric, period, currency, log, show
     const requestKey = `${index.series}|${metric.key}|${currency}|${period.label}`;
 
     useEffect(() => {
-        const controller = new AbortController();
+        // Superseded requests are dropped on arrival rather than aborted. The
+        // route handler runs its query to completion either way, so an abort
+        // would save nothing on the server — and the AbortError it raises has
+        // to be caught in every browser to stay out of the dev console.
+        let live = true;
         const key = `${index.series}|${metric.key}|${currency}|${period.label}`;
         const query =
             `index=${encodeURIComponent(index.series)}&metric=${metric.key}` +
             `&currency=${currency}&${periodParams(period)}`;
 
-        fetch(`/api/markets?${query}`, { signal: controller.signal })
-            .then(r => r.json())
-            .then((body) => {
+        (async () => {
+            try {
+                const r = await fetch(`/api/markets?${query}`);
+                const body = await r.json();
+                // These rows answer a selection the panel has already moved
+                // off, and must not land on top of the new one.
+                if (!live) return;
                 if (!Array.isArray(body?.rows)) throw new Error(body?.error ?? 'Unexpected response');
                 setResult({
                     key, index, metric, currency,
@@ -81,18 +90,18 @@ export default function MarketPanel({ index, metric, period, currency, log, show
                     rows: body.rows,
                     error: null,
                 });
-            })
-            .catch((e) => {
-                if (e.name === 'AbortError') return;
+            } catch (e: unknown) {
+                if (!live) return;
                 setResult({
                     key, index, metric, currency,
                     resolution,
                     rows: [],
-                    error: e.message ?? 'Failed to load market data.',
+                    error: e instanceof Error ? e.message : 'Failed to load market data.',
                 });
-            });
+            }
+        })();
 
-        return () => controller.abort();
+        return () => { live = false; };
     }, [index, metric, currency, period, resolution]);
 
     const loading = result?.key !== requestKey;
@@ -110,6 +119,10 @@ export default function MarketPanel({ index, metric, period, currency, log, show
     const symbol = shownCurrency === 'usd' ? '$' : shownIndex.currency;
 
     const data = result?.rows ?? EMPTY;
+
+    // Level keeps the index's own identity color; return and volatility each
+    // carry a fixed accent so the viewer knows which dimension they are reading.
+    const lineColor = metricColor(shownMetric.family, shownIndex.color);
 
     const stats = useMemo(() => {
         const seen = data.filter(r => r.value != null) as { date: string; value: number }[];
@@ -159,7 +172,7 @@ export default function MarketPanel({ index, metric, period, currency, log, show
                     <div className={`transition-opacity duration-500 ease-mechanical ${loading ? 'opacity-40' : 'opacity-100'}`}>
                         <SeriesChart
                             data={data}
-                            color={shownIndex.color}
+                            color={lineColor}
                             unit={level ? `${symbol}${useLog ? ' LOG' : ''}` : shownMetric.unit}
                             scaleKind={useLog ? 'log' : 'linear'}
                             label={`${shownIndex.label} — ${shownMetric.label}`}
@@ -183,7 +196,7 @@ export default function MarketPanel({ index, metric, period, currency, log, show
                             resolution={shownResolution}
                             name={shownIndex.shortLabel}
                             value={readout(hoveredPoint.value, symbol, shownMetric)}
-                            color={shownIndex.color}
+                            color={lineColor}
                             note={shownCurrency === 'usd' ? 'Converted to USD' : undefined}
                         />
                     </div>

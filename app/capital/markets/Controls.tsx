@@ -246,13 +246,16 @@ export interface MetricOption {
 }
 
 export function PanelHeader({
-    subject, range, metrics, activeKey, onSelect,
+    subject, range, metrics, activeKey, onSelect, activeColor,
 }: {
     subject: string;
     range: string;
     metrics: readonly MetricOption[];
     activeKey: string;
     onSelect: (key: string) => void;
+    /** Optional hex color for the active tab's border and text. Falls back to
+     *  the bronze accent when omitted (FX panel, which has no family colors). */
+    activeColor?: string;
 }) {
     return (
         <div className="flex flex-wrap items-center justify-between gap-y-3 border-b border-stone-line-strong px-4 py-3">
@@ -276,9 +279,13 @@ export function PanelHeader({
                                 transition-colors duration-500 ease-mechanical
                                 ${i > 0 ? 'border-l border-stone-line-strong' : ''}
                                 ${on
-                                    ? 'bg-bronze/15 text-bronze-bright'
+                                    ? activeColor ? '' : 'bg-bronze/15 text-bronze-bright'
                                     : 'text-platinum hover:bg-obsidian/50 hover:text-marble'}
                             `}
+                            style={on && activeColor ? {
+                                backgroundColor: `${activeColor}26`,   // ~15% opacity
+                                color: activeColor,
+                            } : undefined}
                         >
                             {m.label}
                         </button>
@@ -346,5 +353,108 @@ export function MissingNote({ children }: { children: React.ReactNode }) {
         <p className="max-w-[22rem] text-right font-sans text-[0.55rem] uppercase leading-relaxed tracking-[0.16em] text-[#C0563F]">
             {children}
         </p>
+    );
+}
+
+// ─── family tabs + sub-picker ─────────────────────────────────────────────────
+// IndexChart uses these instead of PanelHeader's flat metric list.
+// FamilyTabs renders the three family buttons (Level · Return · Vol).
+// SubPicker renders the compact window chips that appear below when a
+// multi-key family (return / vol) is active.
+
+import type { MetricFamilyDef, MetricFamilyKey, MetricDef } from '@/lib/capital/marketIndexes';
+
+export function FamilyTabs({
+    families,
+    activeFamily,
+    activeColor,
+    onSelect,
+}: {
+    families: readonly MetricFamilyDef[];
+    activeFamily: MetricFamilyKey;
+    /** Resolved color for the active tab — index color for level, family
+     *  accent for return / vol. */
+    activeColor: string;
+    onSelect: (key: MetricFamilyKey) => void;
+}) {
+    return (
+        <div className="flex flex-wrap border border-stone-line-strong">
+            {families.map((f, i) => {
+                const on = f.key === activeFamily;
+                const color = on ? activeColor : undefined;
+                return (
+                    <button
+                        key={f.key}
+                        type="button"
+                        onClick={() => onSelect(f.key)}
+                        aria-pressed={on}
+                        className={`
+                            px-3.5 py-2 font-sans text-[0.63rem] uppercase tracking-[0.16em]
+                            transition-colors duration-500 ease-mechanical
+                            ${i > 0 ? 'border-l border-stone-line-strong' : ''}
+                            ${on ? '' : 'text-platinum hover:bg-obsidian/50 hover:text-marble'}
+                        `}
+                        style={on ? {
+                            backgroundColor: `${activeColor}26`,
+                            color: activeColor,
+                        } : undefined}
+                    >
+                        {f.label}
+                    </button>
+                );
+            })}
+        </div>
+    );
+}
+
+/** Compact chips that select among the sub-metrics of a family (e.g. 2Y / 5Y / 10Y).
+ *  Only shown when the active family has more than one sub. */
+export function SubPicker({
+    subs,
+    activeKey,
+    color,
+    onSelect,
+}: {
+    subs: readonly MetricDef[];
+    activeKey: string;
+    /** Family accent color — used for the active chip. */
+    color: string;
+    onSelect: (key: string) => void;
+}) {
+    if (subs.length <= 1) return null;
+
+    // Strip the family prefix to get a compact label: "Return 5Y" → "5Y",
+    // "Vol 63D" → "63D". Anything that doesn't match keeps its full label.
+    function shortLabel(m: MetricDef) {
+        return m.label.replace(/^(Return|Vol)\s+/i, '');
+    }
+
+    return (
+        <div className="flex items-center gap-1">
+            {subs.map(m => {
+                const on = m.key === activeKey;
+                return (
+                    <button
+                        key={m.key}
+                        type="button"
+                        onClick={() => onSelect(m.key)}
+                        aria-pressed={on}
+                        title={m.description}
+                        className={`
+                            px-2.5 py-1 font-mono text-[0.58rem] tracking-[0.1em]
+                            border transition-colors duration-300 ease-mechanical
+                            ${on ? '' : 'border-transparent text-platinum hover:text-marble'}
+                        `}
+                        style={on ? {
+                            borderColor: `${color}60`,
+                            backgroundColor: `${color}18`,
+                            color,
+                        } : undefined}
+                    >
+                        {shortLabel(m)}
+                    </button>
+                );
+            })}
+        </div>
     );
 }

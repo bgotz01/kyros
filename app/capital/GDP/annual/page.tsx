@@ -239,6 +239,15 @@ export default function AnnualGDPPage() {
             {/* ── body ────────────────────────────────────────────────────── */}
             <div className="flex flex-col px-8 py-4">
 
+                {/* ── timeline ────────────────────────────────────────────── */}
+                <div className="mb-4 border-b border-stone-line pb-4">
+                    <YearTimeline
+                        years={years}
+                        selectedYear={selectedYear}
+                        onSelect={setSelectedYear}
+                    />
+                </div>
+
                 {/* chart label */}
                 <div className="mb-3 border-b border-stone-line pb-2" style={{ paddingLeft: LABEL_W }}>
                     <span className="font-sans text-xs uppercase tracking-[0.22em] text-platinum-dim">
@@ -299,15 +308,6 @@ export default function AnnualGDPPage() {
                         perCapita={perCapita}
                         prevPositions={prevBot}
                         dim
-                    />
-                </div>
-
-                {/* ── timeline ────────────────────────────────────────────── */}
-                <div className="mt-6 border-t border-stone-line pt-4">
-                    <YearTimeline
-                        years={years}
-                        selectedYear={selectedYear}
-                        onSelect={setSelectedYear}
                     />
                 </div>
 

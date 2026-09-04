@@ -45,14 +45,19 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
     const requestKey = `${pair.series}|${metric.key}|${period.label}`;
 
     useEffect(() => {
-        const controller = new AbortController();
+        // Dropped on arrival rather than aborted — see the note in MarketPanel.
+        let live = true;
         const key = `${pair.series}|${metric.key}|${period.label}`;
         const query =
             `pair=${encodeURIComponent(pair.series)}&metric=${metric.key}&${periodParams(period)}`;
 
-        fetch(`/api/fx?${query}`, { signal: controller.signal })
-            .then(r => r.json())
-            .then((body) => {
+        (async () => {
+            try {
+                const r = await fetch(`/api/fx?${query}`);
+                const body = await r.json();
+                // These rows answer a selection the panel has already moved
+                // off, and must not land on top of the new one.
+                if (!live) return;
                 if (!Array.isArray(body?.rows)) throw new Error(body?.error ?? 'Unexpected response');
                 setResult({
                     key, pair, metric,
@@ -60,18 +65,18 @@ export default function FxPanel({ pair, metric, period, log, showGrid }: Props) 
                     rows: body.rows,
                     error: null,
                 });
-            })
-            .catch((e) => {
-                if (e.name === 'AbortError') return;
+            } catch (e: unknown) {
+                if (!live) return;
                 setResult({
                     key, pair, metric,
                     resolution,
                     rows: [],
-                    error: e.message ?? 'Failed to load currency data.',
+                    error: e instanceof Error ? e.message : 'Failed to load currency data.',
                 });
-            });
+            }
+        })();
 
-        return () => controller.abort();
+        return () => { live = false; };
     }, [pair, metric, period, resolution]);
 
     const loading = result?.key !== requestKey;

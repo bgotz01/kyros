@@ -1,4 +1,5 @@
 import { INFLECTION_DECADES } from '@/lib/capital/inflections';
+import OutlierTimeline from '../components/OutlierTimeline';
 
 export default function InflectionPage() {
     return (
@@ -14,6 +15,9 @@ export default function InflectionPage() {
                 <p className="font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
                     What broke — and why it changed where capital could go
                 </p>
+            </div>
+            <div className="mb-16">
+                <OutlierTimeline />
             </div>
 
             {/* ── narrative layout ─────────────────────────────────────────────── */}

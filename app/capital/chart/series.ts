@@ -117,27 +117,53 @@ export function clamp(v: number, min: number, max: number) {
 /** Year labels and vertical rules — computed from the month column the charts
  *  share. Both intervals are in years: the defaults label every 5 and rule
  *  every 10, which is the decade grid. A span running over a century wants a
- *  coarser `labelEvery` or the readouts collide. */
+ *  coarser `labelEvery` or the readouts collide.
+ *
+ *  Labels are placed at the midpoint of each year's data range so they sit
+ *  symmetrically above the year, not at its leading edge. After placement a
+ *  minimum-pixel-gap pass drops any label that would overlap its neighbour. */
 export function xAxisMarks(
     dates: string[],
     xOf: (i: number) => number,
     labelEvery = 5,
     ruleEvery = 10,
+    /** Minimum pixel gap between adjacent label centres (default 48). */
+    minGap = 48,
 ) {
-    const labels: { i: number; label: string }[] = [];
     const decadeLines: number[] = [];
 
-    // The first bucket of each year, whatever width the buckets are. Testing
-    // for January only works on a monthly series; on a weekly one it would
-    // mark every Monday in January, and on a daily one every weekday.
-    let seen = -1;
+    // ── step 1: collect year spans ──────────────────────────────────────────
+    // Map each year to [firstIdx, lastIdx] so we can centre the label.
+    const yearSpans = new Map<number, { first: number; last: number }>();
     for (let i = 0; i < dates.length; i++) {
         const year = parseInt(dates[i].slice(0, 4), 10);
-        if (year === seen) continue;
-        seen = year;
-        if (year % ruleEvery === 0) decadeLines.push(xOf(i));
-        if (year % labelEvery === 0) labels.push({ i, label: String(year) });
+        const span = yearSpans.get(year);
+        if (span === undefined) yearSpans.set(year, { first: i, last: i });
+        else span.last = i;
     }
+
+    // ── step 2: decade rules at the start of the decade year ───────────────
+    for (const [year, { first }] of yearSpans) {
+        if (year % ruleEvery === 0) decadeLines.push(xOf(first));
+    }
+
+    // ── step 3: candidate labels at the midpoint of each qualifying year ───
+    const candidates: { x: number; label: string }[] = [];
+    for (const [year, { first, last }] of yearSpans) {
+        if (year % labelEvery !== 0) continue;
+        const midIdx = Math.round((first + last) / 2);
+        candidates.push({ x: xOf(midIdx), label: String(year) });
+    }
+    candidates.sort((a, b) => a.x - b.x);
+
+    // ── step 4: drop labels that are too close to their neighbour ──────────
+    const labels: { x: number; label: string }[] = [];
+    for (const c of candidates) {
+        if (labels.length === 0 || c.x - labels[labels.length - 1].x >= minGap) {
+            labels.push(c);
+        }
+    }
+
     return { labels, decadeLines };
 }
 

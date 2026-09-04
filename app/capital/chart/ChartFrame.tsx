@@ -107,17 +107,25 @@ export default function ChartFrame({
                 {unit}
             </text>
 
-            {/* x axis readout */}
-            {xLabels.map(({ i, label }) => (
-                <text
-                    key={label}
-                    x={xOf(i)} y={height - 8}
-                    textAnchor="middle" fontSize={9.5}
-                    fontFamily="var(--font-geist-mono), monospace"
-                    fill="var(--color-marble-dim)" letterSpacing="0.07em"
-                >
-                    {label}
-                </text>
+            {/* x axis ticks + readout */}
+            {xLabels.map(({ x, label }) => (
+                <g key={label}>
+                    <line
+                        x1={x} y1={PAD.top + plotH}
+                        x2={x} y2={PAD.top + plotH + 5}
+                        stroke="var(--color-marble-dim)"
+                        strokeWidth={1}
+                        strokeOpacity={0.5}
+                    />
+                    <text
+                        x={x} y={height - 8}
+                        textAnchor="middle" fontSize={9.5}
+                        fontFamily="var(--font-geist-mono), monospace"
+                        fill="var(--color-marble-dim)" letterSpacing="0.07em"
+                    >
+                        {label}
+                    </text>
+                </g>
             ))}
         </>
     );

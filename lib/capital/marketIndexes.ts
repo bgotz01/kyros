@@ -20,7 +20,7 @@ export interface MarketIndex {
      *  reaches back to 2000 where macro-framework's starts in 2006. */
     source: 'macro' | 'stock';
     /** asset_class in that table. */
-    assetClass: 'equities' | 'commodities';
+    assetClass: 'equities' | 'commodities' | 'crypto';
     label: string;
     shortLabel: string;
     /** Country for an index, exchange for a futures contract. */
@@ -240,6 +240,20 @@ export const INDEXES: MarketIndex[] = [
         volatility: false,
         color: '#7B9EA8',   // petrol
     },
+    {
+        series: 'BTCUSD',
+        source: 'macro',
+        assetClass: 'crypto',
+        group: 'Commodities',
+        label: 'Bitcoin',
+        shortLabel: 'BTC',
+        origin: 'USD',
+        currency: '$',
+        code: 'USD',
+        from: 2010,
+        volatility: false,
+        color: '#F7931A',   // bitcoin orange
+    },
 ];
 
 export const INDEX_GROUPS: IndexGroup[] = [
@@ -338,6 +352,60 @@ export const METRICS: MetricDef[] = [
 
 export function findMetric(key: string): MetricDef | undefined {
     return METRICS.find(m => m.key === key);
+}
+
+// ─── metric families ──────────────────────────────────────────────────────────
+// The three families collapse the six metric keys into three tabs. Each family
+// owns a label, a color, and an ordered list of sub-options. The sub-picker
+// is only shown when a multi-key family is active.
+
+export type MetricFamilyKey = 'level' | 'return' | 'volatility';
+
+export interface MetricFamilyDef {
+    key: MetricFamilyKey;
+    label: string;
+    /** null → caller supplies the index's own identity color for 'level'. */
+    color: string | null;
+    subs: MetricDef[];
+    /** Default sub-metric when the family is first selected. */
+    defaultSub: MetricDef;
+}
+
+const LEVEL_SUBS = METRICS.filter(m => m.family === 'level');
+const RETURN_SUBS = METRICS.filter(m => m.family === 'return');
+const VOL_SUBS = METRICS.filter(m => m.family === 'volatility');
+
+export const METRIC_FAMILY_DEFS: MetricFamilyDef[] = [
+    {
+        key: 'level',
+        label: 'Level',
+        color: null,
+        subs: LEVEL_SUBS,
+        defaultSub: LEVEL_SUBS[0],
+    },
+    {
+        key: 'return',
+        label: 'Return',
+        color: '#6AAEE8',   // sky blue — directional / comparative
+        subs: RETURN_SUBS,
+        defaultSub: RETURN_SUBS.find(m => m.key === 'Value_Return5Y') ?? RETURN_SUBS[0],
+    },
+    {
+        key: 'volatility',
+        label: 'Vol',
+        color: '#C0563F',   // brick red — risk / heat
+        subs: VOL_SUBS,
+        defaultSub: VOL_SUBS[0],
+    },
+];
+
+export function findFamilyDef(key: MetricFamilyKey): MetricFamilyDef {
+    return METRIC_FAMILY_DEFS.find(f => f.key === key) ?? METRIC_FAMILY_DEFS[0];
+}
+
+/** Resolve the line color: level borrows the index color, others use the family accent. */
+export function metricColor(family: MetricFamilyKey, indexColor: string): string {
+    return findFamilyDef(family).color ?? indexColor;
 }
 
 /** The metrics a given series actually has columns for. */

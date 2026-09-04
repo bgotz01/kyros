@@ -91,7 +91,7 @@ export async function GET(request: Request) {
     }
 }
 
-/** The pool the series lives in. Equity indexes are held in macro-framework;
+/** The pool the series lives in. Equity indexes and crypto live in macro-framework;
  *  the commodity contracts are read from stockdata. */
 function poolFor(index: MarketIndex) {
     return index.source === 'stock' ? stockDb : macroDb;

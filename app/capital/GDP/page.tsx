@@ -11,6 +11,7 @@ import {
 import { BarChart, LABEL_W, BAR_HEIGHT, BAR_GAP, entryDisplayValue, type GDPMode, type BarRow } from './annual/GDPBarChart';
 import { YearTimeline } from './annual/YearTimeline';
 import { CountryFilterModal, resolveFilter, type CountryFilter } from './annual/CountryFilterModal';
+import { GDPChart } from './annual/GDPChart';
 
 // ─── static config ────────────────────────────────────────────────────────────
 
@@ -239,6 +240,15 @@ export default function GDPPage() {
             {/* ── body ────────────────────────────────────────────────────── */}
             <div className="flex flex-col px-8 py-4">
 
+                {/* ── timeline ────────────────────────────────────────────── */}
+                <div className="mb-4 border-b border-stone-line pb-4">
+                    <YearTimeline
+                        years={years}
+                        selectedYear={selectedYear}
+                        onSelect={setSelectedYear}
+                    />
+                </div>
+
                 {/* chart label */}
                 <div className="mb-3 border-b border-stone-line pb-2" style={{ paddingLeft: LABEL_W }}>
                     <span className="font-sans text-xs uppercase tracking-[0.22em] text-platinum-dim">
@@ -302,15 +312,6 @@ export default function GDPPage() {
                     />
                 </div>
 
-                {/* ── timeline ────────────────────────────────────────────── */}
-                <div className="mt-6 border-t border-stone-line pt-4">
-                    <YearTimeline
-                        years={years}
-                        selectedYear={selectedYear}
-                        onSelect={setSelectedYear}
-                    />
-                </div>
-
                 {/* ── definitions ─────────────────────────────────────────── */}
                 <div className="mt-4 border-t border-stone-line pb-6 pt-3">
                     <p className="font-sans text-sm leading-relaxed tracking-[0.03em] text-platinum">
@@ -323,6 +324,14 @@ export default function GDPPage() {
                             {def.formula}
                         </span>
                     </p>
+                </div>
+
+                {/* ── GDP chart ────────────────────────────────────────────── */}
+                <div className="mt-2 border-t border-stone-line pt-6 pb-8">
+                    <p className="mb-5 font-sans text-[0.6rem] uppercase tracking-[0.22em] text-stone-line-strong">
+                        Historical GDP
+                    </p>
+                    <GDPChart />
                 </div>
 
             </div>

@@ -25,7 +25,17 @@ function isSection(child: NavChild): child is NavSection {
 }
 
 const LINKS: NavItem[] = [
-    { href: '/ai-impact', label: 'AI Impact', icon: 'I³' },
+    {
+        href: '/ai',
+        label: 'AI',
+        icon: '⬡',
+        exact: true,
+        children: [
+            { href: '/ai/impact', label: 'Impact', icon: 'I³' },
+            { href: '/ai/architecture', label: 'Architecture', icon: '⌬' },
+            { href: '/ai/systems', label: 'Systems', icon: '⬡' },
+        ],
+    },
     { href: '/theory', label: 'Theory', icon: '∴' },
     {
         href: '/capital',
@@ -42,7 +52,22 @@ const LINKS: NavItem[] = [
             { section: 'Data Tools' },
             { href: '/capital/chart', label: 'Macro Chart', icon: '∿' },
             { href: '/capital/markets', label: 'Markets', icon: '⌇' },
+            { href: '/capital/returns', label: 'Returns', icon: '⊞' },
             { href: '/capital/GDP', label: 'GDP', icon: '₲' },
+        ],
+    },
+    {
+        href: '/commodities/oil',
+        label: 'Oil',
+        icon: '◐',
+        exact: true,
+        children: [
+            { section: 'Geopolitics' },
+            {
+                href: '/commodities/oil/geopolitics/middle-east',
+                label: 'Middle East',
+                icon: '☾',
+            },
         ],
     },
 ];

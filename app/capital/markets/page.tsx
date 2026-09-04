@@ -1,132 +1,16 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import IndexChart from './IndexChart';
 
-import {
-    CurrencyToggle,
-    GridToggle,
-    LogToggle,
-    MissingNote,
-    PanelHeader,
-    PeriodRow,
-    SeriesPicker,
-    type Currency,
-    type PickerOption,
-} from './Controls';
-import MarketPanel from './MarketPanel';
-import FxPanel from './FxPanel';
-import {
-    INDEXES,
-    METRICS,
-    resolutionFor,
-    type Resolution,
-    INDEX_GROUPS,
-    isConvertible,
-    isLevel,
-    metricsFor,
-    ALL_PERIOD,
-    DEFAULT_INDEX,
-    findIndex,
-    findMetric,
-    periodsFor,
-    type MarketIndex,
-    type MetricDef,
-    type Period,
-} from '@/lib/capital/marketIndexes';
-import {
-    FX_PAIRS,
-    FX_METRICS,
-    usdConversion,
-    FX_GROUPS,
-    DEFAULT_PAIR,
-    findPair,
-    findFxMetric,
-    type FxMetricDef,
-    type FxPair,
-} from '@/lib/capital/fxPairs';
+import { INDEXES } from '@/lib/capital/marketIndexes';
+import { FX_PAIRS } from '@/lib/capital/fxPairs';
+import FxChart from './CurrencyChart';
 
-// ─── page ─────────────────────────────────────────────────────────────────────
-// Selection only — each panel fetches and redraws its own series, so a control
-// on one never disturbs the other.
-
-const INDEX_OPTIONS: PickerOption[] = INDEXES.map(i => ({
-    key: i.series,
-    label: i.label,
-    color: i.color,
-    group: i.group,
-    note: i.origin,
-    listNote: String(i.from),
-}));
-
-const PAIR_OPTIONS: PickerOption[] = FX_PAIRS.map(p => ({
-    key: p.series,
-    label: p.label,
-    color: p.color,
-    group: p.group,
-    note: `${p.base}/${p.quote}`,
-    listNote: String(p.from),
-}));
+// ─── Markets page ─────────────────────────────────────────────────────────────
+// Two self-contained chart blocks — equities and currencies — each owning
+// their own selection state. Changing a control in one never disturbs the other.
 
 export default function MarketsPage() {
-    // equities
-    const [index, setIndex] = useState<MarketIndex>(findIndex(DEFAULT_INDEX) ?? INDEXES[0]);
-    const [metric, setMetric] = useState<MetricDef>(METRICS[0]);
-    const [period, setPeriod] = useState<Period>(ALL_PERIOD);
-    const [currency, setCurrency] = useState<Currency>('local');
-    const [log, setLog] = useState(false);
-    const [showGrid, setShowGrid] = useState(true);
-
-    // currencies
-    const [pair, setPair] = useState<FxPair>(findPair(DEFAULT_PAIR) ?? FX_PAIRS[0]);
-    const [fxMetric, setFxMetric] = useState<FxMetricDef>(FX_METRICS[0]);
-    const [fxPeriod, setFxPeriod] = useState<Period>(ALL_PERIOD);
-    const [fxLog, setFxLog] = useState(false);
-    const [fxShowGrid, setFxShowGrid] = useState(true);
-
-    const periods = useMemo(() => periodsFor(index.from), [index.from]);
-    // Gold and oil carry a level and returns but no volatility columns.
-    const metrics = useMemo(() => metricsFor(index), [index]);
-
-    // What it would take to restate this index in dollars, and whether the
-    // metric on screen can carry the conversion at all.
-    const conversion = usdConversion(index.code);
-    const convertible = conversion.kind === 'available' && isConvertible(metric);
-    // The preference is kept even where it cannot apply, so returning to a
-    // convertible index brings the dollar view back with it.
-    const activeCurrency: Currency = convertible && currency === 'usd' ? 'usd' : 'local';
-    // A percentage that crosses zero has no logarithm.
-    const canLog = isLevel(metric);
-    const fxCanLog = fxMetric.kind === 'rate';
-    const fxLogOn = fxCanLog && fxLog;
-    // In dollars the series cannot start before the rate does.
-    const startYear = activeCurrency === 'usd' && conversion.kind === 'available'
-        ? Math.max(index.from, conversion.pair.from)
-        : index.from;
-    const fxPeriods = useMemo(() => periodsFor(pair.from), [pair.from]);
-
-    /** A series that opens later may not reach the decade on screen — the
-     *  Nikkei has a 1960s, the DAX does not. */
-    function retune(from: number, current: Period, set: (p: Period) => void) {
-        if (!periodsFor(from).some(p => p.label === current.label)) set(ALL_PERIOD);
-    }
-
-    function selectIndex(key: string) {
-        const next = findIndex(key);
-        if (!next) return;
-        setIndex(next);
-        retune(next.from, period, setPeriod);
-        // A contract with no volatility columns cannot stay on a volatility
-        // metric; fall back to the level.
-        if (!metricsFor(next).some(m => m.key === metric.key)) setMetric(METRICS[0]);
-    }
-
-    function selectPair(key: string) {
-        const next = findPair(key);
-        if (!next) return;
-        setPair(next);
-        retune(next.from, fxPeriod, setFxPeriod);
-    }
-
     return (
         <div className="mx-auto w-full max-w-[1100px] px-8 py-16">
 
@@ -148,158 +32,17 @@ export default function MarketsPage() {
             {/* ─── equities ──────────────────────────────────────────────── */}
 
             <SectionHeading title="Indexes" note="What capital is worth" />
-
-            <div className="mb-5 flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-                <div className="flex flex-col gap-2">
-                    <span className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim">
-                        Index
-                    </span>
-                    <SeriesPicker
-                        options={INDEX_OPTIONS}
-                        groups={INDEX_GROUPS}
-                        value={index.series}
-                        onChange={selectIndex}
-                        ariaLabel="Stock market index"
-                    />
-                </div>
-
-                <div className="flex max-w-[42rem] flex-col items-end gap-2">
-                    <PeriodRow periods={periods} value={period} onChange={setPeriod} />
-                    <div className="flex items-center gap-1">
-                        <CurrencyToggle
-                            value={activeCurrency}
-                            onChange={setCurrency}
-                            disabled={!convertible}
-                            title={currencyHint(conversion, metric)}
-                        />
-                        <LogToggle
-                            on={canLog && log}
-                            onToggle={() => setLog(l => !l)}
-                            disabled={!canLog}
-                            title={canLog ? undefined : `${metric.label} is a percentage — a log axis cannot carry it`}
-                        />
-                        <GridToggle on={showGrid} onToggle={() => setShowGrid(g => !g)} />
-                    </div>
-                    {conversion.kind === 'missing' && (
-                        <MissingNote>
-                            No {conversion.code} rate in the database — {index.label} stays in {index.currency}
-                        </MissingNote>
-                    )}
-                    {conversion.kind === 'available' && !isConvertible(metric) && (
-                        <p className="max-w-[24rem] text-right font-sans text-[0.55rem] uppercase leading-relaxed tracking-[0.16em] text-platinum-dim">
-                            {metric.label} is measured from daily local returns — not convertible
-                        </p>
-                    )}
-                </div>
-            </div>
-
-            <div className="w-full border border-stone-line-strong bg-charcoal">
-                <PanelHeader
-                    subject={index.shortLabel}
-                    range={`${period.kind === 'all' ? `From ${startYear}` : period.label}  ·  ${resolutionFor(period)}`}
-                    metrics={metrics}
-                    activeKey={metric.key}
-                    onSelect={key => setMetric(findMetric(key) ?? METRICS[0])}
-                />
-                <MarketPanel
-                    index={index}
-                    metric={metric}
-                    period={period}
-                    currency={activeCurrency}
-                    log={canLog && log}
-                    showGrid={showGrid}
-                />
-            </div>
-
-            <p className="mt-6 max-w-[46rem] font-sans text-[0.58rem] leading-relaxed tracking-[0.03em] text-platinum">
-                {metric.description}. {sampling(resolutionFor(period))}{' '}
-                {canLog && log && 'Drawn on a logarithmic axis, where equal vertical distance is equal percentage move. '}
-                {activeCurrency === 'usd' && conversion.kind === 'available'
-                    ? `Restated in dollars at each month's own ${conversion.pair.shortLabel} rate, so the dollar series begins in ${conversion.pair.from} where that rate begins. `
-                    : `Quoted in local currency — ${index.label} reads in ${index.currency}. `}
-                Price returns only: dividends are excluded throughout.
-            </p>
+            <IndexChart />
 
             {/* ─── currencies ────────────────────────────────────────────── */}
 
             <div className="mt-20">
                 <SectionHeading title="Currencies" note="What the measure is worth" />
             </div>
+            <FxChart />
 
-            <div className="mb-5 flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-                <div className="flex flex-col gap-2">
-                    <span className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim">
-                        Pair
-                    </span>
-                    <SeriesPicker
-                        options={PAIR_OPTIONS}
-                        groups={FX_GROUPS}
-                        value={pair.series}
-                        onChange={selectPair}
-                        ariaLabel="Currency pair"
-                    />
-                </div>
-
-                <div className="flex max-w-[42rem] flex-col items-end gap-2">
-                    <PeriodRow periods={fxPeriods} value={fxPeriod} onChange={setFxPeriod} />
-                    <div className="flex items-center gap-1">
-                        <LogToggle
-                            on={fxLogOn}
-                            onToggle={() => setFxLog(l => !l)}
-                            disabled={!fxCanLog}
-                            title={fxCanLog ? undefined : `${fxMetric.label} is a percentage — a log axis cannot carry it`}
-                        />
-                        <GridToggle on={fxShowGrid} onToggle={() => setFxShowGrid(g => !g)} />
-                    </div>
-                    <p className="font-sans text-[0.55rem] uppercase tracking-[0.2em] text-platinum-dim">
-                        Rising line · {pair.base} strengthens
-                    </p>
-                </div>
-            </div>
-
-            <div className="w-full border border-stone-line-strong bg-charcoal">
-                <PanelHeader
-                    subject={pair.shortLabel}
-                    range={`${fxPeriod.kind === 'all' ? `From ${pair.from}` : fxPeriod.label}  ·  ${resolutionFor(fxPeriod)}`}
-                    metrics={FX_METRICS}
-                    activeKey={fxMetric.key}
-                    onSelect={key => setFxMetric(findFxMetric(key) ?? FX_METRICS[0])}
-                />
-                <FxPanel
-                    pair={pair}
-                    metric={fxMetric}
-                    period={fxPeriod}
-                    log={fxLogOn}
-                    showGrid={fxShowGrid}
-                />
-            </div>
-
-            <p className="mt-6 max-w-[46rem] font-sans text-[0.58rem] leading-relaxed tracking-[0.03em] text-platinum">
-                {fxMetric.description}. The rate is {pair.quote} per {pair.base}, so the line
-                rises as {pair.base} strengthens and falls as it weakens — {pair.description}.{' '}
-                {fxLogOn && 'Drawn on a logarithmic axis, where equal vertical distance is equal percentage move. '}
-                {sampling(resolutionFor(fxPeriod))}
-            </p>
         </div>
     );
-}
-
-/** How the daily source is sampled for the window on screen. A century only
- *  reads as monthly closes; a decade earns a finer grain. */
-function sampling(resolution: Resolution) {
-    if (resolution === 'daily') return 'The source series is daily, and every close in the window is plotted.';
-    const bucket = resolution === 'weekly' ? 'week' : 'month';
-    return `The source series is daily; each point here is the last trading day of its ${bucket}.`;
-}
-
-/** Why the currency toggle is inert, when it is. */
-function currencyHint(conversion: ReturnType<typeof usdConversion>, metric: MetricDef) {
-    if (conversion.kind === 'native') return 'Already quoted in dollars';
-    if (conversion.kind === 'missing') return `No ${conversion.code} rate in the database`;
-    if (!isConvertible(metric)) {
-        return `${metric.label} is measured from daily local-currency returns and cannot be restated in dollars`;
-    }
-    return `Convert at each month's ${conversion.pair.shortLabel} rate`;
 }
 
 // ─── section heading ──────────────────────────────────────────────────────────

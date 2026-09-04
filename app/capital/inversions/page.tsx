@@ -1,3 +1,4 @@
+import AssetLeadership from '../components/AssetLeadership';
 import CapitalTimeline from '../components/CapitalTimeline';
 import ParadigmTable from '../components/ParadigmTable';
 
@@ -17,12 +18,12 @@ export default function InversionsPage() {
                 </p>
             </div>
 
-            {/* ── capital center timeline ──────────────────────────────────────── */}
-            <div className="mb-24">
-                <p className="mb-8 font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
-                    Capital Accumulation
-                </p>
-                <CapitalTimeline />
+
+
+            {/* ── asset leadership infographic ─────────────────────────────── */}
+            <div className="mb-16">
+
+                <AssetLeadership />
             </div>
 
             {/* ── paradigm table ──────────────────────────────────────────────── */}
