@@ -31,6 +31,7 @@ const LINKS: NavItem[] = [
         icon: '⬡',
         exact: true,
         children: [
+            { href: '/ai/progress', label: 'Progress', icon: '→' },
             { href: '/ai/impact', label: 'Impact', icon: 'I³' },
             { href: '/ai/architecture', label: 'Architecture', icon: '⌬' },
             { href: '/ai/systems', label: 'Systems', icon: '⬡' },

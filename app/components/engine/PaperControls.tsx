@@ -17,6 +17,8 @@ const DEAD = 'cursor-not-allowed border-stone-line text-platinum-dim opacity-25'
 // card is red until a flag is raised.
 const CHALLENGE =
     'cursor-pointer border-halt text-halt-bright hover:border-halt-bright hover:bg-halt/10';
+const CLEAR =
+    'cursor-pointer border-stone-line text-platinum-dim hover:border-halt hover:text-halt-bright';
 
 export default function PaperControls({
     score,
@@ -27,6 +29,8 @@ export default function PaperControls({
     failed,
     onRun,
     onCritic,
+    onClear,
+    onBreakdown,
 }: {
     score?: EngineScore;
     hasCritique: boolean;
@@ -36,9 +40,13 @@ export default function PaperControls({
     failed: boolean;
     onRun: () => void;
     onCritic: () => void;
+    onBreakdown: () => void;
+    onClear: () => void;
 }) {
-    // A score that has already been challenged is never re-charged.
-    const canCritic = Boolean(score && !hasCritique);
+    // A score can be challenged as often as you like — the point of changing the
+    // critic seat is to see whether a different model objects differently. Each
+    // run replaces the last, and each one is charged.
+    const canCritic = Boolean(score);
 
     return (
         <div className="flex shrink-0 items-center gap-2">
@@ -71,7 +79,7 @@ export default function PaperControls({
                         !score
                             ? 'Score it first'
                             : hasCritique
-                              ? 'Already challenged'
+                              ? 'Challenge again — replaces the current critique'
                               : 'Challenge this score'
                     }
                     className={`${CONTROL} ${busy || !canCritic ? DEAD : CHALLENGE}`}
@@ -80,10 +88,31 @@ export default function PaperControls({
                 </button>
             )}
 
+            {score && (
+                <button
+                    type="button"
+                    onClick={onClear}
+                    disabled={busy}
+                    aria-label="Clear this paper's saved results"
+                    title="Clear saved results"
+                    className={`${CONTROL} ${busy ? DEAD : CLEAR}`}
+                >
+                    CLEAR
+                </button>
+            )}
+
             <span className="ml-1 text-right">
                 {score ? (
-                    <>
-                        <span className="block font-serif text-2xl font-light leading-none text-marble">
+                    /* The number is the control: "how did we get this?" is the
+                       question it prompts, so it is the thing you click. */
+                    <button
+                        type="button"
+                        onClick={onBreakdown}
+                        aria-label="How this score was reached"
+                        title="How this score was reached"
+                        className="block cursor-pointer text-right transition-colors duration-300 ease-mechanical hover:text-bronze-bright"
+                    >
+                        <span className="block font-serif text-2xl font-light leading-none text-marble transition-colors duration-300 ease-mechanical hover:text-bronze-bright">
                             {score.product}
                         </span>
                         <span
@@ -93,7 +122,7 @@ export default function PaperControls({
                         >
                             {score.verdict}
                         </span>
-                    </>
+                    </button>
                 ) : (
                     <span className="font-mono text-[0.55rem] uppercase tracking-[0.16em] text-platinum-dim">
                         {failed ? 'failed' : '—'}

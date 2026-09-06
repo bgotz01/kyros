@@ -96,6 +96,14 @@ export function effectiveScore(score: EngineScore, notes: CriticNote[] = []): En
         ...out.inversion,
         score: Math.min(out.inversion.score, out.inversion.paradigmImportance || 10),
     };
+    // Critic corrections may lower I² but cannot override the mechanical
+    // snapshot/fit/materiality ceiling recorded by the analyst route.
+    if (out.incentives.ceiling !== undefined) {
+        out.incentives = {
+            ...out.incentives,
+            score: Math.min(out.incentives.score, out.incentives.ceiling),
+        };
+    }
     out.product = out.inversion.score * out.incentives.score * out.inflection.score;
     return out;
 }

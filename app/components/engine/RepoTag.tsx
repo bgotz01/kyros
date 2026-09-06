@@ -38,6 +38,8 @@ export default function RepoTag({ external }: { external: External }) {
     return (
         <>
             {' · '}
+            <span className="text-platinum-dim">CONFIRMATION</span>
+            {' · '}
             <a
                 href={repo.url}
                 target="_blank"

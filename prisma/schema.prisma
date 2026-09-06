@@ -171,6 +171,14 @@ model EngineScore {
   inflection         Int
   inflectionHeadline String @default("")
   unprecedented      Json
+  /// What had already been demonstrated before publication, read from the
+  /// paper's own related work. Caps I³ alongside where the proposal sat.
+  precedent          String?
+
+  /// How each law's score was reached — the model's claim, the ceilings that
+  /// applied, and which one bound. Kept so the reasoning can be inspected and
+  /// adjusted rather than inferred from a final number.
+  derivation Json?
 
   /// Derived from the three laws server-side, never taken from the model.
   product    Int

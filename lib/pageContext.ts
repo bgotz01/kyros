@@ -13,6 +13,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { loadParadigm, renderParadigm } from './paradigm';
 
 const CONTEXT_ROOT = path.join(process.cwd(), 'context');
 
@@ -63,6 +64,42 @@ function labelFor(content: string, stem: string): string {
 }
 
 /**
+ * One PageRef per .json paradigm snapshot directly inside `relativeDir`.
+ * The label is the `asOf` date from the file; content is rendered via
+ * `renderParadigm` so the council sees the same structured text the engine uses.
+ */
+function refsFromParadigmFolder(relativeDir: string, group: string): PageRef[] {
+    let files: string[];
+    try {
+        files = fs
+            .readdirSync(path.join(CONTEXT_ROOT, relativeDir))
+            .filter((f) => f.endsWith('.json'))
+            .sort()
+            .reverse(); // most recent first
+    } catch {
+        return [];
+    }
+    return files.flatMap((file) => {
+        try {
+            const raw = fs.readFileSync(path.join(CONTEXT_ROOT, relativeDir, file), 'utf-8');
+            const snapshot = JSON.parse(raw);
+            const rendered = renderParadigm(snapshot);
+            if (!rendered) return [];
+            const stem = file.replace(/\.json$/, '');
+            return [{
+                id: `${relativeDir}/${stem}`,
+                label: `Paradigm Snapshot · ${snapshot.asOf ?? stem}`,
+                group,
+                tag: 'Paradigm',
+                content: rendered,
+            }];
+        } catch {
+            return [];
+        }
+    });
+}
+
+/**
  * One PageRef per .md file directly inside `relativeDir` (relative to context/).
  * Subdirectories are ignored — nest by registering the child folder separately.
  */
@@ -93,43 +130,84 @@ function refsFromFolder(
 }
 
 // ─── corpus registry ─────────────────────────────────────────────────────────
-// Each entry maps a folder under context/ to a group name and an optional tag.
-// Drop a new .md file into any registered folder and it appears in the modal
-// without touching code. To add a new domain, register its folders here and
-// create the matching directory under context/.
+// The corpus is discovered automatically from the filesystem. Drop a .md file
+// into any subfolder under context/ and it appears in the modal without
+// touching this file. Add a new domain by creating its directory — no code
+// changes needed.
+//
+// Certain subfolder names carry a fixed tag badge. Everything else gets no tag.
+// The `paradigm` folder is excluded because it holds dated JSON snapshots that
+// are injected via buildSeatContext, not as attachable references.
 
-interface FolderSpec {
-    /** Path relative to context/. */
-    dir: string;
-    /** Group label shown in the modal. */
-    group: string;
-    /** Badge shown beside the group header. */
-    tag?: string;
+/** Slugs that should never appear as attachable reference groups. */
+const EXCLUDED_DIRS = new Set<string>();
+
+/** Well-known subfolder name → badge tag. */
+const FOLDER_TAGS: Record<string, string> = {
+    method: 'I³',
+    canon: 'Resolved',
+    'false-positives': 'Resolved',
+    bottlenecks: 'Open',
+    candidates: 'Scored',
+    regimes: 'Open',
+    frameworks: 'Method',
+    open: 'Open',
+};
+
+/** Converts a domain slug such as "ai" or "geopolitics" into a display name. */
+function domainLabel(slug: string): string {
+    return slug.charAt(0).toUpperCase() + slug.slice(1);
 }
 
-const CORPUS: FolderSpec[] = [
-    // ── AI ───────────────────────────────────────────────────────────────────
-    { dir: 'ai/method', group: 'AI · Method', tag: 'I³' },
-    { dir: 'ai/canon', group: 'AI · Canon', tag: 'Resolved' },
-    { dir: 'ai/false-positives', group: 'AI · False Positives', tag: 'Resolved' },
-    { dir: 'ai/bottlenecks', group: 'AI · Bottlenecks', tag: 'Open' },
-    { dir: 'ai/candidates', group: 'AI · Candidates', tag: 'Scored' },
+/** Scans context/ at request time and returns every folder spec. New domains
+ *  and subfolders are picked up without a restart. */
+function discoverCorpus(): { dir: string; group: string; tag?: string }[] {
+    let domains: string[];
+    try {
+        domains = fs
+            .readdirSync(CONTEXT_ROOT, { withFileTypes: true })
+            .filter((d) => d.isDirectory())
+            .map((d) => d.name)
+            .sort();
+    } catch {
+        return [];
+    }
 
-    // ── Markets ───────────────────────────────────────────────────────────────
-    { dir: 'markets/frameworks', group: 'Markets · Frameworks', tag: 'Method' },
-    { dir: 'markets/canon', group: 'Markets · Canon', tag: 'Resolved' },
-    { dir: 'markets/regimes', group: 'Markets · Regimes', tag: 'Open' },
+    const specs: { dir: string; group: string; tag?: string }[] = [];
 
-    // ── Geopolitics ───────────────────────────────────────────────────────────
-    { dir: 'geopolitics/frameworks', group: 'Geopolitics · Frameworks', tag: 'Method' },
-    { dir: 'geopolitics/canon', group: 'Geopolitics · Canon', tag: 'Resolved' },
-    { dir: 'geopolitics/open', group: 'Geopolitics · Open', tag: 'Open' },
-];
+    for (const domain of domains) {
+        const domainPath = path.join(CONTEXT_ROOT, domain);
+        let subfolders: string[];
+        try {
+            subfolders = fs
+                .readdirSync(domainPath, { withFileTypes: true })
+                .filter((d) => d.isDirectory() && !EXCLUDED_DIRS.has(d.name))
+                .map((d) => d.name)
+                .sort();
+        } catch {
+            continue;
+        }
 
-/** Read fresh on every call so a newly added .md file is picked up without a
- *  restart. The corpus is small and the read is cheap. */
+        for (const sub of subfolders) {
+            specs.push({
+                dir: `${domain}/${sub}`,
+                group: `${domainLabel(domain)} · ${titleFromStem(sub)}`,
+                tag: FOLDER_TAGS[sub],
+            });
+        }
+    }
+
+    return specs;
+}
+
+/** Read fresh on every call so a newly added .md file or folder is picked up
+ *  without a restart. The corpus is small and the reads are cheap. */
 export function pageRefs(): PageRef[] {
-    return CORPUS.flatMap(({ dir, group, tag }) => refsFromFolder(dir, group, { tag }));
+    return discoverCorpus().flatMap(({ dir, group, tag }) => {
+        // Paradigm folders hold .json snapshots, not markdown.
+        if (dir.endsWith('/paradigm')) return refsFromParadigmFolder(dir, group);
+        return refsFromFolder(dir, group, { tag });
+    });
 }
 
 export function pageRefsMeta(): PageRefMeta[] {
@@ -186,9 +264,27 @@ export function buildFrameBlock(): string {
     ].join('\n');
 }
 
+/** The engine receives a dated snapshot of its own, so injecting the rolling
+ *  §2 beside it would give the model two incompatible baselines. Keep the laws
+ *  here and let the snapshot below be the sole answer to "what was normal?". */
+function buildScoringLawsBlock(): string {
+    const content = readMd(FRAME_FILE);
+    if (content.startsWith('[Content unavailable')) return '';
+    const paradigm = content.indexOf('# 2 — The prevailing paradigm');
+    const laws = paradigm === -1 ? content : content.slice(0, paradigm).trim();
+    return [
+        '─── I³ SCORING LAWS ─────────────────────────────────────────────────────────',
+        'These are the definitions only. The dated snapshot that follows is the sole',
+        'paradigm baseline for this paper; do not import the current paradigm.',
+        '',
+        laws,
+        '─── END OF I³ SCORING LAWS ─────────────────────────────────────────────────',
+    ].join('\n');
+}
+
 // ─── bottleneck index ────────────────────────────────────────────────────────
-// Name and status only. The engine needs to name a bottleneck on every paper,
-// and injecting all seven files in full would cost more than the paper does.
+// Rolling name and status only, retained for present-day/council surfaces.
+// Historical engine seats use the dated list inside their snapshot instead.
 
 export interface BottleneckMeta {
     slug: string;
@@ -225,3 +321,29 @@ export function buildBottleneckBlock(): string {
 export function frameReviewedAt(): string | null {
     return readMd(FRAME_FILE).match(/Last reviewed:\s*([\d-]+)/)?.[1] ?? null;
 }
+
+// ─── the seat context ────────────────────────────────────────────────────────
+
+/** Everything both engine seats read before they are given a job.
+ *
+ *  The analyst scores a paper and the critic checks that score; they must argue
+ *  from the same definitions, the same constraint surface and the same dated
+ *  paradigm, or the disagreement measures the gap between their briefings
+ *  rather than anything about the paper. Assembled here once so the two cannot
+ *  drift apart — they did once, when the paradigm reached the analyst alone and
+ *  left the critic judging I¹ from its own memory of what the field believed.
+ *
+ *  `when` is the paper's own date, so the paradigm is the one standing when it
+ *  was published rather than the newest on file. */
+export function buildSeatContext(when: string): string {
+    const paradigm = loadParadigm(when);
+    // Bottlenecks live inside the dated snapshot. Appending the rolling index
+    // here would recreate the hindsight bug that snapshots exist to prevent.
+    return [buildScoringLawsBlock(), paradigm ? renderParadigm(paradigm) : '']
+        .filter(Boolean)
+        .join('\n\n');
+}
+
+/** How much of a paper either seat reads. Shared so a critic can never be
+ *  challenging a score made on more text than it saw. */
+export const MAX_PAPER_CHARS = 60_000;

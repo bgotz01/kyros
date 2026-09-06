@@ -7,13 +7,23 @@
 import type { PaperRow } from '@/lib/engineData';
 import type { CriticSection } from '@/app/api/engine/critique/route';
 import type { External } from '@/app/api/engine/external/route';
-import { effectiveScore, lawBullets } from '@/lib/engineStore';
+import { effectiveScore } from '@/lib/engineStore';
 import Bullets from './Bullets';
+import IncentivesDetail from './IncentivesDetail';
 import InversionDetail from './InversionDetail';
 import PaperControls from './PaperControls';
+import InflectionDetail from './InflectionDetail';
 import RepoTag from './RepoTag';
 import { Panel, Rank } from './Disclosure';
-import { band, outcomeNote, rankHeadline, sourceUrl } from './format';
+import {
+    band,
+    contributionLabel,
+    outcomeNote,
+    paradigmLocation,
+    publicationLabel,
+    rankHeadline,
+    sourceUrl,
+} from './format';
 import { DETAIL_FOR, RANKS, heldScore, type FlagState, type RowKey, type RowState } from './types';
 
 export default function PaperCard({
@@ -24,7 +34,10 @@ export default function PaperCard({
     onOpenNote,
     onRun,
     onCritic,
+    onBreakdown,
+    onClear,
     external,
+    standingAssumption,
     busy,
 }: {
     paper: PaperRow;
@@ -34,7 +47,12 @@ export default function PaperCard({
     onOpenNote: (section: CriticSection) => void;
     onRun: () => void;
     onCritic: () => void;
+    onBreakdown: () => void;
+    onClear: () => void;
     external?: External;
+    /** The layer assumption from the sealed snapshot this paper was scored
+     *  against — the written claim I¹ was measured against. */
+    standingAssumption?: string;
     busy: boolean;
 }) {
     const stored = heldScore(state);
@@ -98,6 +116,14 @@ export default function PaperCard({
                             `NO ARXIV ID · ${paper.host ?? 'UNKNOWN'}`
                         )}
                         {external && <RepoTag external={external} />}
+                        {paper.published && (
+                            <>
+                                {' · '}
+                                <span className="border border-stone-line px-1.5 py-px text-[0.5rem] text-platinum-dim">
+                                    PUBLISHED {publicationLabel(paper.published)}
+                                </span>
+                            </>
+                        )}
                         {!paper.held && paper.id && ' · NOT PULLED'}
                         {score?.truncated && ' · TRUNCATED'}
                         {score && ` · ${band(score.product)}`}
@@ -119,6 +145,8 @@ export default function PaperCard({
                     failed={state.status === 'error'}
                     onRun={onRun}
                     onCritic={onCritic}
+                    onBreakdown={onBreakdown}
+                    onClear={onClear}
                 />
             </header>
 
@@ -140,11 +168,33 @@ export default function PaperCard({
                     >
                         <div className="flex flex-col gap-4">
                             <Bullets items={score.summary} />
-                            <p className="font-mono text-[0.52rem] uppercase tracking-[0.16em] text-platinum-dim">
-                                {score.category} · {score.level} · {score.inversion.magnitude} ·{' '}
-                                {score.confidence} confidence
-                                {critique && ` · critic ${critique.notes.filter((n) => !n.agrees).length}/4`}
-                            </p>
+                            <div className="grid gap-px border border-stone-line bg-stone-line sm:grid-cols-[0.9fr_1.4fr_0.7fr]">
+                                <div className="bg-obsidian-800 px-3 py-2">
+                                    <span className="block font-sans text-[0.48rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                        Contribution
+                                    </span>
+                                    <span className="mt-1 block font-sans text-[0.66rem] tracking-[0.03em] text-marble">
+                                        {contributionLabel(score)}
+                                    </span>
+                                </div>
+                                <div className="bg-obsidian-800 px-3 py-2">
+                                    <span className="block font-sans text-[0.48rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                        Paradigm location
+                                    </span>
+                                    <span className="mt-1 block font-sans text-[0.66rem] tracking-[0.03em] text-marble">
+                                        {paradigmLocation(score)}
+                                    </span>
+                                </div>
+                                <div className="bg-obsidian-800 px-3 py-2">
+                                    <span className="block font-sans text-[0.48rem] uppercase tracking-[0.22em] text-platinum-dim">
+                                        Reading confidence
+                                    </span>
+                                    <span className="mt-1 block font-mono text-[0.56rem] uppercase tracking-[0.12em] text-platinum">
+                                        {score.confidence}
+                                        {critique && ` · ${critique.notes.filter((n) => !n.agrees).length} objections`}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </Panel>
 
@@ -159,7 +209,7 @@ export default function PaperCard({
                                 r.key === 'incentives'
                                     ? outcomeNote(score)
                                     : r.key === 'inversion' && score.inversion.paradigm
-                                        ? `· ${score.inversion.paradigm} (${score.inversion.paradigmImportance}/10)`
+                                          ? `· ${score.inversion.paradigm} (${score.inversion.paradigmImportance}/10)`
                                         : undefined
                             }
                             open={Boolean(openRows[r.key])}
@@ -168,9 +218,19 @@ export default function PaperCard({
                             onFlag={() => onOpenNote(DETAIL_FOR[r.key])}
                         >
                             {r.key === 'inversion' ? (
-                                <InversionDetail score={score} />
+                                <InversionDetail
+                                    score={score}
+                                    standingAssumption={standingAssumption}
+                                />
+                            ) : r.key === 'incentives' ? (
+                                <IncentivesDetail score={score} />
                             ) : (
-                                <Bullets items={lawBullets(score, r.key)} />
+                                <InflectionDetail
+                                    score={score}
+                                    position={stored?.delta?.position}
+                                    proposes={stored?.delta?.proposes}
+                                    paradigmAsOf={stored?.delta?.paradigmAsOf}
+                                />
                             )}
                         </Rank>
                     ))}

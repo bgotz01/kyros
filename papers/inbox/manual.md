@@ -111,3 +111,96 @@
 - **A Geometric Calculator Inside a Neural Network** — www.goodfire.ai · Top AI Papers of the Week (May 11 - May 17) - 2026
 - **NanoGPT-Bench** — www.intology.ai · Top AI Papers of the Week (May 18 - May 24) - 2026
 - **General-Agent** — www.primeintellect.ai · Top AI Papers of the Week (May 18 - May 24) - 2026
+- **Mobile ALOHA** — mobile-aloha.github.io · Top AI Papers of the Week (January 1 - January 7) - 2024
+- **Persuasive Adversarial Prompts (PAP)** — chats-lab.github.io · Top AI Papers of the Week (January 8 - January 14) - 2024
+- **Adversarial Machine Learning (NIST)** — csrc.nist.gov · Top AI Papers of the Week (January 8 - January 14) - 2024
+- **AlphaGeometry** — www.nature.com · Top AI Papers of the Week (January 15 - January 21) - 2024
+- **ALOHA 2** — aloha-2.github.io · Top AI Papers of the Week (February 5 - February 11) - 2024
+- **Sora** — openai.com · Top AI Papers of the Week (February 12 - February 18) - 2024
+- **Gemini 1.5** — storage.googleapis.com · Top AI Papers of the Week (February 12 - February 18) - 2024
+- **V-JEPA** — ai.meta.com · Top AI Papers of the Week (February 12 - February 18) - 2024
+- **Stable Diffusion 3** — stability.ai · Top AI Papers of the Week (February 19 - February 25) - 2024
+- **Gemma** — storage.googleapis.com · Top AI Papers of the Week (February 19 - February 25) - 2024
+- **Mistral Large** — mistral.ai · Top AI Papers of the Week (February 26 - March 3) - 2024
+- **On the Societal Impact of Open Foundation Models** — crfm.stanford.edu · Top AI Papers of the Week (February 26 - March 3) - 2024
+- **StarCoder 2** — huggingface.co · Top AI Papers of the Week (February 26 - March 3) - 2024
+- **Claude 3** — www-cdn.anthropic.com · Top AI Papers of the Week (March 4 - March 10) - 2024
+- **SIMA** — storage.googleapis.com · Top AI Papers of the Week (March 11 - March 17) - 2024
+- **C4AI Command-R** — huggingface.co · Top AI Papers of the Week (March 11 - March 17) - 2024
+- **Grok-1** — x.ai · Top AI Papers of the Week (March 18 - March 25) - 2024
+- **TacticAI** — www.nature.com · Top AI Papers of the Week (March 18 - March 25) - 2024
+- **What Are Tools Anyway? A Survey of Tool Use in LLMs** — zorazrw.github.io · Top AI Papers of the Week (March 18 - March 25) - 2024
+- **DBRX** — www.databricks.com · Top AI Papers of the Week (March 26 - March 31) - 2024
+- **Grok-1.5** — x.ai · Top AI Papers of the Week (March 26 - March 31) - 2024
+- **SEEDS** — www.science.org · Top AI Papers of the Week (March 26 - March 31) - 2024
+- **Many-shot Jailbreaking** — www.anthropic.com · Top AI Papers of the Week (April 1 - April 7) - 2024
+- **JetMoE** — research.myshell.ai · Top AI Papers of the Week (April 1 - April 7) - 2024
+- **OpenEQA** — open-eqa.github.io · Top AI Papers of the Week (April 8 - April 14) - 2024
+- **CodeGemma** — storage.googleapis.com · Top AI Papers of the Week (April 8 - April 14) - 2024
+- **The Influence Between NLP and Other Fields** — aclanthology.org · Top AI Papers of the Week (April 8 - April 14) - 2024
+- **Llama 3** — ai.meta.com · Top AI Papers of the Week (April 15 - April 21) - 2024
+- **Mixtral 8x22B** — mistral.ai · Top AI Papers of the Week (April 15 - April 21) - 2024
+- **Arctic** — www.snowflake.com · Top AI Papers of the Week (April 22 - April 28) - 2024
+- **FineWeb** — huggingface.co · Top AI Papers of the Week (April 22 - April 28) - 2024
+- **AI-powered Gene Editors** — www.biorxiv.org · Top AI Papers of the Week (April 22 - April 28) - 2024
+- **AlphaFold 3** — blog.google · Top AI Papers of the Week (May 6 - May 12) - 2024
+- **DrEureka: Language Model Guided Sim-To-Real Transfer** — eureka-research.github.io · Top AI Papers of the Week (May 6 - May 12) - 2024
+- **GPT-4o** — openai.com · Top AI Papers of the Week (May 13 - May 19) - 2024
+- **Gemini 1.5 Flash** — storage.googleapis.com · Top AI Papers of the Week (May 13 - May 19) - 2024
+- **Veo** — deepmind.google · Top AI Papers of the Week (May 13 - May 19) - 2024
+- **Extracting Interpretable Features from Claude 3 Sonnet** — transformer-circuits.pub · Top AI Papers of the Week (May 20 - May 26) - 2024
+- **Financial Statement Analysis with LLMs** — papers.ssrn.com · Top AI Papers of the Week (May 27 - June 2) - 2024
+- **NLLB** — www.nature.com · Top AI Papers of the Week (June 3 - June 9) - 2024
+- **Extracting Concepts from GPT-4** — openai.com · Top AI Papers of the Week (June 3 - June 9) - 2024
+- **Nemotron-4 340B** — research.nvidia.com · Top AI Papers of the Week (June 10 - June 16) - 2024
+- **Mixture of Memory Experts** — github.com · Top AI Papers of the Week (June 10 - June 16) - 2024
+- **Claude 3.5 Sonnet** — www.anthropic.com · Top AI Papers of the Week (June 17 - June 23) - 2024
+- **DeepSeek-Coder-V2** — github.com · Top AI Papers of the Week (June 17 - June 23) - 2024
+- **Open-Sora** — github.com · Top AI Papers of the Week (June 17 - June 23) - 2024
+- **Tree Search for Language Model Agents** — jykoh.com · Top AI Papers of the Week (June 17 - June 23) - 2024
+- **ESM3** — evolutionaryscale-public.s3.us-east-2.amazonaws.com · Top AI Papers of the Week (June 24 - June 30) - 2024
+- **Gemma 2** — storage.googleapis.com · Top AI Papers of the Week (June 24 - June 30) - 2024
+- **LLM Compiler** — ai.meta.com · Top AI Papers of the Week (June 24 - June 30) - 2024
+- **CriticGPT** — cdn.openai.com · Top AI Papers of the Week (July 1 - July 7) - 2024
+- **FlashAttention-3** — tridao.me · Top AI Papers of the Week (July 8 - July 14) - 2024
+- **3DGen** — ai.meta.com · Top AI Papers of the Week (July 8 - July 14) - 2024
+- **Llama 3.1** — scontent.fbze2-1.fna.fbcdn.net · Top AI Papers of the Week (July 22 - July 28) - 2024
+- **AlphaProof & Alpha Geometry 2** — deepmind.google · Top AI Papers of the Week (July 22 - July 28) - 2024
+- **Model Collapse on Synthetic Data** — www.nature.com · Top AI Papers of the Week (July 22 - July 28) - 2024
+- **SAM 2** — ai.meta.com · Top AI Papers of the Week (August 5 - August 11) - 2024
+- **Grok-2** — x.ai · Top AI Papers of the Week (August 12 - August 18) - 2024
+- **AlphaProteo** — storage.googleapis.com · Top AI Papers of the Week (September 2 - September 8) - 2024
+- **Effective of AI on High Skilled Work** — papers.ssrn.com · Top AI Papers of the Week (September 2 - September 8) - 2024
+- **Learning to Reason with LLMs** — openai.com · Top AI Papers of the Week (September 9 - September 15) - 2024
+- **Chai-1** — www.chaidiscovery.com · Top AI Papers of the Week (September 9 - September 15) - 2024
+- **DataGemma** — docs.datacommons.org · Top AI Papers of the Week (September 9 - September 15) - 2024
+- **Moshi** — kyutai.org · Top AI Papers of the Week (September 16 - September 22) - 2024
+- **Llama 3.2** — ai.meta.com · Top AI Papers of the Week (September 23 - September 29) - 2024
+- ****Molmo** — molmo.allenai.org · Top AI Papers of the Week (September 23 - September 29) - 2024
+- **AlphaChip** — www.nature.com · Top AI Papers of the Week (September 23 - September 29) - 2024
+- **Scaled-up Instructable Model Become Less Reliable** — www.nature.com · Top AI Papers of the Week (September 23 - September 29) - 2024
+- **Movie Gen** — ai.meta.com · Top AI Papers of the Week (September 30 - October 6) - 2024
+- **First-Person Fairness in Chatbots** — cdn.openai.com · Top AI Papers of the Week (October 14 - October 20) - 2024
+- **Aya Expanse** — cohere.com · Top AI Papers of the Week (October 21 - October 27) - 2024
+- **Evaluation Feature Steering in LLMs** — www.anthropic.com · Top AI Papers of the Week (October 21 - October 27) - 2024
+- **Granite 3.0** — github.com · Top AI Papers of the Week (October 21 - October 27) - 2024
+- **Scalable Watermarking for LLMs** — www.nature.com · Top AI Papers of the Week (October 21 - October 27) - 2024
+- **SimpleQA** — openai.com · Top AI Papers of the Week (October 28 - November 3) - 2024
+- **Magentic-One** — www.microsoft.com · Top AI Papers of the Week (November 4 - November 10) - 2024
+- **Impacts of AI on Innovation** — aidantr.github.io · Top AI Papers of the Week (November 11 - November 17) - 2024
+- **Evo** — www.science.org · Top AI Papers of the Week (November 11 - November 17) - 2024
+- **The Surprising Effectiveness of Test-Time Training for Abstract Reasoning** — ekinakyurek.github.io · Top AI Papers of the Week (November 11 - November 17) - 2024
+- **AlphaQubit** — www.nature.com · Top AI Papers of the Week (November 18 - November 24) - 2024
+- **LLM Surpass Human Experts in Predicting Neuroscience Results** — www.nature.com · Top AI Papers of the Week (November 25 - December 1) - 2024
+- **Fugatto** — d1qx31qr3h6wln.cloudfront.net · Top AI Papers of the Week (November 25 - December 1) - 2024
+- **OpenAI o1** — cdn.openai.com · Top AI Papers of the Week (December 2 - December 8) - 2024
+- **Genie 2** — deepmind.google · Top AI Papers of the Week (December 2 - December 8) - 2024
+- **GenCast** — www.nature.com · Top AI Papers of the Week (December 2 - December 8) - 2024
+- **Challenges in Human-Agent Communication** — www.microsoft.com · Top AI Papers of the Week (December 2 - December 8) - 2024
+- **Clio** — assets.anthropic.com · Top AI Papers of the Week (December 9 - December 15) - 2024
+- **The Byte Latent Transformer (BLT)** — ai.meta.com · Top AI Papers of the Week (December 9 - December 15) - 2024
+- **Genesis** — genesis-embodied-ai.github.io · Top AI Papers of the Week (December 16 - December 22) - 2024
+- **DeepSeek-V3** — github.com · Top AI Papers of the Week (December 23 - December 29) - 2024
+- ****Large Concept Models** — ai.meta.com · Top AI Papers of the Week (December 23 - December 29) - 2024
+- **Explore Theory-of-Mind** — ai.meta.com · Top AI Papers of the Week (December 23 - December 29) - 2024
+- **LearnLM** — services.google.com · Top AI Papers of the Week (December 23 - December 29) - 2024

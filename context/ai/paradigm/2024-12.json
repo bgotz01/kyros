@@ -1,29 +1,111 @@
 {
   "asOf": "2024-12-31",
   "mode": "reconstructed",
-  "thesis": "Frontier capability comes from scaling Transformer pretraining and, newly, from spending compute at inference; the binding limits are industrial rather than algorithmic.",
-  "bindingConstraint": {
-    "layer": "compute",
-    "description": "Accelerator supply, advanced packaging and grid interconnection set the pace. These have multi-year lead times that do not respond to capital on a software timescale."
-  },
+  "thesis": "AI is dominated by large pretrained Transformer models, with inference-time reasoning emerging as a second path to greater capability. Chat remains the dominant interface, while agents, multimodality and open-weight models expand what the paradigm can do.",
+  "bottlenecks": [
+    {
+      "id": "compute-cost-and-availability",
+      "name": "Compute cost and availability",
+      "status": "binding",
+      "importance": 10,
+      "problem": "Frontier training needs tens of thousands of accelerators, and supply is bounded by fabrication, advanced packaging and the electricity a site can obtain.",
+      "evidence": [
+        "NVIDIA Blackwell announced with rack-scale power requirements \u2014 2024-03",
+        "CoWoS packaging repeatedly identified as the accelerator supply constraint \u2014 2023/2024",
+        "IEA Electricity 2024, data-centre demand outlook \u2014 2024-01"
+      ]
+    },
+    {
+      "id": "reliability",
+      "name": "Reliability",
+      "status": "binding",
+      "importance": 10,
+      "problem": "Models remain confidently wrong, errors compound across multi-step work, and the human verification needed to catch them can erase the value of generating anything.",
+      "evidence": [
+        "SWE-bench Verified \u2014 2024-08",
+        "AgentBench \u2014 2023-08",
+        "TruthfulQA \u2014 2021-09"
+      ]
+    },
+    {
+      "id": "agency",
+      "name": "Agency",
+      "status": "binding",
+      "importance": 9,
+      "problem": "Models can call tools but cannot be trusted to carry out long tasks unattended, and nothing exists to make delegated authority accountable.",
+      "evidence": [
+        "Claude computer use released with reliability caveats \u2014 2024-10",
+        "Devin announced \u2014 2024-03",
+        "EU AI Act entered into force \u2014 2024-08"
+      ]
+    },
+    {
+      "id": "closed-frontier",
+      "name": "Closed frontier",
+      "status": "partially-relieved",
+      "importance": 8,
+      "problem": "The leading models are API-only and disclose neither their data nor their training method, though capable open weights are now released within months of them.",
+      "evidence": [
+        "GPT-4o and Claude 3.5 released without architecture or data disclosure \u2014 2024",
+        "Llama 3.1 405B open weights \u2014 2024-07",
+        "Qwen2.5 open weights \u2014 2024-09",
+        "DeepSeek-V3 open weights with published method \u2014 2024-12"
+      ]
+    },
+    {
+      "id": "context-and-memory",
+      "name": "Context and memory",
+      "status": "binding",
+      "importance": 9,
+      "problem": "Weights are frozen at training. Context windows are long but nothing accumulates across sessions, so a model never learns from the work it does.",
+      "evidence": [
+        "Gemini 1.5 Pro 1M context \u2014 2024-02",
+        "Claude 200k context \u2014 2023-11",
+        "retrieval remains the standard substitute for memory \u2014 2024"
+      ]
+    },
+    {
+      "id": "data-quality-and-supply",
+      "name": "Data quality and supply",
+      "status": "binding",
+      "importance": 9,
+      "problem": "The supply of new high-quality public text is increasingly constrained, while legal access is narrowing through litigation and licensing.",
+      "evidence": [
+        "Will We Run Out of Data?, revised \u2014 2024-06",
+        "New York Times v. OpenAI \u2014 2023-12",
+        "major publisher licensing agreements \u2014 2024"
+      ]
+    },
+    {
+      "id": "inference-cost-and-latency",
+      "name": "Inference cost and latency",
+      "status": "partially-relieved",
+      "importance": 8,
+      "problem": "Per-token prices have fallen sharply, but the reasoning models that answer hardest questions spend far more compute per answer and are correspondingly slow.",
+      "evidence": [
+        "GPT-4o mini pricing \u2014 2024-07",
+        "o1-preview trading latency for accuracy \u2014 2024-09",
+        "sustained per-token price declines across providers \u2014 2024"
+      ]
+    },
+    {
+      "id": "customization",
+      "name": "Customization",
+      "status": "partially-relieved",
+      "importance": 7,
+      "problem": "Adapting a model to a domain or organisation is easier than it was, but the best models still cannot be fine-tuned at all.",
+      "evidence": [
+        "LoRA and PEFT routine on open models \u2014 2024",
+        "structured outputs and function calling \u2014 2024",
+        "fine-tuning unavailable on leading closed models \u2014 2024"
+      ]
+    }
+  ],
   "layers": [
     {
       "layer": "compute",
-      "paradigm": "Datacenter-scale fleets of NVIDIA H100/H200-class accelerators",
-      "assumption": "Frontier capability requires large accelerator clusters, with NVIDIA-class GPUs as the practical default.",
-      "distribution": {
-        "basis": "training hardware of 8 frontier-scale runs described publicly 2023-2024 \u2014 GPT-4/4o, Llama 3.1 405B, Grok-2, DeepSeek-V3, Qwen2.5, Mistral Large 2, Claude 3.5 (NVIDIA-class); Gemini 1.5 (TPU)",
-        "entries": [
-          {
-            "value": "NVIDIA GPU",
-            "share": 0.875
-          },
-          {
-            "value": "TPU",
-            "share": 0.125
-          }
-        ]
-      },
+      "paradigm": "NVIDIA GPU datacenters dominate frontier training",
+      "assumption": "Frontier capability requires large accelerator clusters, with NVIDIA GPUs as the industry default.",
       "frontier": [
         "TPU v5p / v6",
         "AWS Trainium2",
@@ -48,7 +130,7 @@
       "paradigm": "Decoder-only Transformers, dense and sparse (Mixture-of-Experts)",
       "assumption": "Transformer attention remains the architecture for frontier models; gains come from sparsity, scale and multimodality rather than from replacing attention.",
       "distribution": {
-        "basis": "architecture family of frontier-scale models released 2023-2024; every one publicly described is attention-based",
+        "basis": "architecture family of 8 selected frontier-scale production models released 2023-2024 \u2014 GPT-4/4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, Llama 3.1 405B, Grok-2, DeepSeek-V3, Qwen2.5-72B, Mistral Large 2; every publicly described example in this sample is attention-based",
         "entries": [
           {
             "value": "Transformer",
@@ -78,14 +160,13 @@
     },
     {
       "layer": "training",
-      "paradigm": "Large-scale pretraining followed by preference-based post-training (SFT, RLHF/DPO)",
-      "assumption": "Capability comes from pretraining; behaviour and alignment come from preference-based post-training on human judgements.",
+      "paradigm": "Large-scale pretraining followed by increasingly capability-enhancing post-training",
+      "assumption": "Pretraining creates the base model, while post-training can now improve capabilities such as reasoning rather than merely shape behaviour.",
       "frontier": [
         "reinforcement learning on verifiable rewards",
         "process reward models and step-level supervision",
         "large-scale synthetic and self-generated training data",
-        "distillation from frontier models",
-        "constitutional / AI-generated feedback"
+        "distillation of reasoning traces into smaller models"
       ],
       "importance": 9,
       "evidence": [
@@ -100,7 +181,7 @@
     {
       "layer": "data",
       "paradigm": "Web-scale crawl, increasingly licensed, supplemented by large synthetic corpora",
-      "assumption": "High-quality public text is close to exhausted and access to it is closing.",
+      "assumption": "Continued scaling requires increasingly curated, proprietary, licensed or synthetic data as easily accessible high-quality public text becomes constrained.",
       "frontier": [
         "synthetic and self-generated data at pretraining scale",
         "licensed and proprietary corpora",
@@ -118,11 +199,12 @@
     },
     {
       "layer": "scaling",
-      "paradigm": "Compute-optimal pretraining scaling, with inference compute as a second axis",
-      "assumption": "Capability follows training compute at predictable exponents.",
+      "paradigm": "Capability scales along two compute axes: training-time compute and inference-time reasoning compute",
+      "assumption": "More compute can improve capability both before deployment through training and during inference through extended reasoning.",
       "frontier": [
-        "test-time / inference-time compute scaling",
-        "distillation into small efficient models",
+        "adaptive allocation of inference compute per query",
+        "search and parallel sampling over reasoning traces",
+        "distillation of long reasoning into short inference",
         "sparse scaling at constant active compute"
       ],
       "importance": 10,
@@ -155,13 +237,12 @@
     },
     {
       "layer": "interface",
-      "paradigm": "Conversational chat as the dominant surface, API for developers, agents emerging",
-      "assumption": "General AI capability is reached through conversational interfaces.",
+      "paradigm": "Conversational multimodal assistants with realtime voice dominate, while agents and IDE-native AI emerge",
+      "assumption": "The primary end-user interface for general AI is conversational chat.",
       "frontier": [
         "computer-use and browser agents",
         "autonomous coding agents",
-        "multi-agent orchestration",
-        "realtime voice interfaces"
+        "multi-agent orchestration"
       ],
       "importance": 8,
       "evidence": [
@@ -175,21 +256,8 @@
     },
     {
       "layer": "economics",
-      "paradigm": "Nine-to-ten-figure training runs; frontier capability split between closed API-only models and open-weight releases months behind",
-      "assumption": "Frontier capability requires capital that only a handful of organisations command.",
-      "distribution": {
-        "basis": "weight availability of 8 frontier-class models released 2024 \u2014 Llama 3.1 405B, Qwen2.5-72B, DeepSeek-V3, Mistral Large 2 (weights published); GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, Grok-2 (closed)",
-        "entries": [
-          {
-            "value": "Closed weights",
-            "share": 0.5
-          },
-          {
-            "value": "Open weights",
-            "share": 0.5
-          }
-        ]
-      },
+      "paradigm": "Frontier development remains concentrated among well-capitalised labs, but capable open-weight models and rapidly falling inference prices broaden access",
+      "assumption": "Training the best models requires capital and compute available to only a small number of organisations.",
       "frontier": [
         "open-weight models at or near frontier capability",
         "order-of-magnitude cheaper training runs",

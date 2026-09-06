@@ -4649,6 +4649,3063 @@
         "chroma-core/chromaAccessed",
         "PyCQA/bandit"
       ]
+    },
+    "2401.01313": {
+      "title": "Mitigating Hallucination in LLMs",
+      "repos": []
+    },
+    "2401.01335": {
+      "title": "Self-Play Fine-Tuning (SPIN)",
+      "repos": [
+        "uclaml/SPIN"
+      ]
+    },
+    "2401.02415": {
+      "title": "LLaMA Pro",
+      "repos": [
+        "TencentARC/LLaMA-Pro",
+        "EleutherAI/lm-evaluation-harness",
+        "bigcode-project/bigcode-evaluation-harness",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2401.02412": {
+      "title": "LLM Augmented LLMs (CALM)",
+      "repos": []
+    },
+    "2312.17238": {
+      "title": "Fast Inference of Mixture-of-Experts",
+      "repos": [
+        "dvmazur/mixtral-offloading"
+      ]
+    },
+    "2401.01614": {
+      "title": "SeeAct (GPT-4V as Generalist Web Agent)",
+      "repos": [
+        "OSU-NLP-Group/SeeAct"
+      ]
+    },
+    "2401.00908": {
+      "title": "DocLLM",
+      "repos": []
+    },
+    "2401.00812": {
+      "title": "How Code Empowers LLMs",
+      "repos": []
+    },
+    "2401.01952": {
+      "title": "Instruct-Imagen",
+      "repos": [
+        "google/paxml"
+      ]
+    },
+    "2401.05335": {
+      "title": "InseRF",
+      "repos": []
+    },
+    "2401.05566": {
+      "title": "Sleeper Agents",
+      "repos": [
+        "anthropics/sleeper-agents-paper"
+      ]
+    },
+    "2401.02994": {
+      "title": "Blending Is All You Need",
+      "repos": []
+    },
+    "2401.04468": {
+      "title": "MagicVideo-V2",
+      "repos": []
+    },
+    "2401.05561": {
+      "title": "TrustLLM (Trustworthiness in LLMs)",
+      "repos": [
+        "HowieHwong/TrustLLM",
+        "nrimsky/LM-exp",
+        "Instruction-Tuning-with-GPT-4/GPT-4-LLM",
+        "verazuo/jailbreak_llms",
+        "shibing624/MedicalGPT",
+        "irlab-sdu/fuzi.mingcha",
+        "blcuicall/taoli",
+        "open-compass/opencompass",
+        "THUDM/ChatGLM2-6B",
+        "Dao-AILab/flash-attention"
+      ]
+    },
+    "2401.04398": {
+      "title": "Chain-of-Table",
+      "repos": [
+        "HKUNLP/Binder",
+        "AlibabaResearch/DAMO-ConvAI",
+        "wenhuchen/TableCoT"
+      ]
+    },
+    "2401.02777": {
+      "title": "RAISE",
+      "repos": []
+    },
+    "2310.11324": {
+      "title": "Quantifying Prompt-Format Sensitivity",
+      "repos": [
+        "msclar/formatspread"
+      ]
+    },
+    "2401.08500": {
+      "title": "AlphaCodium",
+      "repos": [
+        "Codium-ai/AlphaCodium"
+      ]
+    },
+    "2401.08406": {
+      "title": "RAG vs. Finetuning",
+      "repos": [
+        "kermitt2/grobid",
+        "guidance-ai/guidance",
+        "AI4Finance-Foundation/FinGPT",
+        "openlm-research/open_llama",
+        "microsoft/farmvibes-ai",
+        "jalan/pdftotext",
+        "py-pdf/pypdf"
+      ]
+    },
+    "2401.10020": {
+      "title": "Self-Rewarding Language Models",
+      "repos": [
+        "tatsu-lab/alpaca_eval",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2401.08565": {
+      "title": "Tuning Language Models by Proxy",
+      "repos": [
+        "alisawuffles/proxy-tuning",
+        "openai/tiktoken",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2401.08967": {
+      "title": "ReFT (Reinforced Fine-Tuning)",
+      "repos": [
+        "lqtrung1998/mwp_ReFT",
+        "huggingface/accelerate",
+        "huggingface/trl"
+      ]
+    },
+    "2401.07103": {
+      "title": "Overview of LLMs for Evaluation",
+      "repos": [
+        "vllm-project/vllm",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2401.06102": {
+      "title": "Patchscopes",
+      "repos": [
+        "kingoflolz/mesh-transformer-jax",
+        "siznax/wptools"
+      ]
+    },
+    "2401.06751": {
+      "title": "Easy-to-Hard Generalization",
+      "repos": [
+        "allenai/easy-to-hard-generalization",
+        "huggingface/peft"
+      ]
+    },
+    "2401.04081": {
+      "title": "MoE-Mamba",
+      "repos": [
+        "togethercomputer/RedPajama-Data",
+        "kingoflolz/mesh-transformer-jax",
+        "XueFuzhao/OpenMoE",
+        "llm-random/llm-random"
+      ]
+    },
+    "2401.10891": {
+      "title": "Depth Anything",
+      "repos": [
+        "open-mmlab/mmsegmentation"
+      ]
+    },
+    "2401.10491": {
+      "title": "Knowledge Fusion of LLMs (FuseLLM)",
+      "repos": [
+        "fanqiwan/FuseLLM"
+      ]
+    },
+    "2401.13660": {
+      "title": "MambaByte",
+      "repos": [
+        "state-spaces/mamba",
+        "lucidrains/MEGABYTE-pytorch"
+      ]
+    },
+    "2401.13795": {
+      "title": "Diffuse to Choose",
+      "repos": []
+    },
+    "2401.12187": {
+      "title": "WARM (Weighted Averaged Reward Models)",
+      "repos": []
+    },
+    "2401.08092": {
+      "title": "Resource-efficient LLMs & Multimodal Foundation Models",
+      "repos": [
+        "UbiquitousLearning/Efficient_Foundation_Model_Survey",
+        "microsoft/DeepSpeed",
+        "huggingface/peft",
+        "huggingface/text-generation-inference",
+        "ModelTC/lightllm",
+        "InternLM/lmdeploy",
+        "mlc-ai/mlc-llm",
+        "UbiquitousLearning/mllm",
+        "wangzhaode/mnn-llm",
+        "NVIDIA/TensorRT-LLM",
+        "ray-project/ray-llm",
+        "FasterDecoding/Medusa",
+        "facebookresearch/fairscale",
+        "ggerganov/ggml",
+        "ggerganov/llama.cpp",
+        "intel/intel-extension-for-transformers",
+        "bentoml/OpenLLM"
+      ]
+    },
+    "2401.12915": {
+      "title": "Red Teaming Visual Language Models",
+      "repos": [
+        "clovaai/donut"
+      ]
+    },
+    "2401.12945": {
+      "title": "Lumiere",
+      "repos": []
+    },
+    "2401.10774": {
+      "title": "Medusa",
+      "repos": [
+        "OpenAccess-AI-Collective/axolotl",
+        "tatsu-lab/alpaca_eval",
+        "feifeibear/LLMSpeculativeSampling"
+      ]
+    },
+    "2401.13178": {
+      "title": "AgentBoard",
+      "repos": [
+        "hkust-nlp/AgentBoard"
+      ]
+    },
+    "2402.00838": {
+      "title": "OLMo",
+      "repos": [
+        "nomic-ai/gpt4all",
+        "tatsu-lab/stanford_alpaca",
+        "teknium1/GPTeacher",
+        "hendrycks/test",
+        "sylinrl/TruthfulQA"
+      ]
+    },
+    "2401.13601": {
+      "title": "Advances in Multimodal LLMs",
+      "repos": [
+        "InternLM/xtuner",
+        "THUDM/ChatGLM-6B"
+      ]
+    },
+    "2401.15884": {
+      "title": "Corrective RAG (CRAG)",
+      "repos": [
+        "HuskyInSalt/CRAG"
+      ]
+    },
+    "2402.00157": {
+      "title": "LLMs for Mathematical Reasoning",
+      "repos": []
+    },
+    "2401.15347": {
+      "title": "Compression Algorithms for LLMs",
+      "repos": []
+    },
+    "2401.15947": {
+      "title": "MoE-LLaVA",
+      "repos": [
+        "PKU-YuanGroup/MoE-LLaVA",
+        "facebookresearch/llama",
+        "01-ai/Yi",
+        "FlagAI-Open/Aquila2",
+        "SUSTech-IDEA/SUS-Chat"
+      ]
+    },
+    "2401.16380": {
+      "title": "Rephrasing the Web (WRAP)",
+      "repos": [
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2401.14887": {
+      "title": "The Power of Noise: Redefining Retrieval in RAG",
+      "repos": [
+        "florin-git/The-Power-of-Noise",
+        "Garrachonr/LlamaDos"
+      ]
+    },
+    "2402.00253": {
+      "title": "Hallucination in LVLMs",
+      "repos": [
+        "lhanchao777/LVLM-Hallucinations-Survey"
+      ]
+    },
+    "2401.15024": {
+      "title": "SliceGPT",
+      "repos": [
+        "microsoft/TransformerCompression",
+        "huggingface/peft",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2402.04494": {
+      "title": "Grandmaster-Level Chess Without Search",
+      "repos": [
+        "google-deepmind/searchless_chess",
+        "lichess-bot-devs/lichess-bot",
+        "google/jax",
+        "deepmind/dm-haiku"
+      ]
+    },
+    "2402.04253": {
+      "title": "AnyTool",
+      "repos": [
+        "dyabel/AnyTool"
+      ]
+    },
+    "2402.03902": {
+      "title": "Phase Transition in Dot-Product Attention",
+      "repos": [
+        "SPOC-group/positional-and-semantic-attention"
+      ]
+    },
+    "2402.03667": {
+      "title": "Indirect Reasoning with LLMs (DIR)",
+      "repos": []
+    },
+    "2402.05120": {
+      "title": "More Agents Is All You Need",
+      "repos": [
+        "MoreAgentsIsAllYouNeed/AgentForest"
+      ]
+    },
+    "2402.03620": {
+      "title": "Self-Discover",
+      "repos": []
+    },
+    "2402.03300": {
+      "title": "DeepSeekMath",
+      "repos": [
+        "deepseek-ai/DeepSeek-Math",
+        "InternLM/InternLM-Math",
+        "openai/prm800k",
+        "THUDM/ChatGLM3",
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2402.05121": {
+      "title": "LLMs for Table Processing: A Survey",
+      "repos": []
+    },
+    "2402.01680": {
+      "title": "LLM-based Multi-Agent Systems Survey",
+      "repos": [
+        "taichengguo/LLM_MultiAgents_Survey_Papers",
+        "joaomdmoura/crewAI"
+      ]
+    },
+    "2402.08268": {
+      "title": "Large World Model (LWM)",
+      "repos": [
+        "Arize-ai/LLMTest_NeedleInAHaystack",
+        "google/jax",
+        "kakaobrain/coyo-dataset",
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2402.06184": {
+      "title": "The Boundary of Neural Network Trainability is Fractal",
+      "repos": [
+        "Sohl-Dickstein/fractal"
+      ]
+    },
+    "2402.07456": {
+      "title": "OS-Copilot",
+      "repos": [
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2402.09171": {
+      "title": "TestGen-LLM",
+      "repos": []
+    },
+    "2402.06852": {
+      "title": "ChemLLM",
+      "repos": []
+    },
+    "2402.06196": {
+      "title": "Survey of LLMs",
+      "repos": [
+        "bofenghuang/vigogne",
+        "yandex/YaLM-100B",
+        "ContextualAI/HALOs",
+        "togethercomputer/stripedhyena",
+        "microsoft/DeepSpeed",
+        "huggingface/transformers",
+        "NVIDIA/Megatron-LM",
+        "OpenBMB/BMTrain",
+        "EleutherAI/gpt-neox",
+        "microsoft/LoRA",
+        "hpcaitech/ColossalAI",
+        "lm-sys/FastChat",
+        "skypilot-org/skypilot",
+        "vllm-project/vllm",
+        "huggingface/text-generation-inference",
+        "langchain-ai/langchain",
+        "bentoml/OpenLLM",
+        "embedchain/embedchain",
+        "microsoft/autogen",
+        "yoheinakajima/babyagi",
+        "guidance-ai/guidance",
+        "hegelai/prompttools",
+        "promptfoo/promptfoo",
+        "facebookresearch/faiss",
+        "milvus-io/milvus",
+        "qdrant/qdrant",
+        "weaviate/weaviate",
+        "run-llama/llama_index"
+      ]
+    },
+    "2402.06664": {
+      "title": "LLM Agents Can Autonomously Hack Websites",
+      "repos": []
+    },
+    "2402.13446": {
+      "title": "LLMs for Data Annotation",
+      "repos": [
+        "Zhen-Tan-dmml/LLM4Annotation"
+      ]
+    },
+    "2402.09906": {
+      "title": "GRIT",
+      "repos": [
+        "ContextualAI/gritlm"
+      ]
+    },
+    "2402.12354": {
+      "title": "LoRA+",
+      "repos": [
+        "nikhil-ghosh-berkeley/loraplus"
+      ]
+    },
+    "2402.14740": {
+      "title": "Back to Basics: Revisiting REINFORCE in RLHF",
+      "repos": [
+        "openai/summarize-from-feedback"
+      ]
+    },
+    "2402.10790": {
+      "title": "Recurrent Memory Finds What LLMs Miss",
+      "repos": [
+        "booydar/babilong",
+        "langchain-ai/langchain"
+      ]
+    },
+    "2402.10890": {
+      "title": "When is Tree Search Useful for LLM Planning?",
+      "repos": [
+        "OSU-NLP-Group/llm-planning-eval"
+      ]
+    },
+    "2402.10200": {
+      "title": "Chain-of-Thought Reasoning Without Prompting",
+      "repos": []
+    },
+    "2402.14658": {
+      "title": "OpenCodeInterpreter",
+      "repos": [
+        "sahil280114/codealpaca"
+      ]
+    },
+    "2402.15391": {
+      "title": "Genie",
+      "repos": []
+    },
+    "2402.17764": {
+      "title": "The Era of 1-bit LLMs (BitNet b1.58)",
+      "repos": [
+        "ggerganov/llama.cpp",
+        "NVIDIA/FasterTransformer",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2402.18041": {
+      "title": "Datasets for LLMs: A Comprehensive Survey",
+      "repos": [
+        "lmmlzn/Awesome-LLMs-Datasets",
+        "wangrui6/Zhihu-KOL",
+        "PlexPt/chatgpt-corpus",
+        "CMKRG/QiZhenGPT",
+        "shibing624/MedicalGPT",
+        "HIT-SCIR-SC/QiaoBan",
+        "lm-sys/vicuna-blog-eval",
+        "jizijing/C-CLUE",
+        "llmeval/llmeval-3",
+        "THUDM/ChatGLM2-6B",
+        "Significant-Gravitas/AutoGPT",
+        "reworkd/AgentGPT",
+        "CLUEbenchmark/SuperCLUE-Agent",
+        "michael-wzhu/PromptCBLUE",
+        "Duxiaoman-DI/XuanYuan",
+        "CLUEbenchmark/SuperCLUE-safety",
+        "jeinlee1991/chinese-llm-benchmark",
+        "FlagOpen/FlagEval",
+        "baidu/DuReader",
+        "Toyhom/Chinese-medical-dialogue-data",
+        "CLUEbenchmark/CLUE",
+        "thunlp/THUCTC",
+        "LianjiaTech/BELLE",
+        "ethancaballero/description2code",
+        "sahil280114/codealpaca",
+        "open-compass/opencompass",
+        "DUOMO/TransGPT",
+        "siat-nlp/HanFei",
+        "LC1332/Luotuo-QA",
+        "LiuHC0428/LAW_GPT",
+        "MetaGLM/FinGLM",
+        "esbatmop/MNBVC",
+        "XueFuzhao/InstructionWild",
+        "OpenLMLab/MOSS",
+        "tatsu-lab/stanford_alpaca",
+        "michael-wzhu/ShenNong-TCM-LLM",
+        "ziliwangnlp/RedGPT",
+        "yangjianxin1/Firefly",
+        "blcuicall/taoli",
+        "llmeval/llmeval-2",
+        "llmeval/llmeval-1",
+        "OpenBMB/InfiniteBench",
+        "michael-wzhu/ChatMed",
+        "LC1332/Chinese-alpaca-lora"
+      ]
+    },
+    "2402.15809": {
+      "title": "LearnAct",
+      "repos": []
+    },
+    "2402.17485": {
+      "title": "EMO: Emote Portrait Alive",
+      "repos": []
+    },
+    "2402.17944": {
+      "title": "LLMs on Tabular Data: A Survey",
+      "repos": [
+        "tanfiona/LLM-on-Tabular-Data-Prediction-Table-Understanding-Data-Generation",
+        "kathrinse/be_great",
+        "ZhangTP1996/TapTap",
+        "zhao-zilong/Tabula",
+        "Yale-LILY/FeTaQA",
+        "wenhuchen/HybridQA",
+        "google-research-datasets/natural-questions",
+        "entitize/HybridDialogue",
+        "salesforce/WikiSQL",
+        "google-research-datasets/ToTTo",
+        "microsoft/HiTab",
+        "IBM/AITQA",
+        "NExTplusplus/TAT-QA",
+        "UKPLab/SciGen",
+        "pcyin/tranX",
+        "facebookresearch/TaBERT",
+        "google-research/tapas"
+      ]
+    },
+    "2402.19273": {
+      "title": "PlanGPT",
+      "repos": [
+        "PKU-YuanGroup/ChatLaw",
+        "HIT-SCIR/Chinese-Mixtral-8x7B",
+        "XiaoLeGG/mobility-agent",
+        "tatsu-lab/stanford_alpaca",
+        "InternLM/lagent"
+      ]
+    },
+    "2402.19450": {
+      "title": "Robust Evaluation of Reasoning",
+      "repos": [
+        "consequentai/fneval"
+      ]
+    },
+    "2403.03507": {
+      "title": "GaLore",
+      "repos": [
+        "LianjiaTech/BELLE"
+      ]
+    },
+    "2403.04121": {
+      "title": "Can LLMs Reason and Plan?",
+      "repos": []
+    },
+    "2402.19473": {
+      "title": "RAG for AI-Generated Content",
+      "repos": [
+        "PKU-DAIR/RAG-Survey",
+        "zilliztech/GPTCache",
+        "jerryjliu/llama_index",
+        "dair-ai/Prompt-Engineering-Guide",
+        "truera/trulens",
+        "langchain-ai/langchain"
+      ]
+    },
+    "2403.03101": {
+      "title": "KnowAgent",
+      "repos": [
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2402.17177": {
+      "title": "Sora Overview",
+      "repos": [
+        "lichao-sun/SoraReview"
+      ]
+    },
+    "2403.03883": {
+      "title": "SaulLM-7B: LLM for Law",
+      "repos": [
+        "umarbutler/open-australian-legal-corpus-creator",
+        "huggingface/trl"
+      ]
+    },
+    "2403.03163": {
+      "title": "Design2Code",
+      "repos": [
+        "kakaobrain/coyo-dataset"
+      ]
+    },
+    "2403.02151": {
+      "title": "TripoSR",
+      "repos": [
+        "VAST-AI-Research/TripoSR",
+        "3DTopia/OpenLRM"
+      ]
+    },
+    "2403.05313": {
+      "title": "Retrieval Augmented Thoughts (RAT)",
+      "repos": []
+    },
+    "2403.09629": {
+      "title": "Quiet-STaR",
+      "repos": []
+    },
+    "2403.08319": {
+      "title": "Knowledge Conflicts for LLMs",
+      "repos": [
+        "pillowsofwind/Knowledge-Conflicts-Survey"
+      ]
+    },
+    "2403.06634": {
+      "title": "Stealing Part of a Production Language Model",
+      "repos": [
+        "justinchiu/openlogprobs",
+        "dpaleka/stealing-part-lm-supplementary"
+      ]
+    },
+    "2403.07816": {
+      "title": "Branch-Train-MiX (BTX)",
+      "repos": []
+    },
+    "2403.03230": {
+      "title": "LLMs Predict Neuroscience Results (BrainBench)",
+      "repos": [
+        "braingpt-lovelab/BrainBench"
+      ]
+    },
+    "2403.05440": {
+      "title": "Is Cosine-Similarity Really About Similarity?",
+      "repos": []
+    },
+    "2403.09611": {
+      "title": "MM1: Multimodal LLM Pre-training",
+      "repos": []
+    },
+    "2403.13187": {
+      "title": "Evolutionary Model Merge",
+      "repos": [
+        "openai/grade-school-math",
+        "Stability-AI/lm-evaluation-harness",
+        "AUTOMATIC1111/stable-diffusion-webui",
+        "GAIR-NLP/abel",
+        "arcee-ai/mergekit"
+      ]
+    },
+    "2403.12373": {
+      "title": "RankPrompt: Step-by-Step Comparisons Make LLMs Better Reasoners",
+      "repos": []
+    },
+    "2403.05286": {
+      "title": "LLM4Decompile",
+      "repos": [
+        "albertan017/LLM4Decompile"
+      ]
+    },
+    "2403.12881": {
+      "title": "Agent-FLAN",
+      "repos": [
+        "InternLM/Agent-FLAN"
+      ]
+    },
+    "2403.09539": {
+      "title": "Logits of API-Protected LLMs Leak Proprietary Information",
+      "repos": []
+    },
+    "2403.12945": {
+      "title": "DROID",
+      "repos": []
+    },
+    "2403.10131": {
+      "title": "RAFT: Retrieval-Augmented Fine-Tuning",
+      "repos": [
+        "ShishirPatil/gorilla"
+      ]
+    },
+    "2403.16977": {
+      "title": "LLMs on University-Level Physics Coding",
+      "repos": [
+        "WillYeadon/AI-Exam-Completion"
+      ]
+    },
+    "2403.18814": {
+      "title": "Mini-Gemini",
+      "repos": [
+        "dvlab-research/MiniGemini",
+        "tatsu-lab/stanford_alpaca",
+        "PaddlePaddle/PaddleOCR"
+      ]
+    },
+    "2403.18802": {
+      "title": "Long-form factuality in LLMs",
+      "repos": [
+        "google-deepmind/long-form-factuality"
+      ]
+    },
+    "2311.05657": {
+      "title": "Agent Lumos",
+      "repos": [
+        "allenai/lumos",
+        "princeton-nlp/WebShop"
+      ]
+    },
+    "2403.16971": {
+      "title": "AIOS",
+      "repos": [
+        "agiresearch/AIOS",
+        "OpenInterpreter/open-interpreter",
+        "openai/human-eval"
+      ]
+    },
+    "2403.15246": {
+      "title": "FollowIR",
+      "repos": [
+        "orionw/FollowIR",
+        "hiyouga/LLaMA-Factory"
+      ]
+    },
+    "2403.15042": {
+      "title": "LLM2LLM",
+      "repos": [
+        "SqueezeAILab/LLM2LLM",
+        "da03/implicit_chain_of_thought",
+        "huggingface/peft"
+      ]
+    },
+    "2405.15793": {
+      "title": "SWE-Agent",
+      "repos": [
+        "meta-llama/llama3",
+        "matplotlib/matplotlib",
+        "sympy/sympy"
+      ]
+    },
+    "2404.02258": {
+      "title": "Mixture-of-Depths",
+      "repos": []
+    },
+    "2404.02060": {
+      "title": "Long-context LLMs Struggle with Long In-Context Learning",
+      "repos": []
+    },
+    "2404.03622": {
+      "title": "Visualization-of-Thought",
+      "repos": []
+    },
+    "2403.17887": {
+      "title": "The Unreasonable Ineffectiveness of the Deeper Layers",
+      "repos": [
+        "huggingface/peft"
+      ]
+    },
+    "2404.03592": {
+      "title": "ReFT: Representation Finetuning for LMs",
+      "repos": [
+        "stanfordnlp/pyreft",
+        "tatsu-lab/alpaca_eval",
+        "tatsu-lab/stanford_alpaca",
+        "vgel/repeng",
+        "huggingface/peft",
+        "huggingface/transformers"
+      ]
+    },
+    "2404.02078": {
+      "title": "Advancing LLM Reasoning (Eurus)",
+      "repos": [
+        "OpenBMB/Eurus",
+        "bigcode-project/bigcode-dataset"
+      ]
+    },
+    "2404.03626": {
+      "title": "Training LLMs over Neurally Compressed Text",
+      "repos": [
+        "tensorflow/compression",
+        "google/jax",
+        "google/flax"
+      ]
+    },
+    "2404.07143": {
+      "title": "Leave No Context Behind (Infini-attention)",
+      "repos": []
+    },
+    "2404.03414": {
+      "title": "LM-Guided Chain-of-Thought",
+      "repos": []
+    },
+    "2404.07503": {
+      "title": "Best Practices and Lessons on Synthetic Data",
+      "repos": [
+        "GAIR-NLP/abel",
+        "tatsu-lab/alpaca_eval",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2404.05966": {
+      "title": "Reasoning with Intermediate Revision and Search (THOUGHTSCULPT)",
+      "repos": []
+    },
+    "2404.04925": {
+      "title": "Overview of Multilingual LLMs",
+      "repos": [
+        "HIT-SCIR/Chinese-Mixtral-8x7B",
+        "HIT-SCIR/huozi",
+        "RUC-GSAI/YuLan-Chat"
+      ]
+    },
+    "2404.05405": {
+      "title": "The Physics of Language Models",
+      "repos": []
+    },
+    "2404.03862": {
+      "title": "Aligning LLMs to Quote from Pre-Training Data (Quote-Tuning)",
+      "repos": [
+        "JHU-CLSP/verifiable-by-design",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2404.10102": {
+      "title": "Chinchilla Scaling: A replication attempt",
+      "repos": []
+    },
+    "2404.10198": {
+      "title": "How Faithful are RAG Models? (ClashEval)",
+      "repos": [
+        "kevinwu23/StanfordClashEval"
+      ]
+    },
+    "2404.10981": {
+      "title": "A Survey on Retrieval-Augmented Text Generation for LLMs",
+      "repos": []
+    },
+    "2404.08819": {
+      "title": "The Illusion of State in State-Space Models",
+      "repos": []
+    },
+    "2404.08189": {
+      "title": "Reducing Hallucination in Structured Outputs via RAG",
+      "repos": []
+    },
+    "2404.11584": {
+      "title": "Emerging AI Agent Architectures",
+      "repos": [
+        "yoheinakajima/babyagi"
+      ]
+    },
+    "2404.08865": {
+      "title": "LM In-Context Recall is Prompt Dependent",
+      "repos": []
+    },
+    "2404.09516": {
+      "title": "A Survey on State Space Models",
+      "repos": [
+        "Event-AHU/Mamba_State_Space_Model_Paper_List",
+        "wangxiao5791509/Pedestrian-Attribute-Recognition-Paper-List",
+        "wangxiao5791509/Single_Object_Tracking_Paper_List",
+        "Event-AHU/Medical_Image_Analysis",
+        "wang-zhanyu/R2GenGPT"
+      ]
+    },
+    "2404.14219": {
+      "title": "Phi-3",
+      "repos": []
+    },
+    "2404.14619": {
+      "title": "OpenELM",
+      "repos": [
+        "apple/corenet",
+        "EleutherAI/lm-evaluation-harness",
+        "argilla-io/notus",
+        "huggingface/alignment-handbook"
+      ]
+    },
+    "2404.16811": {
+      "title": "Make Your LLM Fully Utilize the Context (FILM-7B)",
+      "repos": [
+        "microsoft/FILM",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "THUDM/LongBench",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2404.12753": {
+      "title": "AutoCrawler",
+      "repos": [
+        "EZ-hwh/AutoScraper"
+      ]
+    },
+    "2404.14928": {
+      "title": "Graph Machine Learning in the Era of LLMs",
+      "repos": []
+    },
+    "2404.14387": {
+      "title": "Self-Evolution of LLMs",
+      "repos": [
+        "AlibabaResearch/DAMO-ConvAI"
+      ]
+    },
+    "2404.14662": {
+      "title": "Naturalized Execution Tuning (NExT)",
+      "repos": []
+    },
+    "2404.19756": {
+      "title": "Kolmogorov-Arnold Networks",
+      "repos": [
+        "KindXiaoming/pykan",
+        "trevorstephens/gplearn"
+      ]
+    },
+    "2404.19737": {
+      "title": "Better and Faster LLMs via Multi-token Prediction",
+      "repos": [
+        "m3hrdadfi/wiki-summary",
+        "facebookresearch/xformers"
+      ]
+    },
+    "2404.18416": {
+      "title": "Med-Gemini",
+      "repos": []
+    },
+    "2404.19705": {
+      "title": "When to Retrieve?",
+      "repos": [
+        "tLabruna/Adapt-LLM"
+      ]
+    },
+    "2404.19543": {
+      "title": "A Survey on Retrieval-Augmented Language Models",
+      "repos": [
+        "2471023025/RALM_Survey"
+      ]
+    },
+    "2405.01535": {
+      "title": "An Open-source LM Specialized in Evaluating Other LMs",
+      "repos": [
+        "prometheus-eval/prometheus-eval",
+        "tatsu-lab/alpaca_eval",
+        "huggingface/alignment-handbook",
+        "vllm-project/vllm",
+        "arcee-ai/mergekit"
+      ]
+    },
+    "2405.00675": {
+      "title": "Self-Play Preference Optimization",
+      "repos": [
+        "uclaml/SPPO",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2405.00208": {
+      "title": "Inner Workings of Transformer Language Models",
+      "repos": [
+        "AlignmentResearch/tuned-lens",
+        "stanfordnlp/pyreft",
+        "EleutherAI/sae",
+        "jbloomAus/SAELens",
+        "alan-cooney/CircuitsVis",
+        "ai-safety-foundation/sparse_autoencoder",
+        "google-deepmind/penzai",
+        "JadenFiotto-Kaufman/nnsight",
+        "openai/sparse_autoencoder",
+        "soniajoseph/vit-prisma",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "saprmarks/dictionary_learning",
+        "openai/transformer-debugger",
+        "neelnanda-io/TransformerLens",
+        "PAIR-code/saliency",
+        "cdpierse/transformers-interpret"
+      ]
+    },
+    "2404.18930": {
+      "title": "Multimodal LLM Hallucinations",
+      "repos": [
+        "showlab/Awesome-MLLM-Hallucination"
+      ]
+    },
+    "2405.00200": {
+      "title": "In-Context Learning with Long-Context Models",
+      "repos": [
+        "abertsch72/long-context-icl",
+        "mit-han-lab/Block-Sparse-Attention",
+        "huggingface/peft"
+      ]
+    },
+    "2405.04517": {
+      "title": "xLSTM: Extended Long Short-Term Memory",
+      "repos": [
+        "NX-AI/xlstm",
+        "togethercomputer/RedPajama-Data",
+        "sustcsonglin/flash-linear-attention",
+        "state-spaces/mamba",
+        "BlinkDL/RWKV-LM"
+      ]
+    },
+    "2405.04434": {
+      "title": "DeepSeek-V2",
+      "repos": [
+        "deepseek-ai/DeepSeek-V2",
+        "meta-llama/llama3"
+      ]
+    },
+    "2405.03553": {
+      "title": "AlphaMath Almost Zero",
+      "repos": [
+        "MARIO-Math-Reasoning/Super_MARIO"
+      ]
+    },
+    "2403.00835": {
+      "title": "Consistency LLMs",
+      "repos": [
+        "hao-ai-lab/Consistency_LLM",
+        "GAIR-NLP/abel"
+      ]
+    },
+    "2405.02803": {
+      "title": "Is Flash Attention Stable?",
+      "repos": []
+    },
+    "2405.03520": {
+      "title": "Is Sora a World Simulator? A Comprehensive Survey on General World Models and Beyond",
+      "repos": [
+        "GigaAI-research/General-World-Models-Survey",
+        "OpenDriveLab/OpenScene"
+      ]
+    },
+    "2405.03548": {
+      "title": "MAmmoTH2",
+      "repos": [
+        "togethercomputer/RedPajama-Data",
+        "tatsu-lab/alpaca_eval",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2405.04324": {
+      "title": "Granite Code Models",
+      "repos": [
+        "ibm-granite/granite-code-models",
+        "meta-llama/llama3"
+      ]
+    },
+    "2405.09818": {
+      "title": "Chameleon",
+      "repos": [
+        "salaniz/pycocoevalcap",
+        "facebookresearch/xformers"
+      ]
+    },
+    "2405.05904": {
+      "title": "Fine-tuning and Hallucinations",
+      "repos": []
+    },
+    "2405.07883": {
+      "title": "Zero-shot Tokenizer Transfer",
+      "repos": [
+        "InflectionAI/Inflection-Benchmarks",
+        "google/jax"
+      ]
+    },
+    "2403.09527": {
+      "title": "WavCraft",
+      "repos": [
+        "JinhuaLiang/WavCraft",
+        "suno-ai/bark",
+        "iver56/audiomentations"
+      ]
+    },
+    "2405.07863": {
+      "title": "RLHF Workflow",
+      "repos": [
+        "huggingface/trl",
+        "teknium1/GPTeacher"
+      ]
+    },
+    "2405.05254": {
+      "title": "You Only Cache Once",
+      "repos": [
+        "openlm-research/open_llama",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "sustcsonglin/flash-linear-attention"
+      ]
+    },
+    "2405.10314": {
+      "title": "CAT3D",
+      "repos": []
+    },
+    "2405.14205": {
+      "title": "Agent Planning with World Knowledge Model",
+      "repos": [
+        "zjunlp/WKM",
+        "ysymyth/ReAct",
+        "noahshinn/reflexion",
+        "Reason-Wang/NAT",
+        "Yifan-Song793/ETO",
+        "zjunlp/KnowAgent"
+      ]
+    },
+    "2405.08597": {
+      "title": "Risks and Opportunities of Open-Source Generative AI",
+      "repos": []
+    },
+    "2405.12939": {
+      "title": "Enhancing Answer Selection in LLMs",
+      "repos": [
+        "InternLM/InternLM"
+      ]
+    },
+    "2405.10313": {
+      "title": "How Far Are We From AGI",
+      "repos": [
+        "ulab-uiuc/AGI-survey",
+        "gd3kr/BlenderGPT",
+        "mit-han-lab/llm-awq",
+        "bigcode-project/bigcode-evaluation-harness",
+        "google/jax",
+        "ContextualAI/HALOs",
+        "facebookresearch/fairscale",
+        "XueFuzhao/OpenMoE",
+        "chuanyangjin/fast-DiT",
+        "mlc-ai/mlc-llm",
+        "NVIDIA/FasterTransformer",
+        "NVIDIA/TensorRT-LLM",
+        "predibase/lorax",
+        "apoorvumang/prompt-lookup-decoding",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2405.10637": {
+      "title": "Efficient Inference of LLMs",
+      "repos": [
+        "whyNLP/LCKV"
+      ]
+    },
+    "2405.14782": {
+      "title": "Guide for Evaluating LLMs",
+      "repos": [
+        "openai/simple-evals",
+        "bigscience-workshop/lm-evaluation-harness",
+        "open-compass/opencompass",
+        "guidance-ai/guidance",
+        "meta-llama/llama",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2405.10725": {
+      "title": "Scientific Applications of LLMs",
+      "repos": []
+    },
+    "2405.14333": {
+      "title": "DeepSeek-Prover",
+      "repos": [
+        "yangky11/miniF2F-lean4"
+      ]
+    },
+    "2405.10739": {
+      "title": "Efficient Multimodal LLMs",
+      "repos": [
+        "lijiannuist/Efficient-Multimodal-LLMs-Survey",
+        "thomas-yanxin/KarmaVLM",
+        "vikhyat/moondream",
+        "OpenBMB/MiniCPM-V",
+        "kakaobrain/coyo-dataset"
+      ]
+    },
+    "2405.18719": {
+      "title": "Contextual Position Encoding",
+      "repos": []
+    },
+    "2405.18357": {
+      "title": "Symbolic Chain-of-Thought",
+      "repos": [
+        "Aiden0526/SymbCoT"
+      ]
+    },
+    "2405.17399": {
+      "title": "Abacus Embeddings",
+      "repos": [
+        "mcleish7/arithmetic"
+      ]
+    },
+    "2405.17247": {
+      "title": "Introduction to Vision-Language Modeling",
+      "repos": [
+        "mlfoundations/open_clip",
+        "huggingface/transformers",
+        "facebookresearch/xformers"
+      ]
+    },
+    "2405.20139": {
+      "title": "GNN-RAG",
+      "repos": [
+        "cmavro/GNN-RAG",
+        "tatsu-lab/stanford_alpaca",
+        "cmavro/ReaRev_KGQA",
+        "RManLuo/reasoning-on-graphs",
+        "RUCKBReasoning/SubgraphRetrievalKBQA"
+      ]
+    },
+    "2405.13956": {
+      "title": "Attention as an RNN",
+      "repos": [
+        "nikhilbarhate99/min-decision-transformer"
+      ]
+    },
+    "2405.15032": {
+      "title": "Aya23",
+      "repos": []
+    },
+    "2405.15318": {
+      "title": "Are Long-LLMs A Necessity For Long-Context Tasks?",
+      "repos": [
+        "THUDM/LongBench"
+      ]
+    },
+    "2405.14734": {
+      "title": "SimPO",
+      "repos": [
+        "princeton-nlp/SimPO",
+        "tatsu-lab/alpaca_eval",
+        "huggingface/alignment-handbook"
+      ]
+    },
+    "2405.21060": {
+      "title": "Mamba-2",
+      "repos": [
+        "state-spaces/mamba"
+      ]
+    },
+    "2406.02528": {
+      "title": "MatMul-free LLMs",
+      "repos": []
+    },
+    "2406.04271": {
+      "title": "Buffer of Thoughts",
+      "repos": [
+        "YangLing0818/buffer-of-thought-llm"
+      ]
+    },
+    "2405.20974": {
+      "title": "SaySelf",
+      "repos": [
+        "xu1868/SaySelf"
+      ]
+    },
+    "2406.01506": {
+      "title": "The Geometry of Concepts in LLMs",
+      "repos": [
+        "KihoPark/LLM_Categorical_Hierarchical_Representations"
+      ]
+    },
+    "2406.00888": {
+      "title": "Aligning LLMs with Demonstrated Feedback",
+      "repos": [
+        "SALT-NLP/demonstrated-feedback"
+      ]
+    },
+    "2406.01252": {
+      "title": "Towards Scalable Automated Alignment of LLMs",
+      "repos": [
+        "cascip/awesome-auto-alignment",
+        "sahil280114/codealpaca",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2406.04151": {
+      "title": "AgentGym",
+      "repos": [
+        "WooooDyy/AgentGym",
+        "princeton-nlp/WebShop",
+        "web-arena-x/webarena",
+        "abdulhaim/LMRL-Gym",
+        "alfworld/alfworld",
+        "allenai/ScienceWorld",
+        "mila-iqia/babyai",
+        "archiki/ADaPT",
+        "hkust-nlp/AgentBoard",
+        "AlibabaResearch/DAMO-ConvAI"
+      ]
+    },
+    "2406.08414": {
+      "title": "Discovering Preference Optimization Algorithms with LLMs",
+      "repos": [
+        "luchris429/DiscoPOP",
+        "tatsu-lab/alpaca_eval",
+        "samholt/DiscoPOP",
+        "huggingface/alignment-handbook",
+        "huggingface/trl",
+        "vanderschaarlab/DiscoPOP",
+        "lm-sys/FastChat"
+      ]
+    },
+    "2406.04784": {
+      "title": "SelfGoal",
+      "repos": []
+    },
+    "2406.04692": {
+      "title": "Mixture-of-Agents",
+      "repos": [
+        "togethercomputer/moa",
+        "rapidfuzz/python-Levenshtein"
+      ]
+    },
+    "2406.09308": {
+      "title": "Transformers Meet Neural Algorithmic Reasoners",
+      "repos": []
+    },
+    "2406.06326": {
+      "title": "Self-Tuning with LLMs",
+      "repos": [
+        "zhangxy-2019/Effective-Knowledge-Injection"
+      ]
+    },
+    "2406.09403": {
+      "title": "Sketching as a Visual Chain of Thought",
+      "repos": [
+        "InternLM/InternLM"
+      ]
+    },
+    "2406.08100": {
+      "title": "Multimodal Table Understanding",
+      "repos": [
+        "SpursGoZmy/Table-LLaVA",
+        "PaddlePaddle/PaddleOCR"
+      ]
+    },
+    "2406.07138": {
+      "title": "Consistent Middle Enhancement in LLMs",
+      "repos": [
+        "bigai-nlco/cream",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "bigai-nlco/langsuite",
+        "meta-llama/llama3",
+        "zhangir-azerbayev/proof-pile",
+        "microsoft/DeepSpeed"
+      ]
+    },
+    "2406.07496": {
+      "title": "TextGrad",
+      "repos": [
+        "zou-group/textgrad",
+        "meta-llama/llama3",
+        "langchain-ai/langchain",
+        "jerryjliu/llamaindex"
+      ]
+    },
+    "2406.13121": {
+      "title": "Can Long-Context Language Models Subsume Retrieval, RAG, SQL, and More?",
+      "repos": [
+        "google-deepmind/loft",
+        "beir-cellar/beir",
+        "McGill-NLP/topiocqa",
+        "samsam3232/qampari",
+        "google-research/language",
+        "open-vision-language/oven",
+        "suzgunmirac/BIG-Bench-Hard",
+        "TIGER-AI-Lab/LongICLBench"
+      ]
+    },
+    "2406.12430": {
+      "title": "PlanRAG",
+      "repos": [
+        "myeon9h/PlanRAG"
+      ]
+    },
+    "2406.10209": {
+      "title": "Mitigating Memorization in LLMs",
+      "repos": [
+        "ahans30/goldfish-loss",
+        "Lightning-AI/litgpt",
+        "togethercomputer/RedPajama-Data",
+        "amephraim/nlp"
+      ]
+    },
+    "2406.07394": {
+      "title": "Monte Carlos Tree Self-Refine",
+      "repos": [
+        "trotsky1997/MathBlackBox"
+      ]
+    },
+    "2406.12824": {
+      "title": "From RAG to Rich Parameters",
+      "repos": []
+    },
+    "2406.15319": {
+      "title": "Enhancing RAG with Long-Context LLMs",
+      "repos": []
+    },
+    "2406.19292": {
+      "title": "Improving Retrieval in LLMs through Synthetic Data",
+      "repos": [
+        "edixiong/artificial-needles",
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2406.14550": {
+      "title": "GraphReader",
+      "repos": [
+        "openai/tiktoken"
+      ]
+    },
+    "2406.16858": {
+      "title": "Faster LLM Inference with Dynamic Draft Trees",
+      "repos": [
+        "SafeAILab/EAGLE",
+        "pytorch-labs/gpt-fast",
+        "apoorvumang/prompt-lookup-decoding",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2406.17744": {
+      "title": "Following Length Constraints in Instructions",
+      "repos": [
+        "facebookresearch/RAM",
+        "allenai/WildBench",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2406.15126": {
+      "title": "On LLMs-Driven Synthetic Data Generation, Curation, and Evaluation",
+      "repos": [
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2406.16793": {
+      "title": "Adam-mini",
+      "repos": [
+        "zyushun/Adam-mini",
+        "lucidrains/lion-pytorch",
+        "karpathy/nanoGPT",
+        "stanford-crfm/levanter",
+        "pytorch/torchtitan",
+        "liziniu/ReMax",
+        "lm-sys/FastChat",
+        "hiyouga/LLaMA-Factory",
+        "pytorch/examples",
+        "lucidrains/denoising-diffusion-pytorch",
+        "microsoft/Swin-Transformer",
+        "facebookresearch/DiT",
+        "mit-han-lab/efficientvit",
+        "dmlc/dgl"
+      ]
+    },
+    "2406.18518": {
+      "title": "APIGen",
+      "repos": []
+    },
+    "2407.01219": {
+      "title": "Searching for Best Practices in RAG",
+      "repos": [
+        "FudanDNN-NLP/RAG",
+        "FlagOpen/FlagEmbedding",
+        "jerryjliu/llama_index"
+      ]
+    },
+    "2406.20094": {
+      "title": "Scaling Synthetic Data Creation",
+      "repos": [
+        "tencent-ailab/persona-hub",
+        "openai/simple-evals",
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2407.03234": {
+      "title": "Self-Evaluation as a Defense Against Adversarial Attacks on LLMs",
+      "repos": [
+        "Linlt-leon/self-eval",
+        "meta-llama/PurpleLlama"
+      ]
+    },
+    "2407.01489": {
+      "title": "Agentless",
+      "repos": [
+        "OpenAutoCoder/Agentless",
+        "swe-bench/experiments",
+        "aorwall/moatless-tools",
+        "OpenDevin/OpenDevin",
+        "ozyyshr/RepoGraph"
+      ]
+    },
+    "2406.13892": {
+      "title": "Adaptable Logical Control for LLMs",
+      "repos": [
+        "joshuacnf/Ctrl-G"
+      ]
+    },
+    "2407.01490": {
+      "title": "LLM See, LLM Do",
+      "repos": [
+        "for-ai/llm-profiling-toolkit",
+        "LSYS/lexicalrichness",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2407.01370": {
+      "title": "Summary of a Haystack",
+      "repos": [
+        "salesforce/summary-of-a-haystack",
+        "openai/opeai-python"
+      ]
+    },
+    "2407.01502": {
+      "title": "AI Agents That Matter",
+      "repos": [
+        "OpenDevin/OpenDevin",
+        "FloridSleeves/LLMDebugger",
+        "lapisrocks/LanguageAgentTreeSearch",
+        "noahshinn/reflexion",
+        "benediktstroebl/agent-evals"
+      ]
+    },
+    "2407.02485": {
+      "title": "RankRAG",
+      "repos": []
+    },
+    "2407.04153": {
+      "title": "Mixture of A Million Experts",
+      "repos": [
+        "facebookresearch/XLM"
+      ]
+    },
+    "2407.02678": {
+      "title": "Reasoning in LLMs: A Geometric Perspective",
+      "repos": []
+    },
+    "2407.07071": {
+      "title": "Contextual Hallucinations Mitigation in LLMs",
+      "repos": [
+        "voidism/Lookback-Lens",
+        "lm-sys/FastChat",
+        "huggingface/transformers",
+        "nelson-liu/lost-in-the-middle",
+        "facebookresearch/DPR",
+        "EdinburghNLP/XSum"
+      ]
+    },
+    "2406.18665": {
+      "title": "RouteLLM",
+      "repos": [
+        "meta-llama/llama-models"
+      ]
+    },
+    "2407.06204": {
+      "title": "A Survey on Mixture of Experts",
+      "repos": [
+        "withinmiaov/A-Survey-on-Mixture-of-Experts-in-LLMs",
+        "xai-org/grok-1",
+        "hpcaitech/ColossalAI",
+        "shawntan/scattermoe",
+        "stanford-futuredata/megablocks",
+        "microsoft/tutel",
+        "PaddlePaddle/Paddle",
+        "PKU-DAIR/Hetu",
+        "microsoft/DeepSpeed",
+        "laekov/fastmoe",
+        "facebookresearch/fairseq",
+        "tensorflow/mesh",
+        "pjlab-sys4nlp/llama-moe"
+      ]
+    },
+    "2407.07061": {
+      "title": "Internet of Agents",
+      "repos": [
+        "OpenBMB/IoA",
+        "langchain-ai/langchain",
+        "Netflix/eureka",
+        "OpenInterpreter/open-interpreter",
+        "OpenDevin/OpenDevin",
+        "Significant-Gravitas/AutoGPT",
+        "pytube/pytube"
+      ]
+    },
+    "2407.04620": {
+      "title": "Learning at Test Time",
+      "repos": [
+        "young-geng/EasyLM"
+      ]
+    },
+    "2407.13692": {
+      "title": "Improving Legibility of LLM Outputs",
+      "repos": []
+    },
+    "2407.09025": {
+      "title": "SpreadsheetLLM",
+      "repos": []
+    },
+    "2407.09252": {
+      "title": "Context Embeddings for Efficient Answer Generation in RAG",
+      "repos": []
+    },
+    "2407.13647": {
+      "title": "Weak-to-Strong Reasoning",
+      "repos": [
+        "GAIR-NLP/weak-to-strong-reasoning",
+        "GAIR-NLP/abel"
+      ]
+    },
+    "2407.12994": {
+      "title": "A Survey of Prompt Engineering Methods in LLMs",
+      "repos": [
+        "meg-tong/sycophancy-eval"
+      ]
+    },
+    "2407.11969": {
+      "title": "Does Refusal Training in LLMs Generalize to the Past Tense?",
+      "repos": [
+        "tml-epfl/llm-past-tense",
+        "meta-llama/llama3"
+      ]
+    },
+    "2407.11963": {
+      "title": "Can LLMs Do Retrieval and Reasoning in 1 Million Context Window?",
+      "repos": [
+        "openai/tiktoken",
+        "InternLM/lmdeploy",
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2407.06023": {
+      "title": "Distilling System 2 into System 1",
+      "repos": []
+    },
+    "2407.12036": {
+      "title": "Exploring Advanced LLMs with LLMSuite",
+      "repos": []
+    },
+    "2407.09468": {
+      "title": "Beyond Euclid",
+      "repos": []
+    },
+    "2407.16833": {
+      "title": "RAG vs. Long-Context LLMs",
+      "repos": [
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2407.16741": {
+      "title": "OpenDevin",
+      "repos": [
+        "All-Hands-AI/OpenHands",
+        "langchain-ai/langchain",
+        "crewAIInc/crewAI",
+        "yoheinakajima/babyagi",
+        "ServiceNow/BrowserGym",
+        "aorwall/moatless-tools",
+        "princeton-nlp/SWE-agent"
+      ]
+    },
+    "2407.14057": {
+      "title": "LazyLLM",
+      "repos": [
+        "huggingface/transformers",
+        "THUDM/LongBench"
+      ]
+    },
+    "2407.18219": {
+      "title": "Teaching LLM Agents to Self-Improve",
+      "repos": []
+    },
+    "2407.15186": {
+      "title": "Text-to-SQL Survey",
+      "repos": [
+        "defog-ai/sqlcoder",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2406.11271": {
+      "title": "MINT-1T",
+      "repos": [
+        "mlfoundations/MINT-1T",
+        "pymupdf/PyMuPDF-Utilities",
+        "alvinwan/TexSoup",
+        "kingoflolz/mesh-transformer-jax",
+        "GantMan/nsfw_model",
+        "allenai/bff",
+        "kakaobrain/coyo-dataset",
+        "togethercomputer/RedPajama-Data",
+        "open-compass/opencompass",
+        "open-compass/VLMEvalKit",
+        "TIGER-AI-Lab/Mantis",
+        "huggingface/datatrove",
+        "pymupdf/PyMuPDF",
+        "huggingface/OBELICS"
+      ]
+    },
+    "2407.16908": {
+      "title": "Mitigating Hallucination via Generation Constraint",
+      "repos": []
+    },
+    "2407.19594": {
+      "title": "Meta-Rewarding LLMs",
+      "repos": []
+    },
+    "2407.20183": {
+      "title": "MindSearch",
+      "repos": [
+        "InternLM/MindSearch"
+      ]
+    },
+    "2407.19813": {
+      "title": "Improved RAG with Self-Reasoning",
+      "repos": [
+        "princeton-nlp/ALCE",
+        "vllm-project/vllm"
+      ]
+    },
+    "2407.19825": {
+      "title": "Constrained-CoT",
+      "repos": []
+    },
+    "2407.21712": {
+      "title": "Adaptive RAG for Conversations Sytems",
+      "repos": [
+        "huggingface/peft"
+      ]
+    },
+    "2407.21772": {
+      "title": "ShieldGemma",
+      "repos": [
+        "meta-llama/PurpleLlama"
+      ]
+    },
+    "2407.18416": {
+      "title": "Evaluating Persona Agents",
+      "repos": []
+    },
+    "2407.20516": {
+      "title": "Machine Unlearning Survey",
+      "repos": [
+        "franciscoliu/GenAI-MU-Reading"
+      ]
+    },
+    "2407.21018": {
+      "title": "ThinK",
+      "repos": [
+        "SalesforceAIResearch/ThinK",
+        "jy-yuan/KIVI",
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2407.18418": {
+      "title": "The Art of Refusal",
+      "repos": [
+        "chenjux/abstention"
+      ]
+    },
+    "2408.02442": {
+      "title": "Structured Generation Limits Reasoning",
+      "repos": [
+        "appier-research/structure-gen",
+        "huggingface/text-generation-inference"
+      ]
+    },
+    "2408.02479": {
+      "title": "From LLMs to LLM-based Agents for Sofware Engineering",
+      "repos": [
+        "codespecs/daikon",
+        "EvoSuite/evosuite",
+        "rjust/defects4j"
+      ]
+    },
+    "2408.04619": {
+      "title": "Transformer Explainer",
+      "repos": [
+        "safety-research/circuit-tracerThe",
+        "karpathy/nanoGPT"
+      ]
+    },
+    "2408.02545": {
+      "title": "Enhancing LLMs for RAG",
+      "repos": [
+        "IntelLabs/RAGFoundry",
+        "huggingface/trl",
+        "confident-ai/deepeval"
+      ]
+    },
+    "2408.03256": {
+      "title": "Synthesizing Text-to-SQL Data from Weak and Strong LLMs",
+      "repos": [
+        "Yangjiaxi/Sense"
+      ]
+    },
+    "2408.04560": {
+      "title": "Conversational Prompt Engineering",
+      "repos": []
+    },
+    "2408.02666": {
+      "title": "Self-Taught Evaluators",
+      "repos": []
+    },
+    "2408.01262": {
+      "title": "RAGEval",
+      "repos": [
+        "OpenBMB/RAGEval"
+      ]
+    },
+    "2408.01129": {
+      "title": "Survey of Mamba",
+      "repos": [
+        "state-spaces/mamba",
+        "havenhq/mamba-chat"
+      ]
+    },
+    "2408.06292": {
+      "title": "The AI Scientist",
+      "repos": [
+        "SakanaAI/AI-Scientist",
+        "fedebotu/ICLR2022-OpenReviewData",
+        "paul-gauthier/aider",
+        "karpathy/nanoGPT",
+        "danielmamay/grokking",
+        "tanelp/tiny-diffusion",
+        "Sea-Snell/grokking"
+      ]
+    },
+    "2408.07055": {
+      "title": "LongWriter",
+      "repos": [
+        "THUDM/LongWriter"
+      ]
+    },
+    "2408.04259": {
+      "title": "EfficientRAG",
+      "repos": []
+    },
+    "2408.08067": {
+      "title": "RAGChecker",
+      "repos": [
+        "amazon-science/RAGChecker",
+        "amazon-science/RefChecker",
+        "langchain-ai/langchain"
+      ]
+    },
+    "2408.04948": {
+      "title": "HybridRAG",
+      "repos": []
+    },
+    "2408.06195": {
+      "title": "rStar",
+      "repos": [
+        "anforsm/self-refine"
+      ]
+    },
+    "2408.05109": {
+      "title": "Scaling LLM Test-Time Compute Optimally",
+      "repos": [
+        "HKUSTDial/NL2SQL_Handbook"
+      ]
+    },
+    "2408.04187": {
+      "title": "MedGraphRAG",
+      "repos": [
+        "MedicineToken/Medical-Graph-RAG",
+        "Azure-Samples/graphrag-accelerator"
+      ]
+    },
+    "2408.08435": {
+      "title": "Automate Design of Agentic Systems",
+      "repos": [
+        "ShengranHu/ADAS",
+        "langchain-ai/langchain",
+        "openai/simple-evals",
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2408.11796": {
+      "title": "LLM Pruning and Distillation in Practice",
+      "repos": []
+    },
+    "2408.11527": {
+      "title": "Vizier Gaussian Process Bandit Algorithm",
+      "repos": [
+        "google/jax",
+        "bayesian-optimization/BayesianOptimization",
+        "google/vizier",
+        "facebook/Ax",
+        "huawei-noah/HEBO",
+        "hyperopt/hyperopt",
+        "scikit-optimize/scikit-optimize"
+      ]
+    },
+    "2408.10548": {
+      "title": "Language Modeling on Tabular Data",
+      "repos": [
+        "lanxiang1017/Language-Modeling-on-Tabular-Data-Survey.git",
+        "bfetahu/wiki_tables"
+      ]
+    },
+    "2408.10615": {
+      "title": "Enhancing Robustness in LLMs",
+      "repos": [
+        "ymt9/GSMIR"
+      ]
+    },
+    "2408.08921": {
+      "title": "A Comprehensive Overview of GraphRAG Methods",
+      "repos": [
+        "pengboci/GraphRAG-Survey",
+        "WENGSYX/CMCQA",
+        "microsoft/graphrag",
+        "eosphoros-ai/DB-GPT",
+        "neo4j/NaLLM",
+        "neo4j-labs/llm-graph-builder"
+      ]
+    },
+    "2408.11049": {
+      "title": "MagicDec",
+      "repos": [
+        "flashinfer-ai/flashinfer",
+        "pytorch-labs/gpt-fast",
+        "mlc-ai/mlc-llm"
+      ]
+    },
+    "2408.12599": {
+      "title": "Controllable Text Generation for LLMs",
+      "repos": [
+        "IAAR-Shanghai/CTGSurvey"
+      ]
+    },
+    "2408.08869": {
+      "title": "PEDAL",
+      "repos": []
+    },
+    "2408.09416": {
+      "title": "Challenges and Responses in the Practice of LLMs",
+      "repos": []
+    },
+    "2408.14837": {
+      "title": "GameGen",
+      "repos": []
+    },
+    "2408.14484": {
+      "title": "Agentic RAG for Time Series Analysis",
+      "repos": [
+        "icsdataset/hai",
+        "meta-llama/llama3"
+      ]
+    },
+    "2408.15247": {
+      "title": "AutoGen Studio",
+      "repos": [
+        "microsoft/autogen"
+      ]
+    },
+    "2408.15879": {
+      "title": "Persuasion Games with LLMs",
+      "repos": []
+    },
+    "2408.16737": {
+      "title": "Smaller, Weaker, Yet Better",
+      "repos": [
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2408.11039": {
+      "title": "Transfusion",
+      "repos": []
+    },
+    "2408.15496": {
+      "title": "ReMamba",
+      "repos": [
+        "lblankl/ReMamba",
+        "openlm-research/open_llama",
+        "jzhang38/LongMamba"
+      ]
+    },
+    "2408.14717": {
+      "title": "Text2SQL is Not Enough",
+      "repos": [
+        "TAG-Research/TAG-Bench"
+      ]
+    },
+    "2408.14340": {
+      "title": "Foundation Models for Music",
+      "repos": [
+        "CompVis/stable-diffusion",
+        "nicolaus625/FM4Music",
+        "steinbergmedia/DoReMi",
+        "fishaudio/fish-speech",
+        "reworkd/AgentGPT",
+        "Significant-Gravitas/AutoGPT",
+        "svc-develop-team/so-vits-svc"
+      ]
+    },
+    "2408.14471": {
+      "title": "Guide to Continual Multimodal Pretraining",
+      "repos": [
+        "ExplainableML/fomo_in_flux",
+        "deepmind/3dshapes-dataset",
+        "visipedia/inat_comp",
+        "deepmind/dsprites-dataset"
+      ]
+    },
+    "2409.01666": {
+      "title": "RAG in the Era of Long-Context LLMs",
+      "repos": []
+    },
+    "2409.03271": {
+      "title": "Strategic Chain-of-Thought",
+      "repos": [
+        "google-deepmind/AQuA",
+        "google/BIG-bench"
+      ]
+    },
+    "2409.02060": {
+      "title": "OLMoE",
+      "repos": [
+        "allenai/OLMoE",
+        "karpathy/minGPT",
+        "allenai/open-instruct",
+        "allenai/OLMo",
+        "mlfoundations/dclm",
+        "databricks/dbrx",
+        "SkyworkAI/Skywork",
+        "deepseek-ai/DeepSeek-MoE",
+        "deepseek-ai/DeepSeek-V2",
+        "yikangshen/megablocks",
+        "XueFuzhao/OpenMoE"
+      ]
+    },
+    "2409.02897": {
+      "title": "LongCite",
+      "repos": [
+        "THUDM/LongCite"
+      ]
+    },
+    "2408.16967": {
+      "title": "MemLong",
+      "repos": [
+        "Bui1dMySea/MemLong"
+      ]
+    },
+    "2408.13533": {
+      "title": "Role of RAG Noise in LLMs",
+      "repos": [
+        "jinyangwu/NoiserBench",
+        "preligens-lab/textnoisr",
+        "vllm-project/vllm"
+      ]
+    },
+    "2408.16984": {
+      "title": "Beyond Preference in AI Alignment",
+      "repos": []
+    },
+    "2409.02977": {
+      "title": "LLM-Based Agents for Software Engineering",
+      "repos": [
+        "FudanSELab/Agent4SE-Paper-List",
+        "tree-sitter/tree-sitter",
+        "google/syzkaller",
+        "xiaocong/uiautomator",
+        "openatx/uiautomator2",
+        "TestingResearchIllinois/idoft",
+        "aorwall/moatless-tools",
+        "davidhalter/jedi",
+        "eclipse-jdtls/eclipse.jdt.ls",
+        "psf/black",
+        "mutpy/mutpy",
+        "openai/swarm"
+      ]
+    },
+    "2409.04109": {
+      "title": "Can LLMs Generation Novel Research Ideas",
+      "repos": [
+        "NoviScl/AI-Researcher"
+      ]
+    },
+    "2409.07429": {
+      "title": "Agent Workflow Memory",
+      "repos": [
+        "zorazrw/agent-workflow-memory"
+      ]
+    },
+    "2409.06857": {
+      "title": "The Role of Small Language Models in the LLM Era",
+      "repos": []
+    },
+    "2409.06666": {
+      "title": "LLaMa-Omni",
+      "repos": [
+        "ictnlp/LLaMA-Omni",
+        "FunAudioLLM/CosyVoice",
+        "jaywalnut310/vits",
+        "thunlp/UltraChat",
+        "tatsu-lab/alpaca_eval",
+        "tarepan/SpeechMOS",
+        "Picovoice/orca",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2409.06185": {
+      "title": "Can LLMs Unlock Novel Scientific Research Ideas",
+      "repos": [
+        "sandeep82945/Future-Idea-Generation.git"
+      ]
+    },
+    "2409.04431": {
+      "title": "Theory, Analysis, and Best Practices for Sigmoid Self-Attention",
+      "repos": [
+        "apple/ml-sigmoid-attention",
+        "apple/axlearn",
+        "togethercomputer/RedPajama-Data",
+        "google/praxis",
+        "xai-org/grok-1",
+        "ofirpress/attention_with_linear_biases"
+      ]
+    },
+    "2409.04833": {
+      "title": "Achieving Peak Performance for LLMs",
+      "repos": []
+    },
+    "2409.12917": {
+      "title": "Training LLMs to Self-Correct via RL",
+      "repos": []
+    },
+    "2409.12186": {
+      "title": "Qwen2.5 Coder",
+      "repos": [
+        "QwenLM/Qwen2.5-Coder",
+        "NVIDIA/Megatron-LM",
+        "paul-gauthier/aider",
+        "exercism/python"
+      ]
+    },
+    "2409.10038": {
+      "title": "Diagram of Thought (DoT)",
+      "repos": [
+        "diagram-of-thought/diagram-of-thought"
+      ]
+    },
+    "2409.09030": {
+      "title": "Agents in Software Engineering",
+      "repos": [
+        "DeepSoftwareAnalytics/Awesome-Agent4SE"
+      ]
+    },
+    "2409.12183": {
+      "title": "To CoT or not to CoT?",
+      "repos": [
+        "Zayne-sprague/To-CoT-or-not-to-CoT"
+      ]
+    },
+    "2409.11055": {
+      "title": "A Comprehensive Evaluation of Quantized Instruction-Tuned LLMs",
+      "repos": [
+        "casper-hansen/AutoAWQ",
+        "AutoGPTQ/AutoGPTQ",
+        "vllm-project/llm-compressor"
+      ]
+    },
+    "2409.12618": {
+      "title": "Iteration of Thought",
+      "repos": [
+        "AgnostiqHQ/multi-agent-llm",
+        "openai/simple-evals"
+      ]
+    },
+    "2409.10482": {
+      "title": "Schrodinger’s Memory",
+      "repos": []
+    },
+    "2409.11445": {
+      "title": "Math Jailbreaking Prompts",
+      "repos": []
+    },
+    "2409.13373": {
+      "title": "LLMs Still Can’t Plan",
+      "repos": []
+    },
+    "2409.17539": {
+      "title": "Logic-of-Thought",
+      "repos": [
+        "HEA1OR/lot"
+      ]
+    },
+    "2409.14924": {
+      "title": "RAG and Beyond",
+      "repos": []
+    },
+    "2409.15277": {
+      "title": "A Preliminary Study of o1 in Medicine",
+      "repos": []
+    },
+    "2409.15790": {
+      "title": "Small Language Models Survey",
+      "repos": [
+        "UbiquitousLearning/SLM_Survey"
+      ]
+    },
+    "2409.13449": {
+      "title": "Minstrel",
+      "repos": [
+        "langgptai/LangGPT",
+        "sci-m-wang/Minstrel",
+        "sci-m-wang/Spy-Game",
+        "mattnigh/ChatGPT3-Free-Prompt-List"
+      ]
+    },
+    "2410.01201": {
+      "title": "Were RNNs All We Needed?",
+      "repos": [
+        "karpathy/nanoGPT"
+      ]
+    },
+    "2410.02707": {
+      "title": "LLMs Know More Than They Show",
+      "repos": [
+        "technion-cs-nlp/LLMsKnow",
+        "technion-cs-nlp/LLMsKnowfor"
+      ]
+    },
+    "2409.15254": {
+      "title": "Architecture Search Framework for Inference-Time Techniques",
+      "repos": [
+        "meta-llama/llama3",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2410.01044": {
+      "title": "RATIONALYST",
+      "repos": [
+        "JHU-CLSP/RATIONALYST"
+      ]
+    },
+    "2410.01792": {
+      "title": "An Analysis of o1-preview",
+      "repos": []
+    },
+    "2409.12941": {
+      "title": "FRAMES",
+      "repos": []
+    },
+    "2410.01748": {
+      "title": "Not All LLM Reasoners Are Created Equal",
+      "repos": [
+        "meta-llama/llama3"
+      ]
+    },
+    "2409.18486": {
+      "title": "Evaluation of o1",
+      "repos": [
+        "UGA-CAID/AGI-Bench",
+        "cardiffnlp/tweeteval"
+      ]
+    },
+    "2409.17439": {
+      "title": "Designing Priors for Better Few-Shot Image Synthesis",
+      "repos": []
+    },
+    "2410.07095": {
+      "title": "MLE-Bench",
+      "repos": [
+        "openai/mle-bench",
+        "dodona-edu/dolos"
+      ]
+    },
+    "2410.05258": {
+      "title": "Differential Transformer",
+      "repos": [
+        "openlm-research/open_llama",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "facebookresearch/xformers",
+        "Dao-AILab/flash-attention"
+      ]
+    },
+    "2410.07176": {
+      "title": "Astute RAG",
+      "repos": []
+    },
+    "2410.03439": {
+      "title": "ToolGen",
+      "repos": [
+        "Reason-Wang/ToolGen",
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2410.05983": {
+      "title": "Long-Context LLMs Meet RAG",
+      "repos": [
+        "gkamradt/LLMTestNeedleInAHaystack",
+        "axolotl-ai-cloud/axolotl",
+        "vllm-project/vllm"
+      ]
+    },
+    "2410.05229": {
+      "title": "GSM-Symbolic",
+      "repos": [
+        "apple/ml-gsm-symbolic"
+      ]
+    },
+    "2410.08115": {
+      "title": "Optima",
+      "repos": []
+    },
+    "2410.05080": {
+      "title": "ScienceAgentBench",
+      "repos": [
+        "bndr/pipreqs",
+        "jazzband/pip-tools",
+        "All-Hands-AI/OpenHands",
+        "neuropsychology/NeuroKit",
+        "bp-kelley/descriptastorus"
+      ]
+    },
+    "2410.00907": {
+      "title": "Addition Is All You Need",
+      "repos": []
+    },
+    "2410.07109": {
+      "title": "Persuasion and Anti-social Ability of LLMs",
+      "repos": []
+    },
+    "2410.10630": {
+      "title": "Thinking LLMs",
+      "repos": [
+        "lm-sys/arena-hard-auto"
+      ]
+    },
+    "2410.11163": {
+      "title": "Model Swarms",
+      "repos": [
+        "BunsenFeng/model_swarm",
+        "sahil280114/codealpaca"
+      ]
+    },
+    "2410.13787": {
+      "title": "Introspection in LLMs",
+      "repos": [
+        "openai/evals"
+      ]
+    },
+    "2410.13848": {
+      "title": "Janus",
+      "repos": [
+        "deepseek-ai/Janus"
+      ]
+    },
+    "2410.04343": {
+      "title": "Inference Scaling for Long-Context RAG",
+      "repos": []
+    },
+    "2410.08164": {
+      "title": "Agent S",
+      "repos": [
+        "simular-ai/Agent-S",
+        "ItzCrazyKns/Perplexica",
+        "PaddlePaddle/PaddleOCR",
+        "xlang-ai/instructor-embedding"
+      ]
+    },
+    "2410.12613": {
+      "title": "Model Kinship for Merging LLMs",
+      "repos": [
+        "zjunlp/ModelKinship"
+      ]
+    },
+    "2409.19924": {
+      "title": "On the Planning Abilities of OpenAI’s o1 Models",
+      "repos": [
+        "VITA-Group/o1-planning"
+      ]
+    },
+    "2410.11831": {
+      "title": "CoTracker3",
+      "repos": [
+        "Lightning-AI/lightning"
+      ]
+    },
+    "2410.09713": {
+      "title": "Agentic Information Retrieval",
+      "repos": []
+    },
+    "2410.16540": {
+      "title": "A Theoretical Understanding of CoT",
+      "repos": []
+    },
+    "2410.12896": {
+      "title": "A Survey on Data Synthesis and Augmentation for LLMs",
+      "repos": [
+        "tatsu-lab/stanford_alpaca",
+        "kingoflolz/mesh-transformer-jax",
+        "zhihaiLLM/wisdomInterrogatory"
+      ]
+    },
+    "2410.18050": {
+      "title": "LongRAG",
+      "repos": [
+        "QingFei1/LongRAG",
+        "langchain-ai/langgraph"
+      ]
+    },
+    "2410.18417": {
+      "title": "LLMs Reflect the Ideology of their Creators",
+      "repos": [
+        "aida-ugent/llm-ideology-analysis"
+      ]
+    },
+    "2410.13639": {
+      "title": "Reasoning Patterns of OpenAI’s o1 Model",
+      "repos": [
+        "Open-Source-O1/o1_Reasoning_Patterns_Study"
+      ]
+    },
+    "2410.19750": {
+      "title": "Geometry of Concepts in LLMs",
+      "repos": [
+        "ejmichaud/feature-geometry"
+      ]
+    },
+    "2410.10762": {
+      "title": "Automating Agentic Workflow Generation",
+      "repos": [
+        "FoundationAgents/AFlow"
+      ]
+    },
+    "2410.21272": {
+      "title": "LLMs Solve Math with a Bag of Heuristics",
+      "repos": [
+        "technion-cs-nlp/llm-arithmetic-heuristics",
+        "TransformerLensOrg/TransformerLens",
+        "kingoflolz/mesh-transformer-jax"
+      ]
+    },
+    "2410.18982": {
+      "title": "o1 Replication Journey",
+      "repos": [
+        "GAIR-NLP/O1-Journey",
+        "GAIR-NLP/abel"
+      ]
+    },
+    "2410.22071": {
+      "title": "Distinguishing Ignorance from Error in LLM Hallucinations",
+      "repos": [
+        "technion-cs-nlp/hallucination-mitigation"
+      ]
+    },
+    "2410.21943": {
+      "title": "Multimodal RAG",
+      "repos": [
+        "riedlerm/multimodal_rag_for_industry",
+        "langchain-ai/langchain",
+        "chroma-core/chroma",
+        "pymupdf/PyMuPDF"
+      ]
+    },
+    "2410.19385": {
+      "title": "The Role of Prompting and External Tools in Hallucination Rates of LLMs",
+      "repos": []
+    },
+    "2410.20771": {
+      "title": "MrT5",
+      "repos": [
+        "jkallini/mrt5"
+      ]
+    },
+    "2410.20672": {
+      "title": "Relaxed Recursive Transformers",
+      "repos": [
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2411.00114": {
+      "title": "Many-agent Simulations toward AI Civilization",
+      "repos": [
+        "langchain-ai/langchain",
+        "MadcowD/ell"
+      ]
+    },
+    "2411.03350": {
+      "title": "A Comprehensive Survey of Small Language Models",
+      "repos": [
+        "FairyFali/SLMs-Survey",
+        "SteveKGYang/MentaLLaMA",
+        "togethercomputer/RedPajama-Data",
+        "LiuHC0428/LAW_GPT",
+        "facebookresearch/xformers",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2411.02830": {
+      "title": "Mixtures of In-Context Learners",
+      "repos": [
+        "huggingface/peft"
+      ]
+    },
+    "2411.02391": {
+      "title": "Attacking Vision-Language Agents via Pop-ups",
+      "repos": [
+        "SALT-NLP/PopupAttack"
+      ]
+    },
+    "2411.00492": {
+      "title": "Multi-expert Prompting with LLMs",
+      "repos": []
+    },
+    "2411.03766": {
+      "title": "Number Understanding of LLMs",
+      "repos": [
+        "GraphPKU/number_cookbook"
+      ]
+    },
+    "2411.02337": {
+      "title": "WebRL",
+      "repos": [
+        "THUDM/WebRL"
+      ]
+    },
+    "2411.00412": {
+      "title": "Adapting while Learning",
+      "repos": [
+        "Rose-STL-Lab/Adapting-While-Learning"
+      ]
+    },
+    "2411.00027": {
+      "title": "Personalization of LLMs",
+      "repos": [
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2411.04330": {
+      "title": "Scaling Laws for Precision",
+      "repos": []
+    },
+    "2411.04905": {
+      "title": "OpenCoder",
+      "repos": [
+        "github-linguist/linguist",
+        "richardodliu/OpenCodeEval",
+        "QwenLM/Qwen2.5-Coder",
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2411.05285": {
+      "title": "A Taxonomy of AgentOps for Enabling Observability of Foundation Model-based Agents",
+      "repos": [
+        "OpenBMB/ChatDev",
+        "princeton-nlp/SWE-agent",
+        "raga-ai-hub/agentneo"
+      ]
+    },
+    "2411.07396": {
+      "title": "Toward Optimal Search and Retrieval for RAG",
+      "repos": [
+        "intellabs/rag-retrieval-study",
+        "intel/ScalableVectorSearch"
+      ]
+    },
+    "2411.07494": {
+      "title": "Mitigating LLM Jailbreaks with Few Examples",
+      "repos": [
+        "rapidresponsebench/rapidresponsebench",
+        "unitaryai/detoxify",
+        "meta-llama/PurpleLlama"
+      ]
+    },
+    "2411.04996": {
+      "title": "Mixture of Transformers",
+      "repos": [
+        "facebookresearch/Mixture-of-Transformers",
+        "triton-inference-server/tutorials"
+      ]
+    },
+    "2411.02959": {
+      "title": "HtmlRAG",
+      "repos": [
+        "plageon/HtmlRAG",
+        "matthewwithanm/python-markdownify",
+        "brucemiller/LaTeXML",
+        "langchain-ai/langchain",
+        "jerryjliu/llama_index",
+        "mwilliamson/mammoth.js"
+      ]
+    },
+    "2411.10323": {
+      "title": "The Dawn of GUI Agent",
+      "repos": [
+        "showlab/computer_use_ootb"
+      ]
+    },
+    "2411.00640": {
+      "title": "A Statistical Approach to LLM Evaluation",
+      "repos": [
+        "openai/evals"
+      ]
+    },
+    "2411.14405": {
+      "title": "Towards Open Reasoning Models for Open-Ended Solutions",
+      "repos": [
+        "AIDC-AI/Marco-o1",
+        "Open-Source-O1/Open-O1"
+      ]
+    },
+    "2411.10213": {
+      "title": "LLM-based Agents for Automated Bug Fixing",
+      "repos": [
+        "ResearchOpenRepos/bug_fixing_agent_empirical_study",
+        "dandavison/delta",
+        "wandb/programmer"
+      ]
+    },
+    "2411.09009": {
+      "title": "Cut Your Losses in Large-Vocabulary Language Models",
+      "repos": [
+        "apple/ml-cross-entropy",
+        "linkedin/Liger-Kernel",
+        "tatsu-lab/stanford_alpaca",
+        "pytorch/torchtune"
+      ]
+    },
+    "2411.11910": {
+      "title": "BABY-AIGS",
+      "repos": [
+        "AgentForceTeamOfficial/Baby-AIGS",
+        "karpathy/nanoGPT",
+        "openai/openai-python",
+        "vllm-project/vllm",
+        "lm-sys/FastChat",
+        "yizhongw/self-instruct",
+        "hiyouga/LLaMA-Factory"
+      ]
+    },
+    "2411.10541": {
+      "title": "Does Prompt Formatting Impact LLM Performance",
+      "repos": [
+        "openai/evals"
+      ]
+    },
+    "2411.08804": {
+      "title": "FinRobot",
+      "repos": [
+        "AI4Finance-Foundation/FinRobot"
+      ]
+    },
+    "2411.11843": {
+      "title": "Bi-Mamba",
+      "repos": [
+        "Tangshengku/Bi-Mamba",
+        "ggml-org/llama.cpp",
+        "tlkh/asitop",
+        "togethercomputer/RedPajama-Data"
+      ]
+    },
+    "2411.16489": {
+      "title": "o1 Replication Journey - Part 2",
+      "repos": [
+        "GAIR-NLP/O1-Journey"
+      ]
+    },
+    "2411.18279": {
+      "title": "LLM-Brained GUI Agents",
+      "repos": [
+        "vyokky/LLM-Brained-GUI-Agents-Survey",
+        "AccessKit/accesskit",
+        "microsoft/OmniParser",
+        "ant-8/GUI-Grounding-via-Iterative-Narrowing",
+        "HeimingX/TAG",
+        "ZrW00/GUIPivot",
+        "zackhuiiiii/WinSpot",
+        "sugarandgugu/Focus",
+        "tiangeluo/RegionFocus",
+        "njucckevin/SeeClick",
+        "likaixin2000/ScreenSpot-Pro-GUI-Grounding",
+        "kyle8581/WMA-Agents",
+        "Mayer123/LASER",
+        "MinorJerry/WebVoyager",
+        "THUDM/AutoWebGLM",
+        "xlang-ai/OpenAgents",
+        "OSU-NLP-Group/SeeAct",
+        "EmergenceAI/Agent-E",
+        "AmenRa/retriv",
+        "colonylabs/ScribeAgent",
+        "yueqis/API-Based-Agent",
+        "MurtyShikhar/Nnetnav",
+        "THUDM/OpenWebAgent",
+        "OSU-NLP-Group/WebDreamer",
+        "sentient-engineering/agent-q",
+        "PathOnAI/LiteWebAgent",
+        "HazyResearch/eclair-agents",
+        "OSU-NLP-Group/SkillWeaver",
+        "zorazrw/agent-skill-induction",
+        "google-research/google-research",
+        "AkimotoAyako/VisionTasker",
+        "MobileLLM/DroidBot-GPT",
+        "xbmxb/CoCo-Agent",
+        "cooelf/Auto-GUI",
+        "zzxslp/MM-Navigator",
+        "PromptRPA/Prompt2TaskDataset",
+        "Samsung/ClickAgent",
+        "ZhangL-HKU/CoAT",
+        "X-PLUG/MobileAgent",
+        "OpenDFM/MobA",
+        "XiaoMi/MobileSteward",
+        "Yuqi-Zhou/CHOP",
+        "Wuzheng02/OS-Kairos",
+        "THUDM/AndroidGen",
+        "PaddlePaddle/PaddleOCR",
+        "microsoft/UFO",
+        "niuzaisheng/ScreenAgent",
+        "simular-ai/Agent-S",
+        "Alokia/COLA-demo",
+        "FanbinLu/STEVE",
+        "Evennaire/TaskMind",
+        "Reallm-Labs/InfiGUIAgent",
+        "THUNLP-MT/CollabUIAgents",
+        "WebVLN/WebVLN",
+        "Linziyang1999/Vision",
+        "aburns4/MoTIF",
+        "921112343/GUI-Xplore",
+        "OpenGVLab/GUI-Odyssey",
+        "apple/ml-ferret",
+        "IMNearth/CoAT",
+        "Meituan-AutoML/MobileVLM",
+        "THUDM/Android-Lab",
+        "wwh0411/FedMABench",
+        "THUDM/VisualAgentBench",
+        "yiye3/GUICourse",
+        "superagi/GUIDE",
+        "SalesforceAIResearch/xLAM",
+        "varnelis/Explorer",
+        "QwenLM/Qwen-VL",
+        "QwenLM/Qwen2-VL",
+        "THUDM/CogVLM",
+        "salesforce/LAVIS",
+        "microsoft/Phi-3CookBook",
+        "MinorJerry/OpenWebVoyager",
+        "THUDM/WebRL",
+        "XiaoMi/mobilevlm",
+        "DigiRL-agent/digirl",
+        "NexaAI/octopus-v4",
+        "Linziyang1999/VGA",
+        "DigiRL-agent/digiq",
+        "microsoft/GUI-Agent-RL",
+        "BigTaige/MP-GUI",
+        "lll6gg/UI-R1",
+        "kyegomez/ScreenAI",
+        "abdur75648/V-Zen",
+        "showlab/ShowUI",
+        "bytedance/UI-TARS",
+        "ritzz-ai/GUI-R1",
+        "Reallm-Labs/InfiGUI-R1",
+        "hkust-nlp/GUIMid",
+        "xnancy/russ",
+        "OSU-NLP-Group/Mind2Web",
+        "magicgh/self-map",
+        "ServiceNow/WorkArena",
+        "ljang0/videowebarena",
+        "xbmxb/EnvDistraction",
+        "HazyResearch/wonderbread",
+        "ServiceNow/BrowserGym",
+        "Alibaba-NLP/WebWalker",
+        "convergence-ai/webgames",
+        "SumanKNath/WABER",
+        "OSU-NLP-Group/Online-Mind2Web",
+        "facebookresearch/ai-agent-privacy",
+        "agi-inc/agisdk",
+        "google-deepmind/android_env",
+        "X-LANCE/Mobile-Env",
+        "google-research/android_world",
+        "MobileLLM/AutoDroid",
+        "AndroidArenaAgent/AndroidArena",
+        "ZJU-ACES-ISE/ChatUITest",
+        "LlamaTouch/LlamaTouch",
+        "XiaoMi/MobileBench",
+        "zlwang-cs/OfficeBench",
+        "SoftwareTestingLLMs/WebtestingWithLLMs",
+        "franklinbill/GPTDroid",
+        "coinse/droidagent",
+        "bz-lab/AUITestAgent",
+        "testtestA6/VisionDroid",
+        "wuchiuwong/CrashTranslator",
+        "sidongfeng/AdbGPT",
+        "DLR-SC/GERALLT",
+        "prophetagent/Home",
+        "OpenBMB/ProAgent",
+        "vuminhduc796/GPTVoiceTasker",
+        "BowenBryanWang/AutoTask",
+        "OpenAdaptAI/OpenAdapt",
+        "OpenInterpreter/open-interpreter"
+      ]
+    },
+    "2411.18478": {
+      "title": "High-Level Automated Reasoning",
+      "repos": [
+        "jinyangwu/HiARICL",
+        "vllm-project/vllm"
+      ]
+    },
+    "2411.17116": {
+      "title": "Star Attention: Efficient LLM Inference over Long Sequences",
+      "repos": [
+        "NVIDIA/Star-Attention",
+        "NVIDIA/TensorRT-LLM"
+      ]
+    },
+    "2411.15594": {
+      "title": "Survey on LLM-as-a-Judge",
+      "repos": [
+        "tatsu-lab/alpaca_eval",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2411.15124": {
+      "title": "TÜLU 3",
+      "repos": [
+        "allenai/olmes",
+        "arcee-ai/mergekit",
+        "hamishivi/EasyLM",
+        "nouhadziri/safety-eval-fork",
+        "centerforaisafety/HarmBench",
+        "tatsu-lab/stanford_alpaca",
+        "huggingface/trl"
+      ]
+    },
+    "2411.10109": {
+      "title": "Generative Agent Simulations of 1,000 People",
+      "repos": []
+    },
+    "2411.15129": {
+      "title": "Measuring Bullshit in Language Games Played by ChatGPT",
+      "repos": []
+    },
+    "2411.19865": {
+      "title": "Reverse Thinking",
+      "repos": []
+    },
+    "2412.00722": {
+      "title": "ALAMA",
+      "repos": [
+        "hzy312/alama",
+        "huggingface/trl"
+      ]
+    },
+    "2411.19443": {
+      "title": "Auto-RAG",
+      "repos": [
+        "ictnlp/Auto-RAG"
+      ]
+    },
+    "2412.02830": {
+      "title": "Retrieval-Augmented Reasoning for LLMs",
+      "repos": [
+        "fatebreaker/RARE",
+        "jind11/MedQA"
+      ]
+    },
+    "2412.02205": {
+      "title": "DataLab",
+      "repos": [
+        "shroominic/codeinterpreter-api",
+        "OpenInterpreter/open-interpreter"
+      ]
+    },
+    "2411.12580": {
+      "title": "Procedural Knowledge in Pretraining Drives Reasoning in LLMs",
+      "repos": [
+        "pomonam/kronfluence"
+      ]
+    },
+    "2412.06769": {
+      "title": "Training LLMs to Reason in a Continuous Latent Space",
+      "repos": [
+        "facebookresearch/coconut",
+        "huggingface/transformers"
+      ]
+    },
+    "2412.08905": {
+      "title": "Phi-4 Technical Report",
+      "repos": [
+        "openai/simple-evals"
+      ]
+    },
+    "2412.07017": {
+      "title": "Asynchronous Function Calling",
+      "repos": [
+        "huggingface/text-generation-inference"
+      ]
+    },
+    "2412.04494": {
+      "title": "MAG-V",
+      "repos": [
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2412.05579": {
+      "title": "A Survey on LLMs-as-Judges",
+      "repos": [
+        "CSHaitao/Awesome-LLMs-as-Judges"
+      ]
+    },
+    "2412.06975": {
+      "title": "AutoReason Improves Multi-step Reasoning",
+      "repos": [
+        "miralab-ai/autoreason"
+      ]
+    },
+    "2412.06000": {
+      "title": "Does RLHF Scale?",
+      "repos": [
+        "project-numina/aimo-progress-prize"
+      ]
+    },
+    "2412.07724": {
+      "title": "Granite Guardian",
+      "repos": [
+        "ibm-granite/granite-guardian"
+      ]
+    },
+    "2412.14093": {
+      "title": "Alignment Faking in LLMs",
+      "repos": [
+        "redwoodresearch/alignment_faking_public"
+      ]
+    },
+    "2412.14161": {
+      "title": "TheAgentCompany",
+      "repos": [
+        "TheAgentCompany/TheAgentCompany",
+        "TheAgentCompany/experiments",
+        "All-Hands-AI/OpenHands",
+        "makeplane/plane",
+        "camel-ai/owl",
+        "ServiceNow/BrowserGym"
+      ]
+    },
+    "2412.10136": {
+      "title": "Graphs to Text-Attributed Graphs",
+      "repos": [
+        "Zehong-Wang/TANS"
+      ]
+    },
+    "2412.15115": {
+      "title": "Qwen-2.5 Technical Report",
+      "repos": [
+        "QwenLM/Qwen2.5",
+        "FreedomIntelligence/MultilingualSIFT"
+      ]
+    },
+    "2412.13194": {
+      "title": "PAE (Proposer-Agent-Evaluator)",
+      "repos": []
+    },
+    "2412.10302": {
+      "title": "DeepSeek-VL2",
+      "repos": [
+        "deepseek-ai/DeepSeek-VL2",
+        "lukas-blecher/LaTeX-OCR"
+      ]
+    },
+    "2411.07407": {
+      "title": "AutoFeedback",
+      "repos": []
+    },
+    "2412.11936": {
+      "title": "A Survey of Mathematical Reasoning in the Era of Multimodal LLMs",
+      "repos": [
+        "GAIR-NLP/abel"
+      ]
+    },
+    "2412.11937": {
+      "title": "Precise Length Control in LLMs",
+      "repos": []
+    },
+    "2412.13663": {
+      "title": "ModernBERT",
+      "repos": [
+        "AnswerDotAI/ModernBERT",
+        "facebookresearch/xformers",
+        "mosaicml/composer"
+      ]
+    },
+    "2412.17799": {
+      "title": "Automating the Search for Artificial Life",
+      "repos": [
+        "SakanaAI/asal"
+      ]
+    },
+    "2412.14352": {
+      "title": "A Survey on LLM Inference-Time Self-Improvement",
+      "repos": [
+        "dongxiangjue/Awesome-LLM-Self-Improvement"
+      ]
+    },
+    "2412.18319": {
+      "title": "Empowering MLLM with o1-like Reasoning and Reflection",
+      "repos": [
+        "HJYao00/Mulberry"
+      ]
+    },
+    "2412.05265": {
+      "title": "Reinforcement Learning Overview",
+      "repos": [
+        "montrealrobotics/DeepRLInTheWorld",
+        "google-deepmind/dqn_zoo",
+        "alexzhang13/world-models-papers",
+        "wcarvalho/jaxneurorl",
+        "thinking-machines-lab/tinker",
+        "probml/pyprobml",
+        "axon-rl/gem",
+        "hanjuku-kaso/awesome-offline-rl",
+        "linhlpv/awesome-offline-to-online-RL-papers",
+        "sisl/algorithmsbook",
+        "sail-sg/understand-r1-zero",
+        "TikhonJelvis/RL-book",
+        "google-research/google-research"
+      ]
+    },
+    "2412.17498": {
+      "title": "DRT-o1",
+      "repos": [
+        "krystalan/DRT",
+        "AIDC-AI/Marco-o1",
+        "Unbabel/COMET",
+        "mjpost/sacrebleu",
+        "deepseek-ai/DeepSeek-R1"
+      ]
     }
   }
 }

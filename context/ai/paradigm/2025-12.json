@@ -1,0 +1,267 @@
+{
+  "asOf": "2025-12-31",
+  "mode": "reconstructed",
+  "thesis": "AI is dominated by pretrained Transformers whose capabilities are increasingly extended through reinforcement learning and inference-time reasoning. Models are becoming agents that use tools and perform real work, especially in software engineering, while compute, reliability and verifiability remain major constraints.",
+  "layers": [
+    {
+      "layer": "compute",
+      "paradigm": "NVIDIA Blackwell-class fleets dominate, with inference capacity competing against training",
+      "assumption": "Frontier capability requires large accelerator clusters, with NVIDIA GPUs as the industry default.",
+      "frontier": [
+        "TPU v6/v7 at frontier training scale",
+        "AWS Trainium2 at frontier scale",
+        "AMD MI300/MI350 series",
+        "inference-specialised silicon (Groq, Cerebras)",
+        "fp4 and block-scaled low precision",
+        "rack-scale and optical interconnect"
+      ],
+      "importance": 10,
+      "evidence": [
+        "NVIDIA Blackwell GB200 rack-scale systems shipping \u2014 2025",
+        "AMD MI325X/MI350 roadmap \u2014 2024/2025",
+        "Anthropic multi-platform training across NVIDIA, TPU and Trainium \u2014 2025",
+        "inference demand reported to rival training for accelerator capacity \u2014 2025",
+        "grid interconnection queues named as a datacentre constraint \u2014 2025"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "paradigm": "Transformers remain dominant, increasingly sparse/MoE and natively multimodal",
+      "assumption": "Transformer attention remains the architecture for frontier models; gains come from sparsity, scale and multimodality rather than from replacing attention.",
+      "distribution": {
+        "basis": "publicly known architecture family of frontier-scale models released 2024-2025; closed models do not disclose theirs, so this counts only what is known \u2014 every disclosed example is attention-based",
+        "entries": [
+          {
+            "value": "Transformer",
+            "share": 1.0
+          },
+          {
+            "value": "Non-attention architectures",
+            "share": 0.0
+          }
+        ]
+      },
+      "frontier": [
+        "state-space and linear-attention hybrids",
+        "diffusion language models",
+        "recurrent-depth and latent reasoning",
+        "sub-quadratic attention at long context",
+        "natively omni-modal architectures"
+      ],
+      "importance": 10,
+      "evidence": [
+        "DeepSeek-V3, 671B MoE with 37B active \u2014 2024-12",
+        "Llama 4 MoE \u2014 2025",
+        "Qwen3 MoE \u2014 2025",
+        "Mamba/Jamba hybrids in production use \u2014 2024/2025",
+        "diffusion language models demonstrated at small scale \u2014 2025"
+      ]
+    },
+    {
+      "layer": "training",
+      "paradigm": "Large-scale pretraining followed by capability-enhancing reinforcement learning and reasoning post-training",
+      "assumption": "Post-training with verifiable rewards can substantially improve reasoning in domains where outcomes can be checked automatically.",
+      "frontier": [
+        "process reward models and step-level supervision",
+        "self-play and self-generated curricula",
+        "RL in non-verifiable and judgement domains",
+        "agentic RL over long tool-using trajectories",
+        "distillation of reasoning traces into small models"
+      ],
+      "importance": 10,
+      "evidence": [
+        "OpenAI o1 \u2014 2024-09; o3 \u2014 2025",
+        "DeepSeek-R1, open reasoning model with published RL recipe \u2014 2025-01",
+        "Gemini 2.5 with thinking budgets \u2014 2025",
+        "Claude extended thinking \u2014 2025-02",
+        "reasoning-trace distillation into small models widely reproduced \u2014 2025"
+      ]
+    },
+    {
+      "layer": "data",
+      "paradigm": "Curated, licensed and synthetic data supplement increasingly constrained public web data",
+      "assumption": "Further scaling cannot rely indefinitely on simply adding more high-quality public web text.",
+      "frontier": [
+        "model-generated data at pretraining scale",
+        "reasoning traces as a training corpus",
+        "video and embodied data",
+        "data-efficient and curriculum training"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Will We Run Out of Data? Villalobos et al., revised \u2014 2024-06",
+        "major publisher and forum licensing agreements \u2014 2024/2025",
+        "synthetic reasoning traces used to train open models \u2014 2025",
+        "no defensible share data for this layer \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "scaling",
+      "paradigm": "Training-time and inference-time compute are complementary scaling axes",
+      "assumption": "Capability can be improved both by training a stronger base model and by allocating more computation to reasoning at inference.",
+      "frontier": [
+        "parallel sampling and search over reasoning traces",
+        "adaptive thinking budgets per query",
+        "distillation of long reasoning into short inference",
+        "agentic multi-step compute allocation"
+      ],
+      "importance": 10,
+      "evidence": [
+        "Scaling LLM Test-Time Compute Optimally \u2014 2024-08",
+        "o1 and o3 demonstrating inference-scaling curves \u2014 2024/2025",
+        "reports of diminishing pretraining returns at frontier scale \u2014 2024-11",
+        "no public source apportions frontier compute between pretraining and inference \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "context",
+      "paradigm": "Million-token context with retrieval; weights still frozen after training",
+      "assumption": "Persistence remains external to model weights: context, retrieval, stored memory and agent state substitute for continual learning.",
+      "frontier": [
+        "persistent cross-session memory",
+        "continual learning and post-deployment weight updates",
+        "context compaction and KV-cache compression",
+        "agentic external state and scratchpads"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Gemini 1.5/2.x 1M-2M token context \u2014 2024/2025",
+        "Claude and GPT context windows at 200k+ \u2014 2025",
+        "product-level persistent memory features shipped \u2014 2025",
+        "context length is a property of the paradigm, not a share of it \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "interface",
+      "paradigm": "Chat remains the general interface, while autonomous coding agents establish tool-using AI as a new work interface",
+      "assumption": "The primary end-user interface for general AI is conversational chat.",
+      "frontier": [
+        "computer-use and browser agents",
+        "multi-agent orchestration",
+        "ambient and proactive assistants",
+        "voice-first interfaces"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Claude Code, Codex and agentic coding tools in wide use \u2014 2025",
+        "computer-use agents released by multiple labs \u2014 2024/2025",
+        "MCP published as a tool-interface standard \u2014 2024-11",
+        "no public source apportions usage across chat, API, IDE and agents \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "economics",
+      "paradigm": "Frontier capability is expensive and concentrated, with rapidly improving open and low-cost alternatives behind it",
+      "assumption": "Training the best models requires capital and compute available to only a small number of organisations.",
+      "frontier": [
+        "frontier-equivalent training at order-of-magnitude lower cost",
+        "small models matching prior frontier capability",
+        "inference price competition toward commodity",
+        "on-device frontier-adjacent models"
+      ],
+      "importance": 9,
+      "evidence": [
+        "DeepSeek-R1 open weights with published RL recipe \u2014 2025-01",
+        "DeepSeek-V3 reported ~$5.6M training cost \u2014 2024-12",
+        "sustained per-token price declines across providers \u2014 2024/2025",
+        "Llama 4 and Qwen3 open weights \u2014 2025"
+      ]
+    }
+  ],
+  "bottlenecks": [
+    {
+      "id": "reliability",
+      "name": "Reliability",
+      "status": "binding",
+      "importance": 10,
+      "problem": "Reasoning gains are demonstrated only where an answer can be checked automatically. Whether they hold in domains that cannot be checked is unknown, and errors still compound over long runs.",
+      "evidence": [
+        "o-series gains concentrated in mathematics, code and formal domains \u2014 2024/2025",
+        "SWE-bench Verified \u2014 2024-08",
+        "long-horizon agentic benchmarks far below human completion \u2014 2025"
+      ]
+    },
+    {
+      "id": "compute-cost-and-availability",
+      "name": "Compute cost and availability",
+      "status": "binding",
+      "importance": 10,
+      "problem": "Accelerator supply, packaging, memory bandwidth and grid interconnection bound frontier training, and inference now competes for the same capacity.",
+      "evidence": [
+        "Blackwell rack-scale power and cooling requirements \u2014 2025",
+        "CoWoS capacity named as the constraint \u2014 2024/2025",
+        "grid interconnection queues for datacentre load \u2014 2025"
+      ]
+    },
+    {
+      "id": "agency",
+      "name": "Agency",
+      "status": "binding",
+      "importance": 9,
+      "problem": "Agents can perform useful work, but reliability deteriorates over long tasks and consequential actions still require supervision, limiting how much work can safely be delegated.",
+      "evidence": [
+        "computer-use agents released with explicit caveats \u2014 2024/2025",
+        "MCP published as a tool-interface standard \u2014 2024-11",
+        "EU AI Act obligations phasing in \u2014 2025"
+      ]
+    },
+    {
+      "id": "context-and-memory",
+      "name": "Context and memory",
+      "status": "binding",
+      "importance": 9,
+      "problem": "Weights remain frozen after training. Context is enormous and memory features exist, but they store text rather than learning, so nothing accumulates.",
+      "evidence": [
+        "million-token context shipped without continual learning \u2014 2024/2025",
+        "product memory features are retrieval over stored text \u2014 2025"
+      ]
+    },
+    {
+      "id": "data-quality-and-supply",
+      "name": "Data quality and supply",
+      "status": "binding",
+      "importance": 9,
+      "problem": "The supply of new high-quality public text is increasingly constrained, and synthetic and licensed data introduce their own questions about quality, cost and access.",
+      "evidence": [
+        "Will We Run Out of Data?, revised \u2014 2024-06",
+        "model-collapse results on recursive synthetic training \u2014 2024-07",
+        "licensing replacing open crawling \u2014 2024/2025"
+      ]
+    },
+    {
+      "id": "inference-cost-and-latency",
+      "name": "Inference cost and latency",
+      "status": "binding",
+      "importance": 9,
+      "problem": "Per-token prices have collapsed, but reasoning models spend orders of magnitude more compute per answer, so the capable path is expensive and slow again.",
+      "evidence": [
+        "inference-scaling curves published for o-series \u2014 2024/2025",
+        "thinking budgets exposed as a user-facing cost control \u2014 2025",
+        "inference demand reported to rival training for capacity \u2014 2025"
+      ]
+    },
+    {
+      "id": "closed-frontier",
+      "name": "Closed frontier",
+      "status": "partially-relieved",
+      "importance": 7,
+      "problem": "Open weights now reach frontier-adjacent capability, but the largest models still disclose neither their data nor their full training method.",
+      "evidence": [
+        "DeepSeek-R1 published weights and RL recipe \u2014 2025-01",
+        "Llama 4, Qwen3 open weights \u2014 2025",
+        "closed frontier models undisclosed in data and method \u2014 2025"
+      ]
+    },
+    {
+      "id": "customization",
+      "name": "Customization",
+      "status": "partially-relieved",
+      "importance": 7,
+      "problem": "Adapting a model is easier than it was, but doing it well still means owning weights, and the best models cannot be adapted at all.",
+      "evidence": [
+        "reasoning-trace distillation into small open models widely reproduced \u2014 2025",
+        "fine-tuning still unavailable on the leading closed models \u2014 2025"
+      ]
+    }
+  ]
+}

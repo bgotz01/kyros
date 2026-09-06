@@ -26,9 +26,16 @@ export type ParadigmLayerId = (typeof PARADIGM_LAYERS)[number]['id'];
 
 export interface Distribution {
     /** What was counted, precisely enough that the shares could be recomputed
-     *  from it. A share whose basis cannot be stated is a share that should not
-     *  be written — an invented number with arithmetic consequences is worse
-     *  than an absent one. */
+     *  from it.
+     *
+     *  Include a distribution ONLY where the denominator itself means something.
+     *  The test is whether the number survives a different reasonable sample:
+     *  "every frontier model is a Transformer" holds however you pick the
+     *  models, so it is a statement about the paradigm; "71% NVIDIA" is five of
+     *  the seven models someone happened to list, and says nothing about the
+     *  field. A market share derived from an arbitrary sample of notable models
+     *  is false precision with arithmetic consequences, and is worse than no
+     *  number at all. */
     basis: string;
     entries: { value: string; share: number }[];
 }
@@ -42,13 +49,44 @@ export interface ParadigmLayer {
     /** How dominant normal is. Omitted where no share is defensibly sourceable
      *  — an absent distribution is honest; an invented one is not. */
     distribution?: Distribution;
-    /** What is being pursued but is not dominant. An empty array is a claim:
-     *  no credible alternative was being worked on. */
+    /** Credible approaches that could extend, alter or challenge the paradigm —
+     *  and which are NOT yet established at the snapshot date.
+     *
+     *  Novelty is not the test; adoption is. Something already shipping in
+     *  production belongs to `paradigm`, not here, however recently it arrived:
+     *  100k context in December 2023 was the incumbent, not a bet on the future.
+     *  A candidate proposing it must read as `dominant`, and it will read as
+     *  `frontier` if this list is polluted with things that already happened.
+     *
+     *  An empty array is a claim: no credible alternative was being worked on. */
     frontier: string[];
     /** How consequential it would be if the assumption failed. Caps I¹. */
     importance: number;
     /** Dated refs, every one published on or before `asOf`. The hindsight guard,
      *  and the reason a `frontier` entry can be trusted. */
+    evidence: string[];
+}
+
+export interface ParadigmBottleneck {
+    /** Stable vocabulary used by the scorer. Free-text names cannot be matched
+     *  back to a snapshot, and an unmatched bottleneck cannot justify I². */
+    id: string;
+    name: string;
+    status: 'binding' | 'emerging' | 'partially-relieved';
+    /** How much this constraint limited progress at the snapshot date. Like a
+     *  layer's importance for I¹, this is decided in the snapshot and caps I². */
+    importance: number;
+    /** What is obviously wrong with the paradigm at this date, stated tightly
+     *  enough to decide whether a paper acts on it rather than merely sharing
+     *  its subject matter — and no further.
+     *
+     *  It deliberately does not say what relief would look like. Naming the
+     *  routes out ("non-NVIDIA capacity", "quantisation") hands the scorer the
+     *  answer it is supposed to work out, and in a reconstructed snapshot those
+     *  routes are simply what we now know happened. Materiality is judged by the
+     *  typed `impact` category instead. */
+    problem: string;
+    /** Dated refs, all available on or before the snapshot. */
     evidence: string[];
 }
 
@@ -58,7 +96,9 @@ export interface Paradigm {
      *  `preregistered` was sealed on the date it describes. */
     mode: 'reconstructed' | 'preregistered';
     thesis: string;
-    bindingConstraint: { layer: ParadigmLayerId; description: string };
+    /** The constraint surface standing on this date. I² is measured against
+     *  this list, never against the rolling bottleneck notes. */
+    bottlenecks: ParadigmBottleneck[];
     layers: ParadigmLayer[];
 }
 
@@ -68,6 +108,26 @@ export interface Paradigm {
  *  Transformer both land on architecture; only one of them changes what is
  *  held necessary. */
 export type ParadigmRelation = 'reinforces' | 'extends' | 'optimizes' | 'challenges' | 'inverts';
+
+export type BottleneckFit = 'none' | 'adjacent' | 'direct';
+export type BottleneckImpact = 'negligible' | 'incremental' | 'material' | 'structural';
+
+/** Topic relevance is not relief. A paper can discuss reliability while moving
+ *  no deployment constraint; that is `adjacent`, not a high I². */
+export const BOTTLENECK_FIT_CEILING: Record<BottleneckFit, number> = {
+    none: 2,
+    adjacent: 3,
+    direct: 10,
+};
+
+/** Materiality is independent of fit. A direct 2% efficiency gain still leaves
+ *  the bottleneck where it was and therefore remains an incremental result. */
+export const BOTTLENECK_IMPACT_CEILING: Record<BottleneckImpact, number> = {
+    negligible: 2,
+    incremental: 4,
+    material: 7,
+    structural: 10,
+};
 
 /** The band each relation may score on I¹, before the `importance` cap — so a
  *  row cannot report `optimizes` and then score 8. */
@@ -80,6 +140,58 @@ export const RELATION_BAND: Record<ParadigmRelation, [number, number]> = {
 };
 
 export type DistributionPosition = 'dominant' | 'minor' | 'frontier' | 'absent';
+
+/** How crowded the ground already was — the DIRECTION the candidate took.
+ *  Read off the snapshot, not judged. */
+/** How far past the prior best the result actually lands — the ACHIEVEMENT.
+ *
+ *  Direction and achievement are different questions, and I³ needs both. If
+ *  everyone is trying to build a fusion reactor and someone builds one, the
+ *  achievement is extraordinary however unsurprising the goal; scoring it low
+ *  because the direction was crowded would make I³ measure unusual intentions
+ *  rather than unusual results. The frame is explicit that a 10 requires *both*
+ *  no prior demonstration *and* a method that is not a variant of the standard
+ *  approach, and that a 1 is an increment "distinguishable from its neighbours
+ *  only by its numbers". */
+export type Displacement = 'none' | 'incremental' | 'substantial' | 'unprecedented';
+
+/** I³'s ceiling from the two axes together, rather than the lower of two
+ *  independent caps. A crowded direction no longer vetoes a large result: the
+ *  `frontier` row rises from 1 to 9 as the achievement grows. */
+export const INFLECTION_CEILING: Record<DistributionPosition, Record<Displacement, number>> = {
+    dominant: { none: 1, incremental: 2, substantial: 3, unprecedented: 4 },
+    frontier: { none: 1, incremental: 3, substantial: 7, unprecedented: 9 },
+    minor:    { none: 1, incremental: 4, substantial: 8, unprecedented: 10 },
+    absent:   { none: 2, incremental: 5, substantial: 9, unprecedented: 10 },
+};
+
+export type Precedent = 'established' | 'demonstrated' | 'claimed' | 'none';
+
+/** Precedent is read off the paper's own related work, so it is checkable in a
+ *  way that displacement is not. It therefore bounds displacement rather than
+ *  capping the score directly: you cannot claim an unprecedented result for
+ *  something the paper itself cites as standard practice. */
+export const PRECEDENT_LIMIT: Record<Precedent, Displacement> = {
+    established: 'incremental',
+    demonstrated: 'substantial',
+    claimed: 'unprecedented',
+    none: 'unprecedented',
+};
+
+const DISPLACEMENT_ORDER: Displacement[] = ['none', 'incremental', 'substantial', 'unprecedented'];
+
+/** The claimed displacement, held to what the precedent allows. */
+export function boundedDisplacement(claimed: Displacement, precedent: Precedent): Displacement {
+    const cap = PRECEDENT_LIMIT[precedent];
+    return DISPLACEMENT_ORDER.indexOf(claimed) <= DISPLACEMENT_ORDER.indexOf(cap) ? claimed : cap;
+}
+
+export const PRECEDENT_NOTE: Record<Precedent, string> = {
+    established: 'standard practice, cited as such',
+    demonstrated: 'shown before, at smaller scale or in a narrower domain',
+    claimed: 'asserted somewhere, but not evidenced',
+    none: 'no prior demonstration in the paper\'s own related work',
+};
 
 export interface ParadigmDelta {
     layer: ParadigmLayerId;
@@ -116,8 +228,14 @@ export function positionOf(layer: ParadigmLayer, proposes: string) {
     const frontierHit = layer.frontier.find(matches);
     const hit = entries.find((e) => norm(e.value) === target) ?? entries.find((e) => matches(e.value));
 
+    // Most layers carry no distribution, because a share read off a handful of
+    // hand-picked models says nothing. The incumbent is still named — it is the
+    // layer's `paradigm` — so a candidate proposing the status quo is caught
+    // there rather than falling through to `absent` and a ceiling of 10.
+    const isIncumbent = matches(layer.paradigm);
+
     const position: DistributionPosition =
-        hit && top && hit.share === top.share ? 'dominant'
+        (hit && top && hit.share === top.share) || (!hit && isIncumbent) ? 'dominant'
         : hit ? 'minor'
         : frontierHit ? 'frontier'
         : 'absent';
@@ -128,7 +246,7 @@ export function positionOf(layer: ParadigmLayer, proposes: string) {
         position,
         onFrontier: Boolean(frontierHit),
         dominantShare: top?.share ?? null,
-        matchedValue: hit?.value ?? frontierHit ?? null,
+        matchedValue: hit?.value ?? frontierHit ?? (isIncumbent ? layer.paradigm : null),
     };
 }
 
@@ -155,20 +273,38 @@ export function paradigmDates(): string[] {
     }
 }
 
-/** The newest snapshot standing at or before `when` (a year, or `YYYY-MM`).
- *  A paper is judged against the paradigm that was standing when it was
- *  published — never a later one, which would be reading history with
- *  hindsight. A bare year means January of that year, so a 2025 paper picks the
- *  December 2024 snapshot rather than one written during 2025. */
+/** The newest snapshot standing STRICTLY BEFORE `when` (a year, or `YYYY-MM`).
+ *
+ *  Strictly, not at-or-before: a snapshot dated the end of a month was written
+ *  knowing what appeared during it, and cites those papers as its own evidence.
+ *  The 2024-12 snapshot names DeepSeek-V3 three times; scoring DeepSeek-V3
+ *  against it asks whether the paper is an outlier relative to a paradigm that
+ *  already contains it, and the answer can only be no.
+ *
+ *  So a December 2024 paper is judged against December 2023, and a January 2025
+ *  paper against December 2024. A bare year means January of that year. */
 export function loadParadigm(when: string | number): Paradigm | null {
     const want = /^\d{4}$/.test(String(when)) ? `${when}-01` : String(when);
-    const pick = paradigmDates().find((d) => d <= want);
+    const pick = paradigmDates().find((d) => d < want);
     if (!pick) return null;
     try {
         return JSON.parse(fs.readFileSync(path.join(DIR, `${pick}.json`), 'utf-8')) as Paradigm;
     } catch {
         return null;
     }
+}
+
+/** The month whose paradigm a paper is judged against, as `YYYY-MM`.
+ *
+ *  The arXiv id carries YYMM and the month matters: returning a bare year meant
+ *  January, so every 2024 paper resolved to the newest snapshot at or before
+ *  2024-01 — which was the 2021 one, three years stale. Both seats call this, so
+ *  a disagreement here would have them reading different snapshots. */
+export function paperPeriod(id: string, published?: string): string {
+    const fromId = /^(\d{2})(\d{2})\./.exec(id);
+    if (fromId) return `20${fromId[1]}-${fromId[2]}`;
+    if (published && /^\d{4}-\d{2}/.test(published)) return published.slice(0, 7);
+    return published?.slice(0, 4) ?? String(new Date().getFullYear());
 }
 
 /** Every snapshot, newest first. For the reader, not the scorer. */
@@ -188,6 +324,10 @@ export function layerOf(paradigm: Paradigm, id: string): ParadigmLayer | undefin
     return paradigm.layers.find((l) => l.layer === id);
 }
 
+export function bottleneckOf(paradigm: Paradigm, id: string): ParadigmBottleneck | undefined {
+    return paradigm.bottlenecks?.find((b) => b.id === id);
+}
+
 /** The snapshot as the analyst reads it. Importance is shown because the model
  *  must know the ceiling it is scoring under, not because it may change it. */
 export function renderParadigm(p: Paradigm): string {
@@ -196,9 +336,19 @@ export function renderParadigm(p: Paradigm): string {
         `As of ${p.asOf} · ${p.mode}`,
         '',
         `THESIS: ${p.thesis}`,
-        `BINDING CONSTRAINT: ${p.bindingConstraint.layer} — ${p.bindingConstraint.description}`,
         '',
     ];
+
+    out.push('── DATED BOTTLENECKS · I² MUST NAME ONE');
+    if (!p.bottlenecks?.length) {
+        out.push('   No bottlenecks recorded in this snapshot. I² may not exceed 2.', '');
+    } else {
+        for (const b of p.bottlenecks) {
+            out.push(`─ ${b.id} · ${b.status} · importance ${b.importance}/10`);
+            out.push(`   ${b.name}: ${b.problem}`);
+            out.push('');
+        }
+    }
 
     for (const l of p.layers) {
         out.push(`── ${l.layer.toUpperCase()} · importance ${l.importance}/10`);
@@ -218,4 +368,42 @@ export function renderParadigm(p: Paradigm): string {
 
     out.push('─── END OF STANDING PARADIGM ───────────────────────────────────────────────');
     return out.join('\n');
+}
+
+// ─── how a score was reached ─────────────────────────────────────────────────
+// Every law's score is a claim from the model passed through named ceilings.
+// Only the final number survives into the row, which makes the instrument hard
+// to tune: you cannot tell a 5 the model argued for from an 8 that a ceiling
+// cut to 5. This records the whole derivation so the reasoning can be inspected
+// and adjusted rather than guessed at.
+
+export interface Ceiling {
+    /** The rule, in the instrument's own vocabulary. */
+    name: string;
+    value: number;
+    /** Where the number came from — the layer, the bottleneck, the category. */
+    source: string;
+}
+
+export interface LawDerivation {
+    law: 'inversion' | 'incentives' | 'inflection';
+    /** What the model asked for, before any ceiling. */
+    claimed: number;
+    final: number;
+    ceilings: Ceiling[];
+    /** The ceiling that actually bound, or null where the claim stood on its own. */
+    boundBy: string | null;
+}
+
+/** Applies the ceilings and records which one bound. The single place a law
+ *  score is decided, so the stored derivation can never disagree with the
+ *  number beside it. */
+export function deriveScore(
+    law: LawDerivation['law'],
+    claimed: number,
+    ceilings: Ceiling[],
+): LawDerivation {
+    const binding = ceilings.filter((c) => c.value < claimed).sort((a, b) => a.value - b.value)[0];
+    const final = binding ? binding.value : claimed;
+    return { law, claimed, final, ceilings, boundBy: binding?.name ?? null };
 }

@@ -2,12 +2,12 @@
 'use client';
 
 // ─── the standing paradigm, for reading ──────────────────────────────────────
-// What the field held to be true on a given date, in eight layers. This is what
-// I¹ is measured against: an inversion is only meaningful against a written
-// assumption, and only as large as the layer's importance allows.
+// What the field held to be true and what constrained it on a given date. I¹ is
+// measured against the eight layer assumptions; I² against the dated
+// bottlenecks and their explicit conditions for meaningful relief.
 
 import { useEffect, useState } from 'react';
-import type { Paradigm, ParadigmLayer } from '@/lib/paradigm';
+import type { Paradigm, ParadigmBottleneck, ParadigmLayer } from '@/lib/paradigm';
 
 /** A layer's shares as one hairline bar. Bronze for the incumbent, dimmer for
  *  everything living in its shadow — concentration should be visible at a
@@ -141,6 +141,59 @@ function Layer({ layer, n }: { layer: ParadigmLayer; n: number }) {
     );
 }
 
+function Bottleneck({ bottleneck, n }: { bottleneck: ParadigmBottleneck; n: number }) {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="border-t border-stone-line/60">
+            <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                className="grid w-full grid-cols-[1.6rem_1fr_5.5rem_2.5rem] items-baseline gap-3 px-6 py-3 text-left"
+            >
+                <span className="font-mono text-[0.55rem] text-platinum-dim">
+                    {String(n).padStart(2, '0')}
+                </span>
+                <span className="truncate font-sans text-[0.68rem] tracking-[0.03em] text-marble">
+                    {bottleneck.name}
+                </span>
+                <span className="truncate text-right font-mono text-[0.5rem] uppercase tracking-[0.08em] text-bronze">
+                    {bottleneck.status}
+                </span>
+                <span className="text-right font-mono text-[0.62rem] text-marble">
+                    {bottleneck.importance}
+                    <span className="text-platinum-dim">/10</span>
+                </span>
+            </button>
+
+            {open && (
+                <div className="flex flex-col gap-4 border-t border-stone-line/60 bg-obsidian-800 px-6 py-4">
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            The problem
+                        </span>
+                        <p className="border-l-2 border-bronze-dim pl-3 font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-marble-dim">
+                            {bottleneck.problem}
+                        </p>
+                    </div>
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Evidence · every reference predates the snapshot
+                        </span>
+                        <ul className="flex flex-col gap-1">
+                            {bottleneck.evidence.map((item) => (
+                                <li key={item} className="font-mono text-[0.56rem] leading-relaxed tracking-[0.04em] text-platinum-dim">
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
 export default function ParadigmModal({ onClose }: { onClose: () => void }) {
     const [all, setAll] = useState<Paradigm[] | null>(null);
     const [error, setError] = useState(false);
@@ -243,18 +296,35 @@ export default function ParadigmModal({ onClose }: { onClose: () => void }) {
                                         {p.thesis}
                                     </p>
                                 </div>
-                                <div>
-                                    <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                                        Binding constraint ·{' '}
-                                        <span className="text-bronze">{p.bindingConstraint.layer}</span>
-                                    </span>
-                                    <p className="font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-platinum">
-                                        {p.bindingConstraint.description}
-                                    </p>
-                                </div>
+                                
                             </div>
 
                             <div className="border-t border-stone-line">
+                                <div className="px-6 py-4">
+                                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
+                                        Bottlenecks · I² constraint surface
+                                    </span>
+                                    <p className="mt-1.5 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
+                                        A paper must materially relieve one of these dated constraints for a high incentives score.
+                                        No match or negligible impact caps I² at 2; incremental relief caps it at 4.
+                                    </p>
+                                </div>
+                                {(p.bottlenecks ?? []).map((b, i) => (
+                                    <Bottleneck key={b.id} bottleneck={b} n={i + 1} />
+                                ))}
+                                {!p.bottlenecks?.length && (
+                                    <p className="border-t border-stone-line/60 px-6 py-4 font-sans text-[0.66rem] text-platinum-dim">
+                                        No bottlenecks recorded in this snapshot. I² is capped at 2.
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="border-t border-stone-line">
+                                <div className="px-6 py-4">
+                                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
+                                        Paradigm layers · I¹ assumption surface
+                                    </span>
+                                </div>
                                 {p.layers.map((l, i) => (
                                     <Layer key={l.layer} layer={l} n={i + 1} />
                                 ))}
@@ -263,7 +333,8 @@ export default function ParadigmModal({ onClose }: { onClose: () => void }) {
                             <p className="border-t border-stone-line px-6 py-4 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
                                 A candidate is judged against the snapshot standing when it was
                                 published, never a later one. <span className="text-platinum">Importance</span> is
-                                decided here, once, and caps I¹ — it is not a per-paper judgement.
+                                decided here, once, and caps I¹. Bottleneck importance does the same for I².
+                                Neither is a per-paper judgement.
                             </p>
                         </>
                     )}

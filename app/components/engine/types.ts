@@ -11,15 +11,33 @@ export const LAWS = [
     { key: 'inflection', symbol: 'I³', name: 'Inflection' },
 ] as const;
 
-/** The ranked view reads in the reverse of the scoring order: is it an
- *  inflection, what does it buy, and only then what it overturns. The laws are
- *  named as the corpus names them — a reader who has the frame should not have
- *  to translate a friendlier label back into it. */
+/** Read in scoring order. The three I names are the frame's stable vocabulary;
+ *  friendlier descriptions belong inside their details, not in their place. */
 export const RANKS = [
-    { key: 'inflection', label: 'Inflection', symbol: 'I³' },
-    { key: 'incentives', label: 'Incentives', symbol: 'I²' },
     { key: 'inversion', label: 'Inversion', symbol: 'I¹' },
+    { key: 'incentives', label: 'Incentives', symbol: 'I²' },
+    { key: 'inflection', label: 'Inflection', symbol: 'I³' },
 ] as const;
+
+/** What each law's detail bullets are answering, so a list is never unlabelled. */
+export const LAW_DETAIL: Record<RankKey, string> = {
+    inversion: 'What changes',
+    incentives: 'Why this score',
+    inflection: 'Against the standard approach',
+};
+
+/** The I¹ bullets answer a different question for each relation. "What it
+ *  overturns" is simply wrong above a row that only made something faster. */
+export const RELATION_HEADING: Record<string, string> = {
+    reinforces: 'What it strengthens',
+    extends: 'What it adds',
+    optimizes: 'What it improves',
+    challenges: 'What it questions',
+    inverts: 'What it overturns',
+};
+
+/** The four positions, in order from the incumbent outwards. */
+export const POSITIONS = ['dominant', 'minor', 'frontier', 'absent'] as const;
 
 export type RankKey = (typeof RANKS)[number]['key'];
 

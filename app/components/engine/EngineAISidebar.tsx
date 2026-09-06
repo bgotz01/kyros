@@ -42,9 +42,27 @@ function heldGlyph(week: WeekRow): string {
     return week.heldCount === week.arxivCount ? '●' : '◐';
 }
 
-/** Pull the leading month name out of a stripped heading like "Jan 1 - Jan 7". */
-function monthFromHeading(heading: string): string {
-    return heading.match(/^([A-Za-z]+)/)?.[1] ?? '—';
+/** A week is dated by the day it ends, not the day it starts.
+ *
+ *  "(December 29 - January 4) - 2026" is a January 2026 week holding papers
+ *  published in December 2025. Reading the leading month filed it under a
+ *  December 2026 that never happened, and buried those papers there. */
+function weekEnd(heading: string): { month: string; label: string } {
+    const stripped = heading.replace(/^\(|\)\s*-\s*\d{4}$/g, '').trim();
+    const parts = stripped.split(/\s+-\s+/);
+    const end = parts[parts.length - 1] ?? stripped;
+
+    // "January 4", or a bare "4" where the range does not repeat the month.
+    const named = /^([A-Za-z]+)\s*(\d+)?/.exec(end);
+    const day = /(\d+)\s*$/.exec(end)?.[1];
+    const month = normalizeMonth(
+        named?.[1] ?? /^([A-Za-z]+)/.exec(stripped)?.[1] ?? '—',
+    );
+
+    return {
+        month,
+        label: day ? `${month.slice(0, 3)} ${day}` : month.slice(0, 3),
+    };
 }
 
 const MONTH_ORDER = [
@@ -113,8 +131,7 @@ export default function EngineAISidebar({
         const byYear = new Map<string, Map<string, WeekRow[]>>();
 
         for (const week of weeks) {
-            const stripped = week.heading.replace(/^\(|\)\s*-\s*\d{4}$/g, '');
-            const month = monthFromHeading(stripped);
+            const month = weekEnd(week.heading).month;
             if (!byYear.has(week.year)) byYear.set(week.year, new Map());
             const byMonth = byYear.get(week.year)!;
             if (!byMonth.has(month)) byMonth.set(month, []);
@@ -144,8 +161,7 @@ export default function EngineAISidebar({
         initialised.current = true;
         const keys = new Set<string>();
         for (const week of weeks) {
-            const stripped = week.heading.replace(/^\(|\)\s*-\s*\d{4}$/g, '');
-            const month = monthFromHeading(stripped);
+            const month = weekEnd(week.heading).month;
             keys.add(week.year);
             keys.add(`${week.year}:${month}`);
         }
@@ -226,9 +242,7 @@ export default function EngineAISidebar({
                                         {monthOpen && mWeeks.map((week) => {
                                             const key = `${week.year}:${week.idx}`;
                                             const active = key === activeKey;
-                                            const label = week.heading
-                                                .replace(/^\(|\)\s*-\s*\d{4}$/g, '')
-                                                .replace(/^[A-Za-z]+\s*/, ''); // strip leading month name
+                                            const label = weekEnd(week.heading).label;
 
                                             return (
                                                 <button

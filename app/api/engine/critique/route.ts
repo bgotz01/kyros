@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server';
 import { hasApiKey, MISSING_KEY_MESSAGE, openrouter } from '@/lib/openrouter';
 import { MODELS, DEFAULT_MODEL } from '@/lib/models';
-import { buildFrameBlock, buildBottleneckBlock } from '@/lib/pageContext';
+import { buildSeatContext, MAX_PAPER_CHARS } from '@/lib/pageContext';
+import { paperPeriod } from '@/lib/paradigm';
 import { CRITIC_SYSTEM, buildCritiquePrompt, buildPaperPrompt } from '@/lib/prompts/engine';
 import { readPaper } from '@/lib/engineData';
 import { db } from '@/lib/db';
@@ -9,7 +10,6 @@ import type { EngineScore } from '../analyze/route';
 
 export const maxDuration = 300;
 
-const MAX_PAPER_CHARS = 60_000;
 
 export type CriticSection = 'summary' | 'inversion' | 'incentives' | 'inflection';
 
@@ -84,10 +84,12 @@ export async function POST(req: NextRequest) {
         const resolvedModel = model ?? DEFAULT_MODEL;
         const meta = MODELS.find((m) => m.id === resolvedModel);
 
-        // The critic reads the same frame and the same constraint surface as the
-        // analyst — a critic working from different definitions produces noise,
-        // not scrutiny.
-        const system = [buildFrameBlock(), buildBottleneckBlock(), CRITIC_SYSTEM]
+        // The critic reads exactly what the analyst read — the same frame, the
+        // same dated paradigm, the same constraint surface. A critic working
+        // from different definitions produces noise, not scrutiny; one judging
+        // I¹ from its own memory of the prevailing paradigm is doing the very
+        // thing its first rule forbids.
+        const system = [buildSeatContext(paperPeriod(id, paper.published)), CRITIC_SYSTEM]
             .filter(Boolean)
             .join('\n\n');
 
@@ -109,16 +111,40 @@ export async function POST(req: NextRequest) {
                         incentives: score.incentives,
                         inflection: score.inflection,
                         verdict: score.verdict,
+                        // Which layer was named, what relation was assigned and
+                        // what the paper was said to offer instead. Without it
+                        // the critic cannot tell whether an I¹ was capped by the
+                        // relation or arrived at freely.
+                        delta: score.delta,
                     })}`,
                 },
             ],
-            max_tokens: meta?.maxTokens ?? 4000,
+            // The critic writes four notes, each with reasoning and replacement
+            // bullets — the largest output of any seat. On a reasoning model the
+            // thinking is billed against the same ceiling, and at the catalogue
+            // default it exhausted the budget before emitting a character.
+            max_tokens: Math.max(meta?.maxTokens ?? 4000, 16_000),
             temperature: 0.3,
         });
 
-        const parsed = extractJson(completion.choices[0]?.message?.content ?? '');
+        const reply = completion.choices[0]?.message?.content ?? '';
+        const parsed = extractJson(reply);
         if (!parsed) {
-            return Response.json({ error: 'Critic did not return usable JSON' }, { status: 502 });
+            // A truncated answer looks identical to a malformed one from here, so
+            // say which: the critic emits four notes and can run out of room.
+            const stop = completion.choices[0]?.finish_reason ?? 'unknown';
+            console.error('[critique] unusable JSON · finish_reason', stop, '· chars', reply.length);
+            return Response.json(
+                {
+                    error:
+                        stop === 'length'
+                            ? 'Critic ran out of output tokens before finishing its notes'
+                            : 'Critic did not return usable JSON',
+                    finishReason: stop,
+                    raw: reply.slice(-400),
+                },
+                { status: 502 },
+            );
         }
 
         const raw = Array.isArray(parsed.notes) ? parsed.notes : [];
@@ -131,7 +157,9 @@ export async function POST(req: NextRequest) {
 
             const reasoning = bullets(found.reasoning);
             const proposed = Number(found.proposedScore);
-            const proposedBullets = bullets(found.proposedBullets);
+            // Replacement content has the same compact two-bullet contract as
+            // the analyst row. The critic's reasoning may remain longer.
+            const proposedBullets = bullets(found.proposedBullets).slice(0, 2);
 
             // An objection with nothing concrete behind it is recorded as
             // agreement — the prompt asks for a correction, and a flag the
@@ -171,6 +199,13 @@ export async function POST(req: NextRequest) {
         };
 
         if (scoreId) {
+            // A score may be challenged as often as you like — by a different
+            // seat, or by the same one again. The critique is one-per-score, so
+            // a re-run replaces the last one rather than accumulating; the
+            // resolutions recorded against the old notes go with it, because a
+            // decision about a note a different model never made is meaningless.
+            await db.engineCritique.deleteMany({ where: { scoreId } });
+
             const row = await db.engineCritique.create({
                 data: {
                     scoreId,

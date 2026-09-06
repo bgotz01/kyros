@@ -17,6 +17,9 @@ export interface PaperRow {
     host: string | null;
     /** true when text has been pulled into the archive. */
     held: boolean;
+    /** First arXiv submission date. Older archive entries only carry enough
+     *  information for YYYY-MM; newly fetched entries carry YYYY-MM-DD. */
+    published: string | null;
     /** The digest's own account of the paper — its lede and bullets. Written by
      *  a third party, so it is shown alongside the analysis, never scored from. */
     digest: { lede: string; points: string[] };
@@ -37,8 +40,8 @@ export interface WeekRow {
  *  Split on the pipes rather than matched in one expression — neither the
  *  prose nor a URL can contain one, and the two columns want different
  *  treatment. */
-function parseRows(section: string): Omit<PaperRow, 'held'>[] {
-    const out: Omit<PaperRow, 'held'>[] = [];
+function parseRows(section: string): Omit<PaperRow, 'held' | 'published'>[] {
+    const out: Omit<PaperRow, 'held' | 'published'>[] = [];
 
     for (const line of section.split('\n')) {
         const m = line.match(/^\|\s*(\d+)\)\s*\*\*(.+?)\*\*([\s\S]*)$/);
@@ -94,13 +97,49 @@ export function archiveFile(bare: string): string | null {
     return match ? path.join(dir, match) : null;
 }
 
+/** The arXiv id always gives an honest month, even for archive files fetched
+ *  before we began storing the exact v1 date. Never substitute the fetch date:
+ *  that would move the hindsight cutoff to the day Kyros happened to ingest it. */
+function publicationMonth(bare: string): string | null {
+    const m = /^(\d{2})(\d{2})\./.exec(bare);
+    if (!m) return null;
+    const month = Number(m[2]);
+    if (month < 1 || month > 12) return null;
+    return `20${m[1]}-${m[2]}`;
+}
+
+function publicationFromRaw(bare: string, raw: string): string | null {
+    return raw.match(/^<!-- published:\s*(\d{4}-\d{2}-\d{2})\s*-->$/mi)?.[1]
+        ?? publicationMonth(bare);
+}
+
+/** Publication metadata for the card without reading or exposing paper text. */
+export function publicationDate(bare: string): string | null {
+    const file = archiveFile(bare);
+    if (!file) return publicationMonth(bare);
+    try {
+        // Metadata is in the first three comment lines. A bounded read avoids
+        // loading hundreds of full papers merely to render the week index.
+        const fd = fs.openSync(file, 'r');
+        try {
+            const buffer = Buffer.alloc(512);
+            const bytes = fs.readSync(fd, buffer, 0, buffer.length, 0);
+            return publicationFromRaw(bare, buffer.toString('utf-8', 0, bytes));
+        } finally {
+            fs.closeSync(fd);
+        }
+    } catch {
+        return publicationMonth(bare);
+    }
+}
+
 export function readPaper(bare: string): { text: string; published?: string } | null {
     const file = archiveFile(bare);
     if (!file) return null;
     const raw = fs.readFileSync(file, 'utf-8');
     return {
         text: raw.replace(/^<!--[\s\S]*?-->\s*/gm, '').trim(),
-        published: raw.match(/fetched:\s*([\d-]+)/)?.[1],
+        published: publicationFromRaw(bare, raw) ?? undefined,
     };
 }
 
@@ -130,6 +169,7 @@ export function allWeeks(): WeekRow[] {
             const papers: PaperRow[] = w.rows.map((r) => ({
                 ...r,
                 held: r.id ? archiveFile(r.id) !== null : false,
+                published: r.id ? publicationDate(r.id) : null,
             }));
             out.push({
                 year,

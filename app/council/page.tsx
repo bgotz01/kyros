@@ -151,7 +151,14 @@ export default function CouncilPage() {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const parallelBottomRefs = useRef<(HTMLDivElement | null)[]>([null, null, null]);
+    // Direct refs to the scroll containers — used for imperative scroll rather
+    // than scrollIntoView (which triggers a smooth animation on every token).
+    const threadContainerRef = useRef<HTMLDivElement | null>(null);
+    const parallelContainerRefs = useRef<(HTMLDivElement | null)[]>([null, null, null]);
     const pinnedToBottom = useRef(true);
+    // Per parallel-column pin state — independent so the user can scroll one
+    // column freely while the others keep following.
+    const parallelPinned = useRef<boolean[]>([true, true, true]);
 
     // ── derived ───────────────────────────────────────────────────────────────
     const agents: AgentState[] = useMemo(
@@ -234,14 +241,31 @@ export default function CouncilPage() {
     }, [input]);
 
     useEffect(() => {
-        if (!pinnedToBottom.current) return;
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-        parallelBottomRefs.current.forEach((r) => r?.scrollIntoView({ behavior: 'smooth' }));
-    }, [cascadeTurns, loopTurns, parallelMsgs, activeIdx]);
+        if (mode === 'parallel') {
+            // Scroll each column independently to its bottom, but only if that
+            // column is still pinned (user hasn't scrolled it up).
+            parallelContainerRefs.current.forEach((el, i) => {
+                if (el && parallelPinned.current[i]) {
+                    el.scrollTop = el.scrollHeight;
+                }
+            });
+        } else {
+            if (!pinnedToBottom.current) return;
+            const el = threadContainerRef.current;
+            if (el) el.scrollTop = el.scrollHeight;
+        }
+    }, [cascadeTurns, loopTurns, parallelMsgs, activeIdx, mode]);
+
+    const SCROLL_THRESHOLD = 120;
 
     function handleScroll(e: React.UIEvent<HTMLDivElement>) {
         const el = e.currentTarget;
-        pinnedToBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+        pinnedToBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < SCROLL_THRESHOLD;
+    }
+
+    function handleParallelScroll(e: React.UIEvent<HTMLDivElement>, idx: number) {
+        const el = e.currentTarget;
+        parallelPinned.current[idx] = el.scrollHeight - el.scrollTop - el.clientHeight < SCROLL_THRESHOLD;
     }
 
     // ── session persistence ───────────────────────────────────────────────────
@@ -282,6 +306,7 @@ export default function CouncilPage() {
         setError(null);
         setLoopRound(0);
         pinnedToBottom.current = true;
+        parallelPinned.current = [true, true, true];
     }
 
     function restoreSession(session: SavedSession) {
@@ -310,6 +335,7 @@ export default function CouncilPage() {
         setInput('');
         setError(null);
         pinnedToBottom.current = true;
+        parallelPinned.current = [true, true, true];
     }
 
     function handleRemoveSession(id: string) {
@@ -388,6 +414,7 @@ export default function CouncilPage() {
         setInput('');
         setError(null);
         pinnedToBottom.current = true;
+        parallelPinned.current = [true, true, true];
 
         if (mode === 'parallel') await runParallel(question);
         else if (mode === 'loop') await runLoop(question);
@@ -682,8 +709,11 @@ export default function CouncilPage() {
                     : 'Pose a question.';
 
     return (
-        // Fill the flex-1 main column; footer sits below in the body flex column.
-        <div className="flex flex-1 overflow-hidden">
+        // Fill exactly the remaining viewport below the 64px navbar.
+        // The outer flex chain has no height constraint because body is
+        // min-h-screen; we set it here so ThreadView's overflow-y-auto
+        // has a bounded parent to scroll within.
+        <div className="flex overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
             {/* ── archive — sits left of the header, thread and composer alike ── */}
             <SessionsSidebar
                 sessions={sessions}
@@ -839,8 +869,10 @@ export default function CouncilPage() {
                                 onModelChange={setAgentModel}
                                 onOpenPrompt={openPrompt}
                                 bottomRefs={parallelBottomRefs}
+                                containerRefs={parallelContainerRefs}
                                 selected={selectedIdxs}
                                 onToggle={toggleAgent}
+                                onScroll={handleParallelScroll}
                             />
                         ) : (
                             <ThreadView
@@ -848,6 +880,7 @@ export default function CouncilPage() {
                                 loadingIdx={activeIdx !== null && activeIdx >= 0 ? activeIdx : null}
                                 emptyMessage={emptyMessage}
                                 bottomRef={bottomRef}
+                                containerRef={threadContainerRef}
                                 onScroll={handleScroll}
                             />
                         )}

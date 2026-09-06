@@ -5,6 +5,8 @@ import EngineAISidebar from '@/app/components/engine/EngineAISidebar';
 import EngineHeader from '@/app/components/engine/EngineHeader';
 import CriticModal from '@/app/components/engine/CriticModal';
 import ParadigmModal from '@/app/components/engine/ParadigmModal';
+import BreakdownModal from '@/app/components/engine/BreakdownModal';
+import type { Paradigm } from '@/lib/paradigm';
 import PaperCard from '@/app/components/engine/PaperCard';
 import { useEnginePrefs } from '@/app/components/engine/storage';
 import { heldScore, type RowState } from '@/app/components/engine/types';
@@ -28,8 +30,17 @@ export default function EnginePage() {
     const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
     const [openNote, setOpenNote] = useState<{ id: string; section: CriticSection } | null>(null);
     const [showParadigm, setShowParadigm] = useState(false);
+    // The paper whose derivation is open — held by id, not by value. A critique
+    // landing while the modal is open changes the score, and the breakdown is
+    // the one place that must show it: freezing a copy would leave the modal
+    // explaining a number no longer on the card.
+    const [breakdown, setBreakdown] = useState<string | null>(null);
+    // The sealed snapshots, so a card can show the written assumption its I¹ was
+    // measured against rather than the model's paraphrase of it.
+    const [paradigms, setParadigms] = useState<Paradigm[]>([]);
     const [externals, setExternals] = useState<Record<string, External>>({});
     const [running, setRunning] = useState<null | 'analyst' | 'critic' | 'external'>(null);
+    const [clearingId, setClearingId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const cancelled = useRef(false);
 
@@ -102,6 +113,24 @@ export default function EnginePage() {
             })
             .catch(() => setError('Could not load the digests.'));
     }, [loadRun]);
+
+    useEffect(() => {
+        fetch('/api/engine/paradigm')
+            .then((r) => r.json())
+            .then((rows: Paradigm[]) => setParadigms(Array.isArray(rows) ? rows : []))
+            .catch(() => setParadigms([]));
+    }, []);
+
+    /** The layer assumption a scored row was judged against. */
+    const assumptionFor = useCallback(
+        (state: RowState | undefined): string | undefined => {
+            const delta = heldScore(state)?.delta;
+            if (!delta) return undefined;
+            const snapshot = paradigms.find((p) => p.asOf === delta.paradigmAsOf);
+            return snapshot?.layers.find((l) => l.layer === delta.layer)?.assumption;
+        },
+        [paradigms],
+    );
 
     const selectWeek = useCallback(
         (next: WeekRow) => {
@@ -250,7 +279,9 @@ export default function EnginePage() {
         async (paper: PaperRow) => {
             if (!paper.id || running) return;
             const state = states[paper.id];
-            if (state?.status !== 'done' || state.score.critique) return;
+            // A re-run is allowed: changing the critic seat and challenging the
+            // same row again is the point. Each run replaces the last.
+            if (state?.status !== 'done') return;
             const score = state.score;
 
             setRunning('critic');
@@ -293,6 +324,57 @@ export default function EnginePage() {
             setRunning(null);
         },
         [states, run, criticModel, running],
+    );
+
+    /** Remove every saved reading of this paper in the selected week. Runs are
+     *  append-only, so deleting just the newest score would expose an older one
+     *  and the card would appear to restore itself on the next load. */
+    const clearPaper = useCallback(
+        async (paper: PaperRow) => {
+            if (!week || !paper.id || running || clearingId) return;
+            const current = heldScore(states[paper.id]);
+            if (!current) return;
+
+            const confirmed = window.confirm(
+                `Clear every saved score and critic result for "${paper.title}" in this week?\n\nThis cannot be undone. Repository metadata and the archived paper will remain.`,
+            );
+            if (!confirmed) return;
+
+            const id = paper.id;
+            setClearingId(id);
+            setError(null);
+            try {
+                const params = new URLSearchParams({
+                    domain: DOMAIN,
+                    year: week.year,
+                    weekIdx: String(week.idx),
+                    paperId: id,
+                });
+                const res = await fetch(`/api/engine/runs?${params}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error ?? 'Failed to clear paper results');
+
+                setStates((prev) => {
+                    const next = { ...prev };
+                    delete next[id];
+                    return next;
+                });
+                setOpenRows((prev) =>
+                    Object.fromEntries(Object.entries(prev).filter(([key]) => !key.startsWith(`${id}:`))),
+                );
+                setOpenNote((prev) => (prev?.id === id ? null : prev));
+                setRun((prev) => {
+                    if (!prev) return null;
+                    const scores = prev.scores.filter((score) => score.id !== id);
+                    return scores.length ? { ...prev, scores } : null;
+                });
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to clear paper results');
+            } finally {
+                setClearingId(null);
+            }
+        },
+        [week, running, clearingId, states],
     );
 
     /** Every paper in the week that has not been looked up. GitHub allows sixty
@@ -456,6 +538,12 @@ export default function EnginePage() {
         return [...papers].sort((a, b) => product(b) - product(a) || a.n - b.n);
     }, [week, states]);
 
+    /** The open row's current score, read live rather than captured. */
+    const breakdownScore = useMemo(
+        () => (breakdown ? heldScore(states[breakdown]) : undefined),
+        [breakdown, states],
+    );
+
     const activeNote = useMemo(() => {
         if (!openNote) return null;
         const s = states[openNote.id];
@@ -537,8 +625,13 @@ export default function EnginePage() {
                                     }}
                                     onRun={() => void runPaper(paper)}
                                     onCritic={() => void criticPaper(paper)}
+                                    onBreakdown={() => paper.id && setBreakdown(paper.id)}
+                                    onClear={() => void clearPaper(paper)}
                                     external={paper.id ? externals[paper.id] : undefined}
-                                    busy={running !== null}
+                                    standingAssumption={assumptionFor(
+                                        paper.id ? states[paper.id] : undefined,
+                                    )}
+                                    busy={running !== null || clearingId !== null}
                                 />
                             );
                         })}
@@ -547,6 +640,16 @@ export default function EnginePage() {
             </section>
 
             {showParadigm && <ParadigmModal onClose={() => setShowParadigm(false)} />}
+
+            {breakdownScore && (
+                <BreakdownModal
+                    score={breakdownScore}
+                    paradigm={paradigms.find(
+                        (p) => p.asOf === breakdownScore.delta?.paradigmAsOf,
+                    )}
+                    onClose={() => setBreakdown(null)}
+                />
+            )}
 
             {openNote && activeNote && (
                 <CriticModal

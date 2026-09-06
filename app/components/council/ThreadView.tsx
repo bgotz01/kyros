@@ -11,6 +11,7 @@ interface Props {
     loadingIdx: number | null;
     emptyMessage: string;
     bottomRef: React.RefObject<HTMLDivElement | null>;
+    containerRef: React.RefObject<HTMLDivElement | null>;
     onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
 }
 
@@ -30,7 +31,7 @@ function Pulse() {
 
 /** The shared transcript surface for Cascade and Loop — the analyst's question
  *  followed by each agent's response, in the order they spoke. */
-export default function ThreadView({ turns, loadingIdx, emptyMessage, bottomRef, onScroll }: Props) {
+export default function ThreadView({ turns, loadingIdx, emptyMessage, bottomRef, containerRef, onScroll }: Props) {
     const [copied, setCopied] = useState(false);
 
     function handleCopy() {
@@ -41,7 +42,7 @@ export default function ThreadView({ turns, loadingIdx, emptyMessage, bottomRef,
     }
 
     return (
-        <div className="relative flex-1 overflow-y-auto px-6 py-8 sm:px-10" onScroll={onScroll}>
+        <div ref={containerRef} className="relative flex-1 overflow-y-auto px-6 py-8 sm:px-10" onScroll={onScroll}>
             {turns.length > 0 && (
                 <button
                     type="button"

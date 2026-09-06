@@ -4,6 +4,12 @@ import Link from 'next/link';
 
 const SECTIONS = [
     {
+        href: '/ai/progress',
+        label: 'Progress',
+        description: 'One paradigm per year — from the Transformer to graph-orchestrated systems.',
+        meta: '2017 · 2018 · 2019 · 2020 · 2021 · 2022 · 2023 · 2024 · 2025 · 2026',
+    },
+    {
         href: '/ai/impact',
         label: 'Impact',
         description: 'Score and chart paradigm-defining AI developments using the I³ framework.',
@@ -79,9 +85,8 @@ export default function AIPage() {
                     </Link>
                 ))}
 
-                {/* Five cards across a 2- or 3-column grid leaves one cell empty,
-                    which would otherwise show the container rule through. */}
-                <div aria-hidden className="hidden bg-charcoal sm:block" />
+                {/* Six cards across a 2- or 3-column grid leaves no remainder,
+                    so no filler cell is needed. */}
             </div>
 
             {/* divider + framing text */}

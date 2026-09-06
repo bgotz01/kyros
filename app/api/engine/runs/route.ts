@@ -3,10 +3,38 @@ import { db } from '@/lib/db';
 import { frameReviewedAt } from '@/lib/pageContext';
 import type { StoredRun, StoredScore } from '@/lib/engineStore';
 import type { CriticNote, CriticSection } from '../critique/route';
+import {
+    layerOf,
+    loadParadigm,
+    positionOf,
+    type BottleneckFit,
+    type BottleneckImpact,
+    type ParadigmRelation,
+    type Precedent,
+    type LawDerivation,
+} from '@/lib/paradigm';
 
 /** Prisma returns Json columns as unknown; every one of ours is a bullet list. */
 function list(v: unknown): string[] {
     return Array.isArray(v) ? v.map(String) : [];
+}
+
+/** I² originally stored only its display bullets. New rows keep the complete
+ *  dated bottleneck measurement in the same JSON column, so no destructive
+ *  migration is needed and old scores retain their original shape. */
+function bottleneck(v: unknown) {
+    if (Array.isArray(v)) return { bottleneck: list(v) };
+    if (!v || typeof v !== 'object') return { bottleneck: [] as string[] };
+    const row = v as Record<string, unknown>;
+    return {
+        bottleneck: list(row.bullets),
+        bottleneckId: typeof row.id === 'string' ? row.id : undefined,
+        bottleneckName: typeof row.name === 'string' ? row.name : undefined,
+        bottleneckFit: typeof row.fit === 'string' ? row.fit as BottleneckFit : undefined,
+        impact: typeof row.impact === 'string' ? row.impact as BottleneckImpact : undefined,
+        bottleneckAsOf: typeof row.asOf === 'string' ? row.asOf : undefined,
+        ceiling: typeof row.ceiling === 'number' ? row.ceiling : undefined,
+    };
 }
 
 /** Every run for a week, newest first. Scores are append-only and a single
@@ -28,6 +56,16 @@ async function loadWeek(domain: string, year: string, weekIdx: number) {
 
 type RunRows = Awaited<ReturnType<typeof loadWeek>>;
 type ScoreRow = RunRows[number]['scores'][number];
+
+/** Where the proposal sat in the snapshot it was judged against. Derived on
+ *  read rather than stored: the snapshot is sealed, so the answer is stable,
+ *  and a stored copy could only ever fall out of step with it. */
+function derivePosition(asOf: string | null, layerId: string | null, proposes: string | null): string {
+    if (!asOf || !layerId || !proposes) return '';
+    const p = loadParadigm(asOf.slice(0, 7));
+    const layer = p ? layerOf(p, layerId) : undefined;
+    return layer ? positionOf(layer, proposes).position : '';
+}
 
 function serialiseScore(s: ScoreRow): StoredScore {
     return {
@@ -54,13 +92,28 @@ function serialiseScore(s: ScoreRow): StoredScore {
             headline: s.incentivesHeadline,
             outcomeKind: s.outcomeKind,
             outcomeEstimate: s.outcomeEstimate,
-            bottleneck: list(s.bottleneck),
+            ...bottleneck(s.bottleneck),
         },
         inflection: {
             score: s.inflection,
             headline: s.inflectionHeadline,
             unprecedented: list(s.unprecedented),
+            ...(s.precedent ? { precedent: s.precedent as Precedent } : {}),
         },
+        // Null on rows scored before the paradigm snapshots existed, so the
+        // card must read as it did then rather than showing an empty delta.
+        ...(s.paradigmLayer && s.paradigmRelation
+            ? {
+                  delta: {
+                      layer: s.paradigmLayer,
+                      relation: s.paradigmRelation as ParadigmRelation,
+                      proposes: s.paradigmProposes ?? '',
+                      position: derivePosition(s.paradigmAsOf, s.paradigmLayer, s.paradigmProposes),
+                      paradigmAsOf: s.paradigmAsOf ?? '',
+                  },
+              }
+            : {}),
+        ...(s.derivation ? { derivation: s.derivation as unknown as LawDerivation[] } : {}),
         product: s.product,
         verdict: s.verdict,
         confidence: s.confidence,
@@ -202,5 +255,44 @@ export async function PATCH(req: NextRequest) {
     } catch (err) {
         console.error('[api/engine/runs PATCH]', err);
         return Response.json({ error: 'Failed to record critic' }, { status: 500 });
+    }
+}
+
+// ─── DELETE /api/engine/runs ─────────────────────────────────────────────────────────────────────
+// Clears every reading of one paper inside one digest week. A paper can have
+// scores in several append-only runs; deleting only the visible score would
+// reveal the previous one immediately and make "clear" appear not to work.
+// Critiques and notes follow through their existing cascade relations.
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const url = new URL(req.url);
+        const domain = url.searchParams.get('domain') ?? 'ai';
+        const year = url.searchParams.get('year');
+        const weekIdx = url.searchParams.get('weekIdx');
+        const paperId = url.searchParams.get('paperId');
+
+        if (!year || weekIdx === null || !paperId || !/^\d{4}\.\d{4,5}$/.test(paperId)) {
+            return Response.json({ error: 'year, weekIdx and a valid paperId are required' }, { status: 400 });
+        }
+        const index = Number(weekIdx);
+        if (!Number.isInteger(index) || index < 0) {
+            return Response.json({ error: 'weekIdx must be a non-negative integer' }, { status: 400 });
+        }
+
+        const runs = await db.engineRun.findMany({
+            where: { domain, year, weekIdx: index },
+            select: { id: true },
+        });
+        const result = await db.engineScore.deleteMany({
+            where: {
+                paperId,
+                runId: { in: runs.map((run) => run.id) },
+            },
+        });
+        return Response.json({ ok: true, deleted: result.count });
+    } catch (err) {
+        console.error('[api/engine/runs DELETE]', err);
+        return Response.json({ error: 'Failed to clear paper results' }, { status: 500 });
     }
 }

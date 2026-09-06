@@ -12,9 +12,11 @@ interface Props {
     onModelChange: (idx: number, model: string) => void;
     onOpenPrompt: (idx: number) => void;
     bottomRefs: React.RefObject<(HTMLDivElement | null)[]>;
+    containerRefs: React.RefObject<(HTMLDivElement | null)[]>;
     /** Which agents answer. Silenced ones collapse to a strip. */
     selected: Set<number>;
     onToggle: (idx: number) => void;
+    onScroll?: (e: React.UIEvent<HTMLDivElement>, idx: number) => void;
 }
 
 /** One independent column per speaking agent — the same question put to each in
@@ -26,8 +28,10 @@ export default function ParallelView({
     onModelChange,
     onOpenPrompt,
     bottomRefs,
+    containerRefs,
     selected,
     onToggle,
+    onScroll,
 }: Props) {
     return (
         <div className="flex flex-1 gap-px overflow-hidden bg-stone-line">
@@ -120,7 +124,11 @@ export default function ParallelView({
                             </div>
                         </header>
 
-                        <div className="flex-1 space-y-6 overflow-y-auto px-5 py-6">
+                        <div
+                            ref={(el) => { containerRefs.current[i] = el; }}
+                            className="flex-1 space-y-6 overflow-y-auto px-5 py-6"
+                            onScroll={(e) => onScroll?.(e, i)}
+                        >
                             {agent.messages.length === 0 && (
                                 <p className="pt-10 text-center font-serif text-base font-light text-platinum-dim">
                                     Silent.
@@ -136,9 +144,8 @@ export default function ParallelView({
                                 ) : (
                                     <div
                                         key={mi}
-                                        className={`prose-kyros text-[0.9rem] leading-[1.8] ${
-                                            agent.error ? 'text-platinum-dim' : 'text-marble-dim'
-                                        }`}
+                                        className={`prose-kyros text-[0.9rem] leading-[1.8] ${agent.error ? 'text-platinum-dim' : 'text-marble-dim'
+                                            }`}
                                     >
                                         {msg.content ? (
                                             <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>

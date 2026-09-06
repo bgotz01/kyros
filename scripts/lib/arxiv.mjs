@@ -25,6 +25,21 @@ export function yearDir(bare) {
     return path.join(process.cwd(), 'papers', 'archive', String(yearOf(bare)));
 }
 
+/** arXiv's abstract page exposes the first-submission date as citation_date.
+ *  This is the scoring cutoff; citation_online_date may describe a later version. */
+async function publishedDate(id) {
+    try {
+        const res = await fetch(`https://arxiv.org/abs/${id}`);
+        if (!res.ok) return '';
+        const html = await res.text();
+        return html
+            .match(/<meta\s+name=["']citation_date["']\s+content=["']([^"']+)["']/i)?.[1]
+            ?.replaceAll('/', '-') ?? '';
+    } catch {
+        return '';
+    }
+}
+
 /** LaTeXML wraps the paper in <article>; scoping to it drops the arXiv banner,
  *  the issue-report form and the navigation. */
 function htmlToText(html) {
@@ -64,6 +79,10 @@ export async function fetchText(raw, { force = false } = {}) {
 
     let body = '';
     let mode = '';
+    // An exact date is stored for every new artefact. If this lookup is
+    // temporarily unavailable, readers fall back to the honest YYYY-MM encoded
+    // in the id rather than ever using the ingestion date.
+    const published = await publishedDate(id);
 
     const res = await fetch(`https://arxiv.org/html/${id}`);
     if (res.ok) {
@@ -84,7 +103,7 @@ export async function fetchText(raw, { force = false } = {}) {
     }
 
     const doc = `<!-- source: https://arxiv.org/abs/${id} -->
-<!-- fetched: ${new Date().toISOString().slice(0, 10)} — ${mode} -->
+${published ? `<!-- published: ${published} -->\n` : ''}<!-- fetched: ${new Date().toISOString().slice(0, 10)} — ${mode} -->
 <!-- Not evidence on its own. The PDF in pdf/ is the artefact of record. -->
 
 ${body}
