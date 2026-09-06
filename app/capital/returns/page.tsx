@@ -14,7 +14,9 @@ export default function ReturnsPage() {
     const [data, setData] = useState<TableData>({});
     const [annualise, setAnnualise] = useState(true);
     const [stripDiv, setStripDiv] = useState(false);
-    const [scope, setScope] = useState<Scope>('equities+gold');
+    // No selector is wired up yet — the scope is fixed until one exists. Restore
+    // the setter here and thread it through when the control lands.
+    const [scope] = useState<Scope>('equities+gold');
 
     return (
         <div className="mx-auto w-full max-w-[1100px] px-8 py-16">
@@ -47,13 +49,11 @@ export default function ReturnsPage() {
                 <DecadeReturnsTable
                     data={data}
                     onData={setData}
-                    onLoaded={() => { }}
                     annualise={annualise}
                     onAnnualise={setAnnualise}
                     stripDiv={stripDiv}
                     onStripDiv={setStripDiv}
                     scope={scope}
-                    onScope={setScope}
                 />
             </div>
 

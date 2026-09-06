@@ -33,6 +33,11 @@
   --color-bronze-bright: #cba876;
   --color-bronze-dim: #7a6039;
 
+  /* Oxidised copper — stop, and nothing else. Deliberately muted: this is a
+     halt control on carved stone, not a warning light. */
+  --color-halt: #a2564a;
+  --color-halt-bright: #c06f61;
+
   /* Typography */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
@@ -202,6 +207,57 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-platinum);
+}
+
+/* ------------------------------------------------------------------
+   Work in progress. A hairline traversing the panel — the instrument
+   is reading. Slow and even; nothing pulses or bounces.
+   ------------------------------------------------------------------ */
+
+@keyframes kyros-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.kyros-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.kyros-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 25%;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--color-bronze) 45%,
+      var(--color-bronze-bright) 50%,
+      var(--color-bronze) 55%,
+      transparent);
+  animation: kyros-sweep 2.6s var(--ease-mechanical) infinite;
+}
+
+/* The row currently being read. A steady breath, not a flash. */
+@keyframes kyros-reading {
+
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.kyros-reading {
+  animation: kyros-reading 2.2s var(--ease-mechanical) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

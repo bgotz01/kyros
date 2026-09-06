@@ -1,0 +1,113 @@
+# Not on arXiv — file by hand
+- **DeepSeek-R1** — github.com · Top AI Papers of the Week (January 20 - January 26) - 2025
+- **Humanity’s Last Exam** — static.scale.com · Top AI Papers of the Week (January 20 - January 26) - 2025
+- **Scaling RL with LLMs** — github.com · Top AI Papers of the Week (January 20 - January 26) - 2025
+- **Chain-of-Agents** — openreview.net · Top AI Papers of the Week (January 20 - January 26) - 2025
+- **Trading Test-Time Compute for Adversarial Robustness** — cdn.openai.com · Top AI Papers of the Week (January 20 - January 26) - 2025
+- **o3-mini** — unknown host · Top AI Papers of the Week (January 27 - February 2) - 2025
+- **Qwen2.5-1M** — qianwen-res.oss-cn-beijing.aliyuncs.com · Top AI Papers of the Week (January 27 - February 2) - 2025
+- **Janus-Pro** — github.com · Top AI Papers of the Week (January 27 - February 2) - 2025
+- **Brain-to-Text Decoding: A Non-Invasive Approach via Typing** — ai.meta.com · Top AI Papers of the Week (February 10 - February 16) - 2025
+- **AI Co-Scientist** — storage.googleapis.com · Top AI Papers of the Week (February 17 - February 23) - 2025
+- **The AI CUDA Engineer** — unknown host · Top AI Papers of the Week (February 17 - February 23) - 2025
+- **Open-Reasoner-Zero** — github.com · Top AI Papers of the Week (February 17 - February 23) - 2025
+- **MoBA** — github.com · Top AI Papers of the Week (February 17 - February 23) - 2025
+- **Claude 3.7 Sonnet** — unknown host · Top AI Papers of the Week (February 24 - March 2) - 2025
+- **GPT-4.5** — unknown host · Top AI Papers of the Week (February 24 - March 2) - 2025
+- **Conversational Speech Model** — unknown host · Top AI Papers of the Week (March 3 - March 9) - 2025
+- **Differentiable Logic Cellular Automata** — google-research.github.io · Top AI Papers of the Week (March 3 - March 9) - 2025
+- **Gemma 3** — storage.googleapis.com · Top AI Papers of the Week (March 10 - March 16) - 2025
+- **Monitoring Reasoning Models for Misbehavior** — cdn.openai.com · Top AI Papers of the Week (March 10 - March 16) - 2025
+- **Gemini Robotics** — storage.googleapis.com · Top AI Papers of the Week (March 10 - March 16) - 2025
+- **Auditing LLMs for Hidden Objectives** — assets.anthropic.com · Top AI Papers of the Week (March 10 - March 16) - 2025
+- **Tracing the Thoughts of LLMs** — unknown host · Top AI Papers of the Week (March 24 - March 30) - 2025
+- **Qwen2.5-Omni** — github.com · Top AI Papers of the Week (March 24 - March 30) - 2025
+- **Neural Alignment via Speech Embeddings** — www.nature.com · Top AI Papers of the Week (March 24 - March 30) - 2025
+- **Investigating Affective Use and Emotional Well-being on ChatGPT** — cdn.openai.com · Top AI Papers of the Week (March 24 - March 30) - 2025
+- **The AI Scientist V2** — pub.sakana.ai · Top AI Papers of the Week (April 6 - April 13) - 2025
+- **Benchmarking Browsing Agents** — cdn.openai.com · Top AI Papers of the Week (April 6 - April 13) - 2025
+- **Compute Agent Arena** — unknown host · Top AI Papers of the Week (April 6 - April 13) - 2025
+- **One-Minute Video Generation with Test-Time Training** — test-time-training.github.io · Top AI Papers of the Week (April 6 - April 13) - 2025
+- **Discovering Values in Real-World Language Model Interactions** — assets.anthropic.com · Top AI Papers of the Week (April 21 - April 27) - 2025
+- **General-Reasoner** — github.com · Top AI Papers of the Week (April 21 - April 27) - 2025
+- **Kimi-Audio** — github.com · Top AI Papers of the Week (April 28 - May 4) - 2025
+- **MiMo-7B** — github.com · Top AI Papers of the Week (April 28 - May 4) - 2025
+- **AlphaEvolve** — storage.googleapis.com · Top AI Papers of the Week (May 12 - May 18) - 2025
+- **HealthBench** — cdn.openai.com · Top AI Papers of the Week (May 12 - May 18) - 2025
+- **Generalizable AI Predicts Immunotherapy Outcomes Across Cancers and Treatments** — www.medrxiv.org · Top AI Papers of the Week (May 19 - May 25) - 2025
+- **Spurios Rewards** — github.com · Top AI Papers of the Week (May 26 - June 1) - 2025
+- **The Illusion of Thinking** — ml-site.cdn-apple.com · Top AI Papers of the Week (June 2 - June 8) - 2025
+- **V-JEPA 2** — scontent.fbze2-1.fna.fbcdn.net · Top AI Papers of the Week (June 9 - June 15) - 2025
+- **Code Researcher** — www.microsoft.com · Top AI Papers of the Week (June 9 - June 15) - 2025
+- **Predicting a Cyclone’s Track with AI** — storage.googleapis.com · Top AI Papers of the Week (June 9 - June 15) - 2025
+- **Emergent Misalignment** — cdn.openai.com · Top AI Papers of the Week (June 16 - June 22) - 2025
+- **Agentic Misalignment** — www.anthropic.com · Top AI Papers of the Week (June 16 - June 22) - 2025
+- **SHADE-Arena** — assets.anthropic.com · Top AI Papers of the Week (June 16 - June 22) - 2025
+- **AlphaGenome** — storage.googleapis.com · Top AI Papers of the Week (June 23 - June 29) - 2025
+- **Claude for Affective Use** — www.anthropic.com · Top AI Papers of the Week (June 23 - June 29) - 2025
+- **Chain-of-Thought Is Not Explainability** — papers-pdfs.assets.alphaxiv.org · Top AI Papers of the Week (June 30 - July 6) - 2025
+- **Kimi K2** — unknown host · Top AI Papers of the Week (July 7 - July 13) - 2025
+- **Context Rot** — unknown host · Top AI Papers of the Week (July 14 - July 20) - 2025
+- **Machine Bullshit** — machine-bullshit.github.io · Top AI Papers of the Week (July 14 - July 20) - 2025
+- **Building and Evaluating Alignment Auditing Agents** — unknown host · Top AI Papers of the Week (July 21 - July 27) - 2025
+- **DINOv3** — ai.meta.com · Top AI Papers of the Week (August 11 - August 17) - 2025
+- **Measuring the Environmental Impact of Delivering AI at Google Scale** — services.google.com · Top AI Papers of the Week (August 18 - August 24) - 2025
+- **Why Language Models Hallucinate** — cdn.openai.com · Top AI Papers of the Week (September 1 - September 7) - 2025
+- **Stress Testing Deliberative Alignment for Anti-Scheming Training** — x.com · Top AI Papers of the Week (September 15 - September 21) - 2025
+- **ARE** — ai.meta.com · Top AI Papers of the Week (September 22 - September 28) - 2025
+- **Code World Model** — ai.meta.com · Top AI Papers of the Week (September 22 - September 28) - 2025
+- **GDPval** — cdn.openai.com · Top AI Papers of the Week (September 22 - September 28) - 2025
+- **Automating the Search for Artificial Life with Foundation Models** — direct.mit.edu · Top AI Papers of the Week (September 22 - September 28) - 2025
+- **DeepSeek-V3.2-Exp** — unknown host · Top AI Papers of the Week (September 29 - October 5) - 2025
+- **mem-agent** — github.com · Top AI Papers of the Week (October 6 - October 12) - 2025
+- **Cell2Sentence-Scale 27B** — www.biorxiv.org · Top AI Papers of the Week (October 13 - October 19) - 2025
+- **When Models Manipulate Manifolds** — transformer-circuits.pub · Top AI Papers of the Week (October 20 - October 26) - 2025
+- **Introspective Awareness** — transformer-circuits.pub · Top AI Papers of the Week (October 27 - November 2) - 2025
+- **SmolLM2** — huggingface.co · Top AI Papers of the Week (October 27 - November 2) - 2025
+- **Petri Dish Neural Cellular Automata** — pub.sakana.ai · Top AI Papers of the Week (November 3 - November 9) - 2025
+- **Weight-Sparse Transformers Have Interpretable Circuits** — cdn.openai.com · Top AI Papers of the Week (November 10 - November 16) - 2025
+- **Aligning Vision Models with Human Perception** — www.nature.com · Top AI Papers of the Week (November 10 - November 16) - 2025
+- **Omnilingual ASR** — ai.meta.com · Top AI Papers of the Week (November 10 - November 16) - 2025
+- **Olympiad-Level Formal Mathematical Reasoning with Reinforcement Learning** — www.nature.com · Top AI Papers of the Week (November 10 - November 16) - 2025
+- **Nested Learning Framework** — abehrouz.github.io · Top AI Papers of the Week (November 10 - November 16) - 2025
+- **GPT-5 for Science Acceleration** — cdn.openai.com · Top AI Papers of the Week (November 17 - November 23) - 2025
+- **OLMo 3** — www.datocms-assets.com · Top AI Papers of the Week (November 17 - November 23) - 2025
+- **SAM 3** — ai.meta.com · Top AI Papers of the Week (November 17 - November 23) - 2025
+- **DR Tulu** — www.datocms-assets.com · Top AI Papers of the Week (November 17 - November 23) - 2025
+- **Natural Emergent Misalignment from Reward Hacking** — assets.anthropic.com · Top AI Papers of the Week (November 17 - November 23) - 2025
+- **INTELLECT-3** — storage.googleapis.com · Top AI Papers of the Week (November 24 - November 30) - 2025
+- **Lightweight End-to-End OCR** — github.com · Top AI Papers of the Week (November 24 - November 30) - 2025
+- **Evaluating Honesty and Lie Detection in AI Models** — alignment.anthropic.com · Top AI Papers of the Week (November 24 - November 30) - 2025
+- **DeepSeek-V3.2** — huggingface.co · Top AI Papers of the Week (December 1 - December 7) - 2025
+- **Evolving Multi-Agent Orchestration** — openreview.net · Top AI Papers of the Week (December 1 - December 7) - 2025
+- **Training LLMs for Honesty via Confessions** — cdn.openai.com · Top AI Papers of the Week (December 1 - December 7) - 2025
+- **STRATUS: Autonomous Cloud Reliability** — openreview.net · Top AI Papers of the Week (December 1 - December 7) - 2025
+- **STARFlow-V** — starflow-v.github.io · Top AI Papers of the Week (December 1 - December 7) - 2025
+- **GigaTIME** — www.cell.com · Top AI Papers of the Week (December 8 - December 14) - 2025
+- **Agentic AI Adaptation Survey** — github.com · Top AI Papers of the Week (December 8 - December 14) - 2025
+- **Selective Gradient Masking** — alignment.anthropic.com · Top AI Papers of the Week (December 8 - December 14) - 2025
+- **FrontierScience** — openai.com · Top AI Papers of the Week (December 15 - December 21) - 2025
+- **Monitoring Monitorability** — cdn.openai.com · Top AI Papers of the Week (December 22 - December 28) - 2025
+- **Comprehensive Survey of Small Language Models** — dl.acm.org · Top AI Papers of the Week (December 22 - December 28) - 2025
+- **End-to-End Test-Time Training for Long Context** — test-time-training.github.io · Top AI Papers of the Week (December 29 - January 4) - 2026
+- **Spacing Effect for Generalization** — www.biorxiv.org · Top AI Papers of the Week (December 29 - January 4) - 2026
+- **On the Slow Death of Scaling** — papers.ssrn.com · Top AI Papers of the Week (January 5 - January 11) - 2026
+- **SciSciGPT** — www.nature.com · Top AI Papers of the Week (January 5 - January 11) - 2026
+- **Extending Context by Dropping Positional Embeddings** — pub.sakana.ai · Top AI Papers of the Week (January 12 - January 18) - 2026
+- **UniversalRAG** — universalrag.github.io · Top AI Papers of the Week (January 12 - January 18) - 2026
+- **TTT-Discover: Learning to Discover at Test Time** — test-time-training.github.io · Top AI Papers of the Week (January 19 - January 25) - 2026
+- **Self-Correcting Multi-Agent LLM for Physics Simulation** — www.nature.com · Top AI Papers of the Week (January 19 - January 25) - 2026
+- **Kimi K2.5: Visual Agentic Intelligence** — github.com · Top AI Papers of the Week (January 26 - February 1) - 2026
+- **OpenScholar** — www.nature.com · Top AI Papers of the Week (February 2 - February 8) - 2026
+- **Lossless Context Management (LCM)** — papers.voltropy.com · Top AI Papers of the Week (February 16 - February 22) - 2026
+- **Emotion Concepts in LLMs** — transformer-circuits.pub · Top AI Papers of the Week (March 30 - April 5) - 2026
+- **AI Agent Traps** — papers.ssrn.com · Top AI Papers of the Week (March 30 - April 5) - 2026
+- **Memento: Teaching LLMs to Manage Their Own Context** — github.com · Top AI Papers of the Week (April 6 - April 12) - 2026
+- **Thinking Mid-training: RL of Interleaved Reasoning** — facebookresearch.github.io · Top AI Papers of the Week (April 6 - April 12) - 2026
+- **Automated Weak-to-Strong Researcher** — alignment.anthropic.com · Top AI Papers of the Week (April 13 - April 19) - 2026
+- **Subliminal Learning** — www.nature.com · Top AI Papers of the Week (April 13 - April 19) - 2026
+- **LLM-as-a-Verifier** — llm-as-a-verifier.github.io · Top AI Papers of the Week (April 13 - April 19) - 2026
+- **DeepSeek V4** — huggingface.co · Top AI Papers of the Week (April 19 - April 26) - 2026
+- **A Geometric Calculator Inside a Neural Network** — www.goodfire.ai · Top AI Papers of the Week (May 11 - May 17) - 2026
+- **NanoGPT-Bench** — www.intology.ai · Top AI Papers of the Week (May 18 - May 24) - 2026
+- **General-Agent** — www.primeintellect.ai · Top AI Papers of the Week (May 18 - May 24) - 2026

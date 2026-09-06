@@ -18,6 +18,10 @@ interface Props {
     onChange: (model: string) => void;
     disabled?: boolean;
     ariaLabel: string;
+    /** 'side' opens the panel beside the trigger, over the page, at full
+     *  viewport height. For a control pinned to the foot of a narrow rail,
+     *  where opening above leaves the list cramped against the edge. */
+    placement?: 'auto' | 'side';
     /** Not used — kept for API compatibility. */
     className?: string;
 }
@@ -37,7 +41,7 @@ function ModelRow({ model, active }: { model: Model; active: boolean }) {
 
 /** A fully custom dropdown rendered in a portal so it escapes any
  *  overflow:hidden ancestor (i.e. the AgentRail sidebar). */
-export default function ModelSelect({ value, onChange, disabled, ariaLabel }: Props) {
+export default function ModelSelect({ value, onChange, disabled, ariaLabel, placement = 'auto' }: Props) {
     const [open, setOpen] = useState(false);
     const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({});
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -55,17 +59,36 @@ export default function ModelSelect({ value, onChange, disabled, ariaLabel }: Pr
         const spaceBelow = window.innerHeight - rect.bottom - 8;
         const spaceAbove = rect.top - 8;
 
+        if (placement === 'side') {
+            // Beside the rail, over the page. Room to the right unless the rail
+            // is itself on the right, in which case it opens leftward.
+            const right = rect.right + 8;
+            const fitsRight = right + PANEL_WIDTH + 8 <= window.innerWidth;
+            setPanelStyle({
+                position: 'fixed',
+                top: 8,
+                bottom: 8,
+                left: fitsRight ? right : Math.max(8, rect.left - PANEL_WIDTH - 8),
+                width: PANEL_WIDTH,
+            });
+            return;
+        }
+
         // Prefer opening downward; flip up only if significantly more room above
         const openDown = spaceBelow >= 120 || spaceBelow >= spaceAbove;
 
-        const right = window.innerWidth - rect.right;
-        const clampedRight = Math.max(8, right);
+        // Right-aligned to the trigger where there is room, which is how it sits
+        // in the council's right-hand rail. Anchoring by `right` alone pushes the
+        // panel off-screen when the trigger is in a left sidebar, so the position
+        // is resolved as a clamped `left` instead.
+        const preferred = rect.right - PANEL_WIDTH;
+        const left = Math.min(Math.max(8, preferred), window.innerWidth - PANEL_WIDTH - 8);
 
         if (openDown) {
             setPanelStyle({
                 position: 'fixed',
                 top: rect.bottom + 6,
-                right: clampedRight,
+                left,
                 width: PANEL_WIDTH,
                 maxHeight: spaceBelow,
             });
@@ -73,12 +96,12 @@ export default function ModelSelect({ value, onChange, disabled, ariaLabel }: Pr
             setPanelStyle({
                 position: 'fixed',
                 bottom: window.innerHeight - rect.top + 6,
-                right: clampedRight,
+                left,
                 width: PANEL_WIDTH,
                 maxHeight: spaceAbove,
             });
         }
-    }, [open]);
+    }, [open, placement]);
 
     // Close on outside click or Escape
     useEffect(() => {

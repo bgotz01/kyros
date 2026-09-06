@@ -113,6 +113,7 @@ const CORPUS: FolderSpec[] = [
     { dir: 'ai/canon', group: 'AI · Canon', tag: 'Resolved' },
     { dir: 'ai/false-positives', group: 'AI · False Positives', tag: 'Resolved' },
     { dir: 'ai/bottlenecks', group: 'AI · Bottlenecks', tag: 'Open' },
+    { dir: 'ai/candidates', group: 'AI · Candidates', tag: 'Scored' },
 
     // ── Markets ───────────────────────────────────────────────────────────────
     { dir: 'markets/frameworks', group: 'Markets · Frameworks', tag: 'Method' },
@@ -158,4 +159,69 @@ export function buildContextBlock(refs: PageRef[]): string {
 export function refsByIds(ids: string[]): PageRef[] {
     const wanted = new Set(ids);
     return pageRefs().filter((r) => wanted.has(r.id));
+}
+
+// ─── standing frame ──────────────────────────────────────────────────────────
+// The frame defines the three laws and the prevailing paradigm they are scored
+// against. A council that has not read it is scoring "is it the opposite?"
+// against nothing, so the frame is not attachable and not listed in CORPUS —
+// it is injected on every call, ahead of anything the analyst attached, and
+// cannot be switched off from the UI.
+
+const FRAME_FILE = 'ai/frame.md';
+
+/** The standing frame as a system-prompt block. Empty string if the file is
+ *  missing, so a lost frame degrades to the old behaviour rather than a crash. */
+export function buildFrameBlock(): string {
+    const content = readMd(FRAME_FILE);
+    if (content.startsWith('[Content unavailable')) return '';
+    return [
+        '─── STANDING FRAME ─────────────────────────────────────────────────────────',
+        'This is the instrument, not evidence. The three laws define what you are',
+        'measuring; the prevailing-paradigm section defines what a candidate is',
+        'measured against. Score against these definitions and no others.',
+        '',
+        content,
+        '─── END OF STANDING FRAME ──────────────────────────────────────────────────',
+    ].join('\n');
+}
+
+// ─── bottleneck index ────────────────────────────────────────────────────────
+// Name and status only. The engine needs to name a bottleneck on every paper,
+// and injecting all seven files in full would cost more than the paper does.
+
+export interface BottleneckMeta {
+    slug: string;
+    label: string;
+    status: string;
+}
+
+export function bottleneckIndex(): BottleneckMeta[] {
+    return refsFromFolder('ai/bottlenecks', 'AI · Bottlenecks').map((r) => ({
+        slug: r.id.replace('ai/bottlenecks/', ''),
+        label: r.label,
+        // Each file opens with a bolded status line; a file without one is still
+        // listed, just without the qualifier.
+        status: r.content.match(/\*\*Status:\s*([\s\S]*?)\*\*/)?.[1].replace(/\s+/g, ' ').trim() ?? 'unstated',
+    }));
+}
+
+/** The constraint surface as a compact prompt block. */
+export function buildBottleneckBlock(): string {
+    const rows = bottleneckIndex();
+    if (rows.length === 0) return '';
+    return [
+        '─── THE CONSTRAINT SURFACE ─────────────────────────────────────────────────',
+        'Name one of these in the incentives line, or say None. A paper that relieves',
+        'none of them is almost certainly noise, however elegant.',
+        '',
+        ...rows.map((b) => `— ${b.label} — ${b.status}`),
+        '─── END ────────────────────────────────────────────────────────────────────',
+    ].join('\n');
+}
+
+/** The frame's own `Last reviewed` date. Stamped on every run so a score can be
+ *  told apart from one made against a different prevailing-paradigm list. */
+export function frameReviewedAt(): string | null {
+    return readMd(FRAME_FILE).match(/Last reviewed:\s*([\d-]+)/)?.[1] ?? null;
 }

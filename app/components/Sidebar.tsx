@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 // ─── nav structure ────────────────────────────────────────────────────────────
@@ -34,6 +34,8 @@ const LINKS: NavItem[] = [
             { href: '/ai/impact', label: 'Impact', icon: 'I³' },
             { href: '/ai/architecture', label: 'Architecture', icon: '⌬' },
             { href: '/ai/systems', label: 'Systems', icon: '⬡' },
+            { href: '/ai/apps', label: 'Apps', icon: '◧' },
+            { href: '/ai/bottlenecks', label: 'Bottlenecks', icon: '⧗' },
         ],
     },
     { href: '/theory', label: 'Theory', icon: '∴' },
@@ -104,7 +106,7 @@ export default function Sidebar() {
         <aside className="w-14 shrink-0 border-r border-stone-line bg-charcoal" />
     );
 
-    const SIDEBAR_EXCLUDED = ['/context', '/council'];
+    const SIDEBAR_EXCLUDED = ['/context', '/council', '/engine'];
     if (SIDEBAR_EXCLUDED.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
         return null;
     }
@@ -140,6 +142,7 @@ export default function Sidebar() {
             </button>
 
             <nav aria-label="Sidebar" className="flex flex-1 flex-col gap-px py-3">
+
                 {LINKS.map((item) => {
                     const active = isActive(item.href, item.exact);
                     // a parent is "open" if pathname is under it
@@ -188,6 +191,9 @@ export default function Sidebar() {
                     );
                 })}
             </nav>
+
+            {/* settings ─────────────────────────────────────────────────── */}
+            <SettingsMenu sidebarOpen={open} />
         </aside>
     );
 }
@@ -233,5 +239,84 @@ function NavLink({
                 {item.label}
             </span>
         </Link>
+    );
+}
+
+// ─── settings menu ────────────────────────────────────────────────────────────
+
+const SETTINGS_LINKS = [
+    { href: '/models', label: 'Models' },
+    { href: '/context', label: 'Context' },
+];
+
+function SettingsMenu({ sidebarOpen }: { sidebarOpen: boolean }) {
+    const pathname = usePathname();
+    const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    // close on outside click
+    useEffect(() => {
+        if (!open) return;
+        function onPointerDown(e: PointerEvent) {
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener('pointerdown', onPointerDown);
+        return () => document.removeEventListener('pointerdown', onPointerDown);
+    }, [open]);
+
+    return (
+        <div ref={ref} className="relative shrink-0 border-t border-stone-line">
+            <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-label="Settings"
+                aria-expanded={open}
+                className={`group flex h-11 w-full items-center gap-3 px-3.5 transition-colors duration-300 ease-mechanical ${open ? 'text-marble' : 'text-platinum-dim hover:text-platinum'}`}
+            >
+                {/* gear icon */}
+                <span className={`flex h-5 w-5 shrink-0 items-center justify-center transition-colors duration-300 ${open ? 'text-bronze-bright' : 'text-platinum-dim group-hover:text-platinum'}`}>
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path
+                            d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+                            stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"
+                        />
+                        <path
+                            d="M13.3 9.5a1.2 1.2 0 0 0 .24 1.32l.04.04a1.45 1.45 0 0 1-2.05 2.05l-.04-.04a1.2 1.2 0 0 0-1.32-.24 1.2 1.2 0 0 0-.73 1.1v.12a1.45 1.45 0 0 1-2.9 0v-.06a1.2 1.2 0 0 0-.79-1.1 1.2 1.2 0 0 0-1.32.24l-.04.04a1.45 1.45 0 0 1-2.05-2.05l.04-.04A1.2 1.2 0 0 0 2.64 9.5a1.2 1.2 0 0 0-1.1-.73H1.4a1.45 1.45 0 0 1 0-2.9h.06A1.2 1.2 0 0 0 2.56 5.1a1.2 1.2 0 0 0-.24-1.32l-.04-.04A1.45 1.45 0 0 1 4.33 1.7l.04.04A1.2 1.2 0 0 0 5.69 2a1.2 1.2 0 0 0 .73-1.1V.77a1.45 1.45 0 0 1 2.9 0v.06A1.2 1.2 0 0 0 10.04 2a1.2 1.2 0 0 0 1.32-.24l.04-.04a1.45 1.45 0 0 1 2.05 2.05l-.04.04A1.2 1.2 0 0 0 13.17 5.1a1.2 1.2 0 0 0 1.1.73h.12a1.45 1.45 0 0 1 0 2.9h-.06a1.2 1.2 0 0 0-1.03.77Z"
+                            stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"
+                        />
+                    </svg>
+                </span>
+
+                <span
+                    className={`truncate font-sans text-[0.63rem] uppercase tracking-[0.2em] transition-[opacity,transform] duration-500 ease-mechanical ${sidebarOpen ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-1 opacity-0'}`}
+                >
+                    Settings
+                </span>
+            </button>
+
+            {/* dropdown — floats above, anchored to the bottom of the sidebar */}
+            {open && (
+                <div className="absolute bottom-full left-2 right-2 mb-1 overflow-hidden border border-stone-line bg-charcoal shadow-lg">
+                    {SETTINGS_LINKS.map(({ href, label }) => {
+                        const active = pathname === href || pathname.startsWith(href + '/');
+                        return (
+                            <Link
+                                key={href}
+                                href={href}
+                                onClick={() => setOpen(false)}
+                                className={`flex h-9 items-center gap-3 px-3.5 transition-colors duration-300 ease-mechanical ${active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'}`}
+                            >
+                                {active && <span aria-hidden className="absolute inset-y-1 left-0 w-px bg-bronze" />}
+                                <span className="font-sans text-[0.63rem] uppercase tracking-[0.2em]">
+                                    {label}
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
     );
 }

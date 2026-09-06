@@ -1,0 +1,208 @@
+{
+  "asOf": "2024-12-31",
+  "mode": "reconstructed",
+  "thesis": "Frontier capability comes from scaling Transformer pretraining and, newly, from spending compute at inference; the binding limits are industrial rather than algorithmic.",
+  "bindingConstraint": {
+    "layer": "compute",
+    "description": "Accelerator supply, advanced packaging and grid interconnection set the pace. These have multi-year lead times that do not respond to capital on a software timescale."
+  },
+  "layers": [
+    {
+      "layer": "compute",
+      "paradigm": "Datacenter-scale fleets of NVIDIA H100/H200-class accelerators",
+      "assumption": "Frontier capability requires large accelerator clusters, with NVIDIA-class GPUs as the practical default.",
+      "distribution": {
+        "basis": "training hardware of 8 frontier-scale runs described publicly 2023-2024 \u2014 GPT-4/4o, Llama 3.1 405B, Grok-2, DeepSeek-V3, Qwen2.5, Mistral Large 2, Claude 3.5 (NVIDIA-class); Gemini 1.5 (TPU)",
+        "entries": [
+          {
+            "value": "NVIDIA GPU",
+            "share": 0.875
+          },
+          {
+            "value": "TPU",
+            "share": 0.125
+          }
+        ]
+      },
+      "frontier": [
+        "TPU v5p / v6",
+        "AWS Trainium2",
+        "AMD MI300X",
+        "inference-specialised accelerators (Groq, Cerebras)",
+        "fp8 and lower-precision training",
+        "optical and scale-up interconnect"
+      ],
+      "importance": 10,
+      "evidence": [
+        "H100 general availability \u2014 2023",
+        "AMD MI300X launch \u2014 2023-12",
+        "TPU v5p \u2014 2023-12",
+        "AWS Trainium2 announced, re:Invent \u2014 2023-11",
+        "NVIDIA Blackwell announced, GTC \u2014 2024-03",
+        "Groq LPU inference benchmarks \u2014 2024",
+        "CoWoS packaging named as the binding supply constraint \u2014 2023/2024"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "paradigm": "Decoder-only Transformers, dense and sparse (Mixture-of-Experts)",
+      "assumption": "Transformer attention remains the architecture for frontier models; gains come from sparsity, scale and multimodality rather than from replacing attention.",
+      "distribution": {
+        "basis": "architecture family of frontier-scale models released 2023-2024; every one publicly described is attention-based",
+        "entries": [
+          {
+            "value": "Transformer",
+            "share": 1.0
+          },
+          {
+            "value": "Non-attention architectures",
+            "share": 0.0
+          }
+        ]
+      },
+      "frontier": [
+        "state-space models and SSM/attention hybrids",
+        "linear and sub-quadratic attention",
+        "natively multimodal architectures",
+        "diffusion language models"
+      ],
+      "importance": 10,
+      "evidence": [
+        "Mamba: Linear-Time Sequence Modeling \u2014 2023-12",
+        "Mixtral 8x7B (MoE) \u2014 2023-12",
+        "Jamba (SSM/Transformer hybrid) \u2014 2024-03",
+        "Llama 3 herd \u2014 2024-04",
+        "GPT-4o natively multimodal \u2014 2024-05",
+        "DeepSeek-V3 (671B MoE, 37B active) \u2014 2024-12"
+      ]
+    },
+    {
+      "layer": "training",
+      "paradigm": "Large-scale pretraining followed by preference-based post-training (SFT, RLHF/DPO)",
+      "assumption": "Capability comes from pretraining; behaviour and alignment come from preference-based post-training on human judgements.",
+      "frontier": [
+        "reinforcement learning on verifiable rewards",
+        "process reward models and step-level supervision",
+        "large-scale synthetic and self-generated training data",
+        "distillation from frontier models",
+        "constitutional / AI-generated feedback"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Constitutional AI, Anthropic \u2014 2022-12",
+        "Let's Verify Step by Step (process supervision) \u2014 2023-05",
+        "Direct Preference Optimization \u2014 2023-05",
+        "OpenAI o1-preview, RL on reasoning traces \u2014 2024-09",
+        "Phi series trained on synthetic textbooks \u2014 2023/2024",
+        "post-training methods are inconsistently disclosed and the boundary between preference RL and verifiable-reward RL is not clean \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "data",
+      "paradigm": "Web-scale crawl, increasingly licensed, supplemented by large synthetic corpora",
+      "assumption": "High-quality public text is close to exhausted and access to it is closing.",
+      "frontier": [
+        "synthetic and self-generated data at pretraining scale",
+        "licensed and proprietary corpora",
+        "multimodal and video data",
+        "data-efficient and curriculum training"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Will We Run Out of Data? Villalobos et al. \u2014 2022, revised 2024-06",
+        "New York Times v. OpenAI filed \u2014 2023-12",
+        "Reddit and news licensing agreements \u2014 2024",
+        "Textbooks Are All You Need (synthetic) \u2014 2023-06",
+        "no defensible share data for this layer \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "scaling",
+      "paradigm": "Compute-optimal pretraining scaling, with inference compute as a second axis",
+      "assumption": "Capability follows training compute at predictable exponents.",
+      "frontier": [
+        "test-time / inference-time compute scaling",
+        "distillation into small efficient models",
+        "sparse scaling at constant active compute"
+      ],
+      "importance": 10,
+      "evidence": [
+        "Training Compute-Optimal LLMs (Chinchilla) \u2014 2022-03",
+        "Scaling LLM Test-Time Compute Optimally \u2014 2024-08",
+        "OpenAI o1, inference-time reasoning \u2014 2024-09",
+        "reports of diminishing returns from pretraining scale \u2014 2024-11",
+        "no public source apportions frontier compute between pretraining and inference \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "context",
+      "paradigm": "Long context windows with retrieval; weights frozen after training",
+      "assumption": "Weights are frozen at training; anything that must persist lives outside the model, in the context window or a retrieval index.",
+      "frontier": [
+        "persistent memory across sessions",
+        "continual learning and weight updates after deployment",
+        "KV-cache compression and streaming attention",
+        "agentic scratchpads and external state"
+      ],
+      "importance": 9,
+      "evidence": [
+        "GPT-4 Turbo 128k context \u2014 2023-11",
+        "Claude 200k context \u2014 2023-11",
+        "Gemini 1.5 Pro 1M context \u2014 2024-02",
+        "RAG remains the standard pattern for persistence \u2014 2023/2024",
+        "context length is a property of the paradigm, not a share of it \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "interface",
+      "paradigm": "Conversational chat as the dominant surface, API for developers, agents emerging",
+      "assumption": "General AI capability is reached through conversational interfaces.",
+      "frontier": [
+        "computer-use and browser agents",
+        "autonomous coding agents",
+        "multi-agent orchestration",
+        "realtime voice interfaces"
+      ],
+      "importance": 8,
+      "evidence": [
+        "ChatGPT reported ~200M weekly active users \u2014 2024-08",
+        "Claude computer use released \u2014 2024-10",
+        "Devin autonomous engineer announced \u2014 2024-03",
+        "Cursor and IDE-native assistants in wide use \u2014 2024",
+        "GPT-4o realtime voice \u2014 2024-05",
+        "no public source apportions usage across chat, API, IDE and agents \u2014 distribution omitted"
+      ]
+    },
+    {
+      "layer": "economics",
+      "paradigm": "Nine-to-ten-figure training runs; frontier capability split between closed API-only models and open-weight releases months behind",
+      "assumption": "Frontier capability requires capital that only a handful of organisations command.",
+      "distribution": {
+        "basis": "weight availability of 8 frontier-class models released 2024 \u2014 Llama 3.1 405B, Qwen2.5-72B, DeepSeek-V3, Mistral Large 2 (weights published); GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, Grok-2 (closed)",
+        "entries": [
+          {
+            "value": "Closed weights",
+            "share": 0.5
+          },
+          {
+            "value": "Open weights",
+            "share": 0.5
+          }
+        ]
+      },
+      "frontier": [
+        "open-weight models at or near frontier capability",
+        "order-of-magnitude cheaper training runs",
+        "aggressive inference price competition",
+        "small models distilled to frontier-adjacent capability"
+      ],
+      "importance": 9,
+      "evidence": [
+        "Llama 3.1 405B open weights \u2014 2024-07",
+        "GPT-4o mini pricing \u2014 2024-07",
+        "Qwen 2.5 open weights \u2014 2024-09",
+        "DeepSeek-V3, 671B MoE trained for a reported ~$5.6M \u2014 2024-12"
+      ]
+    }
+  ]
+}

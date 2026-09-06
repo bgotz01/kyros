@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { hasApiKey, MISSING_KEY_MESSAGE, openrouter } from '@/lib/openrouter';
 import { MODELS, DEFAULT_MODEL } from '@/lib/models';
-import { buildContextBlock, refsByIds } from '@/lib/pageContext';
+import { buildContextBlock, buildFrameBlock, refsByIds } from '@/lib/pageContext';
 import { CHAT_DEFAULT_SYSTEM } from '@/lib/prompts/council';
 
 const DEFAULT_MAX_TOKENS = 4000;
@@ -44,6 +44,11 @@ export async function POST(req: NextRequest) {
             typeof systemPrompt === 'string' && systemPrompt.trim()
                 ? systemPrompt.trim()
                 : CHAT_DEFAULT_SYSTEM;
+
+        // The standing frame goes in on every call, ahead of anything attached —
+        // it defines the laws the agents score with, so it is not optional.
+        const frame = buildFrameBlock();
+        if (frame) resolvedPrompt = `${resolvedPrompt}\n\n${frame}`;
 
         // The client sends ids; the content is resolved here so the corpus never
         // has to travel to the browser and back.

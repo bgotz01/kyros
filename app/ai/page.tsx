@@ -21,6 +21,18 @@ const SECTIONS = [
         description: 'How models are composed into agents, tools, memory, and retrieval pipelines.',
         meta: 'Knowledge · Execution · Autonomy · Composition',
     },
+    {
+        href: '/ai/apps',
+        label: 'Apps',
+        description: 'The application layer — the assistants, platforms, open source and apps people actually use.',
+        meta: 'Assistants · Platforms · Open source · Apps',
+    },
+    {
+        href: '/ai/bottlenecks',
+        label: 'Bottlenecks',
+        description: 'The five constraints currently binding on progress, and what would relieve each one.',
+        meta: 'Reliability · Memory · Data · Compute · Diffusion',
+    },
 ] as const;
 
 // ─── page ─────────────────────────────────────────────────────────────────────
@@ -37,7 +49,7 @@ export default function AIPage() {
             </div>
 
             {/* section cards */}
-            <div className="grid gap-px border border-stone-line bg-stone-line sm:grid-cols-3">
+            <div className="grid gap-px border border-stone-line bg-stone-line sm:grid-cols-2 lg:grid-cols-3">
                 {SECTIONS.map(({ href, label, description, meta }) => (
                     <Link
                         key={href}
@@ -66,6 +78,10 @@ export default function AIPage() {
                         </span>
                     </Link>
                 ))}
+
+                {/* Five cards across a 2- or 3-column grid leaves one cell empty,
+                    which would otherwise show the container rule through. */}
+                <div aria-hidden className="hidden bg-charcoal sm:block" />
             </div>
 
             {/* divider + framing text */}

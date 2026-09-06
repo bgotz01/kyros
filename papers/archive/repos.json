@@ -1,0 +1,4654 @@
+{
+  "generated": "2026-09-06",
+  "papers": {
+    "2412.16241": {
+      "title": "Agents Are Not Enough",
+      "repos": []
+    },
+    "2501.00656": {
+      "title": "OLMo 2",
+      "repos": [
+        "openai/tiktoken",
+        "pytorch/pytorch",
+        "mlfoundations/open_lm",
+        "mosaicml/llm-foundry",
+        "allenai/pes2o",
+        "togethercomputer/RedPajama-Data",
+        "allenai/olmes"
+      ]
+    },
+    "2412.21187": {
+      "title": "On the Overthinking of LLMs",
+      "repos": []
+    },
+    "2412.19260": {
+      "title": "MEDEC",
+      "repos": [
+        "abachaa/MEDEC",
+        "Georgetown-IR-Lab/QuickUMLS",
+        "BCHSI/philter-deidstable1_mirror",
+        "abachaa/MEDIQA-CORR-2024"
+      ]
+    },
+    "2412.18653": {
+      "title": "1.58-bit FLUX",
+      "repos": [
+        "black-forest-labs/flux"
+      ]
+    },
+    "2412.21154": {
+      "title": "Aviary",
+      "repos": [
+        "Future-House/aviary",
+        "Future-House/ldp"
+      ]
+    },
+    "2412.09764": {
+      "title": "Memory Layers at Scale",
+      "repos": [
+        "facebookresearch/memory"
+      ]
+    },
+    "2412.18925": {
+      "title": "HuatuoGPT-o1",
+      "repos": [
+        "FreedomIntelligence/HuatuoGPT-o1",
+        "shibing624/MedicalGPT"
+      ]
+    },
+    "2412.15605": {
+      "title": "Cache-Augmented Generation (CAG)",
+      "repos": [
+        "hhhuang/CAG"
+      ]
+    },
+    "2501.04227": {
+      "title": "Agent Laboratory",
+      "repos": []
+    },
+    "2501.01880": {
+      "title": "Long Context vs. RAG for LLMs",
+      "repos": [
+        "lixinze777/LC_VS_RAG"
+      ]
+    },
+    "2501.05366": {
+      "title": "Search-o1",
+      "repos": [
+        "sunnynexus/Search-o1"
+      ]
+    },
+    "2501.04682": {
+      "title": "Towards System 2 Reasoning",
+      "repos": [
+        "eleutherai/gpt-neox",
+        "project-numina/aimo-progress-prize",
+        "aadityasingh/HARP"
+      ]
+    },
+    "2501.04519": {
+      "title": "rStar-Math",
+      "repos": [
+        "microsoft/rStar",
+        "GAIR-NLP/O1-Journey",
+        "project-numina/aimo-progress-prize"
+      ]
+    },
+    "2501.03491": {
+      "title": "Can LLMs Design Good Questions?",
+      "repos": [
+        "CoLearn-Dev/llmqg"
+      ]
+    },
+    "2501.04040": {
+      "title": "A Survey on LLMs",
+      "repos": [
+        "stanford-crfm/BioMedLM",
+        "tatsu-lab/stanford-alpaca"
+      ]
+    },
+    "2501.06252": {
+      "title": "Self-Adaptive LLMs",
+      "repos": [
+        "SakanaAI/self-adaptive-llms"
+      ]
+    },
+    "2501.08313": {
+      "title": "MiniMax-01",
+      "repos": [
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "NVIDIA/TransformerEngine",
+        "mayubo2333/MMLongBench-Doc",
+        "TIGER-AI-Lab/MEGA-Bench"
+      ]
+    },
+    "2501.05874": {
+      "title": "VideoRAG",
+      "repos": [
+        "starsuzi/VideoRAG"
+      ]
+    },
+    "2501.00663": {
+      "title": "Learning to Memorize at Test Time",
+      "repos": []
+    },
+    "2501.09223": {
+      "title": "Foundations of LLMs",
+      "repos": [
+        "NiuTrans/NLPBook",
+        "google-research/bert",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "vllm-project/vllm",
+        "NVIDIA/TensorRT-LLM",
+        "huggingface/text-generation-inference",
+        "NiuTrans/ABigSurveyOfLLMs",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2501.09751": {
+      "title": "OmniThink",
+      "repos": [
+        "stanford-oval/storm",
+        "prometheus-eval/prometheus-eval",
+        "shmsw25/FActScore"
+      ]
+    },
+    "2501.07391": {
+      "title": "Enhancing RAG",
+      "repos": [
+        "ali-bahrainian/RAG_best_practices"
+      ]
+    },
+    "2501.09426": {
+      "title": "AutoCBT",
+      "repos": []
+    },
+    "2501.07542": {
+      "title": "Imagine while Reasoning in Space",
+      "repos": []
+    },
+    "2501.06590": {
+      "title": "ChemAgent",
+      "repos": [
+        "gersteinlab/chemagent"
+      ]
+    },
+    "2501.13545": {
+      "title": "Can LLMs Plan?",
+      "repos": []
+    },
+    "2501.13824": {
+      "title": "Hallucinations Improve LLMs in Drug Discovery",
+      "repos": []
+    },
+    "2501.11067": {
+      "title": "IntellAgent",
+      "repos": [
+        "plurai-ai/intellagent",
+        "langchain-ai/langgraph"
+      ]
+    },
+    "2501.11120": {
+      "title": "LLMs and Behavioral Awareness",
+      "repos": [
+        "XuchanBao/behavioral-self-awareness",
+        "meta-llama/llama3",
+        "openai/evals"
+      ]
+    },
+    "2501.09136": {
+      "title": "Agentic RAG Overview",
+      "repos": [
+        "asinghcsu/AgenticRAG-Survey",
+        "run-llama/llamacloud-demo",
+        "crewAIInc/crewAIAccessed",
+        "ag2ai/ag2Accessed",
+        "openai/swarmAccessed",
+        "microsoft/semantic-kernel",
+        "ibm-granite-community/granite-snack-cookbook"
+      ]
+    },
+    "2501.18585": {
+      "title": "On the Underthinking of o1-like LLMs",
+      "repos": []
+    },
+    "2501.18101": {
+      "title": "Diverse Preference Optimization",
+      "repos": [
+        "facebookresearch/fairseq2",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2501.17030": {
+      "title": "Usage Recommendation for DeepSeek-R1",
+      "repos": []
+    },
+    "2501.17887": {
+      "title": "Docling",
+      "repos": [
+        "DS4SD/docling",
+        "JaidedAI/EasyOCR",
+        "pymupdf/PyMuPDF",
+        "qpdf/qpdf",
+        "langchain-ai/langchain",
+        "i-am-bee/bee-agent-framework",
+        "jerryjliu/llama",
+        "frostming/marko",
+        "VikParuchuri/marker",
+        "py-pdf/pypdf",
+        "pypdfium2-team/pypdfium2"
+      ]
+    },
+    "2501.15228": {
+      "title": "Improving RAG through Multi-Agent RL",
+      "repos": [
+        "chenyiqun/MMOA-RAG",
+        "hiyouga/LLaMA-Factory"
+      ]
+    },
+    "2501.15674": {
+      "title": "TensorLLM",
+      "repos": [
+        "guyuxuan9/TensorLLM",
+        "kingoflolz/mesh-transformer-jax"
+      ]
+    },
+    "2501.12224": {
+      "title": "TokenVerse",
+      "repos": [
+        "black-forest-labs/flux"
+      ]
+    },
+    "2501.19393": {
+      "title": "s1: Simple test-time scaling",
+      "repos": [
+        "simplescaling/s1",
+        "google/generative-ai-docs",
+        "project-numina/aimo-progress-prize",
+        "bespokelabsai/curator",
+        "GAIR-NLP/AIME-Preview",
+        "hughbzhang/o1_inference_scaling_laws",
+        "vllm-project/vllm",
+        "openai/openai-python"
+      ]
+    },
+    "2502.01061": {
+      "title": "OmniHuman-1: Scaling One-Stage Human Animation",
+      "repos": [
+        "black-forest-labs/flux"
+      ]
+    },
+    "2502.03387": {
+      "title": "LIMO: Less Is More for Reasoning",
+      "repos": [
+        "GAIR-NLP/LIMO"
+      ]
+    },
+    "2502.02390": {
+      "title": "CoAT: Chain-of-Associated-Thoughts for LLM Reasoning",
+      "repos": [
+        "IceSwordLab/CoAT",
+        "langchain-ai/langchainVersion"
+      ]
+    },
+    "2502.03824": {
+      "title": "Syntriever: Training Retrievers with LLM-Generated Data",
+      "repos": [
+        "kmswin1/Syntriever"
+      ]
+    },
+    "2502.03373": {
+      "title": "Demystifying Long Chain-of-Thought Reasoning in LLMs",
+      "repos": [
+        "eddycmu/demystify-long-cot",
+        "Jiayi-Pan/TinyZero",
+        "tongyx361/symeval"
+      ]
+    },
+    "2502.00674": {
+      "title": "Rethinking Mixture-of-Agents: Ensemble One Strong LLM",
+      "repos": []
+    },
+    "2502.04180": {
+      "title": "MaAS: Multi-agent Architecture Search (Agentic Supernet)",
+      "repos": [
+        "bingreeky/MaAS",
+        "yoheinakajima/babyagi",
+        "reworkd/AgentGPT",
+        "Significant-Gravitas/Auto-GPT",
+        "ShengranHu/ADAS",
+        "tsinghua-fib-lab/agentsquare",
+        "FranxYao/Complexity-Based-Prompting",
+        "ucl-dark/llm_debate"
+      ]
+    },
+    "2502.03671": {
+      "title": "Advancing Reasoning in LLMs",
+      "repos": []
+    },
+    "2501.18845": {
+      "title": "Survey: Text Data Augmentation for LLMs",
+      "repos": []
+    },
+    "2502.05171": {
+      "title": "Scaling up Test-Time Compute with Latent Reasoning",
+      "repos": [
+        "seal-rg/recurrent-pretraining",
+        "Dao-AILab/flash-attention",
+        "ROCm/flash-attention",
+        "JonasGeiping/linear_cross_entropy_loss",
+        "ROCm/aws-ofi-rccl"
+      ]
+    },
+    "2502.06773": {
+      "title": "Reinforcement Learning via Self-Play",
+      "repos": [
+        "GuanghaoYe/Emergence-of-Thinking",
+        "deepseek-ai/DeepSeek-R1",
+        "MoonshotAI/Kimi-k1.5"
+      ]
+    },
+    "2502.06807": {
+      "title": "Competitive Programming with Large Reasoning Models",
+      "repos": []
+    },
+    "2502.04463": {
+      "title": "Training Language Models to Reason Efficiently",
+      "repos": [
+        "Zanette-Labs/efficient-reasoning",
+        "QwenLM/Qwen2.5-Math",
+        "StarDewXXX/O1-Pruner",
+        "project-numina/aimo-progress-prize",
+        "Jiayi-Pan/TinyZero"
+      ]
+    },
+    "2502.06049": {
+      "title": "Large Memory Models",
+      "repos": [
+        "convergence-ai/lm2"
+      ]
+    },
+    "2502.07776": {
+      "title": "Auditing Prompt Caching",
+      "repos": [
+        "chenchenygu/auditing-prompt-caching"
+      ]
+    },
+    "2502.04404": {
+      "title": "Step Back to Leap Forward",
+      "repos": [
+        "LAMDASZ-ML/Self-Backtracking"
+      ]
+    },
+    "2502.04384": {
+      "title": "Enhancing Reasoning to Adapt LLMs",
+      "repos": [
+        "wenboown/generative-ai-for-semiconductor-physical-design"
+      ]
+    },
+    "2502.06772": {
+      "title": "ReasonFlux",
+      "repos": [
+        "Gen-Verse/ReasonFlux"
+      ]
+    },
+    "2502.11089": {
+      "title": "Native Sparse Attention",
+      "repos": [
+        "gkamradt/LLMTest_NeedleInAHaystack"
+      ]
+    },
+    "2502.09992": {
+      "title": "Large Language Diffusion Model",
+      "repos": []
+    },
+    "2502.12115": {
+      "title": "SWE-Lancer",
+      "repos": [
+        "openai/SWELancer-Benchmark",
+        "Expensify/App"
+      ]
+    },
+    "2502.14815": {
+      "title": "Optimizing Model Selection for Compound AI",
+      "repos": [
+        "LLMSELECTOR/LLMSELECTOR"
+      ]
+    },
+    "2502.08235": {
+      "title": "The Danger of Overthinking",
+      "repos": [
+        "AlexCuadron/Overthinking"
+      ]
+    },
+    "2502.13842": {
+      "title": "Inner Thinking Transformers",
+      "repos": [
+        "mosaicml/composer"
+      ]
+    },
+    "2502.18600": {
+      "title": "Chain-of-Draft",
+      "repos": [
+        "sileix/chain-of-draft",
+        "philipperemy/name-dataset"
+      ]
+    },
+    "2502.17424": {
+      "title": "Emergent Misalignment",
+      "repos": [
+        "emergent-misalignment/emergent-misalignment"
+      ]
+    },
+    "2502.18394": {
+      "title": "An Efficient Alternative to Self-Attention",
+      "repos": []
+    },
+    "2502.16111": {
+      "title": "PlanGEN",
+      "repos": []
+    },
+    "2502.17651": {
+      "title": "A Multi-Agent Framework for Chart Generation",
+      "repos": []
+    },
+    "2502.15589": {
+      "title": "LightThinker",
+      "repos": [
+        "zjunlp/LightThinker",
+        "meta-llama/llama-cookbook"
+      ]
+    },
+    "2502.16923": {
+      "title": "A Systematic Survey of Prompt Optimization",
+      "repos": []
+    },
+    "2502.17504": {
+      "title": "Protein LLMs",
+      "repos": [
+        "Yijia-Xiao/Protein-LLM-Survey"
+      ]
+    },
+    "2503.02875": {
+      "title": "A Few Tokens Are All You Need",
+      "repos": []
+    },
+    "2502.21321": {
+      "title": "A Deep Dive into Reasoning LLMs",
+      "repos": [
+        "mbzuai-oryx/Awesome-LLM-Post-training"
+      ]
+    },
+    "2503.01307": {
+      "title": "Cognitive Behaviors that Enable Self-Improving Reasoners",
+      "repos": [
+        "kanishkg/cognitive-behaviors",
+        "Jiayi-Pan/TinyZero"
+      ]
+    },
+    "2502.16797": {
+      "title": "Forecasting Rare Language Model Behaviors",
+      "repos": []
+    },
+    "2503.01141": {
+      "title": "How Well do LLMs Compress Their Own Chain-of-Thought?",
+      "repos": []
+    },
+    "2503.00735": {
+      "title": "LADDER",
+      "repos": []
+    },
+    "2502.19328": {
+      "title": "Agentic Reward Modeling",
+      "repos": [
+        "THU-KEG/Agentic-Reward-Modeling",
+        "lm-sys/FastChat",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2502.17437": {
+      "title": "Fractal Generative Models",
+      "repos": [
+        "LTH14/fractalgen"
+      ]
+    },
+    "2502.06034": {
+      "title": "Traveling Waves Integrate Spatial Information Through Time",
+      "repos": [
+        "KempnerInstitute/traveling-waves-integrate",
+        "deepmind/multi-object-datasets"
+      ]
+    },
+    "2503.10622": {
+      "title": "Transformers without Normalization",
+      "repos": [
+        "foundation-model-stack/fms-fsdp",
+        "openlm-research/open_llama",
+        "HazyResearch/hyena-dna",
+        "kuleshov-group/caduceus",
+        "facebookresearch/ConvNeXt",
+        "facebookresearch/dino",
+        "facebookresearch/DiT",
+        "facebookresearch/mae",
+        "facebookresearch/fairseq"
+      ]
+    },
+    "2503.09572": {
+      "title": "Improving Planning of Agents for Long-Horizon Tasks",
+      "repos": []
+    },
+    "2503.09516": {
+      "title": "Search-R1",
+      "repos": [
+        "PeterGriffinJin/Search-R1",
+        "volcengine/verl"
+      ]
+    },
+    "2503.06072": {
+      "title": "Post Training of LLMs",
+      "repos": [
+        "Mr-Tieguigui/LLM-Post-Training",
+        "XueFuzhao/InstructionWild",
+        "AndrewZhe/lawyer-llama",
+        "CSHaitao/LexiLaw",
+        "PKU-YuanGroup/ChatLaw",
+        "michael-wzhu/ChatMed",
+        "openai/whisper"
+      ]
+    },
+    "2503.09573": {
+      "title": "Block Diffusion",
+      "repos": [
+        "kuleshov-group/bd3lms"
+      ]
+    },
+    "2503.11486": {
+      "title": "A Review of DeepSeek Models",
+      "repos": []
+    },
+    "2503.13551": {
+      "title": "Towards Hierarchical Multi-Step Reward Models for Enhanced Reasoning in LLMs",
+      "repos": [
+        "tengwang0318/hierarchial_reward_model"
+      ]
+    },
+    "2503.14476": {
+      "title": "DAPO: An Open-Source LLM Reinforcement Learning System at Scale",
+      "repos": [
+        "volcengine/verl",
+        "Open-Reasoner-Zero/Open-Reasoner-Zero"
+      ]
+    },
+    "2503.10061": {
+      "title": "Compute Optimal Scaling of Skills",
+      "repos": []
+    },
+    "2503.10814": {
+      "title": "Thinking Machines",
+      "repos": []
+    },
+    "2503.16419": {
+      "title": "A Survey on Efficient Reasoning",
+      "repos": [
+        "Eclipsess/Awesome-Efficient-Reasoning-LLMs"
+      ]
+    },
+    "2502.12110": {
+      "title": "Agentic Memory for LLM Agents",
+      "repos": [
+        "WujiangXu/AgenticMemory",
+        "WujiangXu/A-mem-sys",
+        "ollama/ollama",
+        "BerriAI/litellm",
+        "mem0ai/mem0",
+        "huggingface/smolagents"
+      ]
+    },
+    "2503.15265": {
+      "title": "DeepMesh",
+      "repos": []
+    },
+    "2503.02113": {
+      "title": "Deep Learning is Not So Mysterious or Different",
+      "repos": []
+    },
+    "2503.11301": {
+      "title": "GNNs as Predictors of Agentic Workflow Performances",
+      "repos": []
+    },
+    "2503.18102": {
+      "title": "AgentRxiv",
+      "repos": []
+    },
+    "2503.16779": {
+      "title": "Chain-of-Tools",
+      "repos": [
+        "fairyshine/Chain-of-Tools"
+      ]
+    },
+    "2503.21760": {
+      "title": "Structured Memory Augmentation for Smarter LLM Agents",
+      "repos": []
+    },
+    "2503.14432": {
+      "title": "Play2Prompt",
+      "repos": [
+        "wfangtw/play2prompt",
+        "microsoft/JARVIS",
+        "quchangle1/DRAFT"
+      ]
+    },
+    "2503.14023": {
+      "title": "Synthetic Data Generation Using LLMs",
+      "repos": []
+    },
+    "2503.16774": {
+      "title": "Current and Future Use of LLMs for Knowledge Work",
+      "repos": []
+    },
+    "2504.01848": {
+      "title": "PaperBench",
+      "repos": [
+        "openai/preparedness"
+      ]
+    },
+    "2504.00698": {
+      "title": "Command A: An Enterprise-Ready LLM",
+      "repos": []
+    },
+    "2503.22708": {
+      "title": "CodeScientist",
+      "repos": [
+        "allenai/codescientist"
+      ]
+    },
+    "2503.23513": {
+      "title": "Retrieval-Augmented Reasoning Model",
+      "repos": []
+    },
+    "2504.02732": {
+      "title": "Why do LLMs Attend to First Token?",
+      "repos": [
+        "sail-sg/Attention-Sink"
+      ]
+    },
+    "2503.22678": {
+      "title": "Self-Evolving Multi-Agent Simulations for Realistic Clinical Interactions",
+      "repos": [
+        "MAXNORM8650/MedAgentSim"
+      ]
+    },
+    "2503.20201": {
+      "title": "Open Deep Search",
+      "repos": [
+        "sentient-agi/OpenDeepSearch",
+        "openai/simple-evals",
+        "ItzCrazyKns/Perplexica",
+        "huggingface/smolagents"
+      ]
+    },
+    "2504.00810": {
+      "title": "Efficient Test-time Scaling with Code",
+      "repos": [
+        "efficientscaling/Z1",
+        "QwenLM/Qwen2.5-Coder"
+      ]
+    },
+    "2503.24377": {
+      "title": "A Survey of Efficient Reasoning for LLMs",
+      "repos": [
+        "DevoAllen/Awesome-Reasoning-Economy-Papers",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2503.15299": {
+      "title": "Hidden Factual Knowledge in LLMs",
+      "repos": [
+        "zorikg/inside-out"
+      ]
+    },
+    "2504.07096": {
+      "title": "OLMOTrace",
+      "repos": [
+        "allenai/infinigram-api",
+        "dorianbrown/rank_bm25"
+      ]
+    },
+    "2504.05185": {
+      "title": "Concise Reasoning via RL",
+      "repos": [
+        "ai-wand/concise-reasoning",
+        "Jiayi-Pan/TinyZeroAccessed"
+      ]
+    },
+    "2504.04022": {
+      "title": "Rethinking Reflection in Pre-Training",
+      "repos": [
+        "Essential-AI/reflection"
+      ]
+    },
+    "2504.03137": {
+      "title": "Efficient KG Reasoning for Small LLMs",
+      "repos": [
+        "dair-ai/Prompt-Engineering-Guide"
+      ]
+    },
+    "2504.03553": {
+      "title": "Agentic Knowledgeable Self-awareness",
+      "repos": [
+        "zjunlp/KnowSelf",
+        "OS-Agent-Survey/OS-Agent-Survey"
+      ]
+    },
+    "2503.24322": {
+      "title": "NoProp",
+      "repos": []
+    },
+    "2504.10458": {
+      "title": "GUI-R1",
+      "repos": [
+        "ritzz-ai/GUI-R1.git",
+        "Deep-Agent/R1-V",
+        "om-ai-lab/VLM-R1"
+      ]
+    },
+    "2504.12216": {
+      "title": "Scaling Reasoning in Diffusion LLMs via RL",
+      "repos": [
+        "project-numina/aimo-progress-prize",
+        "Jiayi-Pan/TinyZero",
+        "huggingface/trl",
+        "dllm-reasoning/d1",
+        "Black-Phoenix/4x4-Sudoku-Dataset"
+      ]
+    },
+    "2504.09639": {
+      "title": "Enhancing Non-Reasoning Models with Reasoning Models",
+      "repos": [
+        "project-numina/aimo-progress-prize",
+        "a-m-team/a-m-models"
+      ]
+    },
+    "2504.09723": {
+      "title": "AgentA/B",
+      "repos": [
+        "mendableai/firecrawl-mcp-server"
+      ]
+    },
+    "2504.09858": {
+      "title": "Reasoning Models Can Be Effective Without Thinking",
+      "repos": []
+    },
+    "2504.10157": {
+      "title": "SocioVerse",
+      "repos": [
+        "FudanDISC/SocioVerse"
+      ]
+    },
+    "2504.08725": {
+      "title": "DocAgent",
+      "repos": [
+        "facebookresearch/DocAgent"
+      ]
+    },
+    "2504.08703": {
+      "title": "SWE-PolyBench",
+      "repos": [
+        "amazon-science/SWE-PolyBench",
+        "paul-gauthier/aider"
+      ]
+    },
+    "2504.09037": {
+      "title": "A Survey of Frontiers in LLM Reasoning",
+      "repos": [
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2504.09848": {
+      "title": "Advances in Embodied Agents, Smart Cities, and Earth Science",
+      "repos": []
+    },
+    "2504.13837": {
+      "title": "Does RL Incentivize Reasoning in LLMs Beyond the Base Model?",
+      "repos": [
+        "Deep-Agent/R1-VAccessed",
+        "ganler/code-r1GitHub",
+        "om-ai-lab/VLM-R1Accessed",
+        "hiyouga/EasyR1"
+      ]
+    },
+    "2504.12285": {
+      "title": "BitNet b1.58 2B4T",
+      "repos": []
+    },
+    "2501.12326": {
+      "title": "UI-TARS",
+      "repos": [
+        "bytedance/UI-TARS"
+      ]
+    },
+    "2504.16072": {
+      "title": "Describe Anything",
+      "repos": []
+    },
+    "2504.09407": {
+      "title": "UXAgent",
+      "repos": []
+    },
+    "2504.16084": {
+      "title": "Test-Time Reinforcement Learning",
+      "repos": [
+        "PRIME-RL/TTRL",
+        "TsinghuaC3I/Awesome-RL-Reasoning-Recipes"
+      ]
+    },
+    "2504.11844": {
+      "title": "Evaluate the Goal-Directedness of LLMs",
+      "repos": [
+        "Crista23/goal_directedness_llms.git",
+        "langchain-ai/langchain",
+        "Crista23/goal_directedness_llms"
+      ]
+    },
+    "2504.15777": {
+      "title": "Tiny Reasoning Models",
+      "repos": [
+        "shangshang-wang/Tina",
+        "huggingface/open-r1",
+        "huggingface/lighteval",
+        "huggingface/accelerate",
+        "Open-Reasoner-Zero/Open-Reasoner-Zero",
+        "huggingface/peft",
+        "RUCAIBox/Slow_Thinking_with_LLMs",
+        "huggingface/trl"
+      ]
+    },
+    "2504.21233": {
+      "title": "Phi-4-Mini-Reasoning",
+      "repos": []
+    },
+    "2504.19413": {
+      "title": "Building Production-Ready AI Agents with Scalable Long-Term Memory",
+      "repos": []
+    },
+    "2504.20734": {
+      "title": "UniversalRAG",
+      "repos": []
+    },
+    "2504.21801": {
+      "title": "DeepSeek-Prover-V2",
+      "repos": [
+        "deepseek-ai/DeepSeek-Prover-V2"
+      ]
+    },
+    "2504.01990": {
+      "title": "Advances and Challenges in Foundation Agents",
+      "repos": [
+        "FoundationAgents/awesome-foundation-agents",
+        "ZihanWang314/ragen",
+        "huggingface/open-r1",
+        "ultralytics/yolov5",
+        "ultralytics/ultralytics",
+        "Significant-Gravitas/Auto-GPT",
+        "0russwest0/Agent-R1",
+        "RAGEN-AI/VAGEN",
+        "chgaowei/AgentNetworkProtocol",
+        "yoheinakajima/babyagi-arena"
+      ]
+    },
+    "2504.18260": {
+      "title": "MAGI",
+      "repos": []
+    },
+    "2504.19720": {
+      "title": "A Survey of Efficient LLM Inference Serving",
+      "repos": [
+        "zenrran4nlp/Awesome-LLM-Inference-Serving"
+      ]
+    },
+    "2504.19394": {
+      "title": "LLM for Engineering",
+      "repos": [
+        "learn/pathways"
+      ]
+    },
+    "2504.20879": {
+      "title": "The Leaderboard Illusion",
+      "repos": [
+        "lm-sys/FastChat",
+        "open-compass/opencompass"
+      ]
+    },
+    "2505.00949": {
+      "title": "Llama-Nemotron",
+      "repos": [
+        "huggingface/open-r1",
+        "tree-sitter/tree-sitter"
+      ]
+    },
+    "2505.03335": {
+      "title": "Absolute Zero",
+      "repos": [
+        "rubik/radon",
+        "rohaquinlop/complexipy"
+      ]
+    },
+    "2504.21252": {
+      "title": "Discuss-RAG",
+      "repos": [
+        "LLM-VLM-GSL/Discuss-RAG"
+      ]
+    },
+    "2503.01067": {
+      "title": "The Value of RL in Fine-Tuning",
+      "repos": [
+        "openai/summarize-from-feedback",
+        "ZhaolinGao/REBEL"
+      ]
+    },
+    "2504.21776": {
+      "title": "WebThinker",
+      "repos": [
+        "RUC-NLPIR/WebThinker",
+        "project-numina/aimo-progress-prize",
+        "unclecode/crawl4ai"
+      ]
+    },
+    "2505.02387": {
+      "title": "Reward Modeling as Reasoning",
+      "repos": [
+        "RM-R1-UIUC/RM-R1"
+      ]
+    },
+    "2504.17192": {
+      "title": "Paper2Code",
+      "repos": [
+        "going-doer/Paper2Code",
+        "pranftw/openreview_scraper",
+        "allenai/s2orc-doc2json"
+      ]
+    },
+    "2505.04588": {
+      "title": "ZeroSearch",
+      "repos": []
+    },
+    "2505.02222": {
+      "title": "Practical Efficiency of Muon for Pretraining",
+      "repos": [
+        "google-deepmind/optax"
+      ]
+    },
+    "2505.06120": {
+      "title": "LLMs Get Lost in Multi-Turn Conversation",
+      "repos": [
+        "langchain-ai/langchain"
+      ]
+    },
+    "2504.20571": {
+      "title": "RL for Reasoning in LLMs with One Training Example",
+      "repos": [
+        "ypwang61/One-Shot-RLVR",
+        "project-numina/aimo-progress-prize",
+        "QwenLM/Qwen2.5-Math",
+        "volcengine/verl"
+      ]
+    },
+    "2505.08311": {
+      "title": "AM-Thinking-v1",
+      "repos": [
+        "huggingface/Math-Verify",
+        "GAIR-NLP/AIME-Preview",
+        "microsoft/chemistry-qa",
+        "Kimi-AI/Kimi-K1.5"
+      ]
+    },
+    "2505.00024": {
+      "title": "Nemotron-Research-Tool-N1",
+      "repos": [
+        "NVlabs/Tool-N1"
+      ]
+    },
+    "2505.07903": {
+      "title": "RL for Search-Efficient LLMs",
+      "repos": []
+    },
+    "2505.05885": {
+      "title": "Cost-Efficient, Low-Latency Vector Search",
+      "repos": [
+        "pgvector/pgvector",
+        "AzureCosmosDB/VectorIndexScenarioSuite",
+        "nmslib/hnswlib",
+        "jbellis/jvector",
+        "AzureCosmosDB/DiskANNWhitePapers",
+        "timescale/pgvectorscale",
+        "MLnick/elasticsearch-vector-scoring",
+        "Microsoft/DiskANN",
+        "apache/lucene"
+      ]
+    },
+    "2505.10468": {
+      "title": "AI Agents vs. Agentic AI",
+      "repos": []
+    },
+    "2505.07865": {
+      "title": "CellVerse",
+      "repos": []
+    },
+    "2505.11409": {
+      "title": "Visual Planning",
+      "repos": [
+        "yix8/VisualPlanning",
+        "huggingface/trl"
+      ]
+    },
+    "2505.13840": {
+      "title": "EfficientLLM",
+      "repos": [
+        "MoonshotAI/Kimi-k1.5",
+        "baidu-research/DeepBench",
+        "intel/mpi-benchmarks",
+        "ray-project/llmperf",
+        "intel/intel-extension-for-pytorch"
+      ]
+    },
+    "2505.10320": {
+      "title": "J1",
+      "repos": []
+    },
+    "2505.11423": {
+      "title": "The Pitfalls of Reasoning for Instruction- Following in LLMs",
+      "repos": []
+    },
+    "2505.10543": {
+      "title": "Towards a Deeper Understanding of Reasoning in LLMs",
+      "repos": [
+        "ann-w/towards-a-deeper-understanding-of-reasoning-capabilities-in-large-language-models",
+        "microsoft/SmartPlay"
+      ]
+    },
+    "2505.13417": {
+      "title": "AdaptThink",
+      "repos": [
+        "THU-KEG/AdaptThink"
+      ]
+    },
+    "2505.14963": {
+      "title": "MedBrowseComp",
+      "repos": [
+        "shan23chen/MedBrowseComp"
+      ]
+    },
+    "2505.11831": {
+      "title": "ARC-AGI-2",
+      "repos": [
+        "arcprize/model_baselineOpen"
+      ]
+    },
+    "2505.15879": {
+      "title": "Teaching MLLMs to Think with Images",
+      "repos": [
+        "Deep-Agent/R1-VAccessed"
+      ]
+    },
+    "2411.06037": {
+      "title": "New Lens on RAG Systems",
+      "repos": []
+    },
+    "2505.22954": {
+      "title": "Open-Ended Evolution of Self-Improving Agents",
+      "repos": [
+        "jennyzzt/dgm",
+        "Aider-AI/aiderAccessed",
+        "mariushobbhahn/SWEBench-verified-miniAccessed"
+      ]
+    },
+    "2505.22101": {
+      "title": "An Operating System for Memory-Augmented Generation in LLMs Introduces a unified operating system for managing memory LLMs, addressing a key limitation in",
+      "repos": []
+    },
+    "2505.23006": {
+      "title": "Building Production-Grade Conversational Agents with Workflow Graphs This paper presents a pragmatic, production-ready framework for building LLM-powered conversational agents using workflow graphs, with a specific focus on e-commerce scenarios. Instead of relying solely on end-to-end generation, the authors design agents using a directed acyclic graph (DAG), enabling flexible yet controllable interactions that adhere to strict business rules and format constraints.",
+      "repos": [
+        "axolotl-ai-cloud/axolotl"
+      ]
+    },
+    "2505.19590": {
+      "title": "Learn to Reason without External Rewards",
+      "repos": [
+        "sunblaze-ucb/Intuitor",
+        "ganler/code-r1"
+      ]
+    },
+    "2505.15817": {
+      "title": "Learn to Reason via Mixture-of-Thought",
+      "repos": [
+        "zhengkid/Truth_Table_Logical_Reasoning",
+        "huggingface/alignment-handbook"
+      ]
+    },
+    "2505.17667": {
+      "title": "QwenLong-L1",
+      "repos": [
+        "Tongyi-Zhiwen/QwenLong-L1"
+      ]
+    },
+    "2505.16282": {
+      "title": "End-to-End Policy Optimization for GUI Agents",
+      "repos": [
+        "dvlab-research/ARPO.git"
+      ]
+    },
+    "2505.20286": {
+      "title": "Generalist Agent Enabling Scalable Agentic Reasoning",
+      "repos": [
+        "CharlesQ9/Alita",
+        "huggingface/smolagents"
+      ]
+    },
+    "2505.17117": {
+      "title": "From Tokens to Thoughts",
+      "repos": []
+    },
+    "2506.02126": {
+      "title": "Knowledge or Reasoning",
+      "repos": [
+        "UCSC-VLAA/ReasoningEval"
+      ]
+    },
+    "2506.04178": {
+      "title": "Open Thoughts",
+      "repos": [
+        "sahil280114/codealpaca",
+        "huggingface/open-r1",
+        "project-numina/aimo-progress-prize",
+        "open-thoughts/open-thoughts",
+        "hiyouga/LLaMA-Factory"
+      ]
+    },
+    "2506.03011": {
+      "title": "Coding Agents with Multimodal Browsing",
+      "repos": [
+        "adityasoni9998/OpenHands-Versa"
+      ]
+    },
+    "2506.01716": {
+      "title": "Self-Challenging Language Model Agents",
+      "repos": []
+    },
+    "2505.24863": {
+      "title": "AlphaOne",
+      "repos": []
+    },
+    "2506.05209": {
+      "title": "Common Pile v0.1",
+      "repos": [
+        "openlm-research/open_llama",
+        "kermitt2/grobid",
+        "allenai/pes2o",
+        "facebookresearch/lingua"
+      ]
+    },
+    "2506.01937": {
+      "title": "RewardBench 2",
+      "repos": [
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2505.24832": {
+      "title": "Memorization in LLMs",
+      "repos": []
+    },
+    "2506.06105": {
+      "title": "Text-to-LoRA",
+      "repos": [
+        "SakanaAI/text-to-lora"
+      ]
+    },
+    "2506.08007": {
+      "title": "Reinforcement Pre-Training",
+      "repos": []
+    },
+    "2506.10380": {
+      "title": "TableRAG",
+      "repos": [
+        "yxh-y/TableRAG",
+        "ysymyth/ReAct",
+        "tablegpt/tablegpt-agent",
+        "Y-Sui/archive_code",
+        "nikhilsab/H-STAR"
+      ]
+    },
+    "2506.10943": {
+      "title": "Self-Adapting Language Models",
+      "repos": []
+    },
+    "2506.09790": {
+      "title": "ComfyUI-R1",
+      "repos": [
+        "AIDC-AI/ComfyUI-Copilot",
+        "comfyanonymous/ComfyUI",
+        "huggingface/open-r1",
+        "cloneofsimo/lora"
+      ]
+    },
+    "2506.10910": {
+      "title": "Magistral",
+      "repos": [
+        "Aider-AI/polyglot-benchmark",
+        "huggingface/open-r1"
+      ]
+    },
+    "2505.24034": {
+      "title": "LLamaRL",
+      "repos": []
+    },
+    "2506.11555": {
+      "title": "RAG+",
+      "repos": []
+    },
+    "2506.06576": {
+      "title": "Future of Work with AI Agents",
+      "repos": []
+    },
+    "2506.14761": {
+      "title": "From Bytes to Ideas",
+      "repos": [
+        "facebookresearch/lingua"
+      ]
+    },
+    "2506.09050": {
+      "title": "ALE-Agent & ALE-Bench",
+      "repos": [
+        "SakanaAI/ALE-Bench"
+      ]
+    },
+    "2506.12115": {
+      "title": "Eliciting Reasoning with Cognitive Tools",
+      "repos": [
+        "langchain-ai/langchain",
+        "project-numina/aimo-progress-prize"
+      ]
+    },
+    "2506.15674": {
+      "title": "Leaky Thoughts",
+      "repos": [
+        "parameterlab/leaky_thoughts"
+      ]
+    },
+    "2506.12365": {
+      "title": "Advances in LLMs",
+      "repos": []
+    },
+    "2506.17298": {
+      "title": "Ultra-Fast Diffusion-based Language Models",
+      "repos": []
+    },
+    "2506.15841": {
+      "title": "MEM1",
+      "repos": [
+        "MIT-MI/MEM1",
+        "modelscope/ms-swift",
+        "browser-use/browser-use",
+        "mannaandpoem/OpenManus"
+      ]
+    },
+    "2506.17188": {
+      "title": "Towards AI Search Paradigm",
+      "repos": []
+    },
+    "2506.08388": {
+      "title": "Reinforcement-Learned Teachers of Test Time Scaling",
+      "repos": [
+        "SakanaAI/RLT",
+        "huggingface/lighteval",
+        "huggingface/trl"
+      ]
+    },
+    "2506.20430": {
+      "title": "DeepRare",
+      "repos": [
+        "xiaohaomao/timgroup_disease_diagnosis",
+        "MAGIC-AI4Med/DeepRare",
+        "zhao-zy15/RareArena"
+      ]
+    },
+    "2506.19676": {
+      "title": "AI Agent Communication Protocols",
+      "repos": [
+        "theshi-1128/awesome-agent-communication-security",
+        "a2aproject/a2a-samples",
+        "agntcy/api-bridge-agntAccessed",
+        "modelcontextprotocol/servers",
+        "chroma-core/chroma",
+        "GongRzhe/Gmail-MCP-Server",
+        "GongRzhe/terminal-controller-mcp",
+        "langchain-ai/agent-protocolAccessed",
+        "riseandignite/mcp-shieldAccessed",
+        "Tencent/cos-mcp",
+        "wild-card-ai/agents-jsonAccessed"
+      ]
+    },
+    "2506.15799": {
+      "title": "Diffusion Steering via RL",
+      "repos": []
+    },
+    "2506.21552": {
+      "title": "Whole-Body Conditioned Egocentric Video Prediction",
+      "repos": []
+    },
+    "2506.02153": {
+      "title": "Small Language Models are the Future of Agentic AI",
+      "repos": [
+        "ai-dynamo/dynamo"
+      ]
+    },
+    "2507.01903": {
+      "title": "AI4Research",
+      "repos": [
+        "LightChen233/Awesome-AI4Research",
+        "IntologyAI/Zochi",
+        "assafelovic/gpt-researcher"
+      ]
+    },
+    "2506.21931": {
+      "title": "Agentic RAG for Personalized Recommendation",
+      "repos": []
+    },
+    "2506.23260": {
+      "title": "Threats in LLM-Powered AI Agents Workflows",
+      "repos": [
+        "agent-network-protocol/AgentNetworkProtocolAccessed"
+      ]
+    },
+    "2506.18096": {
+      "title": "Deep Research Agents",
+      "repos": [
+        "ai-agents-2030/awesome-deep-research-agent",
+        "kortix-ai/suna",
+        "camel-ai/owl",
+        "bytedance/deer-flow",
+        "mannaandpoem/OpenManus",
+        "Fosowl/agenticSeek",
+        "0russwest0/Agent-R1",
+        "MiroMindAI/MiroRL"
+      ]
+    },
+    "2503.16416": {
+      "title": "Survey on Evaluation of LLM-based Agents",
+      "repos": [
+        "princeton-pli/hal-harness"
+      ]
+    },
+    "2507.01921": {
+      "title": "NaturalThoughts",
+      "repos": [
+        "facebookresearch/fairseq2",
+        "huggingface/open-r1"
+      ]
+    },
+    "2506.22146": {
+      "title": "Visual Structures Help Visual Reasoning",
+      "repos": []
+    },
+    "2506.22837": {
+      "title": "xLSTMAD",
+      "repos": [
+        "Nyderx/xlstmad",
+        "TheDatumOrg/TSB-AD"
+      ]
+    },
+    "2507.07955": {
+      "title": "Dynamic Chunking for End-to-End Hierarchical Sequence Modeling",
+      "repos": [
+        "goombalab/hnet"
+      ]
+    },
+    "2507.06952": {
+      "title": "What Has a Foundation Model Found?",
+      "repos": [
+        "keyonvafa/inductive-bias-probes"
+      ]
+    },
+    "2506.18032": {
+      "title": "Why do Some Language Models Fake Alignment While Others Don’t",
+      "repos": []
+    },
+    "2506.21495": {
+      "title": "Bridging Offline and Online Reinforcement Learning for LLMs",
+      "repos": [
+        "huggingface/Math-Verify",
+        "facebookresearch/fairseq2",
+        "tatsu-lab/alpaca_eval"
+      ]
+    },
+    "2507.06203": {
+      "title": "A Survey on Latent Reasoning",
+      "repos": []
+    },
+    "2507.02259": {
+      "title": "MemAgent",
+      "repos": []
+    },
+    "2507.02554": {
+      "title": "AI Research Agents for Machine Learning",
+      "repos": [
+        "facebookresearch/aira-dojo",
+        "UKGovernmentBEIS/inspect_ai",
+        "openai/mle-bench"
+      ]
+    },
+    "2503.04412": {
+      "title": "Adaptive Branching MCTS",
+      "repos": [
+        "SakanaAI/treequest"
+      ]
+    },
+    "2507.05714": {
+      "title": "HIRAG",
+      "repos": []
+    },
+    "2507.08794": {
+      "title": "One Token to Fool LLM-as-a-Judge",
+      "repos": []
+    },
+    "2507.05707": {
+      "title": "Agentic-R1",
+      "repos": [
+        "StigLidu/DualDistill"
+      ]
+    },
+    "2507.11473": {
+      "title": "Chain-of-Thought Monitorability",
+      "repos": []
+    },
+    "2507.10541": {
+      "title": "Stress Testing Large Reasoning Models",
+      "repos": [
+        "opendatalab/REST",
+        "open-compass/opencompass",
+        "huggingface/open-r1",
+        "GAIR-NLP/AIME-Preview",
+        "QwenLM/Qwen2.5-Math"
+      ]
+    },
+    "2507.12507": {
+      "title": "Scaling up RL",
+      "repos": [
+        "huggingface/Math-Verify"
+      ]
+    },
+    "2507.13334": {
+      "title": "A Survey of Context Engineering for LLMs",
+      "repos": [
+        "Meirtz/Awesome-Context-Engineering",
+        "crewAIInc/crewAI",
+        "openai/swarm"
+      ]
+    },
+    "2507.07969": {
+      "title": "Q-Chunking",
+      "repos": [
+        "ColinQiyangLi/qc"
+      ]
+    },
+    "2507.12472": {
+      "title": "A Survey of AIOps",
+      "repos": []
+    },
+    "2507.14805": {
+      "title": "Subliminal Learning",
+      "repos": []
+    },
+    "2507.15855": {
+      "title": "Gemini 2.5 Pro Capable of Winning Gold at IMO 2025",
+      "repos": [
+        "lyang36/IMO25"
+      ]
+    },
+    "2507.14447": {
+      "title": "Structural Planning for LLM Agents",
+      "repos": [
+        "PKU-Baichuan-MLSystemLab/BUTTON",
+        "davidkimai/Context-Engineering"
+      ]
+    },
+    "2507.16003": {
+      "title": "Learning without Training",
+      "repos": []
+    },
+    "2507.14417": {
+      "title": "Inverse Scaling in Test-Time Compute",
+      "repos": [
+        "safety-research/inverse-scaling-ttc"
+      ]
+    },
+    "2507.16217": {
+      "title": "Towards Compute-Optimal Many-Shot In-Context Learning",
+      "repos": []
+    },
+    "2507.16075": {
+      "title": "Deep Researcher with Test-Time Diffusion",
+      "repos": [
+        "bytedance/deer-flow",
+        "Su-Sea/ydc-deep-research-evals",
+        "langchain-ai/open_deep_research",
+        "assafelovic/gpt-researcher"
+      ]
+    },
+    "2507.15015": {
+      "title": "MCPEval",
+      "repos": [
+        "dxlong2000/Multi-expert-Prompting",
+        "MilaNLProc/honest"
+      ]
+    },
+    "2507.13575": {
+      "title": "Apple Intelligence Foundation Language Models",
+      "repos": [
+        "openai/simple-evals"
+      ]
+    },
+    "2507.22291": {
+      "title": "AlphaEarth Foundations",
+      "repos": [
+        "Clay-foundation/model",
+        "microsoft/PlanetaryComputerExamples"
+      ]
+    },
+    "2507.20673": {
+      "title": "Geometric-Mean Policy Optimization",
+      "repos": [
+        "callsys/GMPO",
+        "hiyouga/EasyR1"
+      ]
+    },
+    "2507.19457": {
+      "title": "GEPA",
+      "repos": [
+        "gepa-ai/gepa",
+        "meta-llama/llama-prompt-opsAccessed",
+        "codelion/openevolveGitHub",
+        "jamqd/Group-Preference-Optimization"
+      ]
+    },
+    "2507.18071": {
+      "title": "Group Sequence Policy Optimization",
+      "repos": []
+    },
+    "2507.21892": {
+      "title": "Graph-R1",
+      "repos": [
+        "LHRLAB/Graph-R1"
+      ]
+    },
+    "2506.21734": {
+      "title": "Hierarchical Reasoning Model",
+      "repos": [
+        "sapientinc/HRM",
+        "Kyubyong/sudoku"
+      ]
+    },
+    "2507.22887": {
+      "title": "Where to show demos in your prompt?",
+      "repos": [
+        "hiyouga/LLaMA-Factory",
+        "hendrycks/test",
+        "EdinburghNLP/XSum"
+      ]
+    },
+    "2507.21046": {
+      "title": "Self-Evolving Agents",
+      "repos": [
+        "CharlesQ9/Self-Evolving-Agents"
+      ]
+    },
+    "2507.21509": {
+      "title": "Persona Vectors",
+      "repos": [
+        "safety-research/persona_vectors",
+        "saprmarks/dictionary_learning",
+        "keing1/reward-hack-generalization"
+      ]
+    },
+    "2507.19595": {
+      "title": "Efficient Attention Mechanisms",
+      "repos": [
+        "mit-han-lab/Block-Sparse-Attention",
+        "tile-ai/tilelangAccessed",
+        "sustcsonglin/flash-linear-attention"
+      ]
+    },
+    "2508.01191": {
+      "title": "Is Chain-of-Thought Reasoning a Mirage?",
+      "repos": [
+        "ChengshuaiZhao0/DataAlchemy"
+      ]
+    },
+    "2508.02694": {
+      "title": "Efficient Agents",
+      "repos": [
+        "OPPO-PersonalAI/OAgents",
+        "Significant-Gravitas/AutoGPT",
+        "camel-ai/owl",
+        "huggingface/smolagents"
+      ]
+    },
+    "2507.21206": {
+      "title": "Agentic Web",
+      "repos": [
+        "SafeRL-Lab/agentic-web",
+        "google/A2A"
+      ]
+    },
+    "2508.00429": {
+      "title": "ReaGAN",
+      "repos": []
+    },
+    "2508.03923": {
+      "title": "CoAct-1",
+      "repos": [
+        "SalesforceAIResearch/CoAct-1"
+      ]
+    },
+    "2508.02193": {
+      "title": "Seed Diffusion",
+      "repos": []
+    },
+    "2508.04604": {
+      "title": "Tool-Augmented Unified Retrieval Agent for AI Search",
+      "repos": [
+        "weixiaolong94-hub/TURA"
+      ]
+    },
+    "2508.01781": {
+      "title": "A Comprehensive Taxonomy of Hallucinations",
+      "repos": [
+        "vectara/hallucination-leaderboard"
+      ]
+    },
+    "2508.00217": {
+      "title": "Tabular Data Understanding with LLMs",
+      "repos": [
+        "lfy79001/Awesome-Table-QAis"
+      ]
+    },
+    "2508.00669": {
+      "title": "Medical Reasoning in the Era of LLMs",
+      "repos": []
+    },
+    "2508.08224": {
+      "title": "Capabilities of GPT-5 on Multimodal Medical Reasoning",
+      "repos": []
+    },
+    "2508.09736": {
+      "title": "M3-Agent",
+      "repos": [
+        "bytedance-seed/m3-agent",
+        "thanku-all/parse_answer",
+        "deepinsight/insightface"
+      ]
+    },
+    "2507.22229": {
+      "title": "TRImodal Brain Encoder",
+      "repos": [
+        "facebookresearch/algonauts-2025",
+        "lucidrains/x-transformers",
+        "facebookresearch/vjepa2",
+        "nilearn/nilearn",
+        "pytorch/pytorch"
+      ]
+    },
+    "2508.09124": {
+      "title": "OdysseyBench",
+      "repos": [
+        "microsoft/OdysseyBench"
+      ]
+    },
+    "2508.07976": {
+      "title": "Beyond Ten Turns",
+      "repos": [
+        "inclusionAI/ASearcher",
+        "RUCAIBox/SimpleDeepSearcher"
+      ]
+    },
+    "2508.08285": {
+      "title": "Illusion of Progress",
+      "repos": []
+    },
+    "2508.06471": {
+      "title": "GLM-4.5",
+      "repos": [
+        "zai-org/GLM-4.5",
+        "zai-org/glm-simple-evals",
+        "THUDM/slime",
+        "anthropics/claude-code"
+      ]
+    },
+    "2508.09834": {
+      "title": "A Survey on Efficient Architectures for LLMs",
+      "repos": [
+        "weigao266/Awesome-Efficient-Arch"
+      ]
+    },
+    "2508.08221": {
+      "title": "A Deep Dive into RL for LLM Reasoning",
+      "repos": [
+        "alibaba/ROLL"
+      ]
+    },
+    "2508.12631": {
+      "title": "Avengers-Pro: Beyond GPT-5",
+      "repos": [
+        "ZhangYiqun018/AvengersPro"
+      ]
+    },
+    "2508.13167": {
+      "title": "Chain-of-Agents",
+      "repos": [
+        "huggingface/Math-Verify",
+        "huggingface/smolagents",
+        "TIGER-AI-Lab/verl-tool",
+        "google/nsjail",
+        "huggingface/blog"
+      ]
+    },
+    "2508.13142": {
+      "title": "Has GPT-5 Achieved Spatial Intelligence?",
+      "repos": [
+        "EvolvingLMMs-Lab/EASI",
+        "EvolvingLMMs-Lab/lmms-eval"
+      ]
+    },
+    "2508.14040": {
+      "title": "ComputerRL",
+      "repos": []
+    },
+    "2508.06813": {
+      "title": "Full-Stack Fine-Tuning for the Q Programming Language",
+      "repos": [
+        "morganstanley/MSML",
+        "huggingface/accelerate",
+        "huggingface/trl"
+      ]
+    },
+    "2407.14333": {
+      "title": "As Generative Models Improve, People Adapt Their Prompts",
+      "repos": []
+    },
+    "2508.11386": {
+      "title": "Retrieval-Augmented Reasoning with Lean Language Models",
+      "repos": [
+        "alan-turing-institute/t0-1",
+        "simplescaling/s1",
+        "chroma-core/chroma"
+      ]
+    },
+    "2508.08712": {
+      "title": "Parallel Text Generation",
+      "repos": [
+        "zhanglingzhe0820/Awesome-Parallel-Text-Generation"
+      ]
+    },
+    "2508.09123": {
+      "title": "Open Foundations for Compute-Use Agents",
+      "repos": [
+        "obsproject/obs-studio",
+        "OpenAdaptAI/OpenAdapt",
+        "TheDuckAI/DuckTrack"
+      ]
+    },
+    "2508.17068": {
+      "title": "Anemoi Agent",
+      "repos": [
+        "Coral-Protocol/Anemoi"
+      ]
+    },
+    "2508.15260": {
+      "title": "Deep Think with Confidence",
+      "repos": []
+    },
+    "2508.16153": {
+      "title": "Fine-tuning LLM Agents without Fine-tuning LLMs",
+      "repos": [
+        "Agent-on-the-Fly/Memento",
+        "searxng/searxng-docker",
+        "unclecode/crawl4ai",
+        "inclusionAI/AWorld",
+        "camel-ai/owl"
+      ]
+    },
+    "2508.15884": {
+      "title": "Jet-Nemotron",
+      "repos": [
+        "NVlabs/Jet-Nemotron"
+      ]
+    },
+    "2508.18260": {
+      "title": "Scaling Test-Time Inference with Parallel Graph-Retrieval-Augmented Reasoning Chains",
+      "repos": [
+        "Despacitobei/MIRAGE"
+      ]
+    },
+    "2508.19828": {
+      "title": "Memory-R1",
+      "repos": []
+    },
+    "2508.17580": {
+      "title": "Assessing Language Models on Unsolved Questions",
+      "repos": []
+    },
+    "2508.18929": {
+      "title": "Synthetic Dataset Generation for RAG Evaluation with Multi-Agent Systems",
+      "repos": []
+    },
+    "2508.17511": {
+      "title": "School of Reward Hacks",
+      "repos": [
+        "unslothai/unsloth",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2508.14111": {
+      "title": "Agentic Science",
+      "repos": [
+        "AgenticScience/Awesome-Agent-Scientists",
+        "InternLM/Intern-S1"
+      ]
+    },
+    "2508.18226": {
+      "title": "Disentangling the Factors of Convergence between Brains and Computer Vision Models",
+      "repos": []
+    },
+    "2509.00244": {
+      "title": "Universal Deep Research",
+      "repos": [
+        "engineer-man/piston"
+      ]
+    },
+    "2410.07486": {
+      "title": "Visual Story Telling",
+      "repos": [
+        "m-damien/VisualStoryWriting"
+      ]
+    },
+    "2508.20722": {
+      "title": "rStar2-Agent",
+      "repos": [
+        "microsoft/rStar"
+      ]
+    },
+    "2508.21141": {
+      "title": "Adaptive LLM Routing",
+      "repos": []
+    },
+    "2509.02350": {
+      "title": "Implicit Reasoning in LLMs",
+      "repos": [
+        "digailab/awesome-llm-implicit-reasoning",
+        "karpathy/nanoGPT"
+      ]
+    },
+    "2508.21038": {
+      "title": "On the Theoretical Limitations of Embedding-based Retrieval",
+      "repos": [
+        "google-deepmind/limit",
+        "lightonai/pylate"
+      ]
+    },
+    "2508.07407": {
+      "title": "Self-Evolving Agents",
+      "repos": []
+    },
+    "2508.18255": {
+      "title": "Hermes 4",
+      "repos": []
+    },
+    "2509.06283": {
+      "title": "SFR-DeepResearch",
+      "repos": [
+        "langchain-ai/open_deep_research",
+        "0russwest0/Agent-R1"
+      ]
+    },
+    "2509.03646": {
+      "title": "Emergent Hierarchical Reasoning",
+      "repos": [
+        "Open-Reasoner-Zero/Open-Reasoner-Zero",
+        "agentica-project/deepscaler"
+      ]
+    },
+    "2509.01092": {
+      "title": "Rethinking RAG-based Decoding",
+      "repos": [
+        "facebookresearch/refrag"
+      ]
+    },
+    "2509.04903": {
+      "title": "ACE-RL",
+      "repos": []
+    },
+    "2509.04475": {
+      "title": "ParaThinker",
+      "repos": [
+        "MobileLLM/ParaThinker",
+        "huggingface/open-r1"
+      ]
+    },
+    "2509.08755": {
+      "title": "AgentGym-RL",
+      "repos": []
+    },
+    "2509.05396": {
+      "title": "Talk Isn’t Always Cheap",
+      "repos": [
+        "TheNormativityLab/talk-aint-cheap"
+      ]
+    },
+    "2509.06870": {
+      "title": "AggLM",
+      "repos": [
+        "huggingface/Math-Verify"
+      ]
+    },
+    "2509.08827": {
+      "title": "A Survey of RL for Large Reasoning Models",
+      "repos": [
+        "TsinghuaC3I/Awesome-RL-for-LRMsTsinghuaC3I",
+        "huggingface/Math-Verify",
+        "sgl-project/sglang",
+        "ray-project/ray",
+        "a-m-team/a-m-models",
+        "JetAstra/SDAR",
+        "deepseek-ai/DeepSeek-V3.2-Exp",
+        "huggingface/open-r1",
+        "ganler/code-r1",
+        "NVIDIA-NeMo/RL",
+        "Jiayi-Pan/TinyZero",
+        "ByteDance-Seed/seed-oss",
+        "MiroMindAI/MiroThinker",
+        "RLinf/RLinf",
+        "THUDM/slime",
+        "tokenbender/avatarl",
+        "huggingface/trl",
+        "TsinghuaC3I/MARTI",
+        "hiyouga/EasyR1"
+      ]
+    },
+    "2508.15760": {
+      "title": "LiveMCP-101",
+      "repos": []
+    },
+    "2509.14185": {
+      "title": "Discovery of Unstable Singularities",
+      "repos": []
+    },
+    "2509.07604": {
+      "title": "K2-Think",
+      "repos": [
+        "MBZUAI-IFM/K2-Think-SFT",
+        "MBZUAI-IFM/K2-Think-Inference",
+        "TIGER-AI-Lab/General-Reasoner",
+        "codelion/optillm"
+      ]
+    },
+    "2509.10446": {
+      "title": "DeepDive",
+      "repos": [
+        "THUDM/DeepDive",
+        "THUDM/slime"
+      ]
+    },
+    "2509.13805": {
+      "title": "Towards a Physics Foundation Model",
+      "repos": []
+    },
+    "2509.10414": {
+      "title": "Is In-Context Learning Learning?",
+      "repos": [
+        "adewynter/is-icl-learning"
+      ]
+    },
+    "2509.13311": {
+      "title": "AgentScaler",
+      "repos": [
+        "Alibaba-NLP/DeepResearch",
+        "ByteDance-Seed/seed-oss"
+      ]
+    },
+    "2509.10697": {
+      "title": "A Survey on Retrieval and Structuring Augmented Generation with LLMs",
+      "repos": [
+        "iAmmarTahir/KnowledgeGraphGPT"
+      ]
+    },
+    "2509.11826": {
+      "title": "Collaborative Document Editing with AI Agents",
+      "repos": []
+    },
+    "2509.14260": {
+      "title": "Shutdown Resistance in LLMs",
+      "repos": []
+    },
+    "2509.14476": {
+      "title": "ATOKEN",
+      "repos": []
+    },
+    "2509.13351": {
+      "title": "Teaching LLMs to Plan",
+      "repos": []
+    },
+    "2509.14252": {
+      "title": "LLM-JEPA",
+      "repos": [
+        "rbalestr-lab/llm-jepa"
+      ]
+    },
+    "2509.18063": {
+      "title": "ARK-V1",
+      "repos": [
+        "JaFeKl/ark_v1"
+      ]
+    },
+    "2509.20357": {
+      "title": "Language Models that Think, Chat Better",
+      "repos": [
+        "princeton-pli/RLMT",
+        "EQ-bench/creative-writing-bench",
+        "huggingface/trl",
+        "volcengine/verl"
+      ]
+    },
+    "2509.20021": {
+      "title": "Embodied AI: From LLMs to World Models",
+      "repos": []
+    },
+    "2509.24527": {
+      "title": "Training Agents Inside of Scalable World Models",
+      "repos": []
+    },
+    "2509.25137": {
+      "title": "The Era of Real-World Human Interaction",
+      "repos": []
+    },
+    "2509.24317": {
+      "title": "Rethinking JEPA",
+      "repos": []
+    },
+    "2510.02250": {
+      "title": "Agent S3",
+      "repos": []
+    },
+    "2509.25454": {
+      "title": "DeepSearch",
+      "repos": [
+        "smiles724/DeepSearch"
+      ]
+    },
+    "2509.25188": {
+      "title": "Accelerating Diffusion LLMs",
+      "repos": []
+    },
+    "2509.22230": {
+      "title": "Reasoning Traces Tailored for Small Models",
+      "repos": [
+        "jaeh8nkim/equigranular"
+      ]
+    },
+    "2510.01279": {
+      "title": "Tool-Use Mixture (TUMIX)",
+      "repos": []
+    },
+    "2509.19894": {
+      "title": "PrompCoT 2.0",
+      "repos": [
+        "inclusionAI/PromptCoT",
+        "huggingface/open-r1",
+        "MoonshotAI/Kimi-K2"
+      ]
+    },
+    "2510.04871": {
+      "title": "Tiny Recursive Model",
+      "repos": [
+        "Kyubyong/sudoku"
+      ]
+    },
+    "2510.06105": {
+      "title": "Emergent Misalignment",
+      "repos": []
+    },
+    "2510.04618": {
+      "title": "Agentic Context Engineering (ACE)",
+      "repos": [
+        "ace-agent/ace",
+        "suzgunmirac/dynamic-cheatsheetAccessed"
+      ]
+    },
+    "2510.05024": {
+      "title": "Inoculation Prompting (IP)",
+      "repos": [
+        "safety-research/inoculation-prompting"
+      ]
+    },
+    "2510.07312": {
+      "title": "Reasoning over Longer Horizons via RL",
+      "repos": [
+        "AlesyaIvanova/h1",
+        "willccbb/verifiers",
+        "magicproduct/hash-hop"
+      ]
+    },
+    "2510.06557": {
+      "title": "The Markovian Thinker",
+      "repos": [
+        "McGill-NLP/the-markovian-thinker",
+        "huggingface/math-verify"
+      ]
+    },
+    "2509.04439": {
+      "title": "Abstract Reasoning Composition",
+      "repos": [
+        "matt-seb-ho/arc_memo"
+      ]
+    },
+    "2510.07318": {
+      "title": "Artificial Hippocampus Networks",
+      "repos": [
+        "ByteDance-Seed/AHN",
+        "gkamradt/LLMTest_NeedleInAHaystack",
+        "fla-org/flash-linear-attention"
+      ]
+    },
+    "2510.06499": {
+      "title": "Webscale-RL",
+      "repos": []
+    },
+    "2510.13786": {
+      "title": "The Art of Scaling RL Compute for LLMs",
+      "repos": [
+        "huggingface/Math-Verify"
+      ]
+    },
+    "2510.11701": {
+      "title": "Demystifying RL in Agentic Reasoning",
+      "repos": []
+    },
+    "2510.05174": {
+      "title": "Emergent Coordination in Multi-Agent LLMs",
+      "repos": [
+        "riedlc/AI-GBS",
+        "meta-llama/llama-models"
+      ]
+    },
+    "2510.14973": {
+      "title": "Elastic-Cache",
+      "repos": []
+    },
+    "2510.12773": {
+      "title": "Dynamic Layer Routing in LLMs",
+      "repos": [
+        "parameterlab/dr-llm"
+      ]
+    },
+    "2510.13928": {
+      "title": "LLMs Can Get “Brain Rot”!",
+      "repos": [
+        "tatsu-lab/stanford_alpaca",
+        "hiyouga/LLaMA-Factory",
+        "anthropics/hh-rlhf",
+        "LLM-Tuning-Safety/LLMs-Finetuning-Safety",
+        "EleutherAI/lm-evaluation-harness",
+        "pull-ups/TRAIT"
+      ]
+    },
+    "2510.07242": {
+      "title": "Hybrid Reinforcement",
+      "repos": []
+    },
+    "2509.23045": {
+      "title": "Kimi-Dev",
+      "repos": [
+        "MoonshotAI/Kimi-Dev"
+      ]
+    },
+    "2510.11977": {
+      "title": "Holistic Agent Leaderboard",
+      "repos": [
+        "princeton-pli/hal-harness",
+        "adyuter/xManus",
+        "browser-use/browser-use",
+        "huggingface/smolagents",
+        "MiroMindAI/MiroFlow"
+      ]
+    },
+    "2510.18234": {
+      "title": "DeepSeek-OCR",
+      "repos": [
+        "deepseek-ai/DeepSeek-OCR",
+        "datalab-to/marker",
+        "chatdoc-com/OCRFlux",
+        "rednote-hilab/dots.ocr"
+      ]
+    },
+    "2510.15103": {
+      "title": "Continual Learning via Sparse Memory Finetuning",
+      "repos": []
+    },
+    "2509.26544": {
+      "title": "Bayesian Influence Functions for Hessian-Free Data Attribution",
+      "repos": [
+        "timaeus-research/devinterp",
+        "pomonam/kronfluence"
+      ]
+    },
+    "2510.14901": {
+      "title": "Reasoning with Sampling",
+      "repos": []
+    },
+    "2510.19506": {
+      "title": "Lookahead Routing for LLMs",
+      "repos": [
+        "huangcb01/lookahead-routing"
+      ]
+    },
+    "2510.18855": {
+      "title": "Ring-1T",
+      "repos": [
+        "inclusionAI/Ring-V2",
+        "inclusionAI/AWorld",
+        "MoonshotAI/checkpoint-engine",
+        "inclusionAI/Ling-V2",
+        "EQ-bench/creative-writing-bench",
+        "THUDM/slime"
+      ]
+    },
+    "2510.19386": {
+      "title": "ColorAgent",
+      "repos": [
+        "MadeAgents/mobile-use",
+        "MadeAgents/Quick-on-the-Uptake",
+        "Wuzheng02/VeriOS",
+        "THUDM/MobileRL"
+      ]
+    },
+    "2510.16932": {
+      "title": "Prompt-MII",
+      "repos": []
+    },
+    "2510.17797": {
+      "title": "Enterprise Deep Research",
+      "repos": [
+        "langchain-ai/open_deep_research",
+        "NVIDIA-AI-Blueprints/aiq-research-assistant",
+        "assafelovic/gpt-researcher",
+        "Su-Sea/ydc-deep-research-evals"
+      ]
+    },
+    "2510.24699": {
+      "title": "AgentFold",
+      "repos": [
+        "Alibaba-NLP/DeepResearch",
+        "MiroMindAI/MiroThinker"
+      ]
+    },
+    "2510.23595": {
+      "title": "Multi-Agent Evolve",
+      "repos": [
+        "ulab-uiuc/Multi-agent-Evolve"
+      ]
+    },
+    "2510.24081": {
+      "title": "Global PIQA",
+      "repos": [
+        "mrlbenchmarks/lm-eval-global-piqa",
+        "mrlbenchmarks/global-piqa"
+      ]
+    },
+    "2510.25320": {
+      "title": "GAP",
+      "repos": [
+        "WJQ7777/Graph-Agent-Planning"
+      ]
+    },
+    "2510.07686": {
+      "title": "Stress-Testing Model Specs",
+      "repos": []
+    },
+    "2510.24702": {
+      "title": "Agent Data Protocol",
+      "repos": []
+    },
+    "2510.26692": {
+      "title": "Kimi Linear",
+      "repos": [
+        "MoonshotAI/Kimi-Linear",
+        "fla-org/flash-linear-attention"
+      ]
+    },
+    "2510.26788": {
+      "title": "Precision-RL",
+      "repos": [
+        "sail-sg/Precision-RL",
+        "sail-sg/odc",
+        "sail-sg/oat",
+        "agentica-project/deepscaler"
+      ]
+    },
+    "2511.01846": {
+      "title": "Towards Robust Mathematical Reasoning",
+      "repos": [
+        "lyang36/IMO25"
+      ]
+    },
+    "2510.26493": {
+      "title": "Context Engineering 2.0",
+      "repos": [
+        "google-gemini/gemini-cli",
+        "anthropics/claude-code",
+        "google/leveldb",
+        "langroid/langroid",
+        "GAIR-NLP/SII-CLI",
+        "ShareDropio/sharedrop",
+        "Significant-Gravitas/AutoGPT",
+        "letta-ai/letta",
+        "Alibaba-NLP/DeepResearch"
+      ]
+    },
+    "2511.03773": {
+      "title": "Scaling Agent RL via Experience Synthesis",
+      "repos": []
+    },
+    "2510.23038": {
+      "title": "TIR-Judge",
+      "repos": [
+        "THU-KEG/Agentic-Reward-Modeling"
+      ]
+    },
+    "2510.27246": {
+      "title": "Enhancing Long-Term Memory in LLMs",
+      "repos": [
+        "mohammadtavakoli78/BEAM"
+      ]
+    },
+    "2511.01854": {
+      "title": "Tool-to-Agent Retrieval",
+      "repos": [
+        "icip-cas/LiveMCPBench"
+      ]
+    },
+    "2511.03276": {
+      "title": "Diffusion LMs are Super Data Learners",
+      "repos": []
+    },
+    "2511.02864": {
+      "title": "Mathematical Exploration and Discovery at Scale",
+      "repos": [
+        "teorth/erdos-guy-selfridge",
+        "codelion/openevolve"
+      ]
+    },
+    "2511.02303": {
+      "title": "Unlocking the Power of Multi-Agent LLM for Reasoning",
+      "repos": [
+        "project-numina/aimo-progress-prize"
+      ]
+    },
+    "2511.07885": {
+      "title": "Intelligence per Watt",
+      "repos": [
+        "warengonzaga/tinyclaw",
+        "HKUDS/nanobot",
+        "ibm-granite/granite-4.0-language-models",
+        "Median-Group/numbers",
+        "memovai/mimiclaw",
+        "nearai/ironclaw",
+        "NousResearch/hermes-agent",
+        "sipeed/picoclaw",
+        "openclaw/openclaw",
+        "zeroclaw-labs/zeroclaw"
+      ]
+    },
+    "2510.26658": {
+      "title": "The Era of Agentic Organization",
+      "repos": []
+    },
+    "2511.00617": {
+      "title": "Unified Bayesian Account of LLM Control",
+      "repos": [
+        "steering-vectors/steering-vectors"
+      ]
+    },
+    "2511.05933": {
+      "title": "RL Enhances Knowledge Navigation",
+      "repos": []
+    },
+    "2511.01758": {
+      "title": "RLAC: Adversarial Critic for RL Post-Training",
+      "repos": []
+    },
+    "2511.09030": {
+      "title": "MAKER: Solving Million-Step LLM Tasks",
+      "repos": [
+        "cognizant-ai-lab/neuro-san-benchmarking"
+      ]
+    },
+    "2511.08923": {
+      "title": "TiDAR: Think in Diffusion, Talk in Autoregression",
+      "repos": []
+    },
+    "2511.14617": {
+      "title": "Seer: Fast RL for LLMs",
+      "repos": [
+        "MoonshotAI/checkpoint-engine",
+        "sgl-project/sglang",
+        "vllm-project/vllm",
+        "huggingface/trl",
+        "THUDM/slimeGitHub"
+      ]
+    },
+    "2511.12876": {
+      "title": "LAMP: Language-Augmented Multi-Agent RL",
+      "repos": [
+        "hey0223/LAMP"
+      ]
+    },
+    "2511.12869": {
+      "title": "On the Fundamental Limits of LLMs at Scale",
+      "repos": []
+    },
+    "2511.20639": {
+      "title": "LatentMAS",
+      "repos": [
+        "Gen-Verse/LatentMAS"
+      ]
+    },
+    "2511.16931": {
+      "title": "OmniScientist",
+      "repos": [
+        "open-sciencelab/scp"
+      ]
+    },
+    "2511.16004": {
+      "title": "InfCode",
+      "repos": [
+        "Tokfinity/InfCode",
+        "aorwall/moatless-toolsAccessed"
+      ]
+    },
+    "2511.16652": {
+      "title": "Evolution Strategies at Hyperscale",
+      "repos": []
+    },
+    "2511.19333": {
+      "title": "Training LLMs with Reasoning Traces",
+      "repos": [
+        "NVIDIA-NeMo/Skills",
+        "shaltielshmid/af27fc1ac24fcb85592bbf12dadcd10f"
+      ]
+    },
+    "2511.19417": {
+      "title": "Multi-Agent Collaboration for Multimodal LLMs",
+      "repos": []
+    },
+    "2511.16660": {
+      "title": "Cognitive Foundations for Reasoning in LLMs",
+      "repos": [
+        "pkargupta/cognitive_foundations",
+        "stellalisy/CognitiveFoundations"
+      ]
+    },
+    "2505.03997": {
+      "title": "Quiet Feature Learning",
+      "repos": [
+        "prudhvirajn/quiet-feature-learning-in-algorithmic-tasks"
+      ]
+    },
+    "2512.03262": {
+      "title": "SUSVIBES: Is Vibe Coding Safe?",
+      "repos": [
+        "LeiLiLab/susvibes",
+        "buildbot/buildbot",
+        "wagtail/wagtail",
+        "aio-libs/aiohttp-session"
+      ]
+    },
+    "2512.01948": {
+      "title": "FINDER and DEFT",
+      "repos": [
+        "OPPO-PersonalAI/FINDER_DEFT",
+        "MiroMindAI/MiroThinker"
+      ]
+    },
+    "2512.03746": {
+      "title": "CodeVision: Thinking with Programming Vision",
+      "repos": [
+        "ByteDance-BandAI/CodeVision"
+      ]
+    },
+    "2512.04047": {
+      "title": "Polarization by Design",
+      "repos": []
+    },
+    "2512.08296": {
+      "title": "Towards a Science of Scaling Agent Systems",
+      "repos": [
+        "ybkim95/agent-scaling"
+      ]
+    },
+    "2512.07783": {
+      "title": "Pre-Training, Mid-Training, and RL Interplay",
+      "repos": []
+    },
+    "2512.08270": {
+      "title": "Reasoning Models Ace the CFA Exams",
+      "repos": []
+    },
+    "2512.05356": {
+      "title": "AI and Human Co-Improvement",
+      "repos": []
+    },
+    "2512.06266": {
+      "title": "Nanbeige4-3B",
+      "repos": []
+    },
+    "2512.07828": {
+      "title": "AI Agent Adoption Study",
+      "repos": []
+    },
+    "2512.06721": {
+      "title": "ProAgent",
+      "repos": [
+        "snakers4/silero-vad"
+      ]
+    },
+    "2512.10047": {
+      "title": "Detailed Balance in LLM Agents",
+      "repos": [
+        "SonnyNondegeneracy/detialed-balance-llm",
+        "IdeaSearch/IdeaSearch-fit",
+        "IdeaSearch/IdeaSearch-framework"
+      ]
+    },
+    "2511.17006": {
+      "title": "Budget Aware Test-time Scaling",
+      "repos": [
+        "google-research/budget-aware-agent",
+        "unclecode/crawl4ai",
+        "sierra-research/tau2-bench"
+      ]
+    },
+    "2512.07921": {
+      "title": "DeepCode",
+      "repos": [
+        "HKUDS/DeepCode",
+        "google-gemini/gemini-cli",
+        "cline/cline"
+      ]
+    },
+    "2511.18659": {
+      "title": "CLaRa",
+      "repos": [
+        "apple/ml-clara"
+      ]
+    },
+    "2512.10791": {
+      "title": "FACTS Leaderboard",
+      "repos": []
+    },
+    "2511.15703": {
+      "title": "Vision-Language Synergy Reasoning",
+      "repos": [
+        "InternLM/ARC-VL"
+      ]
+    },
+    "2512.10685": {
+      "title": "SHARP",
+      "repos": [
+        "apple/ml-sharp",
+        "OpenDriveLab/OpenScene",
+        "eldar/flash3d"
+      ]
+    },
+    "2512.09882": {
+      "title": "ARTEMIS",
+      "repos": [
+        "Stanford-Trinity/ARTEMIS"
+      ]
+    },
+    "2512.10938": {
+      "title": "Stronger Normalization-Free Transformers",
+      "repos": []
+    },
+    "2512.13898": {
+      "title": "Test-Time Training for Long-Context LLMs",
+      "repos": [
+        "allenai/OLMo"
+      ]
+    },
+    "2512.16848": {
+      "title": "LaMer",
+      "repos": [
+        "mlbio-epfl/LaMer"
+      ]
+    },
+    "2512.19466": {
+      "title": "Epistemia",
+      "repos": []
+    },
+    "2512.16649": {
+      "title": "JustRL",
+      "repos": [
+        "thunlp/JustRL"
+      ]
+    },
+    "2512.18552": {
+      "title": "Self-Play SWE-RL",
+      "repos": [
+        "ByteDance-Seed/seed-oss",
+        "SWE-bench/SWE-bench",
+        "aorwall/moatless-tools",
+        "all-the-noises/eval-arena"
+      ]
+    },
+    "2512.01939": {
+      "title": "Empirical Study of Agent Developer Practices",
+      "repos": [
+        "microsoft/semantic-kernel",
+        "yoheinakajima/babyagi",
+        "openai/swarm"
+      ]
+    },
+    "2512.18202": {
+      "title": "Sophia",
+      "repos": []
+    },
+    "2512.14080": {
+      "title": "SonicMoE",
+      "repos": [
+        "open-lm-engine/lm-engine",
+        "Dao-AILab/sonic-moe",
+        "ibm-granite/granite-3.1-language-modelsGitHub",
+        "NVIDIA/cutlassVersion",
+        "deepseek-ai/DeepEP",
+        "shawntan/scattermoe",
+        "tilde-research/MoMoE-impl",
+        "databricks/megablocks",
+        "NVIDIA/Megatron-LM",
+        "fanshiqing/grouped_gemm",
+        "deepseek-ai/DeepGEMM",
+        "triton-lang/triton",
+        "pytorch/pytorch",
+        "tile-ai/tilelang",
+        "xiexi51/RTopK",
+        "allenai/OLMoE"
+      ]
+    },
+    "2510.26745": {
+      "title": "Geometric Memory in Sequence Models",
+      "repos": [
+        "shahriarnz14/geometric_memory"
+      ]
+    },
+    "2512.14693": {
+      "title": "Universal Reasoning Model",
+      "repos": [
+        "UbiquantAI/URM"
+      ]
+    },
+    "2512.14012": {
+      "title": "AI Agents for Coding in 2025",
+      "repos": []
+    },
+    "2512.24880": {
+      "title": "Manifold-Constrained Hyper-Connections",
+      "repos": []
+    },
+    "2512.21782": {
+      "title": "SAGA",
+      "repos": [
+        "btyu/SAGA"
+      ]
+    },
+    "2512.20491": {
+      "title": "Step-DeepResearch",
+      "repos": [
+        "stepfun-ai/StepDeepResearch"
+      ]
+    },
+    "2512.05765": {
+      "title": "MACI",
+      "repos": [
+        "langchain-ai/langchain"
+      ]
+    },
+    "2512.21309": {
+      "title": "AgentReuse",
+      "repos": []
+    },
+    "2512.24601": {
+      "title": "Recursive Language Models",
+      "repos": [
+        "alexzhang13/rlm"
+      ]
+    },
+    "2601.03335": {
+      "title": "Adversarial Program Evolution with LLMs",
+      "repos": [
+        "SakanaAI/drq",
+        "rodrigosetti/corewar",
+        "n1LS/redcode-warriors"
+      ]
+    },
+    "2512.13607": {
+      "title": "Nemotron-Cascade",
+      "repos": [
+        "openai/openai-python"
+      ]
+    },
+    "2601.05242": {
+      "title": "GDPO",
+      "repos": [
+        "qiancheng0/ToolRL"
+      ]
+    },
+    "2512.23707": {
+      "title": "Training AI Co-Scientists Using Rubric Rewards",
+      "repos": [
+        "volcengine/verl"
+      ]
+    },
+    "2512.10398": {
+      "title": "Confucius Code Agent",
+      "repos": [
+        "facebookresearch/cca-swebench",
+        "pytorch/pytorch",
+        "SWE-agent/SWE-ReX"
+      ]
+    },
+    "2512.18470": {
+      "title": "SWE-EVO",
+      "repos": [
+        "SWE-EVO/SWE-EVO",
+        "QwenLM/Qwen3-Coder"
+      ]
+    },
+    "2601.00417": {
+      "title": "Deep Delta Learning",
+      "repos": [
+        "yifanzhang-pro/deep-delta-learning",
+        "karpathy/nanoGPT"
+      ]
+    },
+    "2601.05230": {
+      "title": "Learning Latent Action World Models In The Wild",
+      "repos": []
+    },
+    "2601.07055": {
+      "title": "Self-Evolving Search Agents Without Training Data",
+      "repos": [
+        "facebookresearch/drzero"
+      ]
+    },
+    "2601.01885": {
+      "title": "Unified Long-Term and Short-Term Memory for LLM Agents",
+      "repos": [
+        "WujiangXu/A-mem-sys",
+        "mem0ai/mem0"
+      ]
+    },
+    "2601.07190": {
+      "title": "Active Context Compression for LLM Agents",
+      "repos": []
+    },
+    "2601.05111": {
+      "title": "Agent-as-a-Judge",
+      "repos": []
+    },
+    "2601.02553": {
+      "title": "Efficient Lifelong Memory for LLM Agents",
+      "repos": [
+        "aiming-lab/SimpleMem",
+        "mem0ai/mem0"
+      ]
+    },
+    "2601.08584": {
+      "title": "Ministral 3",
+      "repos": []
+    },
+    "2601.03192": {
+      "title": "MemRL",
+      "repos": [
+        "MemTensor/MemRL"
+      ]
+    },
+    "2601.10825": {
+      "title": "Reasoning Models Generate Societies of Thought",
+      "repos": []
+    },
+    "2601.11653": {
+      "title": "Memory Control for Long-Horizon Agents",
+      "repos": []
+    },
+    "2601.11868": {
+      "title": "Benchmarking Agents on Hard CLI Tasks",
+      "repos": [
+        "laude-institute/terminal-bench-experiments"
+      ]
+    },
+    "2601.12307": {
+      "title": "Rethinking Multi-Agent Workflows",
+      "repos": []
+    },
+    "2601.13597": {
+      "title": "AI IDEs vs Autonomous Agents",
+      "repos": [
+        "shyamagarwal13/agentic-coding-impact"
+      ]
+    },
+    "2601.14192": {
+      "title": "Efficient Agents",
+      "repos": [
+        "yxf203/Awesome-Efficient-Agents"
+      ]
+    },
+    "2601.07577": {
+      "title": "Task-Decoupled Planning for Long-Horizon Agents",
+      "repos": []
+    },
+    "2601.07136": {
+      "title": "Large-Scale Study on Multi-Agent AI Systems Development",
+      "repos": [
+        "en/graphql",
+        "jerryjliu/llama_index"
+      ]
+    },
+    "2601.21571": {
+      "title": "Shaping Capabilities with Token-Level Data Filtering",
+      "repos": []
+    },
+    "2601.20245": {
+      "title": "How AI Impacts Skill Formation",
+      "repos": [
+        "safety-research/how-ai-impacts-skill-formation"
+      ]
+    },
+    "2601.16238": {
+      "title": "VibeTensor",
+      "repos": [
+        "NVLabs/vibetensor",
+        "wjakob/nanobindAccessed",
+        "dmlc/dlpackAccessed",
+        "triton-lang/tritonAccessed",
+        "NVIDIA/cutlassAccessed",
+        "huggingface/safetensorsAccessed",
+        "karpathy/minGPTAccessed"
+      ]
+    },
+    "2601.20802": {
+      "title": "Reinforcement Learning via Self-Distillation",
+      "repos": [
+        "lasgroup/SDPO"
+      ]
+    },
+    "2601.21343": {
+      "title": "Self-Improving Pretraining",
+      "repos": [
+        "huggingface/Math-Verify"
+      ]
+    },
+    "2601.20540": {
+      "title": "LingBot-World: Open-Source World Simulator",
+      "repos": [
+        "robbyant/lingbot-world",
+        "Breakthrough/PySceneDetect",
+        "microsoft/DirectXShaderCompilerAccessed"
+      ]
+    },
+    "2601.20048": {
+      "title": "Insight Agents: Multi-Agent System for Data Insights",
+      "repos": []
+    },
+    "2601.12886": {
+      "title": "Communication Methods in Multi-Agent RL",
+      "repos": []
+    },
+    "2601.14351": {
+      "title": "Team of Rivals: Orchestrating Reliable AI Agents",
+      "repos": []
+    },
+    "2601.22401": {
+      "title": "Semi-Autonomous Mathematics Discovery with Gemini",
+      "repos": [
+        "teorth/erdosproblems"
+      ]
+    },
+    "2602.04118": {
+      "title": "TinyLoRA",
+      "repos": [
+        "meta-llama/llama3",
+        "project-numina/aimo-progress-prize"
+      ]
+    },
+    "2602.02007": {
+      "title": "xMemory",
+      "repos": []
+    },
+    "2602.02751": {
+      "title": "SALE",
+      "repos": [
+        "facebookresearch/hst-bench"
+      ]
+    },
+    "2602.02704": {
+      "title": "InfMem",
+      "repos": []
+    },
+    "2602.03442": {
+      "title": "A-RAG",
+      "repos": [
+        "Ayanami0730/arag"
+      ]
+    },
+    "2602.03695": {
+      "title": "Agent Primitives",
+      "repos": []
+    },
+    "2602.03837": {
+      "title": "Accelerating Scientific Research with Gemini",
+      "repos": [
+        "fortnow/s2psearch"
+      ]
+    },
+    "2601.22001": {
+      "title": "Heterogeneous Computing for AI Agent Inference",
+      "repos": []
+    },
+    "2602.07755": {
+      "title": "ALMA",
+      "repos": [
+        "zksha/alma.git",
+        "alfworld/alfworld",
+        "balrog-ai/BALROG",
+        "suzgunmirac/dynamic-cheatsheet",
+        "bingreeky/GMemory"
+      ]
+    },
+    "2602.08676": {
+      "title": "LLaDA 2.1",
+      "repos": []
+    },
+    "2602.08234": {
+      "title": "SkillRL",
+      "repos": [
+        "aiming-lab/SkillRL"
+      ]
+    },
+    "2602.06960": {
+      "title": "InftyThink+",
+      "repos": []
+    },
+    "2602.01465": {
+      "title": "Agyn",
+      "repos": [
+        "agynio/platform",
+        "agynio/gh-pr-review",
+        "SWE-agent/mini-swe-agentAccessed"
+      ]
+    },
+    "2602.02603": {
+      "title": "EchoJEPA",
+      "repos": [
+        "bowang-lab/EchoJEPA",
+        "adamtupper/usaugment"
+      ]
+    },
+    "2602.11931": {
+      "title": "AdaptEvolve",
+      "repos": []
+    },
+    "2602.11964": {
+      "title": "Gaia2",
+      "repos": [
+        "eval-sys/mcpmark"
+      ]
+    },
+    "2602.03955": {
+      "title": "AgentArk",
+      "repos": [
+        "AIFrontierLab/AgentArk"
+      ]
+    },
+    "2602.09372": {
+      "title": "AgentSkiller",
+      "repos": [
+        "ZexuSun/AgentSkiller",
+        "langchain-ai/langgraph",
+        "ByteDance-Seed/seed-oss"
+      ]
+    },
+    "2602.11865": {
+      "title": "Intelligent AI Delegation",
+      "repos": []
+    },
+    "2602.14299": {
+      "title": "Emergent Socialization in AI Agent Society",
+      "repos": [
+        "tianyi-lab/Moltbook_Socialization"
+      ]
+    },
+    "2602.15763": {
+      "title": "GLM-5",
+      "repos": [
+        "zai-org/GLM-5",
+        "zai-org/GLM-4"
+      ]
+    },
+    "2602.16313": {
+      "title": "MemoryArena",
+      "repos": []
+    },
+    "2602.13258": {
+      "title": "MAPLE",
+      "repos": [
+        "prdeepakbabu/maple-framework"
+      ]
+    },
+    "2602.12670": {
+      "title": "SkillsBench",
+      "repos": [
+        "anthropics/claude-code",
+        "benchflow-ai/benchflow",
+        "PrimeIntellect-ai/verifiers",
+        "google-gemini/gemini-cli",
+        "harbor-framework/harbor",
+        "openai/codex"
+      ]
+    },
+    "2602.14337": {
+      "title": "LongCLI-Bench",
+      "repos": [
+        "finyorko/longcli-bench",
+        "anthropics/claude-codeGitHub",
+        "google-gemini/gemini-cliGitHub",
+        "laude-institute/terminal-benchGitHub",
+        "openai/codexGitHub"
+      ]
+    },
+    "2602.12662": {
+      "title": "CogRouter",
+      "repos": [
+        "rhyang2021/CogRouter",
+        "hiyouga/LLaMA-Factory"
+      ]
+    },
+    "2602.16485": {
+      "title": "Team of Thoughts",
+      "repos": [
+        "JeffreyWong20/Team-of-Thoughts"
+      ]
+    },
+    "2602.13517": {
+      "title": "Deep-Thinking Tokens",
+      "repos": []
+    },
+    "2602.20478": {
+      "title": "Codified Context",
+      "repos": [
+        "arisvas4/codified-context-infrastructure"
+      ]
+    },
+    "2602.16928": {
+      "title": "Discovering Multi-Agent Learning Algorithms with LLMs",
+      "repos": []
+    },
+    "2602.11988": {
+      "title": "Evaluating AGENTS.md",
+      "repos": [
+        "logic-star-ai/insightshttps"
+      ]
+    },
+    "2602.16173": {
+      "title": "PAHF",
+      "repos": [
+        "facebookresearch/PAHF"
+      ]
+    },
+    "2602.15902": {
+      "title": "Doc-to-LoRA",
+      "repos": [
+        "SakanaAI/doc-to-lora",
+        "fastai/imagenette"
+      ]
+    },
+    "2602.17100": {
+      "title": "AgentConductor",
+      "repos": []
+    },
+    "2602.20502": {
+      "title": "ActionEngine",
+      "repos": []
+    },
+    "2602.16154": {
+      "title": "CoT Faithfulness via REMUL",
+      "repos": [
+        "nsivaku/remul",
+        "huggingface/peft"
+      ]
+    },
+    "2602.20426": {
+      "title": "Learning to Rewrite Tool Descriptions",
+      "repos": [
+        "huggingface/smolagents",
+        "volcengine/verl"
+      ]
+    },
+    "2603.03212": {
+      "title": "NeuroSkill",
+      "repos": []
+    },
+    "2503.17523": {
+      "title": "Bayesian Teaching for LLMs",
+      "repos": [
+        "huggingface/alignment-handbook"
+      ]
+    },
+    "2602.15029": {
+      "title": "Why LLMs Form Geometric Representations",
+      "repos": [
+        "TransformerLensOrg/TransformerLens",
+        "dkarkada/symmetry-stats-repgeom"
+      ]
+    },
+    "2603.00142": {
+      "title": "Theory of Mind in Multi-Agent LLMs",
+      "repos": []
+    },
+    "2601.14027": {
+      "title": "Numina-Lean-Agent",
+      "repos": [
+        "project-numina/numina-lean-agent",
+        "oOo0oOo/lean-lsp-mcp"
+      ]
+    },
+    "2602.23320": {
+      "title": "ParamMem",
+      "repos": [
+        "tianyao-aka/ParamAgent"
+      ]
+    },
+    "2602.23720": {
+      "title": "Auton Agentic AI Framework",
+      "repos": []
+    },
+    "2512.20184": {
+      "title": "Reaching Agreement Among LLM Agents",
+      "repos": [
+        "vllm-project/vllmAccessed"
+      ]
+    },
+    "2603.02473": {
+      "title": "Diagnosing Agent Memory",
+      "repos": []
+    },
+    "2603.03975": {
+      "title": "Phi-4-reasoning-vision-15B",
+      "repos": [
+        "microsoft/eureka-ml-insights",
+        "open-compass/VLMEvalKit"
+      ]
+    },
+    "2603.05344": {
+      "title": "OpenDev",
+      "repos": [
+        "opendev-to/opendev",
+        "bmad-code-org/BMAD-METHOD",
+        "block/goose",
+        "charmbracelet/crush",
+        "opencode-ai/opencode",
+        "Fission-AI/OpenSpec",
+        "github/spec-kit",
+        "google-gemini/gemini-cli",
+        "OpenInterpreter/open-interpreter"
+      ]
+    },
+    "2603.03329": {
+      "title": "AutoHarness",
+      "repos": [
+        "MichaelTMatthews/Craftax",
+        "trevormcinroe/terra_nova"
+      ]
+    },
+    "2603.04448": {
+      "title": "SkillNet",
+      "repos": [
+        "zjunlp/SkillNet",
+        "openclaw/openclaw",
+        "yusufkaraaslan/Skill_Seekers",
+        "vercel-labs/skills",
+        "deepseek-ai/DeepSeek-V3",
+        "anthropics/claude-code",
+        "openai/codex"
+      ]
+    },
+    "2603.05498": {
+      "title": "The Spike, the Sparse and the Sink",
+      "repos": []
+    },
+    "2603.05218": {
+      "title": "KARL",
+      "repos": [
+        "databricks/officeqa"
+      ]
+    },
+    "2603.04257": {
+      "title": "Memex(RL)",
+      "repos": [
+        "THUDM/slimeGitHub"
+      ]
+    },
+    "2603.05451": {
+      "title": "FlashAttention-4",
+      "repos": [
+        "Dao-AILab/flash-attention",
+        "triton-lang/triton"
+      ]
+    },
+    "2603.05294": {
+      "title": "STRUCTUREDAGENT",
+      "repos": []
+    },
+    "2603.04384": {
+      "title": "AgentIR",
+      "repos": []
+    },
+    "2603.08391": {
+      "title": "Think Harder or Know More",
+      "repos": []
+    },
+    "2603.19461": {
+      "title": "Hyperagents",
+      "repos": [
+        "facebookresearch/Hyperagents",
+        "Genesis-Embodied-AI/Genesis"
+      ]
+    },
+    "2603.20639": {
+      "title": "Agentic AI and the Next Intelligence Explosion",
+      "repos": []
+    },
+    "2603.24621": {
+      "title": "ARC-AGI-3",
+      "repos": [
+        "arcprize/ARC-AGI-Community-Leaderboard",
+        "arcprize/ARC-AGI",
+        "symbolica-ai/ARC-AGI-3-Agents",
+        "DriesSmit/ARC3-solution",
+        "wd13ca/ARC-AGI-3-Agents"
+      ]
+    },
+    "2603.24511": {
+      "title": "Claudini",
+      "repos": [
+        "romovpa/claudini",
+        "karpathy/autoresearch",
+        "anadim/AdderBoard"
+      ]
+    },
+    "2603.15031": {
+      "title": "Attention Residuals",
+      "repos": []
+    },
+    "2603.23234": {
+      "title": "MemCollab",
+      "repos": []
+    },
+    "2603.24477": {
+      "title": "Composer 2",
+      "repos": [
+        "deepseek-ai/DeepEP"
+      ]
+    },
+    "2603.21383": {
+      "title": "PivotRL",
+      "repos": [
+        "anomalyco/opencode",
+        "NVIDIA-NeMo/Gym",
+        "NVIDIA-NeMo/RL",
+        "laude-institute/terminal-bench"
+      ]
+    },
+    "2603.22386": {
+      "title": "Workflow Optimization for LLM Agents",
+      "repos": [
+        "IBM/awesome-agentic-workflow-optimization"
+      ]
+    },
+    "2603.15371": {
+      "title": "BIGMAS",
+      "repos": []
+    },
+    "2603.21489": {
+      "title": "Asynchronous Software Engineering Agents",
+      "repos": [
+        "JiayiGeng/CAID"
+      ]
+    },
+    "2603.28052": {
+      "title": "Meta-Harness",
+      "repos": [
+        "stanford-iris-lab/meta-harness-tbench2-artifact",
+        "agentskills/agentskillsSpecification",
+        "algorithmicsuperintelligence/openevolveGitHub"
+      ]
+    },
+    "2603.20432": {
+      "title": "Coding Agents as Long-Context Processors",
+      "repos": []
+    },
+    "2603.28990": {
+      "title": "Self-Organizing LLM Agents",
+      "repos": []
+    },
+    "2603.23971": {
+      "title": "The Price Reversal Phenomenon",
+      "repos": []
+    },
+    "2603.29493": {
+      "title": "MemFactory",
+      "repos": [
+        "MemTensor/MemFactory"
+      ]
+    },
+    "2603.26993": {
+      "title": "On the Reliability Limits of LLM-Based Multi-Agent Planning",
+      "repos": []
+    },
+    "2603.25723": {
+      "title": "Natural-Language Agent Harnesses",
+      "repos": [
+        "stanford-iris-lab/meta-harness-tbench2-artifactReports",
+        "curated-skills/LinguaClaw"
+      ]
+    },
+    "2604.06425": {
+      "title": "Neural Computers",
+      "repos": []
+    },
+    "2604.04503": {
+      "title": "Memory Intelligence Agent (MIA)",
+      "repos": [
+        "ECNU-SII/MIA"
+      ]
+    },
+    "2604.02460": {
+      "title": "Single-Agent LLMs vs. Multi-Agent Systems",
+      "repos": [
+        "googleapis/python-genai"
+      ]
+    },
+    "2604.06240": {
+      "title": "The Universal Verifier for Agent Benchmarks",
+      "repos": [
+        "microsoft/fara",
+        "karpathy/autoresearchAccessed"
+      ]
+    },
+    "2604.05013": {
+      "title": "Scaling Coding Agents via Atomic Skills",
+      "repos": []
+    },
+    "2604.04323": {
+      "title": "Agent Skills in the Wild",
+      "repos": [
+        "UCSB-NLP-Chang/Skill-Usage",
+        "anthropics/skills",
+        "openclaw/openclawGitHub"
+      ]
+    },
+    "2604.05081": {
+      "title": "MedGemma 1.5",
+      "repos": [
+        "pypdfium2-team/pypdfium2"
+      ]
+    },
+    "2604.03679": {
+      "title": "LightThinker++: From Reasoning Compression to Memory Management",
+      "repos": [
+        "zjunlp/LightThinker",
+        "meta-llama/llama-cookbook"
+      ]
+    },
+    "2604.13018": {
+      "title": "AiScientist",
+      "repos": [
+        "karpathy/autoresearch",
+        "aiming-lab/AutoResearchClaw"
+      ]
+    },
+    "2604.12162": {
+      "title": "AlphaEval",
+      "repos": [
+        "GAIR-NLP/AlphaEval"
+      ]
+    },
+    "2604.12374": {
+      "title": "Nemotron 3 Super",
+      "repos": [
+        "NVIDIA-NeMo/Nemotron",
+        "NVIDIA-NeMo/Evaluator",
+        "EleutherAI/lm-evaluation-harness",
+        "huggingface/math-verify",
+        "NVIDIA-NeMo/Skills",
+        "NVIDIA/Model-Optimizer",
+        "NVIDIA/TransformerEngine",
+        "NVIDIA-NeMo/GymGitHub",
+        "NVIDIA-NeMo/RLGitHub",
+        "NVIDIA-NeMo/DataDesignerGitHub"
+      ]
+    },
+    "2604.14004": {
+      "title": "Memory Transfer Learning",
+      "repos": [
+        "laude-institute/harbor"
+      ]
+    },
+    "2604.12108": {
+      "title": "Auto-Diagnose",
+      "repos": []
+    },
+    "2604.13318": {
+      "title": "WebXSkill",
+      "repos": [
+        "aiming-lab/WebXSkill"
+      ]
+    },
+    "2604.08567": {
+      "title": "Muses-Bench",
+      "repos": [
+        "Kordi-AI/Multi-User-LLM-Agent",
+        "tatsu-lab/stanford_alpaca"
+      ]
+    },
+    "2604.15034": {
+      "title": "Autogenesis",
+      "repos": [
+        "DVampire/Autogenesis",
+        "Desearch-ai/desearch.py",
+        "google/langfun",
+        "NousResearch/hermes-agent"
+      ]
+    },
+    "2604.14191": {
+      "title": "Attention to Mamba",
+      "repos": [
+        "state-spaces/mamba",
+        "EleutherAI/lm-evaluation-harness"
+      ]
+    },
+    "2604.15771": {
+      "title": "Skill-RAG",
+      "repos": [
+        "weikai202/SkillRAG"
+      ]
+    },
+    "2604.18131": {
+      "title": "Self-Generated World Knowledge",
+      "repos": [
+        "anthropics/skills",
+        "ByteDance-Seed/seed-oss"
+      ]
+    },
+    "2604.15082": {
+      "title": "Self-Evolving Logic Synthesis",
+      "repos": []
+    },
+    "2604.20158": {
+      "title": "Stateless Decision Memory",
+      "repos": [
+        "vasundras/stateless-decision-memory-enterprise-ai-agents",
+        "microsoft/semantic-kernel"
+      ]
+    },
+    "2604.21691": {
+      "title": "There Will Be a Scientific Theory of Deep Learning",
+      "repos": []
+    },
+    "2604.18509": {
+      "title": "MASS-RAG",
+      "repos": []
+    },
+    "2604.18005": {
+      "title": "Diversity Collapse in Multi-Agent LLMs",
+      "repos": [
+        "Xtra-Computing/MAS_Diversity"
+      ]
+    },
+    "2604.25850": {
+      "title": "Agentic Harness Engineering",
+      "repos": [
+        "china-qijizhifeng/agentic-harness-engineering"
+      ]
+    },
+    "2604.21590": {
+      "title": "AgenticQwen-30B-A3B",
+      "repos": [
+        "haruhi-sudo/data_synth_and_rl.33",
+        "modelscope/easydistill"
+      ]
+    },
+    "2604.22748": {
+      "title": "Agentic World Modeling",
+      "repos": [
+        "Genesis-Embodied-AI/Genesis"
+      ]
+    },
+    "2604.25917": {
+      "title": "RecursiveMAS",
+      "repos": []
+    },
+    "2604.22446": {
+      "title": "OneManCompany",
+      "repos": [
+        "obra/superpowers",
+        "msitarzewski/agency-agents",
+        "openclaw/openclaw",
+        "crewAIInc/crewAI",
+        "paperclipai/paperclip",
+        "langchain-ai/langgraph",
+        "agno-agi/agno"
+      ]
+    },
+    "2604.24026": {
+      "title": "From Skill Text to Skill Structure",
+      "repos": [
+        "COOLPKU/SSL"
+      ]
+    },
+    "2604.24881": {
+      "title": "Latent Agents",
+      "repos": [
+        "johnsk95/latent_agents"
+      ]
+    },
+    "2604.26622": {
+      "title": "OCR-Memory",
+      "repos": []
+    },
+    "2604.26649": {
+      "title": "When to Retrieve During Reasoning",
+      "repos": []
+    },
+    "2604.20987": {
+      "title": "Co-evolving Decisions and Skills",
+      "repos": [
+        "wuxiyang1996/COS-PLAY"
+      ]
+    },
+    "2605.02396": {
+      "title": "HeavySkill",
+      "repos": [
+        "wjn1996/HeavySkill",
+        "nousresearch/hermes-agent",
+        "openclaw/openclaw",
+        "stepfun-ai/PaCoRe"
+      ]
+    },
+    "2512.04388": {
+      "title": "Conductor",
+      "repos": [
+        "bigcode-project/bigcodebench"
+      ]
+    },
+    "2604.25067": {
+      "title": "Connect Four AlphaZero from Scratch",
+      "repos": [
+        "jsherwood00/C4AI",
+        "karpathy/autoresearch",
+        "PascalPons/connect4",
+        "UKGovernmentBEIS/inspect_ai"
+      ]
+    },
+    "2605.03310": {
+      "title": "Coordination as Architecture",
+      "repos": [
+        "ForesightFlow/coordination-experiment",
+        "ForesightFlow/datasets",
+        "ForesightFlow/foreflow-agents",
+        "foresight-arena/contracts",
+        "ForesightFlow/foreflow-agents-engine"
+      ]
+    },
+    "2605.02572": {
+      "title": "Horizon Generalization",
+      "repos": [
+        "fogleman/rush"
+      ]
+    },
+    "2604.28181": {
+      "title": "1,000 Synthetic Computers",
+      "repos": [
+        "anthropics/skills"
+      ]
+    },
+    "2604.27707": {
+      "title": "Contextual Agentic Memory is a Memo",
+      "repos": []
+    },
+    "2605.03808": {
+      "title": "Agentic-imodels",
+      "repos": [
+        "csinva/agentic-imodels",
+        "karpathy/autoresearch"
+      ]
+    },
+    "2605.00424": {
+      "title": "Skills as Verifiable Artifacts",
+      "repos": [
+        "metereconsulting/enclawed",
+        "NVIDIA/NeMo-Guardrails"
+      ]
+    },
+    "2605.06554": {
+      "title": "Lighthouse Attention",
+      "repos": [
+        "ighoshsubho/lighthouse-attention"
+      ]
+    },
+    "2605.15184": {
+      "title": "Is Grep All You Need?",
+      "repos": []
+    },
+    "2605.12357": {
+      "title": "δ-mem",
+      "repos": []
+    },
+    "2605.14892": {
+      "title": "Beyond Individual Intelligence",
+      "repos": [
+        "mira-ai-lab/awesome-mas-life"
+      ]
+    },
+    "2605.08083": {
+      "title": "AutoTTS",
+      "repos": [
+        "zhengkid/AutoTTS"
+      ]
+    },
+    "2605.06651": {
+      "title": "AI Co-Mathematician",
+      "repos": [
+        "algorithmicsuperintelligence/openevolve"
+      ]
+    },
+    "2605.13821": {
+      "title": "AEvo",
+      "repos": [
+        "anthropics/original_performance_takehomeGitHub"
+      ]
+    },
+    "2605.08060": {
+      "title": "The Memory Curse in LLM Agents",
+      "repos": []
+    },
+    "2605.06546": {
+      "title": "Token Superposition Training",
+      "repos": []
+    },
+    "2605.18747": {
+      "title": "Code as Agent Harness",
+      "repos": [
+        "YennNing/Awesome-Code-as-Agent-Harness-Papers",
+        "leanprover-community/physlib",
+        "Picrew/awesome-agent-harnessCurated",
+        "daytonaio/daytonaGitHub",
+        "e2b-dev/E2BGitHub",
+        "BerriAI/litellmGitHub",
+        "agentsmd/agents.mdGitHub",
+        "modelcontextprotocol/serversGitHub",
+        "modelcontextprotocol/modelcontextprotocolGitHub",
+        "langchain-ai/langchain-mcp-adaptersGitHub",
+        "IBM/mcp-context-forgeGitHub",
+        "alibaba/OpenSandboxGitHub",
+        "judge0/judge0GitHub",
+        "SWE-agent/SWE-ReXGitHub",
+        "trycua/cuaGitHub",
+        "browser-use/browser-harnessGitHub",
+        "e2b-dev/desktopGitHub",
+        "agent-infra/sandboxGitHub",
+        "agentscope-ai/agentscope-runtimeGitHub",
+        "tensorlakeai/tensorlakeGitHub",
+        "abshkbh/arrakisGitHub",
+        "capsulerun/capsuleGitHub",
+        "kubernetes-sigs/agent-sandboxGitHub",
+        "Th0rgal/sandboxed.shGitHub",
+        "ucsb-mlsec/terminal-bench-envGitHub",
+        "stakpak/agentGitHub",
+        "Kong/kongGitHub",
+        "Portkey-AI/gatewayGitHub",
+        "agentgateway/agentgatewayGitHub",
+        "openai/openai-realtime-agentsGitHub",
+        "openai/openai-cs-agents-demoGitHub",
+        "TracecatHQ/tracecatGitHub",
+        "archestra-ai/archestraGitHub",
+        "m0n0x41d/haftGitHub",
+        "promptfoo/promptfooGitHub",
+        "confident-ai/deepevalGitHub",
+        "vibrantlabsai/ragasGitHub",
+        "EleutherAI/lm-evaluation-harnessGitHub",
+        "langwatch/langwatchGitHub",
+        "modelscope/evalscopeGitHub",
+        "harbor-framework/harborGitHub",
+        "sierra-research/tau2-benchGitHub",
+        "NVIDIA-NeMo/GymGitHub",
+        "awslabs/agent-evaluationGitHub",
+        "UKGovernmentBEIS/inspect_evalsGitHub",
+        "langfuse/langfuseGitHub",
+        "mlflow/mlflowGitHub",
+        "comet-ml/opikGitHub",
+        "raga-ai-hub/RagaAI-CatalystGitHub",
+        "tensorzero/tensorzeroGitHub",
+        "Arize-ai/phoenixGitHub",
+        "traceloop/openllmetryGitHub",
+        "Helicone/heliconeGitHub",
+        "AgentOps-AI/agentopsGitHub",
+        "latitude-dev/latitude-llmGitHub",
+        "lmnr-ai/lmnrGitHub",
+        "Arize-ai/openinferenceGitHub",
+        "future-agi/future-agiGitHub",
+        "copilot/concepts",
+        "langchain-ai/deepagentsGitHub"
+      ]
+    },
+    "2605.20579": {
+      "title": "OpenAI Disproves the Unit Distance Conjecture",
+      "repos": []
+    },
+    "2605.15156": {
+      "title": "Memory as a Model",
+      "repos": [
+        "Mimino666/langdetect",
+        "confident-ai/deepeval"
+      ]
+    },
+    "2605.15871": {
+      "title": "AIRA",
+      "repos": [
+        "karpathy/autoresearchGitHub"
+      ]
+    },
+    "2605.14163": {
+      "title": "Weak-Model Critic-Comparator",
+      "repos": []
+    },
+    "2605.17292": {
+      "title": "MetaCogAgent",
+      "repos": []
+    },
+    "2605.20173": {
+      "title": "Production Agent Architecture Methodology",
+      "repos": [
+        "vasundras/agent-runtime-patterns"
+      ]
+    },
+    "2605.12290": {
+      "title": "Contrastive Neuron Attribution",
+      "repos": [
+        "NousResearch/neural-steering"
+      ]
+    },
+    "2605.23904": {
+      "title": "SkillOpt",
+      "repos": []
+    },
+    "2605.22502": {
+      "title": "Compiling Agentic Workflows into Weights",
+      "repos": [
+        "langchain-ai/langgraph",
+        "crewAIInc/crewAI"
+      ]
+    },
+    "2605.28655": {
+      "title": "AutoScientists",
+      "repos": [
+        "mims-harvard/AutoScientists",
+        "karpathy/autoresearch",
+        "science-machine/biomlbench",
+        "OATML-Markslab/ProteinGym",
+        "snap-stanford/biomni",
+        "petergroth/kermut"
+      ]
+    },
+    "2605.26099": {
+      "title": "Language Models Need Sleep",
+      "repos": []
+    },
+    "2605.22166": {
+      "title": "Adapting the Interface, Not the Model",
+      "repos": []
+    },
+    "2605.23071": {
+      "title": "The Efficiency Frontier",
+      "repos": []
+    },
+    "2605.22681": {
+      "title": "Forecasting Scientific Progress with AI",
+      "repos": [
+        "SeanWu25/cusp-scientific-foresight"
+      ]
+    },
+    "2605.26302": {
+      "title": "Your Agents Are Aging Too",
+      "repos": []
+    },
+    "2605.21516": {
+      "title": "Harnesses Are Not Uniformly Better",
+      "repos": [
+        "browser-use/browser-harnessBrowser",
+        "agentsmd/agents.mdAGENTS.md",
+        "karpathy/autoresearchAI",
+        "stanford-iris-lab/meta-harness-tbench2-artifact"
+      ]
+    },
+    "2605.22391": {
+      "title": "Epicure",
+      "repos": []
+    },
+    "2606.01444": {
+      "title": "Self-Revising Discovery Systems",
+      "repos": [
+        "lamm-mit/scienceclaw",
+        "lamm-mit/infinite",
+        "lamm-mit/BreakingTheWorld"
+      ]
+    },
+    "2605.30621": {
+      "title": "Disentangling Agent Self-Evolution",
+      "repos": []
+    },
+    "2606.03303": {
+      "title": "LEAP",
+      "repos": [
+        "AxiomMath/putnam2025",
+        "project-numina/Numina-Putnam2025",
+        "google-deepmind/superhuman",
+        "PatrickMassot/leanblueprint",
+        "dpwoodru/knuthCycles"
+      ]
+    },
+    "2605.29682": {
+      "title": "Scaling Laws for Agent Harnesses",
+      "repos": []
+    },
+    "2606.05080": {
+      "title": "AutoLab",
+      "repos": [
+        "karpathy/autoresearchAccessed",
+        "MoonshotAI/Kimi-K2.5",
+        "badlogic/pi-monoGitHub"
+      ]
+    },
+    "2605.30785": {
+      "title": "Reusable Context Engineering",
+      "repos": [
+        "NousResearch/hermes-agent",
+        "openclaw/openclaw"
+      ]
+    },
+    "2605.27734": {
+      "title": "Learn From Your Own Latents",
+      "repos": []
+    },
+    "2606.02113": {
+      "title": "A Primer on Post-Training Reasoning Data",
+      "repos": [
+        "RenBing-Sumeru/Awesome-LLM-Reasoning-Data"
+      ]
+    },
+    "2606.02373": {
+      "title": "State-Externalizing Harnesses",
+      "repos": [
+        "pat-jj/harness-1",
+        "chroma-core/context-1-data-gen"
+      ]
+    },
+    "2606.00655": {
+      "title": "Do More Agents Help?",
+      "repos": []
+    },
+    "2606.13392": {
+      "title": "MiniMax Sparse Attention",
+      "repos": [
+        "MiniMax-AI/MSA",
+        "THUDM/GLM-5"
+      ]
+    },
+    "2606.09498": {
+      "title": "Self-Harness",
+      "repos": []
+    },
+    "2606.05405": {
+      "title": "Agents' Last Exam",
+      "repos": [
+        "tailcallhq/forgecode"
+      ]
+    },
+    "2606.07489": {
+      "title": "How AI Agents Reshape Knowledge Work",
+      "repos": []
+    },
+    "2606.07513": {
+      "title": "Agentopia",
+      "repos": [
+        "Neph0s/Agentopia"
+      ]
+    },
+    "2606.07082": {
+      "title": "The Geometry of On-Policy Distillation",
+      "repos": []
+    },
+    "2606.09079": {
+      "title": "Lookahead Sparse Attention",
+      "repos": []
+    },
+    "2606.09828": {
+      "title": "Latent Spatial Memory",
+      "repos": []
+    },
+    "2606.04223": {
+      "title": "The Consistency Illusion",
+      "repos": []
+    },
+    "2606.09076": {
+      "title": "Beyond Scalar Rewards",
+      "repos": []
+    },
+    "2606.13673": {
+      "title": "SpatialClaw",
+      "repos": []
+    },
+    "2606.18051": {
+      "title": "Compositional Skill Routing",
+      "repos": []
+    },
+    "2606.17929": {
+      "title": "PreAct",
+      "repos": [
+        "19PINE-AI/PreAct",
+        "browser-use/workflow-use",
+        "pig-dot-dev/muscle-mem",
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2606.16576": {
+      "title": "Can LLM Agents Infer World Models?",
+      "repos": []
+    },
+    "2606.17682": {
+      "title": "From Trainee to Trainer",
+      "repos": [
+        "LARK-AI-Lab/Trainee-to-Trainer"
+      ]
+    },
+    "2606.16774": {
+      "title": "OpenClaw-Skill",
+      "repos": [
+        "XiaomiMiMo/MiMo-V2-FlashAccessed"
+      ]
+    },
+    "2606.08501": {
+      "title": "Back on Track",
+      "repos": []
+    },
+    "2606.19847": {
+      "title": "AtomMem",
+      "repos": [
+        "MINE-USTC/AtomMem"
+      ]
+    },
+    "2606.17645": {
+      "title": "Beyond Domains",
+      "repos": [
+        "microsoft/playwright-mcp"
+      ]
+    },
+    "2606.18192": {
+      "title": "The Stanford EDGAR Filings Dataset",
+      "repos": [
+        "dgunning/edgartools"
+      ]
+    },
+    "2606.21228": {
+      "title": "Sakana Fugu",
+      "repos": [
+        "anthropics/claude-codeVersion",
+        "karpathy/autoresearchGitHub",
+        "openai/codexVersion",
+        "SWE-agent/mini-swe-agentVersion"
+      ]
+    },
+    "2606.24775": {
+      "title": "Agent-Native Memory",
+      "repos": [
+        "OpenDataBox/MemoryData",
+        "OpenDataBox/awesome-agent-memory"
+      ]
+    },
+    "2606.25996": {
+      "title": "Autodata",
+      "repos": [
+        "karpathy/autoresearch"
+      ]
+    },
+    "2606.23991": {
+      "title": "Critique of the Agent Model",
+      "repos": [
+        "bytedance/deer-flowVersion",
+        "huggingface/lerobot",
+        "microsoft/playwrightAccessed",
+        "Alibaba-NLP/DeepResearch",
+        "THUDM/slimeGitHub"
+      ]
+    },
+    "2606.22902": {
+      "title": "Agent-as-a-Router",
+      "repos": [
+        "LanceZPF/agent-as-a-router",
+        "SWE-agent/mini-swe-agent",
+        "openai/codex"
+      ]
+    },
+    "2606.19135": {
+      "title": "Agent Communication Protocols",
+      "repos": []
+    },
+    "2606.19370": {
+      "title": "A Pinch of Human Data",
+      "repos": [
+        "Emerge-Lab/PufferDrive",
+        "NVlabs/catk"
+      ]
+    },
+    "2606.18837": {
+      "title": "Skill-MAS",
+      "repos": []
+    },
+    "2606.19544": {
+      "title": "Reliability without Validity",
+      "repos": []
+    },
+    "2606.24530": {
+      "title": "NatureBench",
+      "repos": [
+        "anthropics/claude-code",
+        "google-gemini/gemini-cli",
+        "karpathy/autoresearch",
+        "openai/codex"
+      ]
+    },
+    "2606.26294": {
+      "title": "Red Queen Gödel Machine",
+      "repos": []
+    },
+    "2606.30317": {
+      "title": "MCP Server Patterns",
+      "repos": [
+        "rodriguescarson/mcp-patterns-icsme2026",
+        "modelcontextprotocol/servers",
+        "Significant-Gravitas/Auto-GPT",
+        "langchain-ai/langchain",
+        "modelcontextprotocol/python-sdk",
+        "pipecat-ai/pipecat"
+      ]
+    },
+    "2606.26300": {
+      "title": "The Verification Horizon",
+      "repos": [
+        "openclaw/openclawAccessed"
+      ]
+    },
+    "2606.28277": {
+      "title": "Paper Assistant Tool",
+      "repos": []
+    },
+    "2606.32025": {
+      "title": "Generative Skill Composition",
+      "repos": []
+    },
+    "2607.01224": {
+      "title": "AutoMem",
+      "repos": [
+        "autoLearnMem/AutoMem"
+      ]
+    },
+    "2606.32032": {
+      "title": "RLMF",
+      "repos": [
+        "yale-nlp/RLMF",
+        "huggingface/trl"
+      ]
+    },
+    "2607.00272": {
+      "title": "ASPIRE",
+      "repos": []
+    },
+    "2606.28279": {
+      "title": "HORIZON",
+      "repos": [
+        "SWE-bench/experiments"
+      ]
+    },
+    "2606.26797": {
+      "title": "Reasoning Quality Emerges Early",
+      "repos": [
+        "huggingface/open-r1"
+      ]
+    },
+    "2607.05391": {
+      "title": "Verification as a Scaling Axis",
+      "repos": []
+    },
+    "2606.30306": {
+      "title": "Always-On Agents",
+      "repos": []
+    },
+    "2607.02303": {
+      "title": "HOLA",
+      "repos": []
+    },
+    "2607.04371": {
+      "title": "Puzzle-75B",
+      "repos": [
+        "NVIDIA/Model-Optimizer"
+      ]
+    },
+    "2607.06906": {
+      "title": "The Harness Effect",
+      "repos": [
+        "NousResearch/hermes-agent"
+      ]
+    },
+    "2607.02509": {
+      "title": "ReContext",
+      "repos": [
+        "Yanjun-Zhao/ReContext"
+      ]
+    },
+    "2607.05775": {
+      "title": "Agent Limitations Taxonomy",
+      "repos": []
+    },
+    "2607.01538": {
+      "title": "BlockSearch",
+      "repos": []
+    },
+    "2607.01181": {
+      "title": "RLVR Meets Human Likeness",
+      "repos": []
+    },
+    "2607.02134": {
+      "title": "Replicating ML Papers with Agents",
+      "repos": [
+        "PredictiveScienceLab/paper-replication-paper"
+      ]
+    },
+    "2607.13104": {
+      "title": "Self-Improving Agents Survey",
+      "repos": []
+    },
+    "2607.11881": {
+      "title": "Metacognition in LLMs",
+      "repos": [
+        "yale-nlp/LLM-Metacognition",
+        "langchain-ai/langchain",
+        "Significant-Gravitas/AutoGPT"
+      ]
+    },
+    "2607.09197": {
+      "title": "When Is Routing Meaningful",
+      "repos": []
+    },
+    "2607.12227": {
+      "title": "Harness Evolution, Rethought",
+      "repos": []
+    },
+    "2607.12747": {
+      "title": "Tracing Agentic Failure",
+      "repos": []
+    },
+    "2607.09510": {
+      "title": "Failure as a Process",
+      "repos": [
+        "xz-Sean/cli_trajectory_analysis.git"
+      ]
+    },
+    "2607.07534": {
+      "title": "LingBot-World 2.0",
+      "repos": [
+        "robbyant/lingbot-world-v2",
+        "NVIDIA/flashdreams"
+      ]
+    },
+    "2601.21112": {
+      "title": "Less Is More for Monitors",
+      "repos": [
+        "rajamoreno/info-access-mle-sabotage",
+        "Aether-AIS/cotrh-blue-team"
+      ]
+    },
+    "2607.13394": {
+      "title": "GFlowRL",
+      "repos": [
+        "microsoft/gflowrl",
+        "verl-project/verl",
+        "agentica-project/rllm",
+        "Xuekai-Zhu/FlowRL",
+        "fmmarkmq/SEMA"
+      ]
+    },
+    "2607.06403": {
+      "title": "LingBot-VLA 2.0",
+      "repos": [
+        "robbyant/lingbot-vla-v2"
+      ]
+    },
+    "2607.13285": {
+      "title": "Harness Handbook",
+      "repos": []
+    },
+    "2607.16621": {
+      "title": "From Memory to Skills",
+      "repos": [
+        "MemTensor/MemOS",
+        "HKUDS/OpenSpaceAccessed"
+      ]
+    },
+    "2607.20064": {
+      "title": "PRO-LONG",
+      "repos": [
+        "alexisfox7/PRO-LONG",
+        "arcprize/ARC-AGI-3-Agents",
+        "DriesSmit/ARC3-solution"
+      ]
+    },
+    "2607.15495": {
+      "title": "Global Workspace in LLMs",
+      "repos": []
+    },
+    "2607.19322": {
+      "title": "GAMUT",
+      "repos": [
+        "facebookresearch/GAMUT"
+      ]
+    },
+    "2607.17598": {
+      "title": "Progressive Disclosure, Measured",
+      "repos": [
+        "yusufkaraaslan/Skill_Seekers",
+        "virgiliojr94/book-to-skill"
+      ]
+    },
+    "2607.18476": {
+      "title": "Structured Output Collapses Diversity",
+      "repos": [
+        "tap2k/modelun"
+      ]
+    },
+    "2607.14611": {
+      "title": "Bad Memory in Agents",
+      "repos": [
+        "multica-ai/andrej-karpathy-skills"
+      ]
+    },
+    "2607.16072": {
+      "title": "Frontier Models Struggle to Copy",
+      "repos": [
+        "hhhhhh-925/copy-2dRoPE"
+      ]
+    },
+    "2607.15275": {
+      "title": "RoboTTT",
+      "repos": [
+        "fla-org/flash-linear-attention"
+      ]
+    },
+    "2607.20709": {
+      "title": "NOOA",
+      "repos": [
+        "anomalyco/opencode",
+        "earendil-works/pi"
+      ]
+    },
+    "2607.04763": {
+      "title": "ReOPD",
+      "repos": [
+        "THUDM/slimeGitHub"
+      ]
+    },
+    "2607.22925": {
+      "title": "Invisible Reasoning",
+      "repos": []
+    },
+    "2607.21653": {
+      "title": "Molt",
+      "repos": [
+        "NVIDIA-NeMo/labs-molt"
+      ]
+    },
+    "2607.20466": {
+      "title": "JAXBench",
+      "repos": [
+        "AI-Hypercomputer/accelerator-agents",
+        "AI-Hypercomputer/maxtextAccessed",
+        "openxla/tokamaxAccessed",
+        "NVIDIA/cutlassAccessed"
+      ]
+    },
+    "2607.23809": {
+      "title": "ACM",
+      "repos": [
+        "lixiaochuan2020/agentic-context-management",
+        "openai/codex"
+      ]
+    },
+    "2607.26637": {
+      "title": "Filesystem Memory Audited",
+      "repos": []
+    },
+    "2607.20548": {
+      "title": "Beyond AdamW",
+      "repos": [
+        "NVIDIA-NeMo/Emerging-Optimizers",
+        "nikhilvyas/SOAP",
+        "KellerJordan/cifar10-airbench",
+        "NVIDIA/Megatron-LM"
+      ]
+    },
+    "2607.21627": {
+      "title": "Role Drift",
+      "repos": []
+    },
+    "2607.25816": {
+      "title": "The Self-Speculating Agent",
+      "repos": []
+    },
+    "2607.28802": {
+      "title": "Model or Harness",
+      "repos": [
+        "Aider-AI/aider",
+        "anthropics/claude-agent-sdk-pythonSoftware",
+        "arcprize/ARC-AGI-2Accessed",
+        "lechmazur/sycophancyAccessed",
+        "NousResearch/hermes-agentAccessed",
+        "openai/codexAccessed",
+        "openclaw/openclawAccessed",
+        "openclaw/openclaw",
+        "harshraj172-scale/ae9e5ef2aae835a209fef4d7a9312845",
+        "harshraj172-scale/61737210d44c9ec1c500cb87dbd9f679Accessed",
+        "harshraj172-scale/e49ecd9e52f2487850adcf70c4292428Accessed",
+        "harbor-framework/terminal-bench-3"
+      ]
+    },
+    "2607.29377": {
+      "title": "Zero-Mem",
+      "repos": [
+        "TheMoon0815/Zero-mem"
+      ]
+    },
+    "2607.28576": {
+      "title": "Sample More Reflect Less",
+      "repos": [
+        "ggml-org/llama.cpp"
+      ]
+    },
+    "2608.02276": {
+      "title": "Harness-R1",
+      "repos": [
+        "DeepExperience/Harness-R1"
+      ]
+    },
+    "2608.03451": {
+      "title": "DataSpace",
+      "repos": [
+        "HKUSTDial/DataSpace",
+        "huggingface/smolagents"
+      ]
+    },
+    "2608.01347": {
+      "title": "Prompt-Induced Waste",
+      "repos": [
+        "PointFiveLabs/prompt-efficiency-benchmark",
+        "deepseek-ai/deepseek-harness",
+        "BerriAI/litellm"
+      ]
+    },
+    "2607.27687": {
+      "title": "Rehearse",
+      "repos": []
+    },
+    "2608.03874": {
+      "title": "ContinualSkillBench",
+      "repos": [
+        "gtynnn060110-hash/continual-skill-bench-final",
+        "anthropics/claude-code",
+        "project-numina/aimo-progress-prize",
+        "openai/codex"
+      ]
+    },
+    "2607.28956": {
+      "title": "MerchantBench",
+      "repos": [
+        "KhanCold/merchantbench",
+        "NousResearch/hermes-agentAccessed"
+      ]
+    },
+    "2607.29678": {
+      "title": "TokTier",
+      "repos": [
+        "asu-idi/toktier",
+        "crusoecloud/fastokens",
+        "huggingface/tokenizers",
+        "ai-dynamo/frontend-crates",
+        "openai/tiktoken",
+        "openai/gpt-2",
+        "marcelroed/gigatoken",
+        "lightseekorg/smg",
+        "vllm-project/vllm",
+        "uw-syfi/TraceLab"
+      ]
+    },
+    "2608.07222": {
+      "title": "Skaling",
+      "repos": [
+        "facebookresearch/lingua"
+      ]
+    },
+    "2608.09867": {
+      "title": "Stealing Reasoning Traces",
+      "repos": []
+    },
+    "2608.10218": {
+      "title": "Mind Viruses",
+      "repos": [
+        "frotaur/mindvirus-viruschain",
+        "BucketofJava/mind-virus-code-agent"
+      ]
+    },
+    "2608.11095": {
+      "title": "Catastrophic Remembering",
+      "repos": []
+    },
+    "2608.06370": {
+      "title": "The Bitter Lesson of Tool Calling",
+      "repos": []
+    },
+    "2608.07885": {
+      "title": "Reason Wide, Not Deep",
+      "repos": []
+    },
+    "2608.11727": {
+      "title": "Harness-IF",
+      "repos": []
+    },
+    "2608.11242": {
+      "title": "Lost in Compaction",
+      "repos": [
+        "ZhiqiEliWang/compaction-integrity",
+        "NousResearch/hermes-agentVersion",
+        "openclaw/openclawOpen-source"
+      ]
+    },
+    "2608.10296": {
+      "title": "Cracks in the Foundation",
+      "repos": []
+    },
+    "2608.06871": {
+      "title": "CEDAR",
+      "repos": []
+    },
+    "2608.17528": {
+      "title": "Agent Lightning v1.0",
+      "repos": [
+        "SWE-agent/mini-swe-agentAccessed",
+        "OpenHands/OpenHandsAccessed",
+        "anomalyco/opencodeAccessed",
+        "openai/codexAccessed",
+        "openclaw/openclawAccessed",
+        "NousResearch/hermes-agentAccessed",
+        "THUDM/slimeAccessed",
+        "verl-project/uni-agentAccessed"
+      ]
+    },
+    "2608.12610": {
+      "title": "The Skill Trigger Bottleneck",
+      "repos": [
+        "SylphAI-Inc/atskills",
+        "vercel-labs/skills",
+        "SylphAI-Inc/atskillsNormative",
+        "en/copilot",
+        "cloudflare/skills",
+        "expo/skills"
+      ]
+    },
+    "2608.19013": {
+      "title": "Harness-Level Forgetting",
+      "repos": []
+    },
+    "2608.15127": {
+      "title": "The Control-Plane Tax",
+      "repos": [
+        "langchain-ai/open_deep_research",
+        "anthropics/claude-code",
+        "davebcn87/pi-autoresearch",
+        "google/cadvisorAccessed",
+        "NVIDIA/dcgm-exporterAccessed",
+        "openai/codex",
+        "Su-Sea/ydc-deep-research-evals",
+        "SWE-agent/mini-swe-agent",
+        "WW-AI-Lab/openclaw-office"
+      ]
+    },
+    "2608.14036": {
+      "title": "Demystifying Agent Skills",
+      "repos": []
+    },
+    "2608.19072": {
+      "title": "Strategy Lock-In",
+      "repos": [
+        "karpathy/autoresearch",
+        "NVIDIA-NeMo/RLGitHub",
+        "THUDM/slimeGitHub"
+      ]
+    },
+    "2608.13787": {
+      "title": "SocialRL",
+      "repos": []
+    },
+    "2608.16798": {
+      "title": "ClawGym II",
+      "repos": [
+        "agentscope-ai/QwenPawGitHub",
+        "HKUDS/nanobotGitHub",
+        "Accio-Lab/Dressage",
+        "openclaw/openclawGitHub",
+        "pinchbench/skillGitHub",
+        "RUC-NLPIR/Awesome-Long-Horizon-AgentsGitHub"
+      ]
+    },
+    "2608.16801": {
+      "title": "Inside an Agent Team",
+      "repos": [
+        "giuseppedestefanis/when-agents-coordinate"
+      ]
+    },
+    "2608.18066": {
+      "title": "The Fragility of Self-Improving Agents",
+      "repos": []
+    },
+    "2608.18300": {
+      "title": "Judges as a Lifecycle",
+      "repos": []
+    },
+    "2608.20614": {
+      "title": "Skill Lift",
+      "repos": []
+    },
+    "2608.21690": {
+      "title": "Context Management as Code",
+      "repos": [
+        "niceIrene/QwenPaw",
+        "laude-institute/harbor",
+        "getzep/zep-papers",
+        "plastic-labs/honcho"
+      ]
+    },
+    "2608.25593": {
+      "title": "JIT-Agent",
+      "repos": [
+        "bingreeky/JIT",
+        "anthropics/claude-code",
+        "HKUDS/nanobot",
+        "langchain-ai/langgraph",
+        "ag2ai/ag2",
+        "NousResearch/hermes-agent",
+        "openclaw/openclaw",
+        "opencode-ai/opencode"
+      ]
+    },
+    "2608.23552": {
+      "title": "Prime Agent",
+      "repos": [
+        "PrimeIntellect-ai/prime-agent"
+      ]
+    },
+    "2608.22752": {
+      "title": "What Compaction Destroys",
+      "repos": [
+        "searchsim-org/cikm26-knowledge-triage",
+        "nblintao/awesome-claude-code-postleak-insights"
+      ]
+    },
+    "2608.26701": {
+      "title": "Co-Scientist in Real Labs",
+      "repos": [
+        "QwenLM/Qwen3",
+        "QwenLM/Qwen3.6"
+      ]
+    },
+    "2608.24876": {
+      "title": "Recuris",
+      "repos": []
+    },
+    "2608.24735": {
+      "title": "Meta^n",
+      "repos": [
+        "minnesotanlp/meta-n"
+      ]
+    },
+    "2608.25776": {
+      "title": "EvoMal",
+      "repos": [
+        "chroma-core/chromaAccessed",
+        "PyCQA/bandit"
+      ]
+    }
+  }
+}

@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "candidate": "node scripts/candidate.mjs",
+    "due": "node scripts/due.mjs",
+    "external": "node scripts/external.mjs",
+    "external:update": "node scripts/external-update.mjs",
+    "fetch": "node scripts/fetch.mjs",
+    "week": "node scripts/week.mjs",
+    "pull": "node scripts/pull.mjs"
   },
   "dependencies": {
     "next": "16.3.0",

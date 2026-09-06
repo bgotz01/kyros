@@ -75,3 +75,186 @@ model MemorySettings {
 
   updatedAt DateTime @updatedAt
 }
+
+// ─── Engine ───────────────────────────────────────────────────────────────────
+// A run is one pass over one digest week by one pair of seats. Runs are
+// append-only: re-running a week with a better model writes a new run rather
+// than replacing the old one, so a score can be compared against the score it
+// superseded.
+
+model EngineRun {
+  id      String @id @default(cuid())
+  /// Which engine produced it — 'ai' today, other domains later.
+  domain  String
+  /// The digest week: year file plus its index within that file, oldest-first.
+  year    String
+  weekIdx Int
+  heading String
+
+  analystModel String
+  criticModel  String?
+
+  /// The frame's `Last reviewed` date at the time of the run. When §2 changes,
+  /// this is the only way to know which runs are still comparable.
+  frameReviewedAt String?
+
+  scores EngineScore[]
+
+  startedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([domain, year, weekIdx, startedAt(sort: Desc)])
+  @@index([startedAt(sort: Desc)])
+}
+
+/// The analyst's row, exactly as it was returned. Never edited — a critic's
+/// correction is recorded on the note that proposed it, and the effective score
+/// is derived by layering applied notes over this one. Overwriting would
+/// destroy the prediction, which is the only thing that can later be graded.
+model EngineScore {
+  id    String    @id @default(cuid())
+  runId String
+  run   EngineRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  /// arXiv id, without version suffix.
+  paperId String
+  title   String
+
+  /// string[] — bullets.
+  summary Json
+  /// What kind of work it is — prompting, agents, training, and so on.
+  category String @default("Unclassified")
+  level    String
+
+  /// The two lines that frame the whole reading: what already works, and what
+  /// this paper proposes instead.
+  previousParadigm String @default("")
+  corePremise      String @default("")
+
+  inversion Int
+  /// A few words, for the ranked view. The detail sits below it.
+  inversionHeadline String @default("")
+  /// What is being inverted, and how load-bearing it is. An inversion cannot
+  /// score higher than the importance of the thing it inverts — overturning a
+  /// prompting convention is not overturning attention.
+  paradigm           String @default("")
+  paradigmImportance Int    @default(0)
+
+  /// Which layer of the standing paradigm the candidate lands on, and what it
+  /// does to that layer's assumption. Not every paper attacking a layer inverts
+  /// it — FlashAttention optimises attention, the Transformer inverted
+  /// recurrence, and the two must not score alike. Null on rows scored before
+  /// the paradigm snapshots existed.
+  paradigmLayer    String?
+  paradigmRelation String?
+  /// What the candidate offers in the layer's place, resolved against the
+  /// snapshot to derive whether it was dominant, minor, on the frontier or absent.
+  paradigmProposes String?
+  /// The snapshot it was judged against. A delta means nothing without it.
+  paradigmAsOf     String?
+  inverting Json
+  magnitude String
+  /// Paired string[] — the prior approach against the proposed one, read
+  /// side by side. Same length wherever the model can manage it.
+  previous  Json?
+  proposed  Json?
+
+  incentives          Int
+  incentivesHeadline  String @default("")
+  /// The shape of the practical gain — efficiency, cost, a new workflow.
+  outcomeKind         String @default("")
+  /// The size of it, in the paper's own units. "Not quantified" when the paper
+  /// claims a gain without measuring one — which is itself worth recording.
+  outcomeEstimate     String @default("")
+  bottleneck          Json
+
+  inflection         Int
+  inflectionHeadline String @default("")
+  unprecedented      Json
+
+  /// Derived from the three laws server-side, never taken from the model.
+  product    Int
+  verdict    String
+  confidence String
+
+  model            String
+  cost             Float   @default(0)
+  promptTokens     Int     @default(0)
+  completionTokens Int     @default(0)
+  truncated        Boolean @default(false)
+
+  critique EngineCritique?
+
+  scoredAt DateTime @default(now())
+
+  @@index([runId])
+  @@index([paperId])
+  @@index([product(sort: Desc)])
+}
+
+model EngineCritique {
+  id      String      @id @default(cuid())
+  scoreId String      @unique
+  score   EngineScore @relation(fields: [scoreId], references: [id], onDelete: Cascade)
+
+  model            String
+  cost             Float @default(0)
+  promptTokens     Int   @default(0)
+  completionTokens Int   @default(0)
+
+  notes EngineNote[]
+
+  createdAt DateTime @default(now())
+}
+
+/// One note per section. `resolution` is the analyst's decision on an
+/// objection — it does not change the score row, it layers over it.
+model EngineNote {
+  id         String         @id @default(cuid())
+  critiqueId String
+  critique   EngineCritique @relation(fields: [critiqueId], references: [id], onDelete: Cascade)
+
+  section String
+  agrees  Boolean
+
+  /// string[]
+  reasoning       Json
+  proposedScore   Int?
+  proposedBullets Json?
+
+  /// 'applied' | 'dismissed' — null while the flag is still open.
+  resolution String?
+  resolvedAt DateTime?
+
+  @@index([critiqueId])
+}
+
+/// What the outside world shows about a paper's artefact. Keyed by paper rather
+/// than by score, because it is a property of the work and not of any one
+/// reading of it, and because it changes on its own clock.
+///
+/// This is CONFIRMATION evidence and must never reach a score. `Signals and
+/// Base Rates` is explicit: attention is not adoption, and star counts preceded
+/// the corpus's most expensive false positive.
+model EngineExternal {
+  id      String @id @default(cuid())
+  paperId String @unique
+
+  /// [{ owner, name, url, stars, forks, openIssues, pushedAt, archived, description }]
+  repos Json
+
+  /// Set when the paper names no repository at all — itself a finding.
+  noRepo Boolean @default(false)
+
+  /// The seat that sorted the paper's own artefact from the repositories it
+  /// merely cites. Cheap work, but not mechanical.
+  model            String @default("")
+  cost             Float  @default(0)
+  promptTokens     Int    @default(0)
+  completionTokens Int    @default(0)
+
+  checkedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([checkedAt(sort: Desc)])
+}
