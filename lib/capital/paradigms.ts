@@ -85,9 +85,9 @@ export const PARADIGMS: Paradigm[] = [
         narrative: 'American corporate expansion',
         mechanism: 'Scale + mass consumption + international expansion',
         expression: 'Consumer brands, industrials, conglomerates, multinationals',
-        rotation: 'S&P 500',
-        rotationNote: 'The S&P 500, as the vehicle for US corporate expansion. The Nifty Fifty proper — the fifty large-cap growth names bid to extreme multiples into the 1972 peak — is not in the data yet, so this understates the rotation.',
-        rotationReturn: { pct: 54, measured: true, basis: 'S&P 500 59.91 → 92.06, Jan 1960 to Dec 1969. Nifty Fifty proper is not in the data yet.' },
+        rotation: 'Nifty Fifty',
+        rotationNote: 'Equal-weighted index of 6 Nifty Fifty names with data from 1962: KO, DIS, IBM, JNJ, MRK, XRX. GE and PG excluded as industrial laggards. The full fifty were bid to extreme PE multiples into the 1972 peak; these six are the growth cross-section. Total return Jan 1962 → Dec 1970: +448%. Avg annual: +23.8%. Standouts: XRX +756%, DIS +728%, JNJ +479%.',
+        rotationReturn: { pct: 448, measured: true, basis: 'Equal-weighted index of KO, DIS, IBM, JNJ, MRK, XRX (GE and PG excluded as industrial laggards). Base = 1/2/62 prices; year-end = last December close. Total return Jan 1962 → Dec 1970: +448%. Per-stock: XRX +756%, DIS +728%, JNJ +479%, KO +307%, MRK +299%, IBM +116%. Source: public/data/nifty50.csv · lib/capital/nifty50-returns.ts.' },
         benchmarkReturn: { pct: 18, measured: true, basis: 'Dow Jones 679.36 → 800.36, Dec 1959 to Dec 1969.' },
         summary:
             'Capital leadership shifted toward US growth equities as investors rewarded expanding corporations and increasingly high-growth companies.',

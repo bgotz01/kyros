@@ -194,7 +194,17 @@ function Bottleneck({ bottleneck, n }: { bottleneck: ParadigmBottleneck; n: numb
     );
 }
 
-export default function ParadigmModal({ onClose }: { onClose: () => void }) {
+export default function ParadigmModal({
+    onClose,
+    scoredAgainst,
+}: {
+    onClose: () => void;
+    /** The snapshot the month on screen is measured against, as `YYYY-MM`. The
+     *  modal opened on the newest snapshot regardless of what was being read,
+     *  so a December 2024 month showed the 2025 paradigm — the one that could
+     *  not have existed when those papers were published. */
+    scoredAgainst?: string;
+}) {
     const [all, setAll] = useState<Paradigm[] | null>(null);
     const [error, setError] = useState(false);
     const [pick, setPick] = useState(0);
@@ -208,11 +218,18 @@ export default function ParadigmModal({ onClose }: { onClose: () => void }) {
     useEffect(() => {
         fetch('/api/engine/paradigm')
             .then((r) => r.json())
-            .then((rows: Paradigm[]) => setAll(Array.isArray(rows) ? rows : []))
+            .then((rows: Paradigm[]) => {
+                const list = Array.isArray(rows) ? rows : [];
+                setAll(list);
+                if (!scoredAgainst) return;
+                const i = list.findIndex((row) => row.asOf.slice(0, 7) === scoredAgainst);
+                if (i >= 0) setPick(i);
+            })
             .catch(() => setError(true));
-    }, []);
+    }, [scoredAgainst]);
 
     const p = all?.[pick];
+    const isScoringSnapshot = Boolean(p && scoredAgainst && p.asOf.slice(0, 7) === scoredAgainst);
 
     return (
         <div
@@ -234,6 +251,14 @@ export default function ParadigmModal({ onClose }: { onClose: () => void }) {
                         {p && (
                             <span className="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-bronze">
                                 {p.asOf} · {p.mode}
+                            </span>
+                        )}
+                        {/* Which of these the reading on screen was actually
+                            measured against — the others are here to be read in
+                            order, not to be scored from. */}
+                        {isScoringSnapshot && (
+                            <span className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-platinum-dim">
+                                scored against
                             </span>
                         )}
                     </div>
@@ -261,6 +286,7 @@ export default function ParadigmModal({ onClose }: { onClose: () => void }) {
                                     }`}
                             >
                                 {row.asOf.slice(0, 7)}
+                                {row.asOf.slice(0, 7) === scoredAgainst && ' ·'}
                             </button>
                         ))}
                     </div>

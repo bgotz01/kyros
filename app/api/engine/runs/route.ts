@@ -7,6 +7,7 @@ import {
     layerOf,
     loadParadigm,
     positionOf,
+    type BottleneckAction,
     type BottleneckFit,
     type BottleneckImpact,
     type ParadigmRelation,
@@ -31,6 +32,9 @@ function bottleneck(v: unknown) {
         bottleneckId: typeof row.id === 'string' ? row.id : undefined,
         bottleneckName: typeof row.name === 'string' ? row.name : undefined,
         bottleneckFit: typeof row.fit === 'string' ? row.fit as BottleneckFit : undefined,
+        // Absent on rows scored before the action axis existed; those were all
+        // scored as relief, which is what an undefined action reads as.
+        action: typeof row.action === 'string' ? row.action as BottleneckAction : undefined,
         impact: typeof row.impact === 'string' ? row.impact as BottleneckImpact : undefined,
         bottleneckAsOf: typeof row.asOf === 'string' ? row.asOf : undefined,
         ceiling: typeof row.ceiling === 'number' ? row.ceiling : undefined,
@@ -41,9 +45,12 @@ function bottleneck(v: unknown) {
  *  paper can be re-scored on its own, so a week's current reading is the newest
  *  score PER PAPER across all its runs — not the contents of the newest run,
  *  which would hide every paper that run did not touch. */
-async function loadWeek(domain: string, year: string, weekIdx: number) {
+async function loadWeek(domain: string, year: string, weekIdx: number | number[]) {
     return db.engineRun.findMany({
-        where: { domain, year, weekIdx },
+        // A month is read as the set of its weeks. Merging happens in
+        // serialise(), which already keeps the newest score per paper — across
+        // several weeks that is the same operation as across several runs.
+        where: { domain, year, weekIdx: Array.isArray(weekIdx) ? { in: weekIdx } : weekIdx },
         orderBy: { startedAt: 'desc' },
         include: {
             scores: {
@@ -182,6 +189,11 @@ function serialise(runs: RunRows): StoredRun | null {
 // ─── GET /api/engine/runs?domain=ai&year=2025&weekIdx=3 ──────────────────────
 // The most recent run for a week. Runs are append-only, so this is the current
 // reading and the earlier ones remain for comparison.
+//
+// `weekIdx` also takes a comma-separated list — `weekIdx=3,4,5,6` — which is
+// how the month view reads a month without runs having to be monthly. Scoring
+// is unaffected either way: a paper is judged against a paradigm snapshot on
+// its own, never against the other papers in the request.
 
 export async function GET(req: NextRequest) {
     try {
@@ -193,7 +205,15 @@ export async function GET(req: NextRequest) {
             return Response.json({ error: 'year and weekIdx are required' }, { status: 400 });
         }
 
-        const runs = await loadWeek(domain, year, Number(weekIdx));
+        const indices = weekIdx
+            .split(',')
+            .map((n) => Number(n.trim()))
+            .filter((n) => Number.isInteger(n));
+        if (indices.length === 0) {
+            return Response.json({ error: 'weekIdx must be one or more integers' }, { status: 400 });
+        }
+
+        const runs = await loadWeek(domain, year, indices.length === 1 ? indices[0] : indices);
         return Response.json(runs.length ? serialise(runs) : null);
     } catch (err) {
         console.error('[api/engine/runs GET]', err);

@@ -144,11 +144,30 @@ const FIT_LABELS: Record<string, string> = {
     direct: 'Directly tested',
 };
 
+/** What the paper does to the problem, before how much. */
+const ACTION_LABELS: Record<string, string> = {
+    relieves: 'Reduces it',
+    reveals: 'Shows it bites where we thought it did not',
+    measures: 'Makes it measurable',
+    bounds: 'Shows how far this approach can get',
+    none: 'Does not act on it',
+};
+
+/** Relief and the rest are not the same sentence. A paper that reveals a
+ *  problem has not "improved" anything, and saying so would misdescribe the one
+ *  kind of result this instrument used to miss entirely. */
 const IMPACT_LABELS: Record<string, string> = {
     negligible: 'No meaningful change',
     incremental: 'Small improvement',
     material: 'Meaningful improvement',
     structural: 'Removes it for some uses',
+};
+
+const NON_RELIEF_IMPACT_LABELS: Record<string, string> = {
+    negligible: 'Nothing new about it',
+    incremental: 'Sharpens what was known',
+    material: 'Changes what must be worked on',
+    structural: 'Establishes a problem nobody was treating as binding',
 };
 
 /** I³ in the same everyday register as I². "Precedent" and "position" are the
@@ -197,8 +216,17 @@ export function incentiveFit(score: EngineScore): string {
     return FIT_LABELS[score.incentives.bottleneckFit ?? 'none'];
 }
 
+export function incentiveAction(score: EngineScore): string {
+    return ACTION_LABELS[score.incentives.action ?? 'relieves'] ?? ACTION_LABELS.none;
+}
+
 export function incentiveImpact(score: EngineScore): string {
-    return IMPACT_LABELS[score.incentives.impact ?? 'negligible'];
+    const impact = score.incentives.impact ?? 'negligible';
+    // Rows scored before the action axis existed carry no action; every one of
+    // them was measured as relief, so that is how they are read back.
+    const action = score.incentives.action ?? 'relieves';
+    const labels = action === 'relieves' || action === 'none' ? IMPACT_LABELS : NON_RELIEF_IMPACT_LABELS;
+    return labels[impact];
 }
 
 /** A compact practical benefit beside I². The archival bottleneck name and the

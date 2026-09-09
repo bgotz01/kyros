@@ -28,6 +28,8 @@ import { DETAIL_FOR, RANKS, heldScore, type FlagState, type RowKey, type RowStat
 
 export default function PaperCard({
     paper,
+    anchored,
+    onAnchor,
     state,
     openRows,
     onToggleRow,
@@ -36,11 +38,17 @@ export default function PaperCard({
     onCritic,
     onBreakdown,
     onClear,
+    onAside,
     external,
     standingAssumption,
     busy,
 }: {
     paper: PaperRow;
+    /** This card is the one the path names. */
+    anchored?: boolean;
+    /** Put this paper in the path, or take it out again. Absent for a digest
+     *  row with no arXiv id — there is nothing stable to address it by. */
+    onAnchor?: () => void;
     state: RowState;
     openRows: Record<string, boolean>;
     onToggleRow: (row: RowKey) => void;
@@ -49,6 +57,8 @@ export default function PaperCard({
     onCritic: () => void;
     onBreakdown: () => void;
     onClear: () => void;
+    /** Take this row out of the reading; restored from the foot of the month. */
+    onAside?: () => void;
     external?: External;
     /** The layer assumption from the sealed snapshot this paper was scored
      *  against — the written claim I¹ was measured against. */
@@ -73,7 +83,8 @@ export default function PaperCard({
 
     return (
         <article
-            className={`border bg-charcoal transition-colors duration-500 ease-mechanical ${reading ? 'border-bronze-dim' : 'border-stone-line'
+            id={paper.id ? `paper-${paper.id}` : undefined}
+            className={`border bg-charcoal transition-colors duration-500 ease-mechanical scroll-mt-[12.5rem] ${reading ? 'border-bronze-dim' : anchored ? 'border-bronze' : 'border-stone-line'
                 }`}
         >
             {/* The instrument is reading this paper. */}
@@ -124,6 +135,20 @@ export default function PaperCard({
                                 </span>
                             </>
                         )}
+                        {onAnchor && (
+                            <>
+                                {' · '}
+                                <button
+                                    type="button"
+                                    onClick={onAnchor}
+                                    title={anchored ? 'Return to the week' : 'Link to this paper'}
+                                    className={`transition-colors duration-300 ease-mechanical hover:text-bronze-bright ${anchored ? 'text-bronze' : ''
+                                        }`}
+                                >
+                                    {anchored ? 'LINKED' : 'LINK'}
+                                </button>
+                            </>
+                        )}
                         {!paper.held && paper.id && ' · NOT PULLED'}
                         {score?.truncated && ' · TRUNCATED'}
                         {score && ` · ${band(score.product)}`}
@@ -137,6 +162,7 @@ export default function PaperCard({
 
 
                 <PaperControls
+                    onAside={onAside}
                     score={score}
                     hasCritique={Boolean(critique)}
                     openFlags={openFlags}

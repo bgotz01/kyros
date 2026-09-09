@@ -1,14 +1,14 @@
 import { CENTURIES } from '@/lib/capital/centuries';
 import Timeline from './Timeline';
 
-/** The same movement at century scale — capital center and the paradigm it ran. */
+/** The imperial succession at century scale, with the capital center beneath. */
 export default function CenturyTimeline() {
     return (
         <Timeline
             nodes={CENTURIES.map((c) => ({
                 label: c.century,
-                title: c.capitalCenter,
-                caption: c.capitalParadigm,
+                title: c.empire,
+                caption: c.capitalCenter,
             }))}
             nodeWidth={210}
         />

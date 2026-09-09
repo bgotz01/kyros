@@ -1,6 +1,7 @@
 import type { EngineScore } from '@/app/api/engine/analyze/route';
 import Bullets from './Bullets';
 import {
+    incentiveAction,
     incentiveBenefit,
     incentiveFit,
     incentiveImpact,
@@ -39,7 +40,8 @@ export default function IncentivesDetail({ score }: { score: EngineScore }) {
                     />
                     <Measure label="Important problem" value={incentiveProblem(score)} />
                     <Measure label="Does it tackle that problem?" value={incentiveFit(score)} />
-                    <Measure label="How much does it help?" value={incentiveImpact(score)} />
+                    <Measure label="What does it do to it?" value={incentiveAction(score)} />
+                    <Measure label="How much does that change it?" value={incentiveImpact(score)} />
                 </div>
             </div>
 

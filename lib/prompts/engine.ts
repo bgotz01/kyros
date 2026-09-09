@@ -56,10 +56,12 @@ Run the four steps in order. Each is the subject of the next:
               then set the prior approach against the proposed one point by point.
               Every paper offers something different or it would not have been written,
               so the question is never whether — it is how large, and at what level.
-3. INCENTIVE  Does this solve an important practical problem? Internally, match it
-              to one DATED BOTTLENECK so the score stays comparable. For the reader,
-              explain in everyday language what gets better, how directly the paper
-              tests it, and whether the improvement is large enough to matter.
+3. INCENTIVE  What does this do to the field's constraint surface? Internally, match
+              it to one DATED BOTTLENECK and say what it does to that constraint —
+              relieves, reveals, measures or bounds it — so the score stays
+              comparable. For the reader, explain in everyday language what changes
+              about the problem, how directly the paper tests it, and whether the
+              change is large enough to matter.
 4. OUTLIER    Has THAT inversion been done before? Distance from the pack, measured
               on the day of publication. Not importance, and never consequence.
 
@@ -94,9 +96,17 @@ Scoring discipline:
 
   Precedent does not cap the score directly. It bounds how far you may claim the result lands: \`established\` allows at most an incremental displacement, \`demonstrated\` at most a substantial one.
 
-  **Judge the conjunction, not its parts.** Every contribution decomposes into components that each have precedent — attention existed before the Transformer, and encoder-decoders existed before it too, but that does not make the Transformer precedented. Ask whether the *combination the paper actually delivers* had been achieved, and answer for that.
+  **Judge the conjunction, not its parts — and do not manufacture one.** Every contribution decomposes into components that each have precedent: attention existed before the Transformer, and encoder-decoders existed before it too, but that does not make the Transformer precedented. Ask whether the *combination the paper actually delivers* had been achieved.
 
-  A prior system that reached the same capability on materially worse terms is not a precedent for reaching it on better ones. If the contribution is a capability at a tenth of the cost, an earlier expensive system that hit the same benchmark did not do this; it did the opposite, and its existence is what makes the result notable rather than what makes it ordinary.
+  The same rule read backwards is the more common error here. Every paper is a unique combination of its own components, so a long enough list is always unprecedented and therefore proves nothing. A conjunction counts only where the combination is what produces the result — where removing any one part loses the headline claim. A system that assembles already-available components into a working pipeline is integration, and integration is \`demonstrated\`.
+
+  **The tell:** if the sentence justifying your answer has the form "this combines A, B, C and D", you have described a system, not a precedent search. Delete it and write the one thing no prior system could do. If you cannot, the answer is \`demonstrated\`.
+
+  **The terms test, and you must run it before writing \`demonstrated\`.** State the prior system's terms and this paper's terms for the same capability — the compute, cost, data, supervision or openness each required. If the paper's central claim is that capability on materially better terms, the prior system is not a precedent for it and the answer is \`none\`. Precedent is about what was *achieved*, and a result achieved on an order of magnitude better terms is not the same achievement; the expensive earlier system is what makes it notable, not what makes it ordinary.
+
+  This is the most common way a genuine outlier is filed as ordinary. "Others had approached this, but at smaller scale or with weaker results" is not a precedent — it is the sentence that describes an outlier.
+
+  The test applies only where the terms ARE the paper's central claim, and only against a stated margin: an order of magnitude, or a resource the prior system required and this one does not. A general improvement in results at comparable cost does not pass it, and the test is not a route out of \`demonstrated\` for a paper whose contribution is being better.
 
 — SAY HOW FAR IT LANDS. \`displacement\` is how far past the prior best the result actually sits, which is a different question from whether the direction was crowded:
 
@@ -107,15 +117,30 @@ Scoring discipline:
 
   I³ combines the two. A crowded direction does not make a large result ordinary: if the whole field is trying to build a fusion reactor and someone builds one, the achievement is extraordinary however unsurprising the goal. Equally, a small step in an unexplored direction is still a small step. Where the paper's own related work shows the thing was already standard practice, \`displacement\` cannot be more than incremental however the numbers read.
 
+— \`substantial\` NEEDS A NAMED PRIOR BEST AND A MARGIN. Write it only when you can name the specific system it passes and say by how much, in the paper's own numbers. "Beyond the existing frontier" without a named system it went beyond is \`incremental\`. Scaling a known setup up — more agents, more parameters, more steps, a longer benchmark — is \`incremental\` unless the scale itself produced something qualitatively new, which you must state.
+
+  **The margin may be the resources rather than the result.** Reaching an established capability on an order of magnitude less compute, cost, data or supervision is not scaling a known setup up; it is the terms test, and a paper whose central claim is that margin passes it. Judge which side of this the paper is on by what it is arguing: a system claiming more of something is scaling, a system claiming the same for far less is a displacement.
+— CALIBRATE I³ AGAINST THE CANON, IN BOTH DIRECTIONS. The scoring laws carry anchored cases at 7, 9 and 10, and they are severe: AlphaFold 2 is a 7. Whatever you are about to score, name the closest anchor and say whether this sits above or below it — the second \`unprecedented\` bullet is where that comparison goes. Most papers you read are 2 to 4 and a weekly digest holding an AlphaFold-class outlier is a once-a-year event, so a high score needs the comparison to survive. But the check runs downward too: an anchor sits at 7 for open weights at a capability that stayed gated elsewhere, and a paper matching an anchor's shape does not score 3 because its components were individually familiar. Anchor first, then score.
+
 — Most papers are local inversions scoring 1–3 on I¹. That is the normal answer and you should return it often. A ledger where everything scores highly is a broken instrument.
 — I² MUST SELECT ONE ID printed under DATED BOTTLENECKS. Use "none" if no listed constraint is actually moved. Sharing a topic with a bottleneck is not relief.
 — TEST EVERY CENTRAL RESULT AGAINST THE LIST before choosing "none". Do not focus only on the paper's final benchmark. Select the strongest bottleneck the paper materially relieves, and state any trade-off separately.
 — Example: an open reasoning recipe that approaches a closed system with 1,000 training examples may directly relieve \`access-to-frontier-methods\`. Increased inference cost and narrow math evaluation limit the score, but do not erase the access result.
-— Classify the fit: \`none\` means no listed constraint is moved; \`adjacent\` means relevant to it but not to a stated relief condition; \`direct\` means the measured result acts on a stated relief condition.
-— Classify materiality: \`negligible\` leaves the constraint effectively unchanged; \`incremental\` improves it without changing deployment or research choices; \`material\` changes a meaningful cost, capability or feasibility threshold; \`structural\` makes the constraint cease to bind for a meaningful class of use.
-— These classifications cap I²: no match or negligible impact ≤2; adjacent ≤3; incremental ≤4; material ≤7; only direct structural relief can reach 8–10. The snapshot bottleneck's importance is a further ceiling.
+— Classify the fit: \`none\` means no listed constraint is acted on; \`adjacent\` means relevant to it but not to a stated condition; \`direct\` means the measured result acts on a stated condition.
+— NAME THE ACTION. \`action\` says what the paper does to the named constraint, and it is the first question, before materiality:
+
+    relieves  — reduces it: cheaper, more reliable, newly feasible
+    reveals   — establishes that it binds where the field assumed it did not
+    measures  — first makes it reproducibly measurable, so progress becomes legible
+    bounds    — shows how far the current approach can move it, and no further
+    none      — shares its subject matter and nothing more
+
+  A paper that ships no improvement has not automatically done nothing. Before writing \`none\`, ask what the field must now work on, or can now measure, that it could not the day before. An evaluation that first makes a constraint measurable is \`measures\`. A result demonstrating a failure mode in a deployed system is \`reveals\`. Reserve \`none\` for papers that merely share a topic with the constraint.
+— Classify materiality against the action you named — how far the constraint moved, not how much it was reduced: \`negligible\` leaves it where it was with nothing new known about it; \`incremental\` moves or clarifies it without changing what anyone does; \`material\` changes a meaningful cost, capability or feasibility threshold, or changes what the field must now work on; \`structural\` makes it cease to bind for a meaningful class of use, or establishes a binding constraint the field did not know it had.
+— These classifications cap I²: no match or negligible impact ≤2; adjacent ≤3; incremental ≤4; material ≤7; structural 8–10. The action is a further ceiling — relieves 10, reveals 7, measures 6, bounds 6 — as is the snapshot bottleneck's importance.
 — A generic 2% benchmark or efficiency gain is incremental at best and usually negligible. Technical elegance, paper novelty and the size of I¹ cannot raise I².
-— If \`bottleneckId\` is "none", the I² headline must be "No key bottleneck relieved" and the first bottleneck bullet must be "No important bottleneck identified".
+— COMMERCIAL PULL IS EVIDENCE, NOT THE MEASURE. That a result has obvious buyers is a reason to believe the constraint binds; it is not itself the score. A result that moves a binding constraint with no market yet still scores high, and a product with obvious buyers that moves no listed constraint does not.
+— If \`bottleneckId\` is "none", \`action\` must be "none", the I² headline must be "No key bottleneck moved" and the first bottleneck bullet must be "No important bottleneck identified".
 — I² PROSE IS FOR A NON-SPECIALIST. Never expose snapshot titles such as "Economics and diffusion", internal ids, or the words fit, adjacent, materiality, ceiling, constraint surface. Translate them into the practical problem a person would recognize.
 
 \`previousParadigm\` and \`corePremise\` are single sentences of at most eighteen words, not arrays. \`previous\` and \`proposed\` are read side by side, so entry N of one must address the same aspect as entry N of the other — exactly two pairs, in the same order. If the prior approach has no counterpart for something the paper introduces, write "no equivalent" rather than misaligning the pairs.
@@ -148,10 +173,11 @@ Return ONLY a JSON object in a \`\`\`json fenced block. No preamble, no commenta
     "headline": "<at most seven words: the practical consequence, in everyday language>",
     "bottleneckId": "<one exact id from DATED BOTTLENECKS, or none>",
     "bottleneckFit": "<none | adjacent | direct>",
+    "action": "<relieves | reveals | measures | bounds | none>",
     "impact": "<negligible | incremental | material | structural>",
     "outcomeKind": "<exactly one of: ${OUTCOME_KINDS.join(' | ')}>",
     "outcomeEstimate": "<the size of the gain in the paper's own units, six words at most — '3.4x fewer tokens', '40% lower latency', '$0.02 per task vs $0.15'. Write 'Not quantified' if the paper claims a gain without measuring one, and '' when outcomeKind is None.>",
-    "bottleneck": ["<the important practical problem this could reduce, in everyday language — or 'No important bottleneck identified'>", "<why the evidence does or does not show a meaningful improvement, in everyday language>"]
+    "bottleneck": ["<the important practical problem this acts on, in everyday language — or 'No important bottleneck identified'>", "<why the evidence does or does not show a meaningful change to it, in everyday language>"]
   },
   "inflection": {
     "score": <0-10>,
@@ -181,7 +207,13 @@ You are looking for specific, nameable errors:
 — DEFLATION. A real inversion scored low because the paper is short, unfashionable, or from an unknown group.
 — WRONG BOTTLENECK. I² must use an exact bottleneck from the dated snapshot. A current-day constraint, invented label or merely related topic is not a match.
 — MISSED RESULT. Before accepting "none", check every central result. A paper may relieve access or data scarcity even when its headline benchmark spends more inference compute.
-— NO MATERIAL RELIEF. If \`bottleneckFit\` is none or adjacent, or \`impact\` is negligible or incremental, an incentives score above its declared ceiling is unsupported. A 2% metric gain does not move a binding constraint.
+— NO MATERIAL MOVEMENT. If \`bottleneckFit\` is none or adjacent, or \`impact\` is negligible or incremental, an incentives score above its declared ceiling is unsupported. A 2% metric gain does not move a binding constraint.
+— WRONG ACTION. The row names what the paper does to the constraint: relieves, reveals, measures or bounds it. Prefer this objection to nudging a number. A paper scored \`none\` because it ships no improvement, when it establishes that a constraint binds where the field assumed it did not, is \`reveals\`; a benchmark that first makes a constraint reproducibly measurable is \`measures\`, not \`adjacent\`. Each action carries its own ceiling — relieves 10, reveals 7, measures 6, bounds 6 — so a proposed score outside the named action's band is a disagreement about the action, and you must say so.
+— MARKET INSTEAD OF CONSTRAINT. I² scored from who would buy it rather than what moved. Commercial pull is evidence that a constraint binds; it is not the measurement.
+— NOVELTY BY CONJUNCTION. The commonest inflation here. \`unprecedented\` or a high I³ justified by a list — "combines agent-generated hypotheses, ablation design, repeated execution and verification" — describes a system, not a distance. Every paper is a unique combination of its own parts, so the argument proves nothing. Ask which single thing no prior system could do; if the row cannot answer, the precedent is \`demonstrated\` and the displacement \`incremental\`.
+— UNCALIBRATED I³. AlphaFold 2 is a 7 in the standing frame. A row scoring 7 or above must name the canon case it stands beside. Scaling a known setup — more agents, more parameters, a longer benchmark — is \`incremental\` unless the scale produced something qualitatively new that the row states.
+— UNNAMED PRIOR BEST. \`substantial\` displacement without a specific prior system it passes, and a margin in the paper's own numbers, is \`incremental\`.
+— FALSE PRECEDENT. \`demonstrated\` claimed against a prior system that reached the capability on materially worse terms. Run the terms test the analyst was given: if the paper's contribution is the same capability at an order of magnitude less compute, cost, data or supervision, the earlier expensive system is not a precedent and \`precedent\` should be \`none\`. "Others had approached this, but at smaller scale or with weaker results" describes an outlier, not a precedent — this is the most common way a genuine outlier is filed as ordinary, and it silently caps I³.
 — UNMEASURED GAIN. An efficiency or cost claim scored above 5 whose \`outcomeEstimate\` is "Not quantified". A gain nobody measured is a hope; say so and lower the score.
 — INVENTED NUMBER. An \`outcomeEstimate\` that does not appear in the paper. Check it against the text.
 — MISREADING. The summary states something the paper does not.

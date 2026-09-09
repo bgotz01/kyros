@@ -24,7 +24,8 @@ const RAW_MODELS = [
     { id: 'anthropic/claude-sonnet-5', label: 'Claude Sonnet 5', inputCost: 2.00, outputCost: 10.00, context: '1M', maxTokens: 8000 },
     { id: 'moonshotai/kimi-k3', label: 'Kimi K3', inputCost: 3.00, outputCost: 15.00, context: '1M', maxTokens: 8000 },
     { id: 'anthropic/claude-opus-4.8', label: 'Claude Opus 4.8', inputCost: 5.00, outputCost: 25.00, context: '1M', maxTokens: 8000 },
-    { id: 'anthropic/claude-opus-5', label: 'Claude Opus 5', inputCost: 5.00, outputCost: 25.00, context: '1M', maxTokens: 8000 },
+    { id: 'anthropic/claude-opus-5', label: 'Claude Opus 5', inputCost: 5, outputCost: 25, context: '1M', maxTokens: 8000 },
+    { id: 'openai/gpt-5.6-sol', label: 'GPT5.6-Sol', inputCost: 2, outputCost: 10, context: '1M', maxTokens: 8000 },
 ] as const;
 
 export interface Model {
@@ -74,6 +75,68 @@ export const TIER_ORDER: ModelTier[] = ['low', 'mid', 'high'];
 export function modelsByTier(): Record<ModelTier, Model[]> {
     const groups: Record<ModelTier, Model[]> = { low: [], mid: [], high: [] };
     for (const m of MODELS) groups[modelTier(m)].push(m);
+    for (const tier of TIER_ORDER) groups[tier].sort((a, b) => a.outputCost - b.outputCost);
+    return groups;
+}
+
+// ─── muted-models helpers (client-safe) ──────────────────────────────────────
+// The muted list lives in lib/muted-models.json. On the server it is read from
+// disk; on the client it is fetched from GET /api/models and cached in a module-
+// level variable so every ModelSelect on the page shares the same state without
+// prop-drilling.
+
+let _mutedCache: Set<string> | null = null;
+const _emptyMuted = new Set<string>();
+let _mutedListeners: Array<() => void> = [];
+
+/** Subscribe to muted-list changes. Returns an unsubscribe function. */
+export function onMutedChange(cb: () => void): () => void {
+    _mutedListeners.push(cb);
+    return () => {
+        _mutedListeners = _mutedListeners.filter((l) => l !== cb);
+    };
+}
+
+function notifyMuted() {
+    for (const cb of _mutedListeners) cb();
+}
+
+/** Seed the client cache (call once after fetching from the server). */
+export function seedMuted(ids: string[]) {
+    _mutedCache = new Set(ids);
+    notifyMuted();
+}
+
+/** Returns the current muted set. Falls back to an empty set if not yet seeded. */
+export function getMuted(): Set<string> {
+    return _mutedCache ?? _emptyMuted;
+}
+
+/** Optimistically toggle a model's muted state in the client cache. */
+export function setMutedLocal(id: string, muted: boolean) {
+    const current = _mutedCache ?? _emptyMuted;
+    if (muted) {
+        if (current.has(id)) return;
+        _mutedCache = new Set(current);
+        _mutedCache.add(id);
+    } else {
+        if (!current.has(id)) return;
+        _mutedCache = new Set(current);
+        _mutedCache.delete(id);
+    }
+    notifyMuted();
+}
+
+/** Returns MODELS filtered to exclude currently muted models. */
+export function activeModels(): Model[] {
+    const muted = getMuted();
+    return MODELS.filter((m) => !muted.has(m.id));
+}
+
+/** The catalogue grouped by tier, excluding muted models. */
+export function activeModelsByTier(): Record<ModelTier, Model[]> {
+    const groups: Record<ModelTier, Model[]> = { low: [], mid: [], high: [] };
+    for (const m of activeModels()) groups[modelTier(m)].push(m);
     for (const tier of TIER_ORDER) groups[tier].sort((a, b) => a.outputCost - b.outputCost);
     return groups;
 }

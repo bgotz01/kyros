@@ -1,5 +1,7 @@
 import { PARADIGMS, type DecadeReturn } from '@/lib/capital/paradigms';
 import HoverNote from './HoverNote';
+import Nifty50Return from './Nifty50Return';
+import Em2000sReturn from './Em2000sReturn';
 
 // Beat the benchmark or lost to it — the only judgement this table makes.
 const AHEAD = '#74B87A';
@@ -83,24 +85,44 @@ export default function ParadigmTable() {
 
                             {/* Rotation — the asset the decade actually ran through */}
                             <td className="py-5 pr-8 align-top">
-                                <HoverNote
-                                    title={`${row.decade} · ${row.rotation ?? 'Rotation'}`}
-                                    body={[row.rotationNote, row.rotationReturn?.basis].filter(Boolean) as string[]}
-                                >
-                                    <span className="block text-platinum">
-                                        {row.rotation ?? '—'}
-                                    </span>
-                                    <span className="mt-1.5 block">
-                                        <Return
-                                            value={row.rotationReturn}
-                                            color={
-                                                row.rotationReturn && row.benchmarkReturn
-                                                    ? row.rotationReturn.pct >= row.benchmarkReturn.pct ? AHEAD : BEHIND
-                                                    : undefined
-                                            }
-                                        />
-                                    </span>
-                                </HoverNote>
+                                {row.decade === '1960s' ? (
+                                    <>
+                                        <span className="block text-platinum">
+                                            {row.rotation ?? '—'}
+                                        </span>
+                                        <span className="mt-1.5 block">
+                                            <Nifty50Return benchmarkPct={row.benchmarkReturn?.pct ?? 0} />
+                                        </span>
+                                    </>
+                                ) : row.decade === '2000s' ? (
+                                    <>
+                                        <span className="block text-platinum">
+                                            {row.rotation ?? '—'}
+                                        </span>
+                                        <span className="mt-1.5 block">
+                                            <Em2000sReturn benchmarkPct={row.benchmarkReturn?.pct ?? 0} />
+                                        </span>
+                                    </>
+                                ) : (
+                                    <HoverNote
+                                        title={`${row.decade} · ${row.rotation ?? 'Rotation'}`}
+                                        body={[row.rotationNote, row.rotationReturn?.basis].filter(Boolean) as string[]}
+                                    >
+                                        <span className="block text-platinum">
+                                            {row.rotation ?? '—'}
+                                        </span>
+                                        <span className="mt-1.5 block">
+                                            <Return
+                                                value={row.rotationReturn}
+                                                color={
+                                                    row.rotationReturn && row.benchmarkReturn
+                                                        ? row.rotationReturn.pct >= row.benchmarkReturn.pct ? AHEAD : BEHIND
+                                                        : undefined
+                                                }
+                                            />
+                                        </span>
+                                    </HoverNote>
+                                )}
                             </td>
 
                             {/* Benchmark — what the broad market paid over the same decade */}

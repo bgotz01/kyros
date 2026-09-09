@@ -12,6 +12,7 @@
     "external": "node scripts/external.mjs",
     "external:update": "node scripts/external-update.mjs",
     "fetch": "node scripts/fetch.mjs",
+    "hf": "node scripts/hf.mjs",
     "week": "node scripts/week.mjs",
     "pull": "node scripts/pull.mjs"
   },

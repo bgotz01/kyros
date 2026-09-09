@@ -269,3 +269,34 @@ body {
     animation-duration: 1ms !important;
   }
 }
+/* ------------------------------------------------------------------
+   Revealed, not animated. A panel arriving beneath the arc — it rises
+   a few pixels into place and settles. Nothing bounces.
+   ------------------------------------------------------------------ */
+
+@keyframes kyros-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kyros-reveal {
+  animation: kyros-reveal 0.52s var(--ease-mechanical) both;
+}
+
+/* ------------------------------------------------------------------
+   Sidebar nav column. Every label — parent or nested — begins on the
+   same vertical line. A parent row reaches it through its own parts
+   (0.875rem padding + 1.25rem icon + 0.75rem gap); a nested row has no
+   icon, so it takes the measure directly. One number, one column.
+   ------------------------------------------------------------------ */
+
+@utility pl-nav-label {
+  padding-left: 2.875rem;
+}

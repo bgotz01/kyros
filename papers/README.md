@@ -11,6 +11,9 @@
 | `npm run pull latest pdf` | Same, also store PDFs |
 | `npm run pull status` | Show what is held and what is not — fetches nothing |
 | `npm run pull repos` | Rebuild `repos.json` from stored text — fetches nothing |
+| `npm run hf` | Ask Hugging Face which repository each paper released |
+| `npm run hf all` | Ask again for every paper — HF gains repositories over time |
+| `npm run hf status` | Show what is stored — asks nothing |
 | `npm run week 2026 "Jan 6"` | List a specific week (the gate worksheet) |
 | `npm run week 2026 "Jan 6" fetch pdf` | Pull a specific week |
 | `npm run fetch 2501.04519` | Pull one or more papers by arXiv id |
@@ -39,6 +42,8 @@ papers/
         2412.21187v2.pdf artefact of record
     2025/
     unsorted/        ← no arXiv id, or year not yet established
+    repos.json       ← every github.com link the archive names — derived from text
+    hf.json          ← the one repository Hugging Face attributes to each paper
 ```
 
 ## Filed by publication year, not by digest week
@@ -61,6 +66,37 @@ result. A digest entry is a pointer to one, and a summary of a summary is not
 something to score. Follow the link before writing any number.
 
 Treat digest prose as a claim by its author, not as a finding.
+
+## Hugging Face names one repository; the text names all of them
+
+`repos.json` is a regex over stored text: every `github.com/owner/name` a paper
+contains, in order, with no opinion about which is the paper's own. A paper that
+cites a dozen baselines yields a dozen links, and one that names its repository
+only on a project page yields none.
+
+`hf.json` is the other half of that problem. huggingface.co/papers/<id> is the
+same arXiv paper under a different roof — HF hosts no text, so it replaces
+nothing in the fetch — but each page carries at most **one** repository, put
+there by a reader. About three papers in five have one, and some of those name a
+repository the paper's own text never mentions.
+
+```bash
+npm run hf              # every archived paper not asked about yet
+npm run hf status       # the counts
+```
+
+The two files are kept apart on purpose. `repos.json` is a pure function of the
+stored text and the digests: delete it and `npm run pull repos` rebuilds it
+exactly, offline. `hf.json` cannot be rebuilt that way, and it does not carry the
+same kind of claim — the paper *said* the one, a stranger *asserted* the other.
+
+So the HF repository does not settle anything. It enters
+`POST /api/engine/external` at the head of the candidate list, labelled as an
+attribution rather than a quotation, and the external seat judges it against the
+links the paper names itself. Only `githubRepo` is stored. HF's upvote count is
+not, and neither is its cached star count: `Signals and Base Rates` lists
+attention metrics among the signals that preceded false positives, and the live
+star count already arrives from GitHub through the ★ lookup.
 
 ## Format — keep both, convert nothing
 

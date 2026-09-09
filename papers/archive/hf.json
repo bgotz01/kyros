@@ -1,0 +1,3673 @@
+{
+  "checked": "2026-09-07",
+  "papers": {
+    "2310.11324": {
+      "repo": "msclar/formatspread"
+    },
+    "2311.05657": {
+      "repo": "allenai/lumos"
+    },
+    "2312.17238": {
+      "repo": "dvmazur/mixtral-offloading"
+    },
+    "2401.00812": {
+      "repo": null
+    },
+    "2401.00908": {
+      "repo": null
+    },
+    "2401.01313": {
+      "repo": null
+    },
+    "2401.01335": {
+      "repo": "uclaml/SPIN"
+    },
+    "2401.01614": {
+      "repo": "osu-nlp-group/seeact"
+    },
+    "2401.01952": {
+      "repo": null
+    },
+    "2401.02412": {
+      "repo": null
+    },
+    "2401.02415": {
+      "repo": "tencentarc/llama-pro"
+    },
+    "2401.02777": {
+      "repo": null
+    },
+    "2401.02994": {
+      "repo": null
+    },
+    "2401.04081": {
+      "repo": null
+    },
+    "2401.04398": {
+      "repo": "cyqiq/multicot"
+    },
+    "2401.04468": {
+      "repo": null
+    },
+    "2401.05335": {
+      "repo": null
+    },
+    "2401.05561": {
+      "repo": "HowieHwong/TrustLLM"
+    },
+    "2401.05566": {
+      "repo": "anthropics/sleeper-agents-paper"
+    },
+    "2401.06102": {
+      "repo": null
+    },
+    "2401.06751": {
+      "repo": "allenai/easy-to-hard-generalization"
+    },
+    "2401.07103": {
+      "repo": "chongyangtao/LLMs-for-NLG-Evaluation"
+    },
+    "2401.08092": {
+      "repo": "ubiquitouslearning/efficient_foundation_model_survey"
+    },
+    "2401.08406": {
+      "repo": null
+    },
+    "2401.08500": {
+      "repo": null
+    },
+    "2401.08565": {
+      "repo": "alisawuffles/proxy-tuning"
+    },
+    "2401.08967": {
+      "repo": "lqtrung1998/mwp_reft"
+    },
+    "2401.10020": {
+      "repo": "gagan3012/self_rewarding_models"
+    },
+    "2401.10491": {
+      "repo": null
+    },
+    "2401.10774": {
+      "repo": "fasterdecoding/medusa"
+    },
+    "2401.10891": {
+      "repo": "LiheYoung/Depth-Anything"
+    },
+    "2401.12187": {
+      "repo": null
+    },
+    "2401.12915": {
+      "repo": null
+    },
+    "2401.12945": {
+      "repo": null
+    },
+    "2401.13178": {
+      "repo": null
+    },
+    "2401.13601": {
+      "repo": null
+    },
+    "2401.13660": {
+      "repo": null
+    },
+    "2401.13795": {
+      "repo": null
+    },
+    "2401.14887": {
+      "repo": "florin-git/The-Power-of-Noise"
+    },
+    "2401.15024": {
+      "repo": "microsoft/transformercompression"
+    },
+    "2401.15347": {
+      "repo": null
+    },
+    "2401.15884": {
+      "repo": null
+    },
+    "2401.15947": {
+      "repo": null
+    },
+    "2401.16380": {
+      "repo": null
+    },
+    "2402.00157": {
+      "repo": null
+    },
+    "2402.00253": {
+      "repo": "lhanchao777/LVLM-Hallucinations-Survey"
+    },
+    "2402.00838": {
+      "repo": "yangyucheng000/University"
+    },
+    "2402.01680": {
+      "repo": "taichengguo/llm_multiagents_survey_papers"
+    },
+    "2402.03300": {
+      "repo": "deepseek-ai/deepseek-math"
+    },
+    "2402.03620": {
+      "repo": null
+    },
+    "2402.03667": {
+      "repo": null,
+      "absent": true
+    },
+    "2402.03902": {
+      "repo": null,
+      "absent": true
+    },
+    "2402.04253": {
+      "repo": "dyabel/anytool"
+    },
+    "2402.04494": {
+      "repo": "google-deepmind/searchless_chess"
+    },
+    "2402.05120": {
+      "repo": "moreagentsisallyouneed/agentforest"
+    },
+    "2402.05121": {
+      "repo": null,
+      "absent": true
+    },
+    "2402.06184": {
+      "repo": "sohl-dickstein/fractal"
+    },
+    "2402.06196": {
+      "repo": null
+    },
+    "2402.06664": {
+      "repo": null
+    },
+    "2402.06852": {
+      "repo": "keyhsw/chemllm"
+    },
+    "2402.07456": {
+      "repo": "OS-Copilot/FRIDAY"
+    },
+    "2402.08268": {
+      "repo": "LargeWorldModel/LWM"
+    },
+    "2402.09171": {
+      "repo": "Codium-ai/cover-agent"
+    },
+    "2402.09906": {
+      "repo": "contextualai/gritlm"
+    },
+    "2402.10200": {
+      "repo": null
+    },
+    "2402.10790": {
+      "repo": null
+    },
+    "2402.10890": {
+      "repo": "osu-nlp-group/llm-planning-eval"
+    },
+    "2402.12354": {
+      "repo": "nikhil-ghosh-berkeley/loraplus"
+    },
+    "2402.13446": {
+      "repo": null
+    },
+    "2402.14658": {
+      "repo": "opencodeinterpreter/opencodeinterpreter"
+    },
+    "2402.14740": {
+      "repo": null
+    },
+    "2402.15391": {
+      "repo": "1x-technologies/1xgpt"
+    },
+    "2402.15809": {
+      "repo": "zhao-ht/learnact"
+    },
+    "2402.17177": {
+      "repo": "lichao-sun/sorareview"
+    },
+    "2402.17485": {
+      "repo": null
+    },
+    "2402.17764": {
+      "repo": null
+    },
+    "2402.17944": {
+      "repo": "tanfiona/LLM-on-Tabular-Data-Prediction-Table-Understanding-Data-Generation"
+    },
+    "2402.18041": {
+      "repo": "lmmlzn/awesome-llms-datasets"
+    },
+    "2402.19273": {
+      "repo": null
+    },
+    "2402.19450": {
+      "repo": null
+    },
+    "2402.19473": {
+      "repo": null,
+      "absent": true
+    },
+    "2403.00835": {
+      "repo": null
+    },
+    "2403.02151": {
+      "repo": "vast-ai-research/triposr"
+    },
+    "2403.03101": {
+      "repo": "zjunlp/knowagent"
+    },
+    "2403.03163": {
+      "repo": "NoviScl/Design2Code"
+    },
+    "2403.03230": {
+      "repo": "braingpt-lovelab/brainbench"
+    },
+    "2403.03507": {
+      "repo": "jiaweizzhao/galore"
+    },
+    "2403.03883": {
+      "repo": null
+    },
+    "2403.04121": {
+      "repo": null
+    },
+    "2403.05286": {
+      "repo": null
+    },
+    "2403.05313": {
+      "repo": "craftjarvis/rat"
+    },
+    "2403.05440": {
+      "repo": null
+    },
+    "2403.06634": {
+      "repo": "dpaleka/stealing-part-lm-supplementary"
+    },
+    "2403.07816": {
+      "repo": "Leeroo-AI/mergoo"
+    },
+    "2403.08319": {
+      "repo": "pillowsofwind/knowledge-conflicts-survey"
+    },
+    "2403.09527": {
+      "repo": null,
+      "absent": true
+    },
+    "2403.09539": {
+      "repo": null
+    },
+    "2403.09611": {
+      "repo": null
+    },
+    "2403.09629": {
+      "repo": "ezelikman/quiet-star"
+    },
+    "2403.10131": {
+      "repo": "ShishirPatil/gorilla"
+    },
+    "2403.12373": {
+      "repo": null
+    },
+    "2403.12881": {
+      "repo": "internlm/agent-flan"
+    },
+    "2403.12945": {
+      "repo": null
+    },
+    "2403.13187": {
+      "repo": "sakanaai/evolutionary-model-merge"
+    },
+    "2403.15042": {
+      "repo": "squeezeailab/llm2llm"
+    },
+    "2403.15246": {
+      "repo": "orionw/followir"
+    },
+    "2403.16971": {
+      "repo": "agiresearch/aios"
+    },
+    "2403.16977": {
+      "repo": null
+    },
+    "2403.17887": {
+      "repo": "arcee-ai/PruneMe"
+    },
+    "2403.18802": {
+      "repo": "google-deepmind/long-form-factuality"
+    },
+    "2403.18814": {
+      "repo": "dvlab-research/minigemini"
+    },
+    "2404.02060": {
+      "repo": "tiger-ai-lab/longiclbench"
+    },
+    "2404.02078": {
+      "repo": "openbmb/eurus"
+    },
+    "2404.02258": {
+      "repo": null
+    },
+    "2404.03414": {
+      "repo": null
+    },
+    "2404.03592": {
+      "repo": "stanfordnlp/pyreft"
+    },
+    "2404.03622": {
+      "repo": "sitloboi2012/Visualization-of-Thought"
+    },
+    "2404.03626": {
+      "repo": null
+    },
+    "2404.03862": {
+      "repo": null
+    },
+    "2404.04925": {
+      "repo": null
+    },
+    "2404.05405": {
+      "repo": null
+    },
+    "2404.05966": {
+      "repo": "cyzus/thoughtsculpt"
+    },
+    "2404.07143": {
+      "repo": null
+    },
+    "2404.07503": {
+      "repo": null
+    },
+    "2404.08189": {
+      "repo": null
+    },
+    "2404.08819": {
+      "repo": null
+    },
+    "2404.08865": {
+      "repo": null
+    },
+    "2404.09516": {
+      "repo": null,
+      "absent": true
+    },
+    "2404.10102": {
+      "repo": null
+    },
+    "2404.10198": {
+      "repo": "kevinwu23/stanfordclasheval"
+    },
+    "2404.10981": {
+      "repo": null
+    },
+    "2404.11584": {
+      "repo": null
+    },
+    "2404.12753": {
+      "repo": "ez-hwh/autocrawler"
+    },
+    "2404.14219": {
+      "repo": null
+    },
+    "2404.14387": {
+      "repo": null
+    },
+    "2404.14619": {
+      "repo": null
+    },
+    "2404.14662": {
+      "repo": null
+    },
+    "2404.14928": {
+      "repo": null,
+      "absent": true
+    },
+    "2404.16811": {
+      "repo": "microsoft/FILM"
+    },
+    "2404.18416": {
+      "repo": null
+    },
+    "2404.18930": {
+      "repo": "showlab/awesome-mllm-hallucination"
+    },
+    "2404.19543": {
+      "repo": "2471023025/RALM_Survey"
+    },
+    "2404.19705": {
+      "repo": "tLabruna/Adapt-LLM"
+    },
+    "2404.19737": {
+      "repo": null
+    },
+    "2404.19756": {
+      "repo": "kindxiaoming/pykan"
+    },
+    "2405.00200": {
+      "repo": null
+    },
+    "2405.00208": {
+      "repo": null
+    },
+    "2405.00675": {
+      "repo": "uclaml/sppo"
+    },
+    "2405.01535": {
+      "repo": null
+    },
+    "2405.02803": {
+      "repo": null
+    },
+    "2405.03520": {
+      "repo": "gigaai-research/general-world-models-survey"
+    },
+    "2405.03548": {
+      "repo": null
+    },
+    "2405.03553": {
+      "repo": null
+    },
+    "2405.04324": {
+      "repo": "ibm-granite/granite-code-models"
+    },
+    "2405.04434": {
+      "repo": null
+    },
+    "2405.04517": {
+      "repo": "smvorwerk/xlstm-cuda"
+    },
+    "2405.05254": {
+      "repo": null
+    },
+    "2405.05904": {
+      "repo": null
+    },
+    "2405.07863": {
+      "repo": "rlhflow/online-rlhf"
+    },
+    "2405.07883": {
+      "repo": "bminixhofer/zett"
+    },
+    "2405.08597": {
+      "repo": null
+    },
+    "2405.09818": {
+      "repo": "facebookresearch/chameleon"
+    },
+    "2405.10313": {
+      "repo": "ulab-uiuc/agi-survey"
+    },
+    "2405.10314": {
+      "repo": null
+    },
+    "2405.10637": {
+      "repo": "whyNLP/LCKV"
+    },
+    "2405.10725": {
+      "repo": null
+    },
+    "2405.10739": {
+      "repo": "lijiannuist/efficient-multimodal-llms-survey"
+    },
+    "2405.12939": {
+      "repo": null
+    },
+    "2405.13956": {
+      "repo": "claCase/Attention-as-RNN"
+    },
+    "2405.14205": {
+      "repo": "zjunlp/wkm"
+    },
+    "2405.14333": {
+      "repo": null
+    },
+    "2405.14734": {
+      "repo": "princeton-nlp/simpo"
+    },
+    "2405.14782": {
+      "repo": null
+    },
+    "2405.15032": {
+      "repo": null
+    },
+    "2405.15318": {
+      "repo": null
+    },
+    "2405.15793": {
+      "repo": null
+    },
+    "2405.17247": {
+      "repo": null
+    },
+    "2405.17399": {
+      "repo": "mcleish7/arithmetic"
+    },
+    "2405.18357": {
+      "repo": "aiden0526/symbcot"
+    },
+    "2405.18719": {
+      "repo": null
+    },
+    "2405.20139": {
+      "repo": "cmavro/gnn-rag"
+    },
+    "2405.20974": {
+      "repo": "xu1868/sayself"
+    },
+    "2405.21060": {
+      "repo": null
+    },
+    "2406.00888": {
+      "repo": "SALT-NLP/demonstrated-feedback"
+    },
+    "2406.01252": {
+      "repo": "cascip/awesome-auto-alignment"
+    },
+    "2406.01506": {
+      "repo": "kihopark/llm_categorical_hierarchical_representations"
+    },
+    "2406.02528": {
+      "repo": "ridgerchu/matmulfreellm"
+    },
+    "2406.04151": {
+      "repo": "woooodyy/agentgym"
+    },
+    "2406.04271": {
+      "repo": "yangling0818/buffer-of-thought-llm"
+    },
+    "2406.04692": {
+      "repo": "togethercomputer/moa"
+    },
+    "2406.04784": {
+      "repo": null
+    },
+    "2406.06326": {
+      "repo": "zhangxy-2019/Effective-Knowledge-Injection"
+    },
+    "2406.07138": {
+      "repo": null
+    },
+    "2406.07394": {
+      "repo": "trotsky1997/mathblackbox"
+    },
+    "2406.07496": {
+      "repo": "zou-group/textgrad"
+    },
+    "2406.08100": {
+      "repo": "spursgozmy/table-llava"
+    },
+    "2406.08414": {
+      "repo": "luchris429/DiscoPOP"
+    },
+    "2406.09308": {
+      "repo": null
+    },
+    "2406.09403": {
+      "repo": null
+    },
+    "2406.10209": {
+      "repo": "ahans30/goldfish-loss"
+    },
+    "2406.11271": {
+      "repo": "mlfoundations/mint-1t"
+    },
+    "2406.12430": {
+      "repo": "myeon9h/planrag"
+    },
+    "2406.12824": {
+      "repo": null
+    },
+    "2406.13121": {
+      "repo": "google-deepmind/loft"
+    },
+    "2406.13892": {
+      "repo": "joshuacnf/Ctrl-G"
+    },
+    "2406.14550": {
+      "repo": null
+    },
+    "2406.15126": {
+      "repo": null
+    },
+    "2406.15319": {
+      "repo": null
+    },
+    "2406.16793": {
+      "repo": "zyushun/adam-mini"
+    },
+    "2406.16858": {
+      "repo": null
+    },
+    "2406.17744": {
+      "repo": null
+    },
+    "2406.18518": {
+      "repo": "SalesforceAIResearch/xLAM"
+    },
+    "2406.18665": {
+      "repo": null
+    },
+    "2406.19292": {
+      "repo": "edixiong/artificial-needles"
+    },
+    "2406.20094": {
+      "repo": "tencent-ailab/persona-hub"
+    },
+    "2407.01219": {
+      "repo": "FudanDNN-NLP/RAG"
+    },
+    "2407.01370": {
+      "repo": "salesforce/summary-of-a-haystack"
+    },
+    "2407.01489": {
+      "repo": "OpenAutoCoder/Agentless"
+    },
+    "2407.01490": {
+      "repo": null
+    },
+    "2407.01502": {
+      "repo": "benediktstroebl/agent-evals"
+    },
+    "2407.02485": {
+      "repo": null
+    },
+    "2407.02678": {
+      "repo": null
+    },
+    "2407.03234": {
+      "repo": null,
+      "absent": true
+    },
+    "2407.04153": {
+      "repo": "huyphan168/PEER"
+    },
+    "2407.04620": {
+      "repo": "test-time-training/ttt-lm-jax"
+    },
+    "2407.06023": {
+      "repo": null
+    },
+    "2407.06204": {
+      "repo": "withinmiaov/a-survey-on-mixture-of-experts"
+    },
+    "2407.07061": {
+      "repo": "openbmb/ioa"
+    },
+    "2407.07071": {
+      "repo": "voidism/lookback-lens"
+    },
+    "2407.09025": {
+      "repo": null
+    },
+    "2407.09252": {
+      "repo": null
+    },
+    "2407.09468": {
+      "repo": null
+    },
+    "2407.11963": {
+      "repo": "open-compass/opencompass"
+    },
+    "2407.11969": {
+      "repo": "tml-epfl/llm-past-tense"
+    },
+    "2407.12036": {
+      "repo": null
+    },
+    "2407.12994": {
+      "repo": null
+    },
+    "2407.13647": {
+      "repo": "gair-nlp/weak-to-strong-reasoning"
+    },
+    "2407.13692": {
+      "repo": null
+    },
+    "2407.14057": {
+      "repo": null
+    },
+    "2407.14333": {
+      "repo": null,
+      "absent": true
+    },
+    "2407.15186": {
+      "repo": null
+    },
+    "2407.16741": {
+      "repo": "opendevin/opendevin"
+    },
+    "2407.16833": {
+      "repo": null
+    },
+    "2407.16908": {
+      "repo": null,
+      "absent": true
+    },
+    "2407.18219": {
+      "repo": null
+    },
+    "2407.18416": {
+      "repo": null
+    },
+    "2407.18418": {
+      "repo": null
+    },
+    "2407.19594": {
+      "repo": null
+    },
+    "2407.19813": {
+      "repo": null
+    },
+    "2407.19825": {
+      "repo": null
+    },
+    "2407.20183": {
+      "repo": "InternLM/MindSearch"
+    },
+    "2407.20516": {
+      "repo": null
+    },
+    "2407.21018": {
+      "repo": "SalesforceAIResearch/ThinK"
+    },
+    "2407.21712": {
+      "repo": null
+    },
+    "2407.21772": {
+      "repo": null
+    },
+    "2408.01129": {
+      "repo": null
+    },
+    "2408.01262": {
+      "repo": "openbmb/rageval"
+    },
+    "2408.02442": {
+      "repo": "appier-research/structure-gen"
+    },
+    "2408.02479": {
+      "repo": null
+    },
+    "2408.02545": {
+      "repo": "intellabs/ragfoundry"
+    },
+    "2408.02666": {
+      "repo": null
+    },
+    "2408.03256": {
+      "repo": null
+    },
+    "2408.04187": {
+      "repo": null
+    },
+    "2408.04259": {
+      "repo": "nil-zhuang/efficientrag-official"
+    },
+    "2408.04560": {
+      "repo": null,
+      "absent": true
+    },
+    "2408.04619": {
+      "repo": "poloclub/transformer-explainer"
+    },
+    "2408.04948": {
+      "repo": null
+    },
+    "2408.05109": {
+      "repo": "hkustdial/nl2sql_handbook"
+    },
+    "2408.06195": {
+      "repo": "codelion/optillm"
+    },
+    "2408.06292": {
+      "repo": "sakanaai/ai-scientist"
+    },
+    "2408.07055": {
+      "repo": "thudm/longwriter"
+    },
+    "2408.08067": {
+      "repo": "amazon-science/ragchecker"
+    },
+    "2408.08435": {
+      "repo": "shengranhu/adas"
+    },
+    "2408.08869": {
+      "repo": null
+    },
+    "2408.08921": {
+      "repo": null
+    },
+    "2408.09416": {
+      "repo": null
+    },
+    "2408.10548": {
+      "repo": "lanxiang1017/language-modeling-on-tabular-data-survey"
+    },
+    "2408.10615": {
+      "repo": null
+    },
+    "2408.11039": {
+      "repo": null
+    },
+    "2408.11049": {
+      "repo": "infini-ai-lab/magicdec"
+    },
+    "2408.11527": {
+      "repo": null,
+      "absent": true
+    },
+    "2408.11796": {
+      "repo": null
+    },
+    "2408.12599": {
+      "repo": "iaar-shanghai/ctgsurvey"
+    },
+    "2408.13533": {
+      "repo": "jinyangwu/NoiserBench"
+    },
+    "2408.14340": {
+      "repo": "nicolaus625/fm4music"
+    },
+    "2408.14471": {
+      "repo": null
+    },
+    "2408.14484": {
+      "repo": null,
+      "absent": true
+    },
+    "2408.14717": {
+      "repo": "tag-research/tag-bench"
+    },
+    "2408.14837": {
+      "repo": null
+    },
+    "2408.15247": {
+      "repo": null,
+      "absent": true
+    },
+    "2408.15496": {
+      "repo": "lblankl/remamba"
+    },
+    "2408.15879": {
+      "repo": null,
+      "absent": true
+    },
+    "2408.16737": {
+      "repo": null
+    },
+    "2408.16967": {
+      "repo": "bui1dmysea/memlong"
+    },
+    "2408.16984": {
+      "repo": null
+    },
+    "2409.01666": {
+      "repo": null
+    },
+    "2409.02060": {
+      "repo": null
+    },
+    "2409.02897": {
+      "repo": "THUDM/LongCite"
+    },
+    "2409.02977": {
+      "repo": "fudanselab/agent4se-paper-list"
+    },
+    "2409.03271": {
+      "repo": null
+    },
+    "2409.04109": {
+      "repo": "simplaj/AI-Researcher-Spark"
+    },
+    "2409.04431": {
+      "repo": "apple/ml-sigmoid-attention"
+    },
+    "2409.04833": {
+      "repo": null
+    },
+    "2409.06185": {
+      "repo": "sandeep82945/future-idea-generation"
+    },
+    "2409.06666": {
+      "repo": "ictnlp/llama-omni"
+    },
+    "2409.06857": {
+      "repo": "tigerchen52/role_of_small_models"
+    },
+    "2409.07429": {
+      "repo": "zorazrw/agent-workflow-memory"
+    },
+    "2409.09030": {
+      "repo": "deepsoftwareanalytics/awesome-agent4se"
+    },
+    "2409.10038": {
+      "repo": "diagram-of-thought/diagram-of-thought"
+    },
+    "2409.10482": {
+      "repo": null
+    },
+    "2409.11055": {
+      "repo": null
+    },
+    "2409.11445": {
+      "repo": null
+    },
+    "2409.12183": {
+      "repo": "zayne-sprague/to-cot-or-not-to-cot"
+    },
+    "2409.12186": {
+      "repo": "MindCode-4/code-2"
+    },
+    "2409.12618": {
+      "repo": null
+    },
+    "2409.12917": {
+      "repo": "daje0601/Google_SCoRe"
+    },
+    "2409.12941": {
+      "repo": null
+    },
+    "2409.13373": {
+      "repo": null
+    },
+    "2409.13449": {
+      "repo": null
+    },
+    "2409.14924": {
+      "repo": null
+    },
+    "2409.15254": {
+      "repo": "scalingintelligence/archon"
+    },
+    "2409.15277": {
+      "repo": null
+    },
+    "2409.15790": {
+      "repo": "ubiquitouslearning/slm_survey"
+    },
+    "2409.17439": {
+      "repo": null
+    },
+    "2409.17539": {
+      "repo": null
+    },
+    "2409.18486": {
+      "repo": null
+    },
+    "2409.19924": {
+      "repo": null
+    },
+    "2410.00907": {
+      "repo": null
+    },
+    "2410.01044": {
+      "repo": "jhu-clsp/rationalyst"
+    },
+    "2410.01201": {
+      "repo": null
+    },
+    "2410.01748": {
+      "repo": null
+    },
+    "2410.01792": {
+      "repo": null
+    },
+    "2410.02707": {
+      "repo": "technion-cs-nlp/llmsknow"
+    },
+    "2410.03439": {
+      "repo": "Reason-Wang/ToolGen"
+    },
+    "2410.04343": {
+      "repo": null
+    },
+    "2410.05080": {
+      "repo": "osu-nlp-group/scienceagentbench"
+    },
+    "2410.05229": {
+      "repo": "apple/ml-gsm-symbolic"
+    },
+    "2410.05258": {
+      "repo": "microsoft/unilm"
+    },
+    "2410.05983": {
+      "repo": null
+    },
+    "2410.07095": {
+      "repo": "openai/mle-bench"
+    },
+    "2410.07109": {
+      "repo": null,
+      "absent": true
+    },
+    "2410.07176": {
+      "repo": null
+    },
+    "2410.07486": {
+      "repo": null
+    },
+    "2410.08115": {
+      "repo": "thunlp/Optima"
+    },
+    "2410.08164": {
+      "repo": null
+    },
+    "2410.09713": {
+      "repo": null
+    },
+    "2410.10630": {
+      "repo": null
+    },
+    "2410.10762": {
+      "repo": "foundationagents/aflow"
+    },
+    "2410.11163": {
+      "repo": null,
+      "absent": true
+    },
+    "2410.11831": {
+      "repo": null
+    },
+    "2410.12613": {
+      "repo": "zjunlp/ModelKinship"
+    },
+    "2410.12896": {
+      "repo": null
+    },
+    "2410.13639": {
+      "repo": "Open-Source-O1/o1_Reasoning_Patterns_Study"
+    },
+    "2410.13787": {
+      "repo": "felixbinder/introspection_self_prediction"
+    },
+    "2410.13848": {
+      "repo": null
+    },
+    "2410.16540": {
+      "repo": null
+    },
+    "2410.18050": {
+      "repo": "qingfei1/longrag"
+    },
+    "2410.18417": {
+      "repo": "aida-ugent/llm-ideology-analysis"
+    },
+    "2410.18982": {
+      "repo": null
+    },
+    "2410.19385": {
+      "repo": null,
+      "absent": true
+    },
+    "2410.19750": {
+      "repo": "ejmichaud/feature-geometry"
+    },
+    "2410.20672": {
+      "repo": null
+    },
+    "2410.20771": {
+      "repo": "jkallini/mrt5"
+    },
+    "2410.21272": {
+      "repo": "technion-cs-nlp/llm-arithmetic-heuristics"
+    },
+    "2410.21943": {
+      "repo": "riedlerm/multimodal_rag_for_industry"
+    },
+    "2410.22071": {
+      "repo": null
+    },
+    "2411.00027": {
+      "repo": null
+    },
+    "2411.00114": {
+      "repo": null
+    },
+    "2411.00412": {
+      "repo": "Rose-STL-Lab/Adapting-While-Learning"
+    },
+    "2411.00492": {
+      "repo": "dxlong2000/multi-expert-prompting"
+    },
+    "2411.00640": {
+      "repo": null
+    },
+    "2411.02337": {
+      "repo": "THUDM/WebRL"
+    },
+    "2411.02391": {
+      "repo": "SALT-NLP/PopupAttack"
+    },
+    "2411.02830": {
+      "repo": null
+    },
+    "2411.02959": {
+      "repo": "plageon/HtmlRAG"
+    },
+    "2411.03350": {
+      "repo": "FairyFali/SLMs-Survey"
+    },
+    "2411.03766": {
+      "repo": "graphpku/number_cookbook"
+    },
+    "2411.04330": {
+      "repo": null
+    },
+    "2411.04905": {
+      "repo": null
+    },
+    "2411.04996": {
+      "repo": "allenzren/open-pi-zero"
+    },
+    "2411.05285": {
+      "repo": null
+    },
+    "2411.06037": {
+      "repo": null
+    },
+    "2411.07396": {
+      "repo": null
+    },
+    "2411.07407": {
+      "repo": null
+    },
+    "2411.07494": {
+      "repo": null
+    },
+    "2411.08804": {
+      "repo": null
+    },
+    "2411.09009": {
+      "repo": "apple/ml-cross-entropy"
+    },
+    "2411.10109": {
+      "repo": null
+    },
+    "2411.10213": {
+      "repo": null
+    },
+    "2411.10323": {
+      "repo": "showlab/computer_use_ootb"
+    },
+    "2411.10541": {
+      "repo": null
+    },
+    "2411.11843": {
+      "repo": "Tangshengku/Bi-Mamba"
+    },
+    "2411.11910": {
+      "repo": "AgentForceTeamOfficial/Baby-AIGS"
+    },
+    "2411.12580": {
+      "repo": null
+    },
+    "2411.14405": {
+      "repo": "aidc-ai/marco-o1"
+    },
+    "2411.15124": {
+      "repo": null
+    },
+    "2411.15129": {
+      "repo": null,
+      "absent": true
+    },
+    "2411.15594": {
+      "repo": "IDEA-FinAI/LLM-as-a-Judge"
+    },
+    "2411.16489": {
+      "repo": "gair-nlp/o1-journey"
+    },
+    "2411.17116": {
+      "repo": "NVIDIA/Star-Attention"
+    },
+    "2411.18279": {
+      "repo": "vyokky/LLM-Brained-GUI-Agents-Survey"
+    },
+    "2411.18478": {
+      "repo": "jinyangwu/HiARICL"
+    },
+    "2411.19443": {
+      "repo": "ictnlp/auto-rag"
+    },
+    "2411.19865": {
+      "repo": null
+    },
+    "2412.00722": {
+      "repo": null
+    },
+    "2412.02205": {
+      "repo": null
+    },
+    "2412.02830": {
+      "repo": null
+    },
+    "2412.04494": {
+      "repo": null
+    },
+    "2412.05265": {
+      "repo": null
+    },
+    "2412.05579": {
+      "repo": "CSHaitao/Awesome-LLMs-as-Judges"
+    },
+    "2412.06000": {
+      "repo": null
+    },
+    "2412.06769": {
+      "repo": null
+    },
+    "2412.06975": {
+      "repo": "miralab-ai/autoreason"
+    },
+    "2412.07017": {
+      "repo": null
+    },
+    "2412.07724": {
+      "repo": "ibm-granite/granite-guardian"
+    },
+    "2412.08905": {
+      "repo": null
+    },
+    "2412.09764": {
+      "repo": "facebookresearch/memory"
+    },
+    "2412.10136": {
+      "repo": "Zehong-Wang/TANS"
+    },
+    "2412.10302": {
+      "repo": "deepseek-ai/deepseek-vl2"
+    },
+    "2412.11936": {
+      "repo": null
+    },
+    "2412.11937": {
+      "repo": null
+    },
+    "2412.13194": {
+      "repo": "amazon-science/PAE"
+    },
+    "2412.13663": {
+      "repo": null
+    },
+    "2412.14093": {
+      "repo": "redwoodresearch/alignment_faking_public"
+    },
+    "2412.14161": {
+      "repo": "TheAgentCompany/TheAgentCompany"
+    },
+    "2412.14352": {
+      "repo": "dongxiangjue/Awesome-LLM-Self-Improvement"
+    },
+    "2412.15115": {
+      "repo": "QwenLM/Qwen2.5"
+    },
+    "2412.15605": {
+      "repo": null
+    },
+    "2412.16241": {
+      "repo": null,
+      "absent": true
+    },
+    "2412.17498": {
+      "repo": "krystalan/drt-o1"
+    },
+    "2412.17799": {
+      "repo": null,
+      "absent": true
+    },
+    "2412.18319": {
+      "repo": "hjyao00/mulberry"
+    },
+    "2412.18653": {
+      "repo": null
+    },
+    "2412.18925": {
+      "repo": "freedomintelligence/huatuogpt-o1"
+    },
+    "2412.19260": {
+      "repo": "abachaa/medec"
+    },
+    "2412.19437": {
+      "repo": "deepseek-ai/deepseek-v3"
+    },
+    "2412.21154": {
+      "repo": "Future-House/aviary"
+    },
+    "2412.21187": {
+      "repo": null
+    },
+    "2501.00656": {
+      "repo": null
+    },
+    "2501.00663": {
+      "repo": null
+    },
+    "2501.01880": {
+      "repo": "lixinze777/lc_vs_rag"
+    },
+    "2501.03491": {
+      "repo": "colearn-dev/llmqg"
+    },
+    "2501.04040": {
+      "repo": null
+    },
+    "2501.04227": {
+      "repo": "Masao-Taketani/LocalAgentLaboratory"
+    },
+    "2501.04519": {
+      "repo": null
+    },
+    "2501.04682": {
+      "repo": null
+    },
+    "2501.05366": {
+      "repo": null
+    },
+    "2501.05874": {
+      "repo": "starsuzi/VideoRAG"
+    },
+    "2501.06252": {
+      "repo": "SakanaAI/self-adaptive-llms"
+    },
+    "2501.06590": {
+      "repo": "gersteinlab/chemagent"
+    },
+    "2501.07391": {
+      "repo": "ali-bahrainian/rag_best_practices"
+    },
+    "2501.07542": {
+      "repo": null
+    },
+    "2501.08313": {
+      "repo": "MiniMax-AI/MiniMax-01"
+    },
+    "2501.09136": {
+      "repo": "asinghcsu/agenticrag-survey"
+    },
+    "2501.09223": {
+      "repo": "NiuTrans/NLPBook"
+    },
+    "2501.09426": {
+      "repo": null,
+      "absent": true
+    },
+    "2501.09751": {
+      "repo": "zjunlp/omnithink"
+    },
+    "2501.11067": {
+      "repo": "plurai-ai/intellagent"
+    },
+    "2501.11120": {
+      "repo": "xuchanbao/behavioral-self-awareness"
+    },
+    "2501.12224": {
+      "repo": null
+    },
+    "2501.12326": {
+      "repo": null
+    },
+    "2501.12948": {
+      "repo": "deepseek-ai/deepseek-r1"
+    },
+    "2501.13545": {
+      "repo": null
+    },
+    "2501.13824": {
+      "repo": null
+    },
+    "2501.15228": {
+      "repo": "chenyiqun/mmoa-rag"
+    },
+    "2501.15674": {
+      "repo": "guyuxuan9/tensorllm"
+    },
+    "2501.17030": {
+      "repo": null
+    },
+    "2501.17887": {
+      "repo": null
+    },
+    "2501.18101": {
+      "repo": null
+    },
+    "2501.18585": {
+      "repo": null
+    },
+    "2501.18845": {
+      "repo": null
+    },
+    "2501.19393": {
+      "repo": "simplescaling/s1"
+    },
+    "2502.00674": {
+      "repo": null
+    },
+    "2502.01061": {
+      "repo": null
+    },
+    "2502.02390": {
+      "repo": null
+    },
+    "2502.03373": {
+      "repo": "eddycmu/demystify-long-cot"
+    },
+    "2502.03387": {
+      "repo": "gair-nlp/limo"
+    },
+    "2502.03671": {
+      "repo": null
+    },
+    "2502.03824": {
+      "repo": "kmswin1/syntriever"
+    },
+    "2502.04180": {
+      "repo": "bingreeky/MaAS"
+    },
+    "2502.04384": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.04404": {
+      "repo": "LAMDASZ-ML/Self-Backtracking"
+    },
+    "2502.04463": {
+      "repo": "Zanette-Labs/efficient-reasoning"
+    },
+    "2502.05171": {
+      "repo": "seal-rg/recurrent-pretraining"
+    },
+    "2502.06034": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.06049": {
+      "repo": "convergence-ai/lm2"
+    },
+    "2502.06772": {
+      "repo": null
+    },
+    "2502.06773": {
+      "repo": "GuanghaoYe/Emergence-of-Thinking"
+    },
+    "2502.06807": {
+      "repo": null
+    },
+    "2502.07776": {
+      "repo": "chenchenygu/auditing-prompt-caching"
+    },
+    "2502.08235": {
+      "repo": "alexcuadron/thinkingagent"
+    },
+    "2502.09992": {
+      "repo": "ml-gsai/llada"
+    },
+    "2502.11089": {
+      "repo": null
+    },
+    "2502.12110": {
+      "repo": "wujiangxu/agenticmemory"
+    },
+    "2502.12115": {
+      "repo": "openai/swelancer-benchmark"
+    },
+    "2502.13842": {
+      "repo": null
+    },
+    "2502.14815": {
+      "repo": "LLMSELECTOR/LLMSELECTOR"
+    },
+    "2502.15589": {
+      "repo": "zjunlp/LightThinker"
+    },
+    "2502.16111": {
+      "repo": null
+    },
+    "2502.16797": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.16923": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.17424": {
+      "repo": "emergent-misalignment/emergent-misalignment"
+    },
+    "2502.17437": {
+      "repo": "LTH14/fractalgen"
+    },
+    "2502.17504": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.17651": {
+      "repo": null,
+      "absent": true
+    },
+    "2502.18394": {
+      "repo": "jacobfa/fft"
+    },
+    "2502.18600": {
+      "repo": "sileix/chain-of-draft"
+    },
+    "2502.19328": {
+      "repo": "THU-KEG/Agentic-Reward-Modeling"
+    },
+    "2502.21321": {
+      "repo": "mbzuai-oryx/awesome-llm-post-training"
+    },
+    "2503.00735": {
+      "repo": "Tufalabs/MITIntegrationBee"
+    },
+    "2503.01067": {
+      "repo": null
+    },
+    "2503.01141": {
+      "repo": null
+    },
+    "2503.01307": {
+      "repo": "kanishkg/cognitive-behaviors"
+    },
+    "2503.02113": {
+      "repo": null
+    },
+    "2503.02875": {
+      "repo": "1KE-JI/UPFT"
+    },
+    "2503.04412": {
+      "repo": "SakanaAI/treequest"
+    },
+    "2503.06072": {
+      "repo": "Mr-Tieguigui/LLM-Post-Training"
+    },
+    "2503.09516": {
+      "repo": "PeterGriffinJin/Search-R1"
+    },
+    "2503.09572": {
+      "repo": null
+    },
+    "2503.09573": {
+      "repo": "kuleshov-group/bd3lms"
+    },
+    "2503.10061": {
+      "repo": null
+    },
+    "2503.10622": {
+      "repo": "jiachenzhu/DyT"
+    },
+    "2503.10814": {
+      "repo": null
+    },
+    "2503.11301": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.11486": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.13551": {
+      "repo": "tengwang0318/hierarchial_reward_model"
+    },
+    "2503.14023": {
+      "repo": null
+    },
+    "2503.14432": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.14476": {
+      "repo": "BytedTsinghua-SIA/DAPO"
+    },
+    "2503.15265": {
+      "repo": "zhaorw02/DeepMesh"
+    },
+    "2503.15299": {
+      "repo": null
+    },
+    "2503.16416": {
+      "repo": null
+    },
+    "2503.16419": {
+      "repo": "Eclipsess/Awesome-Efficient-Reasoning-LLMs"
+    },
+    "2503.16774": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.16779": {
+      "repo": "fairyshine/chain-of-tools"
+    },
+    "2503.17523": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.18102": {
+      "repo": "SamuelSchmidgall/AgentLaboratory"
+    },
+    "2503.20201": {
+      "repo": "sentient-agi/OpenDeepSearch"
+    },
+    "2503.21760": {
+      "repo": null
+    },
+    "2503.22678": {
+      "repo": "MAXNORM8650/MedAgentSim"
+    },
+    "2503.22708": {
+      "repo": null,
+      "absent": true
+    },
+    "2503.23513": {
+      "repo": null
+    },
+    "2503.24322": {
+      "repo": null
+    },
+    "2503.24377": {
+      "repo": "DevoAllen/Awesome-Reasoning-Economy-Papers"
+    },
+    "2504.00698": {
+      "repo": null
+    },
+    "2504.00810": {
+      "repo": "efficientscaling/Z1"
+    },
+    "2504.01848": {
+      "repo": "openai/preparedness"
+    },
+    "2504.01990": {
+      "repo": "FoundationAgents/awesome-foundation-agents"
+    },
+    "2504.02732": {
+      "repo": null
+    },
+    "2504.03137": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.03553": {
+      "repo": "zjunlp/KnowSelf"
+    },
+    "2504.04022": {
+      "repo": "Essential-AI/reflection"
+    },
+    "2504.05185": {
+      "repo": "ai-wand/concise-reasoning"
+    },
+    "2504.07096": {
+      "repo": "allenai/infinigram-api"
+    },
+    "2504.08703": {
+      "repo": "amazon-science/swe-polybench"
+    },
+    "2504.08725": {
+      "repo": "facebookresearch/docagent"
+    },
+    "2504.09037": {
+      "repo": null
+    },
+    "2504.09407": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.09639": {
+      "repo": "a-m-team/a-m-models"
+    },
+    "2504.09723": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.09848": {
+      "repo": null
+    },
+    "2504.09858": {
+      "repo": null
+    },
+    "2504.10157": {
+      "repo": "fudandisc/socioverse"
+    },
+    "2504.10458": {
+      "repo": "ritzz-ai/gui-r1"
+    },
+    "2504.11844": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.12216": {
+      "repo": "dllm-reasoning/d1"
+    },
+    "2504.12285": {
+      "repo": null
+    },
+    "2504.13837": {
+      "repo": "LeapLabTHU/limit-of-RLVR"
+    },
+    "2504.15777": {
+      "repo": "shangshang-wang/Tina"
+    },
+    "2504.16072": {
+      "repo": "NVlabs/describe-anything"
+    },
+    "2504.16084": {
+      "repo": "PRIME-RL/TTRL"
+    },
+    "2504.17192": {
+      "repo": "going-doer/Paper2Code"
+    },
+    "2504.18260": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.19394": {
+      "repo": "tamassimonds/LLMRocketFlightSim"
+    },
+    "2504.19413": {
+      "repo": "mem0ai/mem0"
+    },
+    "2504.19720": {
+      "repo": "zenrran4nlp/Awesome-LLM-Inference-Serving"
+    },
+    "2504.20571": {
+      "repo": "ypwang61/One-Shot-RLVR"
+    },
+    "2504.20734": {
+      "repo": "wgcyeo/UniversalRAG"
+    },
+    "2504.20879": {
+      "repo": null
+    },
+    "2504.21233": {
+      "repo": null
+    },
+    "2504.21252": {
+      "repo": null,
+      "absent": true
+    },
+    "2504.21776": {
+      "repo": "RUC-NLPIR/WebThinker"
+    },
+    "2504.21801": {
+      "repo": "deepseek-ai/deepseek-prover-v2"
+    },
+    "2505.00024": {
+      "repo": null,
+      "absent": true
+    },
+    "2505.00949": {
+      "repo": null
+    },
+    "2505.02222": {
+      "repo": null
+    },
+    "2505.02387": {
+      "repo": "RM-R1-UIUC/RM-R1"
+    },
+    "2505.03335": {
+      "repo": "LeapLabTHU/Absolute-Zero-Reasoner"
+    },
+    "2505.03997": {
+      "repo": null,
+      "absent": true
+    },
+    "2505.04588": {
+      "repo": "Alibaba-nlp/ZeroSearch"
+    },
+    "2505.05885": {
+      "repo": null,
+      "absent": true
+    },
+    "2505.06120": {
+      "repo": "microsoft/lost_in_conversation"
+    },
+    "2505.07865": {
+      "repo": null,
+      "absent": true
+    },
+    "2505.07903": {
+      "repo": null
+    },
+    "2505.08311": {
+      "repo": null
+    },
+    "2505.10320": {
+      "repo": null
+    },
+    "2505.10468": {
+      "repo": null
+    },
+    "2505.10543": {
+      "repo": "ann-w/towards-a-deeper-understanding-of-reasoning-capabilities-in-large-language-models"
+    },
+    "2505.11409": {
+      "repo": "yix8/VisualPlanning"
+    },
+    "2505.11423": {
+      "repo": null
+    },
+    "2505.11831": {
+      "repo": null
+    },
+    "2505.13417": {
+      "repo": "THU-KEG/AdaptThink"
+    },
+    "2505.13840": {
+      "repo": "DLYuanGod/EfficientLLM"
+    },
+    "2505.14963": {
+      "repo": null
+    },
+    "2505.15817": {
+      "repo": "zhengkid/Truth_Table_Logical_Reasoning"
+    },
+    "2505.15879": {
+      "repo": "eric-ai-lab/GRIT"
+    },
+    "2505.16282": {
+      "repo": "dvlab-research/arpo"
+    },
+    "2505.17117": {
+      "repo": null
+    },
+    "2505.17667": {
+      "repo": "Tongyi-Zhiwen/QwenLong-L1"
+    },
+    "2505.19590": {
+      "repo": "sunblaze-ucb/Intuitor"
+    },
+    "2505.20286": {
+      "repo": "charlesq9/alita"
+    },
+    "2505.22101": {
+      "repo": null
+    },
+    "2505.22954": {
+      "repo": "jennyzzt/dgm"
+    },
+    "2505.23006": {
+      "repo": null
+    },
+    "2505.24034": {
+      "repo": null
+    },
+    "2505.24832": {
+      "repo": null
+    },
+    "2505.24863": {
+      "repo": "ASTRAL-Group/AlphaOne"
+    },
+    "2506.01716": {
+      "repo": null
+    },
+    "2506.01937": {
+      "repo": null
+    },
+    "2506.02126": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.02153": {
+      "repo": null
+    },
+    "2506.03011": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.04178": {
+      "repo": "open-thoughts/open-thoughts"
+    },
+    "2506.05209": {
+      "repo": "r-three/common-pile"
+    },
+    "2506.06105": {
+      "repo": "sakanaai/text-to-lora"
+    },
+    "2506.06576": {
+      "repo": null
+    },
+    "2506.08007": {
+      "repo": null
+    },
+    "2506.08388": {
+      "repo": null
+    },
+    "2506.09050": {
+      "repo": "SakanaAI/ALE-Bench"
+    },
+    "2506.09790": {
+      "repo": null
+    },
+    "2506.10380": {
+      "repo": "yxh-y/tablerag"
+    },
+    "2506.10910": {
+      "repo": null
+    },
+    "2506.10943": {
+      "repo": null
+    },
+    "2506.11555": {
+      "repo": null
+    },
+    "2506.12115": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.12365": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.14761": {
+      "repo": "facebookresearch/lingua"
+    },
+    "2506.15674": {
+      "repo": null
+    },
+    "2506.15799": {
+      "repo": null
+    },
+    "2506.15841": {
+      "repo": null
+    },
+    "2506.17188": {
+      "repo": null
+    },
+    "2506.17298": {
+      "repo": null
+    },
+    "2506.18032": {
+      "repo": null
+    },
+    "2506.18096": {
+      "repo": "ai-agents-2030/awesome-deep-research-agent"
+    },
+    "2506.19676": {
+      "repo": "theshi-1128/awesome-agent-communication-security"
+    },
+    "2506.20430": {
+      "repo": null
+    },
+    "2506.21495": {
+      "repo": null
+    },
+    "2506.21552": {
+      "repo": null
+    },
+    "2506.21734": {
+      "repo": null
+    },
+    "2506.21931": {
+      "repo": null
+    },
+    "2506.22146": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.22837": {
+      "repo": null,
+      "absent": true
+    },
+    "2506.23260": {
+      "repo": null
+    },
+    "2507.01903": {
+      "repo": null
+    },
+    "2507.01921": {
+      "repo": null
+    },
+    "2507.02259": {
+      "repo": null
+    },
+    "2507.02554": {
+      "repo": null
+    },
+    "2507.05707": {
+      "repo": "StigLidu/DualDistill"
+    },
+    "2507.05714": {
+      "repo": null
+    },
+    "2507.06203": {
+      "repo": "multimodal-art-projection/LatentCoT-Horizon"
+    },
+    "2507.06952": {
+      "repo": null
+    },
+    "2507.07955": {
+      "repo": null
+    },
+    "2507.07969": {
+      "repo": null,
+      "absent": true
+    },
+    "2507.08794": {
+      "repo": null
+    },
+    "2507.10541": {
+      "repo": "opendatalab/REST"
+    },
+    "2507.11473": {
+      "repo": null
+    },
+    "2507.12472": {
+      "repo": null,
+      "absent": true
+    },
+    "2507.12507": {
+      "repo": null
+    },
+    "2507.13334": {
+      "repo": "Meirtz/Awesome-Context-Engineering"
+    },
+    "2507.13575": {
+      "repo": null,
+      "absent": true
+    },
+    "2507.14417": {
+      "repo": "safety-research/inverse-scaling-ttc"
+    },
+    "2507.14447": {
+      "repo": null
+    },
+    "2507.14805": {
+      "repo": null
+    },
+    "2507.15015": {
+      "repo": null,
+      "absent": true
+    },
+    "2507.15855": {
+      "repo": null
+    },
+    "2507.16003": {
+      "repo": null
+    },
+    "2507.16075": {
+      "repo": null
+    },
+    "2507.16217": {
+      "repo": null,
+      "absent": true
+    },
+    "2507.18071": {
+      "repo": null
+    },
+    "2507.19457": {
+      "repo": "gepa-ai/gepa"
+    },
+    "2507.19595": {
+      "repo": null
+    },
+    "2507.20673": {
+      "repo": "callsys/GMPO"
+    },
+    "2507.21046": {
+      "repo": "CharlesQ9/Self-Evolving-Agents"
+    },
+    "2507.21206": {
+      "repo": "SafeRL-Lab/agentic-web"
+    },
+    "2507.21509": {
+      "repo": "safety-research/persona_vectors"
+    },
+    "2507.21892": {
+      "repo": "LHRLAB/Graph-R1"
+    },
+    "2507.22229": {
+      "repo": "facebookresearch/algonauts-2025"
+    },
+    "2507.22291": {
+      "repo": null
+    },
+    "2507.22887": {
+      "repo": null
+    },
+    "2508.00217": {
+      "repo": null
+    },
+    "2508.00429": {
+      "repo": null,
+      "absent": true
+    },
+    "2508.00669": {
+      "repo": null
+    },
+    "2508.01191": {
+      "repo": "ChengshuaiZhao0/DataAlchemy"
+    },
+    "2508.01781": {
+      "repo": null,
+      "absent": true
+    },
+    "2508.02193": {
+      "repo": null
+    },
+    "2508.02694": {
+      "repo": "OPPO-PersonalAI/OAgents"
+    },
+    "2508.03923": {
+      "repo": null
+    },
+    "2508.04604": {
+      "repo": null
+    },
+    "2508.06471": {
+      "repo": "zai-org/GLM-4.5"
+    },
+    "2508.06813": {
+      "repo": "morganstanley/MSML"
+    },
+    "2508.07407": {
+      "repo": "EvoAgentX/Awesome-Self-Evolving-Agents"
+    },
+    "2508.07976": {
+      "repo": "inclusionAI/ASearcher"
+    },
+    "2508.08221": {
+      "repo": null
+    },
+    "2508.08224": {
+      "repo": null,
+      "absent": true
+    },
+    "2508.08285": {
+      "repo": null,
+      "absent": true
+    },
+    "2508.08712": {
+      "repo": "zhanglingzhe0820/Awesome-Parallel-Text-Generation"
+    },
+    "2508.09123": {
+      "repo": "xlang-ai/OpenCUA"
+    },
+    "2508.09124": {
+      "repo": null
+    },
+    "2508.09736": {
+      "repo": "ByteDance-Seed/m3-agent"
+    },
+    "2508.09834": {
+      "repo": "weigao266/Awesome-Efficient-Arch"
+    },
+    "2508.11386": {
+      "repo": null
+    },
+    "2508.12631": {
+      "repo": null
+    },
+    "2508.13142": {
+      "repo": "EvolvingLMMs-Lab/EASI"
+    },
+    "2508.13167": {
+      "repo": "OPPO-PersonalAI/Agent_Foundation_Models"
+    },
+    "2508.14040": {
+      "repo": "thudm/ComputerRL"
+    },
+    "2508.14111": {
+      "repo": "AgenticScience/Awesome-Agent-Scientists"
+    },
+    "2508.15260": {
+      "repo": "facebookresearch/deepconf"
+    },
+    "2508.15760": {
+      "repo": null
+    },
+    "2508.15884": {
+      "repo": null
+    },
+    "2508.16153": {
+      "repo": "Agent-on-the-Fly/AgentFly"
+    },
+    "2508.17068": {
+      "repo": "Coral-Protocol/Anemoi"
+    },
+    "2508.17511": {
+      "repo": null
+    },
+    "2508.17580": {
+      "repo": "uq-project/UQ"
+    },
+    "2508.18226": {
+      "repo": null
+    },
+    "2508.18255": {
+      "repo": null
+    },
+    "2508.18260": {
+      "repo": null
+    },
+    "2508.18929": {
+      "repo": null
+    },
+    "2508.19828": {
+      "repo": null
+    },
+    "2508.20722": {
+      "repo": "microsoft/rStar"
+    },
+    "2508.21038": {
+      "repo": "google-deepmind/limit"
+    },
+    "2508.21141": {
+      "repo": null
+    },
+    "2509.00244": {
+      "repo": "NVlabs/UniversalDeepResearch"
+    },
+    "2509.01092": {
+      "repo": null
+    },
+    "2509.02350": {
+      "repo": "digailab/awesome-llm-implicit-reasoning"
+    },
+    "2509.03646": {
+      "repo": "TIGER-AI-Lab/Hierarchical-Reasoner"
+    },
+    "2509.04439": {
+      "repo": "matt-seb-ho/arc_memo"
+    },
+    "2509.04475": {
+      "repo": null
+    },
+    "2509.04903": {
+      "repo": null
+    },
+    "2509.05396": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.06283": {
+      "repo": null
+    },
+    "2509.06870": {
+      "repo": null
+    },
+    "2509.07604": {
+      "repo": "MBZUAI-IFM/K2-Think-SFT"
+    },
+    "2509.08755": {
+      "repo": "WooooDyy/AgentGym-RL"
+    },
+    "2509.08827": {
+      "repo": "TsinghuaC3I/Awesome-RL-for-LRMs"
+    },
+    "2509.10414": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.10446": {
+      "repo": "THUDM/DeepDive"
+    },
+    "2509.10697": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.11826": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.13311": {
+      "repo": null
+    },
+    "2509.13351": {
+      "repo": null
+    },
+    "2509.13805": {
+      "repo": null
+    },
+    "2509.14185": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.14252": {
+      "repo": "rbalestr-lab/llm-jepa"
+    },
+    "2509.14260": {
+      "repo": null
+    },
+    "2509.14476": {
+      "repo": "apple/ml-atoken"
+    },
+    "2509.18063": {
+      "repo": null,
+      "absent": true
+    },
+    "2509.19894": {
+      "repo": "inclusionAI/PromptCoT"
+    },
+    "2509.20021": {
+      "repo": null
+    },
+    "2509.20357": {
+      "repo": null
+    },
+    "2509.22230": {
+      "repo": null
+    },
+    "2509.23045": {
+      "repo": null
+    },
+    "2509.24317": {
+      "repo": null
+    },
+    "2509.24527": {
+      "repo": null
+    },
+    "2509.25137": {
+      "repo": null
+    },
+    "2509.25188": {
+      "repo": null
+    },
+    "2509.25454": {
+      "repo": "smiles724/DeepSearch"
+    },
+    "2509.26544": {
+      "repo": null,
+      "absent": true
+    },
+    "2510.01279": {
+      "repo": null,
+      "absent": true
+    },
+    "2510.02250": {
+      "repo": null
+    },
+    "2510.04618": {
+      "repo": "ace-agent/ace"
+    },
+    "2510.04871": {
+      "repo": "SamsungSAILMontreal/TinyRecursiveModels"
+    },
+    "2510.05024": {
+      "repo": null
+    },
+    "2510.05174": {
+      "repo": null,
+      "absent": true
+    },
+    "2510.06105": {
+      "repo": "batu-el/molochs-bargain"
+    },
+    "2510.06499": {
+      "repo": "SalesforceAIResearch/PretrainRL-pipeline"
+    },
+    "2510.06557": {
+      "repo": "McGill-NLP/the-markovian-thinker"
+    },
+    "2510.07242": {
+      "repo": null
+    },
+    "2510.07312": {
+      "repo": null
+    },
+    "2510.07318": {
+      "repo": "ByteDance-Seed/AHN"
+    },
+    "2510.07686": {
+      "repo": null,
+      "absent": true
+    },
+    "2510.11701": {
+      "repo": null
+    },
+    "2510.11977": {
+      "repo": null
+    },
+    "2510.12773": {
+      "repo": "parameterlab/dr-llm"
+    },
+    "2510.13786": {
+      "repo": null
+    },
+    "2510.13928": {
+      "repo": "llm-brain-rot/llm-brain-rot"
+    },
+    "2510.14901": {
+      "repo": "aakaran/reasoning-with-sampling"
+    },
+    "2510.14973": {
+      "repo": null
+    },
+    "2510.15103": {
+      "repo": null
+    },
+    "2510.16932": {
+      "repo": null
+    },
+    "2510.17797": {
+      "repo": "SalesforceAIResearch/enterprise-deep-research"
+    },
+    "2510.18234": {
+      "repo": "deepseek-ai/DeepSeek-OCR"
+    },
+    "2510.18855": {
+      "repo": "inclusionAI/Ring-V2"
+    },
+    "2510.19386": {
+      "repo": "MadeAgents/mobile-use"
+    },
+    "2510.19506": {
+      "repo": "huangcb01/lookahead-routing"
+    },
+    "2510.23038": {
+      "repo": null
+    },
+    "2510.23595": {
+      "repo": "ulab-uiuc/Multi-agent-evolve"
+    },
+    "2510.24081": {
+      "repo": null
+    },
+    "2510.24699": {
+      "repo": null
+    },
+    "2510.24702": {
+      "repo": "neulab/agent-data-protocol"
+    },
+    "2510.25320": {
+      "repo": null,
+      "absent": true
+    },
+    "2510.26493": {
+      "repo": null
+    },
+    "2510.26658": {
+      "repo": null
+    },
+    "2510.26692": {
+      "repo": "MoonshotAI/Kimi-Linear"
+    },
+    "2510.26745": {
+      "repo": null
+    },
+    "2510.26788": {
+      "repo": "sail-sg/Precision-RL"
+    },
+    "2510.27246": {
+      "repo": null
+    },
+    "2511.00617": {
+      "repo": null,
+      "absent": true
+    },
+    "2511.01758": {
+      "repo": null
+    },
+    "2511.01846": {
+      "repo": "google-deepmind/superhuman"
+    },
+    "2511.01854": {
+      "repo": null
+    },
+    "2511.02303": {
+      "repo": null
+    },
+    "2511.02864": {
+      "repo": null
+    },
+    "2511.03276": {
+      "repo": "JinjieNi/MegaDLMs"
+    },
+    "2511.03773": {
+      "repo": null
+    },
+    "2511.05933": {
+      "repo": null
+    },
+    "2511.07885": {
+      "repo": "HazyResearch/intelligence-per-watt"
+    },
+    "2511.08923": {
+      "repo": null
+    },
+    "2511.09030": {
+      "repo": null
+    },
+    "2511.12869": {
+      "repo": null
+    },
+    "2511.12876": {
+      "repo": "hey0223/LAMP"
+    },
+    "2511.14617": {
+      "repo": null
+    },
+    "2511.15703": {
+      "repo": "InternLM/ARC-VL"
+    },
+    "2511.16004": {
+      "repo": null,
+      "absent": true
+    },
+    "2511.16652": {
+      "repo": null
+    },
+    "2511.16660": {
+      "repo": "pkargupta/cognitive_foundations"
+    },
+    "2511.16931": {
+      "repo": null
+    },
+    "2511.17006": {
+      "repo": null
+    },
+    "2511.18659": {
+      "repo": "apple/ml-clara"
+    },
+    "2511.19333": {
+      "repo": null
+    },
+    "2511.19417": {
+      "repo": null
+    },
+    "2511.20639": {
+      "repo": "Gen-Verse/LatentMAS"
+    },
+    "2512.01939": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.01948": {
+      "repo": "OPPO-PersonalAI/FINDER_DEFT"
+    },
+    "2512.03262": {
+      "repo": null
+    },
+    "2512.03746": {
+      "repo": "ByteDance-BandAI/CodeVision"
+    },
+    "2512.04047": {
+      "repo": null
+    },
+    "2512.04388": {
+      "repo": null
+    },
+    "2512.05356": {
+      "repo": null
+    },
+    "2512.05765": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.06266": {
+      "repo": null
+    },
+    "2512.06721": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.07783": {
+      "repo": "Interplay-LM-Reasoning/Interplay-LM-Reasoning"
+    },
+    "2512.07828": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.07921": {
+      "repo": "HKUDS/DeepCode"
+    },
+    "2512.08270": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.08296": {
+      "repo": null
+    },
+    "2512.09882": {
+      "repo": "Stanford-Trinity/ARTEMIS"
+    },
+    "2512.10047": {
+      "repo": null
+    },
+    "2512.10398": {
+      "repo": null
+    },
+    "2512.10685": {
+      "repo": "apple/ml-sharp"
+    },
+    "2512.10791": {
+      "repo": null
+    },
+    "2512.10938": {
+      "repo": "zlab-princeton/Derf"
+    },
+    "2512.13607": {
+      "repo": null
+    },
+    "2512.13898": {
+      "repo": null
+    },
+    "2512.14012": {
+      "repo": null
+    },
+    "2512.14080": {
+      "repo": null
+    },
+    "2512.14693": {
+      "repo": "UbiquantAI/URM"
+    },
+    "2512.16649": {
+      "repo": "thunlp/JustRL"
+    },
+    "2512.16848": {
+      "repo": null
+    },
+    "2512.18202": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.18470": {
+      "repo": "bdqnghi/SWE-EVO"
+    },
+    "2512.18552": {
+      "repo": null
+    },
+    "2512.19466": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.20184": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.20491": {
+      "repo": "stepfun-ai/StepDeepResearch"
+    },
+    "2512.21309": {
+      "repo": null,
+      "absent": true
+    },
+    "2512.21782": {
+      "repo": null
+    },
+    "2512.23707": {
+      "repo": null
+    },
+    "2512.24601": {
+      "repo": "alexzhang13/rlm"
+    },
+    "2512.24880": {
+      "repo": null
+    },
+    "2601.00417": {
+      "repo": "yifanzhang-pro/deep-delta-learning"
+    },
+    "2601.01885": {
+      "repo": null
+    },
+    "2601.02553": {
+      "repo": "aiming-lab/SimpleMem"
+    },
+    "2601.03192": {
+      "repo": null
+    },
+    "2601.03335": {
+      "repo": null
+    },
+    "2601.05111": {
+      "repo": "ModalityDance/Awesome-Agent-as-a-Judge"
+    },
+    "2601.05230": {
+      "repo": null
+    },
+    "2601.05242": {
+      "repo": "NVlabs/GDPO"
+    },
+    "2601.07055": {
+      "repo": "facebookresearch/drzero"
+    },
+    "2601.07136": {
+      "repo": null
+    },
+    "2601.07190": {
+      "repo": null
+    },
+    "2601.07577": {
+      "repo": null
+    },
+    "2601.08584": {
+      "repo": null
+    },
+    "2601.10825": {
+      "repo": null
+    },
+    "2601.11653": {
+      "repo": null
+    },
+    "2601.11868": {
+      "repo": "laude-institute/terminal-bench"
+    },
+    "2601.12307": {
+      "repo": null
+    },
+    "2601.12886": {
+      "repo": null,
+      "absent": true
+    },
+    "2601.13597": {
+      "repo": null,
+      "absent": true
+    },
+    "2601.14027": {
+      "repo": "project-numina/numina-lean-agent"
+    },
+    "2601.14192": {
+      "repo": "yxf203/Awesome-Efficient-Agents"
+    },
+    "2601.14351": {
+      "repo": null
+    },
+    "2601.16238": {
+      "repo": "NVLabs/vibetensor"
+    },
+    "2601.20048": {
+      "repo": null
+    },
+    "2601.20245": {
+      "repo": null
+    },
+    "2601.20540": {
+      "repo": "Robbyant/lingbot-world"
+    },
+    "2601.20802": {
+      "repo": "lasgroup/SDPO"
+    },
+    "2601.21112": {
+      "repo": null,
+      "absent": true
+    },
+    "2601.21343": {
+      "repo": null
+    },
+    "2601.21571": {
+      "repo": "neilrathi/token-filtering"
+    },
+    "2601.22001": {
+      "repo": null
+    },
+    "2601.22401": {
+      "repo": null
+    },
+    "2602.01465": {
+      "repo": null
+    },
+    "2602.02007": {
+      "repo": null
+    },
+    "2602.02603": {
+      "repo": null
+    },
+    "2602.02704": {
+      "repo": null
+    },
+    "2602.02751": {
+      "repo": null
+    },
+    "2602.03442": {
+      "repo": "Ayanami0730/arag"
+    },
+    "2602.03695": {
+      "repo": null
+    },
+    "2602.03837": {
+      "repo": null
+    },
+    "2602.03955": {
+      "repo": "AIFrontierLab/AgentArk"
+    },
+    "2602.04118": {
+      "repo": null
+    },
+    "2602.06960": {
+      "repo": "ZJU-REAL/InftyThink-Plus"
+    },
+    "2602.07755": {
+      "repo": "zksha/alma"
+    },
+    "2602.08234": {
+      "repo": "aiming-lab/SkillRL"
+    },
+    "2602.08676": {
+      "repo": "inclusionAI/LLaDA2.X"
+    },
+    "2602.09372": {
+      "repo": null
+    },
+    "2602.11865": {
+      "repo": null
+    },
+    "2602.11931": {
+      "repo": "raypretam/adaptive_llm_selection"
+    },
+    "2602.11964": {
+      "repo": null
+    },
+    "2602.11988": {
+      "repo": null
+    },
+    "2602.12662": {
+      "repo": "rhyang2021/CogRouter"
+    },
+    "2602.12670": {
+      "repo": "benchflow-ai/skillsbench"
+    },
+    "2602.13258": {
+      "repo": null,
+      "absent": true
+    },
+    "2602.13517": {
+      "repo": null
+    },
+    "2602.14299": {
+      "repo": "MingLiiii/Moltbook_Socialization"
+    },
+    "2602.14337": {
+      "repo": "finyorko/longcli-bench"
+    },
+    "2602.15029": {
+      "repo": null
+    },
+    "2602.15763": {
+      "repo": "zai-org/GLM-5"
+    },
+    "2602.15902": {
+      "repo": null
+    },
+    "2602.16154": {
+      "repo": null
+    },
+    "2602.16173": {
+      "repo": "facebookresearch/PAHF"
+    },
+    "2602.16313": {
+      "repo": null
+    },
+    "2602.16485": {
+      "repo": null
+    },
+    "2602.16928": {
+      "repo": null
+    },
+    "2602.17100": {
+      "repo": null
+    },
+    "2602.20426": {
+      "repo": null
+    },
+    "2602.20478": {
+      "repo": null,
+      "absent": true
+    },
+    "2602.20502": {
+      "repo": null,
+      "absent": true
+    },
+    "2602.23320": {
+      "repo": null
+    },
+    "2602.23720": {
+      "repo": null
+    },
+    "2603.00142": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.02473": {
+      "repo": "boqiny/memory-probe"
+    },
+    "2603.03212": {
+      "repo": "NeuroSkill-com/skill"
+    },
+    "2603.03329": {
+      "repo": null
+    },
+    "2603.03975": {
+      "repo": "microsoft/Phi-4-reasoning-vision-15B"
+    },
+    "2603.04257": {
+      "repo": "Accenture/MemexRL"
+    },
+    "2603.04384": {
+      "repo": null
+    },
+    "2603.04448": {
+      "repo": "zjunlp/SkillNet"
+    },
+    "2603.05218": {
+      "repo": null
+    },
+    "2603.05294": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.05344": {
+      "repo": "opendev-to/opendev"
+    },
+    "2603.05451": {
+      "repo": null
+    },
+    "2603.05498": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.08391": {
+      "repo": null
+    },
+    "2603.15031": {
+      "repo": "MoonshotAI/Attention-Residuals"
+    },
+    "2603.15371": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.19461": {
+      "repo": "facebookresearch/Hyperagents"
+    },
+    "2603.20432": {
+      "repo": null
+    },
+    "2603.20639": {
+      "repo": null
+    },
+    "2603.21383": {
+      "repo": null
+    },
+    "2603.21489": {
+      "repo": "JiayiGeng/CAID"
+    },
+    "2603.22386": {
+      "repo": "IBM/awesome-agentic-workflow-optimization"
+    },
+    "2603.23234": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.23971": {
+      "repo": null
+    },
+    "2603.24477": {
+      "repo": null
+    },
+    "2603.24511": {
+      "repo": "romovpa/claudini"
+    },
+    "2603.24621": {
+      "repo": null
+    },
+    "2603.25723": {
+      "repo": null
+    },
+    "2603.26993": {
+      "repo": null,
+      "absent": true
+    },
+    "2603.28052": {
+      "repo": null
+    },
+    "2603.28990": {
+      "repo": null
+    },
+    "2603.29493": {
+      "repo": null
+    },
+    "2604.02460": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.03679": {
+      "repo": null
+    },
+    "2604.04323": {
+      "repo": "UCSB-NLP-Chang/Skill-Usage"
+    },
+    "2604.04503": {
+      "repo": "ECNU-SII/MIA"
+    },
+    "2604.05013": {
+      "repo": null
+    },
+    "2604.05081": {
+      "repo": null
+    },
+    "2604.06240": {
+      "repo": null
+    },
+    "2604.06425": {
+      "repo": null
+    },
+    "2604.08567": {
+      "repo": "Korde-AI/Multi-User-LLM-Agent"
+    },
+    "2604.12108": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.12162": {
+      "repo": null
+    },
+    "2604.12374": {
+      "repo": null
+    },
+    "2604.13018": {
+      "repo": "AweAI-Team/AiScientist"
+    },
+    "2604.13318": {
+      "repo": null
+    },
+    "2604.14004": {
+      "repo": "KangsanKim07/MemoryTransferLearning"
+    },
+    "2604.14191": {
+      "repo": null
+    },
+    "2604.15034": {
+      "repo": null
+    },
+    "2604.15082": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.15771": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.18005": {
+      "repo": null
+    },
+    "2604.18131": {
+      "repo": "Bklight999/world-knowledge"
+    },
+    "2604.18509": {
+      "repo": null
+    },
+    "2604.20158": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.20987": {
+      "repo": "wuxiyang1996/cos-play"
+    },
+    "2604.21590": {
+      "repo": "haruhi-sudo/data_synth_and_rl"
+    },
+    "2604.21691": {
+      "repo": null
+    },
+    "2604.22446": {
+      "repo": "1mancompany/OneManCompany"
+    },
+    "2604.22748": {
+      "repo": "matrix-agent/awesome-agentic-world-modeling"
+    },
+    "2604.24026": {
+      "repo": null
+    },
+    "2604.24881": {
+      "repo": null
+    },
+    "2604.25067": {
+      "repo": null
+    },
+    "2604.25850": {
+      "repo": null
+    },
+    "2604.25917": {
+      "repo": "RecursiveMAS/RecursiveMAS"
+    },
+    "2604.26622": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.26649": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.27707": {
+      "repo": null,
+      "absent": true
+    },
+    "2604.28181": {
+      "repo": null
+    },
+    "2605.00424": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.02396": {
+      "repo": "wjn1996/HeavySkill"
+    },
+    "2605.02572": {
+      "repo": null
+    },
+    "2605.03310": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.03808": {
+      "repo": "csinva/agentic-imodels"
+    },
+    "2605.06546": {
+      "repo": null
+    },
+    "2605.06554": {
+      "repo": "ighoshsubho/lighthouse-attention"
+    },
+    "2605.06651": {
+      "repo": null
+    },
+    "2605.08060": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.08083": {
+      "repo": "zhengkid/AutoTTS"
+    },
+    "2605.12290": {
+      "repo": "NousResearch/neural-steering"
+    },
+    "2605.12357": {
+      "repo": "declare-lab/delta-Mem"
+    },
+    "2605.13821": {
+      "repo": null
+    },
+    "2605.14163": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.14892": {
+      "repo": "mira-ai-lab/awesome-mas-life"
+    },
+    "2605.15156": {
+      "repo": null
+    },
+    "2605.15184": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.15871": {
+      "repo": null
+    },
+    "2605.17292": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.18747": {
+      "repo": "YennNing/Awesome-Code-as-Agent-Harness-Papers"
+    },
+    "2605.20173": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.20579": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.21516": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.22166": {
+      "repo": null
+    },
+    "2605.22391": {
+      "repo": null
+    },
+    "2605.22502": {
+      "repo": null
+    },
+    "2605.22681": {
+      "repo": "SeanWu25/cusp-scientific-foresight"
+    },
+    "2605.23071": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.23904": {
+      "repo": "microsoft/SkillOpt"
+    },
+    "2605.26099": {
+      "repo": null
+    },
+    "2605.26302": {
+      "repo": "VITA-Group/AgingBench"
+    },
+    "2605.27734": {
+      "repo": null
+    },
+    "2605.28655": {
+      "repo": null
+    },
+    "2605.29682": {
+      "repo": null,
+      "absent": true
+    },
+    "2605.30621": {
+      "repo": null
+    },
+    "2605.30785": {
+      "repo": null
+    },
+    "2606.00655": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.01444": {
+      "repo": null
+    },
+    "2606.02113": {
+      "repo": null
+    },
+    "2606.02373": {
+      "repo": "pat-jj/harness-1"
+    },
+    "2606.03303": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.04223": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.05080": {
+      "repo": "autolabhq/autolab"
+    },
+    "2606.05405": {
+      "repo": "rdi-berkeley/agents-last-exam"
+    },
+    "2606.07082": {
+      "repo": null
+    },
+    "2606.07489": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.07513": {
+      "repo": null
+    },
+    "2606.08501": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.09076": {
+      "repo": null
+    },
+    "2606.09079": {
+      "repo": "libertywing/FlashMemory-Deepseek-V4"
+    },
+    "2606.09498": {
+      "repo": null
+    },
+    "2606.09828": {
+      "repo": "microsoft/LatentSpatialMemory"
+    },
+    "2606.13392": {
+      "repo": "MiniMax-AI/MSA"
+    },
+    "2606.13673": {
+      "repo": "NVlabs/SpatialClaw"
+    },
+    "2606.16576": {
+      "repo": null
+    },
+    "2606.16774": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.17645": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.17682": {
+      "repo": "LARK-AI-Lab/Trainee-to-Trainer"
+    },
+    "2606.17929": {
+      "repo": null
+    },
+    "2606.18051": {
+      "repo": null
+    },
+    "2606.18192": {
+      "repo": "Stanford-Advanced-FinTech-Lab-SAFTL/stanford-edgar-filings-dataset"
+    },
+    "2606.18837": {
+      "repo": "linhh29/Skill_MAS"
+    },
+    "2606.19135": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.19370": {
+      "repo": null
+    },
+    "2606.19544": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.19847": {
+      "repo": null
+    },
+    "2606.21228": {
+      "repo": null
+    },
+    "2606.22902": {
+      "repo": null
+    },
+    "2606.23991": {
+      "repo": null
+    },
+    "2606.24530": {
+      "repo": "FrontisAI/NatureBench"
+    },
+    "2606.24775": {
+      "repo": "OpenDataBox/MemoryData"
+    },
+    "2606.25996": {
+      "repo": null
+    },
+    "2606.26294": {
+      "repo": null
+    },
+    "2606.26300": {
+      "repo": null
+    },
+    "2606.26797": {
+      "repo": null
+    },
+    "2606.28277": {
+      "repo": null
+    },
+    "2606.28279": {
+      "repo": null,
+      "absent": true
+    },
+    "2606.30306": {
+      "repo": null
+    },
+    "2606.30317": {
+      "repo": null
+    },
+    "2606.32025": {
+      "repo": null
+    },
+    "2606.32032": {
+      "repo": "yale-nlp/RLMF"
+    },
+    "2607.00272": {
+      "repo": null
+    },
+    "2607.01181": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.01224": {
+      "repo": "autoLearnMem/AutoMem"
+    },
+    "2607.01538": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.02134": {
+      "repo": null
+    },
+    "2607.02303": {
+      "repo": null
+    },
+    "2607.02509": {
+      "repo": null
+    },
+    "2607.04371": {
+      "repo": null
+    },
+    "2607.04763": {
+      "repo": "BaohaoLiao/ReOPD"
+    },
+    "2607.05391": {
+      "repo": "llm-as-a-verifier/llm-as-a-verifier"
+    },
+    "2607.05775": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.06403": {
+      "repo": "robbyant/lingbot-vla-v2"
+    },
+    "2607.06906": {
+      "repo": null
+    },
+    "2607.07534": {
+      "repo": "robbyant/lingbot-world-v2"
+    },
+    "2607.09197": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.09510": {
+      "repo": null
+    },
+    "2607.11881": {
+      "repo": null
+    },
+    "2607.12227": {
+      "repo": "rethinking-harness-evolution/code"
+    },
+    "2607.12747": {
+      "repo": null
+    },
+    "2607.13104": {
+      "repo": "selfimproving-agent/awesome-Self-Improving-Agents"
+    },
+    "2607.13285": {
+      "repo": "Ruhan-Wang/Harness_Handbook"
+    },
+    "2607.13394": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.14611": {
+      "repo": null
+    },
+    "2607.15275": {
+      "repo": null
+    },
+    "2607.15495": {
+      "repo": null
+    },
+    "2607.16072": {
+      "repo": null
+    },
+    "2607.16621": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.17598": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.18476": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.19322": {
+      "repo": "facebookresearch/GAMUT"
+    },
+    "2607.20064": {
+      "repo": null
+    },
+    "2607.20466": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.20548": {
+      "repo": null
+    },
+    "2607.20709": {
+      "repo": null
+    },
+    "2607.21627": {
+      "repo": null
+    },
+    "2607.21653": {
+      "repo": "NVIDIA-NeMo/labs-molt"
+    },
+    "2607.22925": {
+      "repo": null
+    },
+    "2607.23809": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.25816": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.26637": {
+      "repo": null
+    },
+    "2607.27687": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.28576": {
+      "repo": null,
+      "absent": true
+    },
+    "2607.28802": {
+      "repo": null
+    },
+    "2607.28956": {
+      "repo": "KhanCold/merchantbench"
+    },
+    "2607.29377": {
+      "repo": null
+    },
+    "2607.29678": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.01347": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.02276": {
+      "repo": null
+    },
+    "2608.03451": {
+      "repo": "HKUSTDial/DataSpace"
+    },
+    "2608.03874": {
+      "repo": "gtynnn060110-hash/continual-skill-bench-final"
+    },
+    "2608.06370": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.06871": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.07222": {
+      "repo": null
+    },
+    "2608.07885": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.09867": {
+      "repo": null
+    },
+    "2608.10218": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.10296": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.11095": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.11242": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.11727": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.12610": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.13787": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.14036": {
+      "repo": "zhiyuanjiang04/demystify-agent-skills"
+    },
+    "2608.15127": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.16798": {
+      "repo": "ClawGym/ClawGym-Agents"
+    },
+    "2608.16801": {
+      "repo": null
+    },
+    "2608.17528": {
+      "repo": null
+    },
+    "2608.18066": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.18300": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.19013": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.19072": {
+      "repo": null
+    },
+    "2608.20614": {
+      "repo": null
+    },
+    "2608.21690": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.22752": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.23552": {
+      "repo": "PrimeIntellect-ai/prime-agent"
+    },
+    "2608.24735": {
+      "repo": null
+    },
+    "2608.24876": {
+      "repo": "Gen-Verse/Recuris"
+    },
+    "2608.25593": {
+      "repo": "bingreeky/JIT"
+    },
+    "2608.25776": {
+      "repo": null,
+      "absent": true
+    },
+    "2608.26701": {
+      "repo": null,
+      "absent": true
+    }
+  }
+}

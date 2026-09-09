@@ -112,6 +112,19 @@ export type ParadigmRelation = 'reinforces' | 'extends' | 'optimizes' | 'challen
 export type BottleneckFit = 'none' | 'adjacent' | 'direct';
 export type BottleneckImpact = 'negligible' | 'incremental' | 'material' | 'structural';
 
+/** What the paper does to the constraint. Relief was the only thing this
+ *  instrument could see, and that was a hole: a constraint can be moved without
+ *  being reduced. A result that establishes a constraint binds where the field
+ *  assumed it did not, or that first makes one reproducibly measurable, changes
+ *  what everyone must now work on — and used to score as though it had done
+ *  nothing, because it shipped no improvement.
+ *
+ *  `Alignment Faking` (December 2024) is the case: it relieved nothing, scored
+ *  I² 3, and became one of the most consequential empirical results of the
+ *  following year. Two more rows in the same month were caught by the critic
+ *  for the same reason. */
+export type BottleneckAction = 'relieves' | 'reveals' | 'measures' | 'bounds' | 'none';
+
 /** Topic relevance is not relief. A paper can discuss reliability while moving
  *  no deployment constraint; that is `adjacent`, not a high I². */
 export const BOTTLENECK_FIT_CEILING: Record<BottleneckFit, number> = {
@@ -120,13 +133,35 @@ export const BOTTLENECK_FIT_CEILING: Record<BottleneckFit, number> = {
     direct: 10,
 };
 
-/** Materiality is independent of fit. A direct 2% efficiency gain still leaves
- *  the bottleneck where it was and therefore remains an incremental result. */
+/** How far the constraint moved, by whichever action. Independent of fit: a
+ *  direct 2% efficiency gain still leaves the bottleneck where it was and
+ *  therefore remains an incremental result. */
 export const BOTTLENECK_IMPACT_CEILING: Record<BottleneckImpact, number> = {
     negligible: 2,
     incremental: 4,
     material: 7,
     structural: 10,
+};
+
+/** Relief can reach the top of the scale because a constraint that stops
+ *  binding is the strongest thing a paper can do to it. The others are capped
+ *  below it deliberately: knowing a wall is there, or being able to measure how
+ *  far away it is, is worth less than removing it — but it is not worth nothing,
+ *  which is what the instrument used to say. */
+export const BOTTLENECK_ACTION_CEILING: Record<BottleneckAction, number> = {
+    relieves: 10,
+    reveals: 7,
+    measures: 6,
+    bounds: 6,
+    none: 2,
+};
+
+export const BOTTLENECK_ACTION_NOTE: Record<BottleneckAction, string> = {
+    relieves: 'reduces the constraint',
+    reveals: 'shows the constraint binds where it was assumed not to',
+    measures: 'makes the constraint reproducibly measurable',
+    bounds: 'shows how far the current approach can move it',
+    none: 'does not act on the constraint',
 };
 
 /** The band each relation may score on I¹, before the `importance` cap — so a
@@ -139,7 +174,7 @@ export const RELATION_BAND: Record<ParadigmRelation, [number, number]> = {
     inverts: [7, 10],
 };
 
-export type DistributionPosition = 'dominant' | 'minor' | 'frontier' | 'absent';
+export type DistributionPosition = 'dominant' | 'minor' | 'frontier' | 'unknown' | 'absent';
 
 /** How crowded the ground already was — the DIRECTION the candidate took.
  *  Read off the snapshot, not judged. */
@@ -158,11 +193,18 @@ export type Displacement = 'none' | 'incremental' | 'substantial' | 'unprecedent
 /** I³'s ceiling from the two axes together, rather than the lower of two
  *  independent caps. A crowded direction no longer vetoes a large result: the
  *  `frontier` row rises from 1 to 9 as the achievement grows. */
+/** `unknown` sits between frontier and minor deliberately. It is what a failed
+ *  match resolves to, and a failed match is an absence of evidence about the
+ *  direction — not evidence that the direction was empty. Routing it to
+ *  `absent` handed the most permissive row in this table to every paper whose
+ *  free-text `paradigmProposes` did not happen to contain a snapshot phrase,
+ *  which was 106 of 107 rows across 2024. */
 export const INFLECTION_CEILING: Record<DistributionPosition, Record<Displacement, number>> = {
     dominant: { none: 1, incremental: 2, substantial: 3, unprecedented: 4 },
-    frontier: { none: 1, incremental: 3, substantial: 7, unprecedented: 9 },
-    minor:    { none: 1, incremental: 4, substantial: 8, unprecedented: 10 },
-    absent:   { none: 2, incremental: 5, substantial: 9, unprecedented: 10 },
+    frontier: { none: 1, incremental: 3, substantial: 6, unprecedented: 8 },
+    unknown:  { none: 1, incremental: 3, substantial: 6, unprecedented: 8 },
+    minor:    { none: 1, incremental: 4, substantial: 7, unprecedented: 9 },
+    absent:   { none: 2, incremental: 5, substantial: 8, unprecedented: 10 },
 };
 
 export type Precedent = 'established' | 'demonstrated' | 'claimed' | 'none';
@@ -234,10 +276,18 @@ export function positionOf(layer: ParadigmLayer, proposes: string) {
     // there rather than falling through to `absent` and a ceiling of 10.
     const isIncumbent = matches(layer.paradigm);
 
+    // `absent` is a claim about the snapshot: the direction was listed nowhere
+    // and nothing credible was being worked on. `unknown` is a claim about the
+    // match: a free-text noun phrase failed to find a hand-written entry, which
+    // says nothing about the direction at all. Collapsing the second into the
+    // first handed the most permissive I³ ceiling to every paper the matcher
+    // could not place — which is nearly all of them.
+    const searchable = entries.length > 0 || layer.frontier.length > 0;
     const position: DistributionPosition =
         (hit && top && hit.share === top.share) || (!hit && isIncumbent) ? 'dominant'
         : hit ? 'minor'
         : frontierHit ? 'frontier'
+        : searchable ? 'unknown'
         : 'absent';
 
     // What it actually matched against, so a wrong position is visible rather

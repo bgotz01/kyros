@@ -2,15 +2,34 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Link from 'next/link';
 import ModelSelect from '../council/ModelSelect';
 import UsageModal from './UsageModal';
 import { MODELS } from '@/lib/models';
 import type { WeekRow } from '@/lib/engineData';
+import {
+    MONTH_ORDER,
+    monthHref,
+    normalizeMonth,
+    weekAnchor,
+    weekEnd,
+    weekHref,
+} from '@/lib/engineRoutes';
 
 interface Props {
     weeks: WeekRow[];
-    activeKey: string | null;
-    onSelect: (week: WeekRow) => void;
+    /** "<year>:<month>" of the month on screen; the chevron still just folds
+     *  the rail. Two targets in one row, because a month is a place to go as
+     *  well as a group to open. */
+    activeMonth: string | null;
+    /** The fragment the address points at, so a week row can show that it is
+     *  the section being read. A week is not a page of its own — it is where in
+     *  the month you are. */
+    activeAnchor: string;
+    /** A week row was taken. Reported as well as linked because a hash written
+     *  by the router fires no `hashchange`: the page would scroll to the right
+     *  section and the rail would still be lit on the last one. */
+    onAnchor: (anchor: string) => void;
     model: string;
     onModel: (id: string) => void;
     criticModel: string;
@@ -42,45 +61,6 @@ function heldGlyph(week: WeekRow): string {
     return week.heldCount === week.arxivCount ? '●' : '◐';
 }
 
-/** A week is dated by the day it ends, not the day it starts.
- *
- *  "(December 29 - January 4) - 2026" is a January 2026 week holding papers
- *  published in December 2025. Reading the leading month filed it under a
- *  December 2026 that never happened, and buried those papers there. */
-function weekEnd(heading: string): { month: string; label: string } {
-    const stripped = heading.replace(/^\(|\)\s*-\s*\d{4}$/g, '').trim();
-    const parts = stripped.split(/\s+-\s+/);
-    const end = parts[parts.length - 1] ?? stripped;
-
-    // "January 4", or a bare "4" where the range does not repeat the month.
-    const named = /^([A-Za-z]+)\s*(\d+)?/.exec(end);
-    const day = /(\d+)\s*$/.exec(end)?.[1];
-    const month = normalizeMonth(
-        named?.[1] ?? /^([A-Za-z]+)/.exec(stripped)?.[1] ?? '—',
-    );
-
-    return {
-        month,
-        label: day ? `${month.slice(0, 3)} ${day}` : month.slice(0, 3),
-    };
-}
-
-const MONTH_ORDER = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
-];
-
-const MONTH_ABBR: Record<string, string> = {
-    Jan: 'January', Feb: 'February', Mar: 'March', Apr: 'April',
-    Jun: 'June', Jul: 'July', Aug: 'August', Sep: 'September',
-    Oct: 'October', Nov: 'November', Dec: 'December',
-};
-
-/** Normalise a month string to its full name for consistent sorting. */
-function normalizeMonth(m: string): string {
-    return MONTH_ABBR[m] ?? m;
-}
-
 interface ChevronProps {
     open: boolean;
 }
@@ -105,10 +85,28 @@ function Chevron({ open }: ChevronProps) {
     );
 }
 
+const RAIL_KEY = 'kyros_engine_rail_v1';
+
+/** The folded branches from the last visit, filtered to the ones the digests
+ *  still contain. Nothing stored means nothing has been opened yet, and the
+ *  rail starts fully folded. */
+function restoreRail(known: Set<string>): Set<string> {
+    try {
+        const raw = sessionStorage.getItem(RAIL_KEY);
+        if (!raw) return known;
+        const stored = JSON.parse(raw) as unknown;
+        if (!Array.isArray(stored)) return known;
+        return new Set(stored.filter((k): k is string => typeof k === 'string' && known.has(k)));
+    } catch {
+        return known;
+    }
+}
+
 export default function EngineAISidebar({
     weeks,
-    activeKey,
-    onSelect,
+    activeMonth,
+    activeAnchor,
+    onAnchor,
     model,
     onModel,
     criticModel,
@@ -151,22 +149,56 @@ export default function EngineAISidebar({
             }));
     }, [weeks]);
 
-    // Collapse state: everything starts closed on load.
-    // Keys are "<year>" for years, "<year>:<month>" for months.
+    // Collapse state: everything starts closed, and stays where the reader put
+    // it. Keys are "<year>" for years, "<year>:<month>" for months.
+    //
+    // Kept in sessionStorage rather than in the component alone, because
+    // opening a week is now a navigation — the page remounts, and a rail that
+    // only remembered in React would fold itself shut on every click.
     const [closed, setClosed] = useState<Set<string>>(new Set());
     const initialised = useRef(false);
 
     useEffect(() => {
         if (initialised.current || weeks.length === 0) return;
         initialised.current = true;
+
         const keys = new Set<string>();
         for (const week of weeks) {
             const month = weekEnd(week.heading).month;
             keys.add(week.year);
             keys.add(`${week.year}:${month}`);
         }
-        setClosed(keys);
+
+        // sessionStorage does not exist on the server, so a restored rail can
+        // only be adopted after mount. Anything stored for a year the digests
+        // no longer carry is dropped on the way in.
+        setClosed(restoreRail(keys));
     }, [weeks]);
+
+    useEffect(() => {
+        if (!initialised.current) return;
+        try {
+            sessionStorage.setItem(RAIL_KEY, JSON.stringify([...closed]));
+        } catch { /* private mode — the rail simply will not persist */ }
+    }, [closed]);
+
+    /** Whatever the path names is shown, however the rail was left. Folding a
+     *  year shut is a statement about the years you are not reading; it should
+     *  not be able to hide the week you are. */
+    useEffect(() => {
+        if (!activeMonth) return;
+        const year = activeMonth.split(':')[0];
+        // The path is the external system here, and unfolding is how the rail
+        // is synchronised to it — there is nowhere else to do this.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setClosed((prev) => {
+            if (!prev.has(year) && !prev.has(activeMonth)) return prev;
+            const next = new Set(prev);
+            next.delete(year);
+            next.delete(activeMonth);
+            return next;
+        });
+    }, [activeMonth]);
 
     function toggle(key: string) {
         setClosed((prev) => {
@@ -223,34 +255,54 @@ export default function EngineAISidebar({
 
                                 return (
                                     <div key={monthKey}>
-                                        {/* Month row */}
-                                        <button
-                                            type="button"
-                                            onClick={() => toggle(monthKey)}
-                                            className="flex w-full items-center gap-2 border-b border-stone-line/60 px-5 py-1.5 text-left transition-colors duration-300 ease-mechanical hover:bg-charcoal"
+                                        {/* Month row — chevron folds, label opens */}
+                                        <div
+                                            className={`flex w-full items-center border-b border-stone-line/60 transition-colors duration-300 ease-mechanical ${monthKey === activeMonth ? 'bg-charcoal-700' : 'hover:bg-charcoal'
+                                                }`}
                                         >
-                                            <Chevron open={monthOpen} />
-                                            <span className="flex-1 font-sans text-[0.57rem] uppercase tracking-[0.2em] text-platinum-dim">
-                                                {month}
-                                            </span>
-                                            <span className="font-mono text-[0.48rem] tracking-[0.08em] text-platinum-dim/60">
-                                                {mHeld}/{mArxiv}
-                                            </span>
-                                        </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => toggle(monthKey)}
+                                                aria-label={`${monthOpen ? 'Collapse' : 'Expand'} ${month}`}
+                                                aria-expanded={monthOpen}
+                                                className="flex items-center py-1.5 pl-5 pr-1"
+                                            >
+                                                <Chevron open={monthOpen} />
+                                            </button>
+                                            <Link
+                                                href={monthHref(year, month)}
+                                                aria-disabled={running}
+                                                onClick={(e) => running && e.preventDefault()}
+                                                className={`flex flex-1 items-center gap-2 py-1.5 pl-1 pr-3 text-left ${running ? 'pointer-events-none opacity-40' : ''}`}
+                                            >
+                                                <span
+                                                    className={`flex-1 font-sans text-[0.57rem] uppercase tracking-[0.2em] ${monthKey === activeMonth ? 'text-bronze-bright' : 'text-platinum-dim'
+                                                        }`}
+                                                >
+                                                    {month}
+                                                </span>
+                                                <span className="font-mono text-[0.48rem] tracking-[0.08em] text-platinum-dim/60">
+                                                    {mHeld}/{mArxiv}
+                                                </span>
+                                            </Link>
+                                        </div>
 
                                         {/* Week rows */}
                                         {monthOpen && mWeeks.map((week) => {
                                             const key = `${week.year}:${week.idx}`;
-                                            const active = key === activeKey;
+                                            const active = weekAnchor(week) === activeAnchor;
                                             const label = weekEnd(week.heading).label;
 
                                             return (
-                                                <button
+                                                <Link
                                                     key={key}
-                                                    type="button"
-                                                    disabled={running}
-                                                    onClick={() => onSelect(week)}
-                                                    className={`flex w-full items-baseline gap-2 border-b border-stone-line/40 pl-8 pr-3 py-2 text-left transition-colors duration-300 ease-mechanical disabled:opacity-40 ${active ? 'bg-charcoal-700' : 'hover:bg-charcoal'
+                                                    href={weekHref(week)}
+                                                    aria-disabled={running}
+                                                    onClick={(e) => {
+                                                        if (running) e.preventDefault();
+                                                        else onAnchor(weekAnchor(week));
+                                                    }}
+                                                    className={`flex w-full items-baseline gap-2 border-b border-stone-line/40 pl-8 pr-3 py-2 text-left transition-colors duration-300 ease-mechanical ${running ? 'pointer-events-none opacity-40' : ''} ${active ? 'bg-charcoal-700' : 'hover:bg-charcoal'
                                                         }`}
                                                 >
                                                     <span
@@ -273,7 +325,7 @@ export default function EngineAISidebar({
                                                             {week.heldCount}/{week.arxivCount}
                                                         </span>
                                                     </span>
-                                                </button>
+                                                </Link>
                                             );
                                         })}
                                     </div>

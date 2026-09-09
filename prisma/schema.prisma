@@ -266,3 +266,28 @@ model EngineExternal {
 
   @@index([checkedAt(sort: Desc)])
 }
+
+/// A digest row taken out of the reading. Some entries can never be scored —
+/// the digest links somewhere other than arXiv, so there is no paper to pull
+/// and nothing to run — and left in place they fill the week with rows that
+/// exist only to be scrolled past. Setting one aside hides it; nothing is
+/// deleted, and it can be restored from the foot of the month.
+///
+/// Keyed by the row's place in the digest rather than by arXiv id, because the
+/// rows most likely to be set aside are precisely the ones that have no id.
+model EngineAside {
+  id      String @id @default(cuid())
+  domain  String
+  year    String
+  weekIdx Int
+  /// The digest's own number for the row within its week.
+  n       Int
+
+  /// Kept when there is one, so a set-aside row can still be found by paper.
+  paperId String?
+
+  setAt DateTime @default(now())
+
+  @@unique([domain, year, weekIdx, n])
+  @@index([domain, year, weekIdx])
+}

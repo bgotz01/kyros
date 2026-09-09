@@ -13,7 +13,7 @@ export default function CenturyPage() {
                     </h1>
                 </div>
                 <p className="font-sans text-[0.85rem] uppercase tracking-[0.28em] text-platinum-dim">
-                    Dominant powers · capital centers · paradigm shifts across five centuries
+                    Empires · capital centers · paradigm shifts across five centuries
                 </p>
             </div>
 
@@ -44,7 +44,7 @@ export default function CenturyPage() {
 
                         {/* right — fields */}
                         <div className="flex flex-col gap-5">
-                            <Field label="Dominant power" value={c.dominantPower} />
+                            <Field label="Empire" value={c.empire} emphasis />
                             <Field label="Rising challenger" value={c.risingChallenger} />
                             <Field label="Capital center" value={c.capitalCenter} />
                             <Field label="Capital paradigm" value={c.capitalParadigm} />
@@ -61,13 +61,15 @@ export default function CenturyPage() {
 
 // ─── field components ─────────────────────────────────────────────────────────
 
-function Field({ label, value }: { label: string; value: string }) {
+function Field({ label, value, emphasis = false }: { label: string; value: string; emphasis?: boolean }) {
     return (
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <span className="shrink-0 font-sans text-[0.7rem] uppercase tracking-[0.24em] text-platinum-dim w-[180px]">
                 {label}
             </span>
-            <span className="font-sans text-[0.82rem] leading-relaxed tracking-[0.04em] text-platinum">
+            <span className={`font-sans leading-relaxed tracking-[0.04em] ${
+                emphasis ? 'text-[1rem] text-bronze-bright' : 'text-[0.82rem] text-platinum'
+            }`}>
                 {value}
             </span>
         </div>

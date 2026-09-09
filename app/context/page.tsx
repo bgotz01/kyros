@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PageRefMeta } from '@/app/components/council/types';
+import type { Paradigm, ParadigmBottleneck, ParadigmLayer } from '@/lib/paradigm';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -71,6 +72,251 @@ function Chevron({ open, size = 7 }: { open: boolean; size?: number }) {
     );
 }
 
+// ─── paradigm viewer sub-components ──────────────────────────────────────────
+// Extracted from ParadigmModal so the context page can render the same
+// structured view without a modal wrapper.
+
+function Shares({ layer }: { layer: ParadigmLayer }) {
+    const d = layer.distribution;
+    if (!d) {
+        return (
+            <p className="font-sans text-[0.62rem] tracking-[0.03em] text-platinum-dim">
+                No defensible share at this date.
+            </p>
+        );
+    }
+    const sorted = [...d.entries].sort((a, b) => b.share - a.share);
+    return (
+        <div className="flex flex-col gap-2">
+            <span aria-hidden className="flex h-1 w-full items-center gap-px">
+                {sorted.map((e, i) => (
+                    <span
+                        key={e.value}
+                        className="h-1 transition-[width] duration-700 ease-mechanical"
+                        style={{
+                            width: `${e.share * 100}%`,
+                            background: i === 0 ? 'var(--color-bronze)' : 'var(--color-bronze-dim)',
+                            opacity: i === 0 ? 1 : 0.55 - i * 0.12,
+                        }}
+                    />
+                ))}
+            </span>
+            <p className="font-mono text-[0.58rem] tracking-[0.06em] text-platinum-dim">
+                {sorted.map((e, i) => (
+                    <span key={e.value}>
+                        {i > 0 && ' · '}
+                        <span className={i === 0 ? 'text-marble' : undefined}>{e.value}</span>{' '}
+                        {Math.round(e.share * 100)}%
+                    </span>
+                ))}
+            </p>
+            <p className="font-sans text-[0.55rem] uppercase tracking-[0.16em] text-platinum-dim/70">
+                {d.basis}
+            </p>
+        </div>
+    );
+}
+
+function ParadigmLayerRow({ layer, n }: { layer: ParadigmLayer; n: number }) {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="border-t border-stone-line/60">
+            <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                className="grid w-full grid-cols-[1.6rem_1fr_2.5rem] items-baseline gap-3 px-6 py-3 text-left"
+            >
+                <span className="font-mono text-[0.55rem] text-platinum-dim">
+                    {String(n).padStart(2, '0')}
+                </span>
+                <span className="min-w-0">
+                    <span className="block font-sans text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                        {layer.layer}
+                    </span>
+                    <span className="mt-1 block truncate font-sans text-[0.7rem] tracking-[0.03em] text-marble">
+                        {layer.paradigm}
+                    </span>
+                </span>
+                <span className="text-right font-mono text-[0.62rem] text-marble">
+                    {layer.importance}
+                    <span className="text-platinum-dim">/10</span>
+                </span>
+            </button>
+
+            {open && (
+                <div className="flex flex-col gap-4 border-t border-stone-line/60 bg-obsidian-800 px-6 py-4">
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Assumption
+                        </span>
+                        <p className="border-l-2 border-bronze-dim pl-3 font-sans text-[0.72rem] leading-relaxed tracking-[0.03em] text-marble-dim">
+                            {layer.assumption}
+                        </p>
+                    </div>
+
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Distribution
+                        </span>
+                        <Shares layer={layer} />
+                    </div>
+
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Frontier
+                        </span>
+                        {layer.frontier.length === 0 ? (
+                            <p className="font-sans text-[0.66rem] tracking-[0.03em] text-platinum-dim">
+                                Nothing credible being pursued at this date.
+                            </p>
+                        ) : (
+                            <ul className="flex flex-col gap-1.5">
+                                {layer.frontier.map((f) => (
+                                    <li key={f} className="flex gap-2">
+                                        <span aria-hidden className="mt-[0.45em] h-px w-2 shrink-0 bg-bronze-dim" />
+                                        <span className="font-sans text-[0.66rem] leading-relaxed tracking-[0.03em] text-platinum">
+                                            {f}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Evidence · every reference predates the snapshot
+                        </span>
+                        <ul className="flex flex-col gap-1">
+                            {layer.evidence.map((e) => (
+                                <li
+                                    key={e}
+                                    className="font-mono text-[0.56rem] leading-relaxed tracking-[0.04em] text-platinum-dim"
+                                >
+                                    {e}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function ParadigmBottleneckRow({ bottleneck, n }: { bottleneck: ParadigmBottleneck; n: number }) {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="border-t border-stone-line/60">
+            <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                className="grid w-full grid-cols-[1.6rem_1fr_5.5rem_2.5rem] items-baseline gap-3 px-6 py-3 text-left"
+            >
+                <span className="font-mono text-[0.55rem] text-platinum-dim">
+                    {String(n).padStart(2, '0')}
+                </span>
+                <span className="truncate font-sans text-[0.68rem] tracking-[0.03em] text-marble">
+                    {bottleneck.name}
+                </span>
+                <span className="truncate text-right font-mono text-[0.5rem] uppercase tracking-[0.08em] text-bronze">
+                    {bottleneck.status}
+                </span>
+                <span className="text-right font-mono text-[0.62rem] text-marble">
+                    {bottleneck.importance}
+                    <span className="text-platinum-dim">/10</span>
+                </span>
+            </button>
+
+            {open && (
+                <div className="flex flex-col gap-4 border-t border-stone-line/60 bg-obsidian-800 px-6 py-4">
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            The problem
+                        </span>
+                        <p className="border-l-2 border-bronze-dim pl-3 font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-marble-dim">
+                            {bottleneck.problem}
+                        </p>
+                    </div>
+                    <div>
+                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                            Evidence · every reference predates the snapshot
+                        </span>
+                        <ul className="flex flex-col gap-1">
+                            {bottleneck.evidence.map((item) => (
+                                <li key={item} className="font-mono text-[0.56rem] leading-relaxed tracking-[0.04em] text-platinum-dim">
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+/** Inline structured viewer for a paradigm snapshot — same layout as
+ *  ParadigmModal but without the modal chrome, sized to fill the editor pane. */
+function ParadigmViewer({ p }: { p: Paradigm }) {
+    return (
+        <div className="flex-1 overflow-y-auto">
+            <div className="flex flex-col gap-3 px-8 py-6">
+                <div>
+                    <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
+                        Thesis
+                    </span>
+                    <p className="font-sans text-[0.75rem] leading-relaxed tracking-[0.03em] text-marble">
+                        {p.thesis}
+                    </p>
+                </div>
+            </div>
+
+            <div className="border-t border-stone-line">
+                <div className="px-8 py-4">
+                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
+                        Bottlenecks · I² constraint surface
+                    </span>
+                    <p className="mt-1.5 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
+                        A paper must materially relieve one of these dated constraints for a high
+                        incentives score. No match or negligible impact caps I² at 2; incremental
+                        relief caps it at 4.
+                    </p>
+                </div>
+                {(p.bottlenecks ?? []).map((b, i) => (
+                    <ParadigmBottleneckRow key={b.id} bottleneck={b} n={i + 1} />
+                ))}
+                {!p.bottlenecks?.length && (
+                    <p className="border-t border-stone-line/60 px-8 py-4 font-sans text-[0.66rem] text-platinum-dim">
+                        No bottlenecks recorded in this snapshot. I² is capped at 2.
+                    </p>
+                )}
+            </div>
+
+            <div className="border-t border-stone-line">
+                <div className="px-8 py-4">
+                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
+                        Paradigm layers · I¹ assumption surface
+                    </span>
+                </div>
+                {p.layers.map((l, i) => (
+                    <ParadigmLayerRow key={l.layer} layer={l} n={i + 1} />
+                ))}
+            </div>
+
+            <p className="border-t border-stone-line px-8 py-4 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
+                A candidate is judged against the snapshot standing when it was published,
+                never a later one.{' '}
+                <span className="text-platinum">Importance</span> is decided here, once,
+                and caps I¹. Bottleneck importance does the same for I². Neither is a
+                per-paper judgement.
+            </p>
+        </div>
+    );
+}
+
 // ─── page ─────────────────────────────────────────────────────────────────────
 
 export default function ContextPage() {
@@ -78,11 +324,11 @@ export default function ContextPage() {
     const [catalogueStatus, setCatalogueStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
     const [selectedRef, setSelectedRef] = useState<PageRefMeta | null>(null);
-    // Two-level expansion: domains (top) and groups (second)
     const [expandedDomains, setExpandedDomains] = useState<Set<string>>(new Set());
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
     const [editorContent, setEditorContent] = useState('');
+    const [paradigmData, setParadigmData] = useState<Paradigm | null>(null);
     const [loadStatus, setLoadStatus] = useState<'idle' | 'loading' | 'error'>('idle');
     const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
     const [dirty, setDirty] = useState(false);
@@ -99,7 +345,6 @@ export default function ContextPage() {
                 const g = groupRefs(data);
                 setGroups(g);
                 setCatalogueStatus('ready');
-                // Auto-expand the first domain
                 const domains = uniqueDomains(g);
                 if (domains.length > 0) setExpandedDomains(new Set([domains[0]]));
             })
@@ -112,12 +357,18 @@ export default function ContextPage() {
         setSelectedRef(ref);
         setDirty(false);
         setSaveStatus('idle');
+        setParadigmData(null);
+        setEditorContent('');
         setLoadStatus('loading');
         fetch(`/api/context/${ref.id}`)
             .then((r) => r.json())
-            .then((data: { content?: string; error?: string }) => {
+            .then((data: { content?: string; paradigm?: Paradigm; error?: string }) => {
                 if (data.error) throw new Error(data.error);
-                setEditorContent(data.content ?? '');
+                if (data.paradigm) {
+                    setParadigmData(data.paradigm);
+                } else {
+                    setEditorContent(data.content ?? '');
+                }
                 setLoadStatus('idle');
             })
             .catch(() => setLoadStatus('error'));
@@ -173,6 +424,7 @@ export default function ContextPage() {
     // ── derived ───────────────────────────────────────────────────────────────
 
     const domains = uniqueDomains(groups);
+    const isParadigm = selectedRef?.tag === 'Paradigm';
 
     // ── render ────────────────────────────────────────────────────────────────
 
@@ -276,7 +528,7 @@ export default function ContextPage() {
                 </div>
             </aside>
 
-            {/* ── right panel: editor ───────────────────────────────────────── */}
+            {/* ── right panel: editor / paradigm viewer ─────────────────────── */}
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                 {selectedRef ? (
                     <>
@@ -290,10 +542,18 @@ export default function ContextPage() {
                                 </span>
                             </div>
                             <div className="flex shrink-0 items-center gap-6">
-                                <SaveStatus status={saveStatus} />
-                                <span className="font-mono text-[0.58rem] tracking-[0.14em] text-platinum-dim">
-                                    {selectedRef.id}.md
-                                </span>
+                                {isParadigm ? (
+                                    <span className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-platinum-dim">
+                                        read-only
+                                    </span>
+                                ) : (
+                                    <>
+                                        <SaveStatus status={saveStatus} />
+                                        <span className="font-mono text-[0.58rem] tracking-[0.14em] text-platinum-dim">
+                                            {selectedRef.id}.md
+                                        </span>
+                                    </>
+                                )}
                             </div>
                         </header>
 
@@ -305,6 +565,12 @@ export default function ContextPage() {
                             <div className="flex flex-1 items-center justify-center">
                                 <p className="font-mono text-[0.65rem] tracking-[0.1em] text-bronze-bright">⚠ Could not read the file.</p>
                             </div>
+                        ) : isParadigm ? (
+                            paradigmData
+                                ? <ParadigmViewer p={paradigmData} />
+                                : <div className="flex flex-1 items-center justify-center">
+                                    <p className="font-serif text-base font-light text-platinum-dim">Reading…</p>
+                                </div>
                         ) : (
                             <textarea
                                 value={editorContent}

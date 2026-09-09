@@ -1,8 +1,19 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { MODELS, modelsByTier, TIER_LABELS, TIER_ORDER, type Model } from '@/lib/models';
+import {
+    MODELS,
+    activeModelsByTier,
+    TIER_LABELS,
+    TIER_ORDER,
+    type Model,
+    seedMuted,
+    getMuted,
+    onMutedChange,
+} from '@/lib/models';
 
 // ─── featured (pinned at the top of the dropdown) ────────────────────────────
 const FEATURED_IDS = [
@@ -46,10 +57,22 @@ export default function ModelSelect({ value, onChange, disabled, ariaLabel, plac
     const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({});
     const triggerRef = useRef<HTMLButtonElement>(null);
 
-    const tiers = modelsByTier();
+    // Keep the dropdown in sync with the muted list
+    const muted = useSyncExternalStore(onMutedChange, getMuted, getMuted);
+
+    // Seed muted list from server once (no-op if already seeded)
+    useEffect(() => {
+        fetch('/api/models')
+            .then((r) => r.json())
+            .then(({ muted: ids }: { muted: string[] }) => seedMuted(ids))
+            .catch(() => {/* non-fatal */ });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const tiers = activeModelsByTier();
     const featuredModels = FEATURED_IDS
         .map((id) => MODELS.find((m) => m.id === id))
-        .filter((m): m is Model => Boolean(m));
+        .filter((m): m is Model => m !== undefined && !muted.has(m.id));
     const selected = MODELS.find((m) => m.id === value);
 
     // Position the portal panel relative to the trigger on every open
@@ -64,10 +87,11 @@ export default function ModelSelect({ value, onChange, disabled, ariaLabel, plac
             // is itself on the right, in which case it opens leftward.
             const right = rect.right + 8;
             const fitsRight = right + PANEL_WIDTH + 8 <= window.innerWidth;
+            const maxH = window.innerHeight - 16; // 8px margin top + bottom
             setPanelStyle({
                 position: 'fixed',
                 top: 8,
-                bottom: 8,
+                maxHeight: maxH,
                 left: fitsRight ? right : Math.max(8, rect.left - PANEL_WIDTH - 8),
                 width: PANEL_WIDTH,
             });
@@ -142,33 +166,51 @@ export default function ModelSelect({ value, onChange, disabled, ariaLabel, plac
             role="listbox"
             aria-label={ariaLabel}
             style={panelStyle}
-            className="z-[9999] border border-stone-line bg-charcoal shadow-[0_8px_32px_rgba(0,0,0,0.7)] overflow-y-auto"
+            className="z-[9999] flex flex-col border border-stone-line bg-charcoal shadow-[0_8px_32px_rgba(0,0,0,0.7)]"
         >
-            {groups.map((group) => (
-                <div key={group.label}>
-                    <div className="border-b border-stone-line px-3 py-1.5">
-                        <span className="font-sans text-[0.52rem] uppercase tracking-[0.28em] text-platinum-dim">
-                            {group.label}
-                        </span>
+            {/* scrollable model list */}
+            <div className="min-h-0 flex-1 overflow-y-auto">
+                {groups.map((group) => (
+                    <div key={group.label}>
+                        <div className="border-b border-stone-line px-3 py-1.5">
+                            <span className="font-sans text-[0.52rem] uppercase tracking-[0.28em] text-platinum-dim">
+                                {group.label}
+                            </span>
+                        </div>
+                        {group.models.map((m) => {
+                            const active = m.id === value;
+                            return (
+                                <button
+                                    key={m.id}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={active}
+                                    onClick={() => select(m.id)}
+                                    className={`w-full px-3 py-2 text-left transition-colors duration-200 ease-mechanical ${active ? 'bg-charcoal-700' : 'hover:bg-obsidian-800'}`}
+                                >
+                                    <ModelRow model={m} active={active} />
+                                </button>
+                            );
+                        })}
                     </div>
-                    {group.models.map((m) => {
-                        const active = m.id === value;
-                        return (
-                            <button
-                                key={m.id}
-                                type="button"
-                                role="option"
-                                aria-selected={active}
-                                onClick={() => select(m.id)}
-                                className={`w-full px-3 py-2 text-left transition-colors duration-200 ease-mechanical ${active ? 'bg-charcoal-700' : 'hover:bg-obsidian-800'
-                                    }`}
-                            >
-                                <ModelRow model={m} active={active} />
-                            </button>
-                        );
-                    })}
-                </div>
-            ))}
+                ))}
+            </div>
+
+            {/* footer — link to model management */}
+            <div className="shrink-0 border-t border-stone-line px-3 py-2">
+                <Link
+                    href="/models"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-between gap-2 transition-colors duration-200 ease-mechanical hover:text-bronze-bright"
+                >
+                    <span className="font-sans text-[0.52rem] uppercase tracking-[0.22em] text-platinum-dim hover:text-bronze-bright transition-colors duration-200">
+                        Adjust model selection
+                    </span>
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden className="shrink-0 text-platinum-dim">
+                        <path d="M1.5 4h5M4 1.5l3 2.5-3 2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </Link>
+            </div>
         </div>
     ) : null;
 

@@ -46,6 +46,7 @@ async function classify(
     candidates: { owner: string; name: string }[],
     context: string,
     model: string,
+    signal?: AbortSignal,
 ): Promise<{ roles: Map<string, { role: RepoRole; why: string }>; cost: number; prompt: number; completion: number }> {
     const empty = { roles: new Map(), cost: 0, prompt: 0, completion: 0 };
     if (!model || !hasApiKey() || candidates.length === 0) return empty;
@@ -60,7 +61,8 @@ async function classify(
             ],
             max_tokens: Math.min(meta?.maxTokens ?? 2000, 2000),
             temperature: 0,
-        });
+        // A stopped sweep should not keep paying for the paper it was on.
+        }, { signal });
 
         const parsed = extractJson(completion.choices[0]?.message?.content ?? '');
         const rows = Array.isArray(parsed?.repos) ? parsed.repos : [];
@@ -107,15 +109,24 @@ export async function POST(req: NextRequest) {
             return Response.json({ error: 'Invalid arXiv id' }, { status: 400 });
         }
 
-        const { repos: candidates, haystack } = candidatesFor(id, Array.isArray(links) ? links : []);
+        const { repos: candidates, haystack, hf } = candidatesFor(id, Array.isArray(links) ? links : []);
 
         // Sort them before spending GitHub's rate limit on them.
         const judged = await classify(
             title ?? id,
             candidates,
-            linkContext(haystack, candidates),
+            linkContext(haystack, candidates, hf),
             model ?? '',
+            req.signal,
         );
+
+        // classify() treats its own failures as non-fatal and returns no roles,
+        // which is right for a model that misbehaves and wrong for a stop: the
+        // sweep would carry on spending GitHub's hourly allowance and store an
+        // unjudged record for a paper the user interrupted.
+        if (req.signal.aborted) {
+            return Response.json({ error: 'Stopped' }, { status: 499 });
+        }
 
         // Anything the seat dismissed outright is not looked up at all.
         const worth = candidates.filter((c) => {

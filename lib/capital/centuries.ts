@@ -4,7 +4,10 @@
 
 export interface Century {
     century: string;
-    dominantPower: string;
+    /** The single imperial center that defines this century. Transitions and
+     *  challengers belong in their own fields; an arrow here makes the answer
+     *  ambiguous and lets adjacent centuries collapse into the same regime. */
+    empire: string;
     risingChallenger: string;
     capitalCenter: string;
     capitalParadigm: string;
@@ -18,7 +21,7 @@ export interface Century {
 export const CENTURIES: Century[] = [
     {
         century: '1600',
-        dominantPower: 'Spanish Empire',
+        empire: 'Spanish Empire',
         risingChallenger: 'Dutch Republic',
         capitalCenter: 'Iberia → Netherlands',
         capitalParadigm: 'Maritime trade / commercial capitalism',
@@ -28,8 +31,8 @@ export const CENTURIES: Century[] = [
     },
     {
         century: '1700',
-        dominantPower: 'Dutch Republic → Great Britain',
-        risingChallenger: 'Great Britain',
+        empire: 'Dutch Empire',
+        risingChallenger: 'British Empire',
         capitalCenter: 'Amsterdam → London',
         capitalParadigm: 'Maritime trade / finance / colonial commerce',
         transition: 'Dutch commercial dominance → British commercial-imperial dominance',
@@ -38,9 +41,9 @@ export const CENTURIES: Century[] = [
     },
     {
         century: '1800',
-        dominantPower: 'British Empire',
+        empire: 'British Empire',
         risingChallenger: 'United States',
-        capitalCenter: 'Britain → North America',
+        capitalCenter: 'London',
         capitalParadigm: 'Industrialization / infrastructure',
         transition: 'Commercial capital → industrial capital',
         majorInnovations: ['Steam engine', 'Mechanized factories', 'Railways', 'Telegraph'],
@@ -48,9 +51,9 @@ export const CENTURIES: Century[] = [
     },
     {
         century: '1900',
-        dominantPower: 'British Empire',
-        risingChallenger: 'United States',
-        capitalCenter: 'United States',
+        empire: 'American Empire',
+        risingChallenger: 'Soviet Union → China',
+        capitalCenter: 'London → New York',
         capitalParadigm: 'Mass industrial corporations / consumer economy',
         transition: 'British financial-imperial dominance → American industrial dominance',
         majorInnovations: ['Electricity', 'Automobile', 'Telephone', 'Mass production', 'Aviation'],
@@ -58,12 +61,22 @@ export const CENTURIES: Century[] = [
     },
     {
         century: '2000',
-        dominantPower: 'United States',
+        empire: 'Digital Empire',
         risingChallenger: 'China',
-        capitalCenter: 'United States / China rising',
-        capitalParadigm: 'Digital economy / globalization',
-        transition: 'Unipolar American globalization → contested US–China order',
+        capitalCenter: 'Silicon Valley / China rising',
+        capitalParadigm: 'Digital platforms / networks / artificial intelligence',
+        transition: 'American industrial dominance → borderless platform power',
         majorInnovations: ['Internet', 'Smartphones', 'Cloud computing', 'AI'],
         events: ['Communist collapse', '2001 China WTO', '2008 Financial Crisis', 'US–China trade conflict', 'COVID'],
     },
 ];
+
+// This page is a succession, not a list of eras with overlapping labels. Fail
+// loudly during development if a future edit gives two adjacent centuries the
+// same empire or leaves one unnamed.
+for (const [index, century] of CENTURIES.entries()) {
+    if (!century.empire.trim()) throw new Error(`${century.century} must name an empire`);
+    if (index > 0 && century.empire === CENTURIES[index - 1].empire) {
+        throw new Error(`${century.century} must differ from the previous century's empire`);
+    }
+}

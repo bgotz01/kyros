@@ -3,6 +3,10 @@
 // ─── card controls ────────────────────────────────────────────────────────────
 // The three passes a paper can be put through, and the score they produce.
 // ▷ analyst · ⚖ critic · ★ repository.
+//
+// A score is never overwritten. Once a paper holds one, ▷ goes dead and CLEAR
+// appears beside it: reading a paper a second time is a deliberate act on that
+// row, not something a second press can do by accident.
 
 import type { EngineScore } from '@/app/api/engine/analyze/route';
 import { VERDICT_COLOR } from './types';
@@ -19,6 +23,10 @@ const CHALLENGE =
     'cursor-pointer border-halt text-halt-bright hover:border-halt-bright hover:bg-halt/10';
 const CLEAR =
     'cursor-pointer border-stone-line text-platinum-dim hover:border-halt hover:text-halt-bright';
+// Setting a row aside destroys nothing, so it is the one control that stays
+// quiet on hover — it must not read like CLEAR, which does.
+const ASIDE =
+    'cursor-pointer border-stone-line text-platinum-dim hover:border-platinum hover:text-platinum';
 
 export default function PaperControls({
     score,
@@ -30,6 +38,7 @@ export default function PaperControls({
     onRun,
     onCritic,
     onClear,
+    onAside,
     onBreakdown,
 }: {
     score?: EngineScore;
@@ -42,6 +51,9 @@ export default function PaperControls({
     onCritic: () => void;
     onBreakdown: () => void;
     onClear: () => void;
+    /** Take the row out of the reading. Absent where there is nowhere to put
+     *  it — the list at the foot of the month is what makes this reversible. */
+    onAside?: () => void;
 }) {
     // A score can be challenged as often as you like — the point of changing the
     // critic seat is to see whether a different model objects differently. Each
@@ -60,10 +72,10 @@ export default function PaperControls({
                 <button
                     type="button"
                     onClick={onRun}
-                    disabled={busy}
-                    aria-label={score ? 'Score this paper again' : 'Score this paper'}
-                    title={score ? 'Score again' : 'Score this paper'}
-                    className={`${CONTROL} ${busy ? DEAD : LIVE}`}
+                    disabled={busy || Boolean(score)}
+                    aria-label="Score this paper"
+                    title={score ? 'Already read — clear it to read it again' : 'Score this paper'}
+                    className={`${CONTROL} ${busy || score ? DEAD : LIVE}`}
                 >
                     ▷
                 </button>
@@ -98,6 +110,19 @@ export default function PaperControls({
                     className={`${CONTROL} ${busy ? DEAD : CLEAR}`}
                 >
                     CLEAR
+                </button>
+            )}
+
+            {onAside && (
+                <button
+                    type="button"
+                    onClick={onAside}
+                    disabled={busy}
+                    aria-label="Set this paper aside"
+                    title="Set aside — moves it to the foot of the month. Nothing is deleted."
+                    className={`${CONTROL} ${busy ? DEAD : ASIDE}`}
+                >
+                    ASIDE
                 </button>
             )}
 

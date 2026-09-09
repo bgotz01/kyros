@@ -1,4 +1,5 @@
 import AssetLeadership from '../components/AssetLeadership';
+import LeadershipArc from '../components/LeadershipArc';
 import CapitalTimeline from '../components/CapitalTimeline';
 import ParadigmTable from '../components/ParadigmTable';
 
@@ -19,6 +20,11 @@ export default function InversionsPage() {
             </div>
 
 
+
+            {/* ── interactive leadership arc ───────────────────────────────── */}
+            <div className="mb-20">
+                <LeadershipArc />
+            </div>
 
             {/* ── asset leadership infographic ─────────────────────────────── */}
             <div className="mb-16">

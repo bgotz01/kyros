@@ -12,12 +12,15 @@ import {
     type DistributionPosition,
     type Precedent,
     BOTTLENECK_IMPACT_CEILING,
+    BOTTLENECK_ACTION_CEILING,
+    BOTTLENECK_ACTION_NOTE,
     bottleneckOf,
     loadParadigm,
     layerOf,
     paperPeriod,
     RELATION_BAND,
     positionOf,
+    type BottleneckAction,
     type BottleneckFit,
     type BottleneckImpact,
     type ParadigmRelation,
@@ -61,6 +64,8 @@ export interface EngineScore {
         bottleneckId?: string;
         bottleneckName?: string;
         bottleneckFit?: BottleneckFit;
+        /** What the paper does to the constraint, not only how far it reduced it. */
+        action?: BottleneckAction;
         impact?: BottleneckImpact;
         bottleneckAsOf?: string;
         /** Deterministic ceiling derived from the snapshot, fit and impact. */
@@ -169,6 +174,7 @@ function conciseBullets(v: unknown, fallback = '—'): string[] {
 const RELATIONS: ParadigmRelation[] = ['reinforces', 'extends', 'optimizes', 'challenges', 'inverts'];
 const BOTTLENECK_FITS: BottleneckFit[] = ['none', 'adjacent', 'direct'];
 const BOTTLENECK_IMPACTS: BottleneckImpact[] = ['negligible', 'incremental', 'material', 'structural'];
+const BOTTLENECK_ACTIONS: BottleneckAction[] = ['relieves', 'reveals', 'measures', 'bounds', 'none'];
 
 function relationOf(v: unknown): ParadigmRelation | undefined {
     const raw = String(v ?? '').toLowerCase().trim();
@@ -188,6 +194,11 @@ function precedentOf(v: unknown): Precedent {
     // Unstated defaults to the strictest reading: an unclaimed precedent is not
     // evidence of novelty, and the ceiling should not reward silence.
     return PRECEDENTS.find((p) => p === raw) ?? 'demonstrated';
+}
+
+function bottleneckActionOf(v: unknown): BottleneckAction {
+    const raw = String(v ?? '').toLowerCase().trim();
+    return BOTTLENECK_ACTIONS.find((action) => action === raw) ?? 'none';
 }
 
 function bottleneckFitOf(v: unknown): BottleneckFit {
@@ -260,7 +271,11 @@ export async function POST(req: NextRequest) {
             // emitted — Claude Sonnet 5 failed this way, returning no content.
             max_tokens: Math.max(meta?.maxTokens ?? 4000, 16_000),
             temperature: 0.3, // a scoring instrument, not a conversationalist
-        });
+        // Cancelling in the browser has to reach OpenRouter, or stop only ends
+        // the waiting and the tokens are billed anyway. When the client goes
+        // away this aborts the upstream call, and the throw skips the write —
+        // an interrupted reading must not be saved as a score.
+        }, { signal: req.signal });
 
         const raw = completion.choices[0]?.message?.content ?? '';
         const parsed = extractJson(raw);
@@ -302,6 +317,9 @@ export async function POST(req: NextRequest) {
         const bottleneckImpact = namedBottleneck
             ? bottleneckImpactOf(inc.impact)
             : 'negligible';
+        // Relief is not the only thing a paper can do to a constraint, but it is
+        // the only one worth the top of the scale.
+        const bottleneckAction = namedBottleneck ? bottleneckActionOf(inc.action) : 'none';
         const outcomeKind = outcome(inc.outcomeKind);
         const outcomeEstimate = str(inc.outcomeEstimate, '');
 
@@ -350,6 +368,11 @@ export async function POST(req: NextRequest) {
                 source: `${bottleneckFit} fit to the named constraint`,
             },
             {
+                name: 'action',
+                value: BOTTLENECK_ACTION_CEILING[bottleneckAction],
+                source: BOTTLENECK_ACTION_NOTE[bottleneckAction],
+            },
+            {
                 name: 'materiality',
                 value: BOTTLENECK_IMPACT_CEILING[bottleneckImpact],
                 source: `${bottleneckImpact} movement of the constraint`,
@@ -367,7 +390,8 @@ export async function POST(req: NextRequest) {
         // — everyone trying to build one does not make building one ordinary.
         const precedent = precedentOf(inf.precedent);
         const displacement = boundedDisplacement(displacementOf(inf.displacement), precedent);
-        const infPosition = (position ?? 'absent') as DistributionPosition;
+        // No snapshot at all is the only case that can still read as `absent`.
+        const infPosition = (position ?? 'unknown') as DistributionPosition;
         const infD = deriveScore('inflection', clampScore(inf.score), [
             {
                 name: 'position and displacement',
@@ -415,6 +439,7 @@ export async function POST(req: NextRequest) {
                 bottleneckId: namedBottleneck?.id ?? 'none',
                 bottleneckName: namedBottleneck?.name ?? 'No snapshot bottleneck',
                 bottleneckFit,
+                action: bottleneckAction,
                 impact: bottleneckImpact,
                 bottleneckAsOf: paradigm?.asOf,
                 ceiling: incentiveCeiling,
@@ -486,6 +511,7 @@ export async function POST(req: NextRequest) {
                         id: score.incentives.bottleneckId,
                         name: score.incentives.bottleneckName,
                         fit: score.incentives.bottleneckFit,
+                        action: score.incentives.action,
                         impact: score.incentives.impact,
                         asOf: score.incentives.bottleneckAsOf ?? null,
                         ceiling: score.incentives.ceiling,

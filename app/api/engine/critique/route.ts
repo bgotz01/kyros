@@ -125,7 +125,10 @@ export async function POST(req: NextRequest) {
             // default it exhausted the budget before emitting a character.
             max_tokens: Math.max(meta?.maxTokens ?? 4000, 16_000),
             temperature: 0.3,
-        });
+        // Stopping in the browser aborts the upstream call rather than only the
+        // waiting; the throw then skips the write, so a half-read critique is
+        // never stored.
+        }, { signal: req.signal });
 
         const reply = completion.choices[0]?.message?.content ?? '';
         const parsed = extractJson(reply);

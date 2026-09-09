@@ -1,6 +1,6 @@
 # The Standing Frame
 
-**Last reviewed: 2026-09-04.** This file is the frame every candidate is judged
+**Last reviewed: 2026-09-08.** This file is the frame every candidate is judged
 against. It is not attached by choice — it is always present. Everything else in
 the corpus is evidence; this is the instrument.
 
@@ -80,30 +80,60 @@ valuable, near-zero inversion, and the score has to say so.
 
 ## I² — Incentives · *is it obvious?*
 
-Is the value obvious? Does it hit a bottleneck everyone already knows is binding?
+Does it act on a bottleneck everyone already knows is binding?
+
+**The measure is the constraint, not the customer.** I² asks what this does to
+the field's constraint surface — the named, dated list of things that are
+stopping progress. Commercial pull is *evidence* that a constraint binds, not the
+thing being scored: money moves toward binding constraints, which is why a
+result that relieves one usually spreads. Where the two come apart, score the
+constraint. A result that moves a binding constraint but has no market yet is a
+high I²; a product with obvious buyers that moves no listed constraint is not.
 
 **"Obvious" means an obvious evolutionary direction:** the next move is legible
-because the system already contains a pressure or incentive toward it. This is
-what joins the two labels. Poesis reads that pressure as a direction to build
-toward; Kyros reads the same pressure as an incentive already acting on everyone
-else. One force, named from the two ends.
+because the system already contains a pressure toward it. This is what joins the
+two labels. Poesis reads that pressure as a direction to build toward; Kyros
+reads the same pressure as an incentive already acting on everyone else. One
+force, named from the two ends.
 
 This is a question about the *legibility and size of the need*, not about whether
-adoption subsequently occurred. Obviousness is visible on day one: either the
-result lands on a named constraint that is already costing people money, or it
-does not.
+adoption subsequently occurred. Obviousness is visible on day one.
+
+**A constraint can be moved without being reduced.** Name what the paper does to
+it — this is `action`, and it bounds the score:
+
+| Action | What it does to the constraint | Tops out at |
+|---|---|---|
+| **relieves** | reduces it — the thing costs less, works better, becomes feasible | **10** |
+| **reveals** | establishes that it binds where the field assumed it did not | **7** |
+| **measures** | first makes it reproducibly measurable, so progress on it becomes legible | **6** |
+| **bounds** | shows how far the current approach can move it, and no further | **6** |
+| **none** | shares its subject matter and nothing more | **2** |
+
+Relief tops the scale because a constraint that stops binding is the strongest
+thing a paper can do to it. The others sit below it and above zero: knowing a
+wall is there, or being able to measure the distance to it, is worth less than
+removing the wall and considerably more than nothing. An instrument that scores
+only relief cannot see the result that redirects the field without improving it.
 
 - **10** — relieves a constraint in `Bottlenecks/` that is marked binding, or
   serves a numbered item in `Bottlenecks · Desired Capabilities`, and the benefit
   needs no explanation to anyone in the field.
-- **1** — the value requires an argument. Interesting to a subfield; nobody's cost
-  falls.
+- **1** — the value requires an argument. Nobody's constraint moved, and nothing
+  new is known about any of them.
 
 Name the bottleneck. An unnamed bottleneck is not an incentive.
 
 **Failure mode:** scoring the *quality* of the work rather than the obviousness of
 the need it serves. Elegant work on a constraint nobody is paying to relieve
 scores low here, correctly. Capsule networks were interesting; no one's cost fell.
+
+**Second failure mode:** reading "does not relieve" as "does nothing". A paper
+that demonstrates a binding constraint the field believed it had handled has
+acted on the constraint surface, and the correct answer is `reveals` at a
+material score — not `none` because no benchmark improved. Evaluation work that
+first makes a constraint measurable is `measures`, not `adjacent`. Ask what the
+field must now work on that it did not have to before.
 
 **Counter-check** (from `False Positives · Neural Turing Machines`): a paper that
 attacks a famous desired capability *head-on* attracts a **lower** prior, not a
@@ -150,6 +180,22 @@ publication day.
   of the standard approach. Genuinely off-distribution.
 - **1** — an increment on a well-populated line of work, distinguishable from its
   neighbours only by its numbers.
+
+**Calibrate against the canon before writing a number.** The examples below are
+the scale, and they are severe: AlphaFold 2 is a **7**. Before writing 7 or
+above, name the canon case the candidate is standing beside and say why it
+belongs there. A paper from a weekly digest is almost never one of these — the
+normal answer is 2 to 4, and a ledger where a tenth of a year's papers sit at 7
+is measuring something other than distance from the pack.
+
+**Novelty by conjunction is not distance.** Every paper is a unique combination
+of its own components, so "combines A, B, C and D" is a sentence that can be
+written about anything and therefore scores nothing. A conjunction is an outlier
+only when the combination is what produces the result — when removing any one
+part loses the headline claim. A system that assembles components each of which
+was already available, into a pipeline that works, is integration: real
+engineering, `incremental` distance. If the justification for the score is a
+list, the score is wrong.
 
 **Failure mode:** grading consequence instead of distance. "This turned out to
 matter enormously" is not an I³ observation — it is a confirmation observation,

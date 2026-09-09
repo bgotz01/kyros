@@ -1,13 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { MODELS, TIER_ORDER, TIER_LABELS, modelsByTier, modelTier } from '@/lib/models';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { MODELS, TIER_ORDER, TIER_LABELS, modelsByTier, modelTier, seedMuted, getMuted, setMutedLocal, onMutedChange } from '@/lib/models';
 import type { Model, ModelTier } from '@/lib/models';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 function fmt(n: number) {
     return `$${n.toFixed(2)}`;
+}
+
+// ─── muted store hook ─────────────────────────────────────────────────────────
+
+function useMuted(): Set<string> {
+    return useSyncExternalStore(onMutedChange, getMuted, getMuted);
 }
 
 // ─── sub-components ───────────────────────────────────────────────────────────
@@ -25,23 +31,66 @@ function TierBadge({ tier }: { tier: ModelTier }) {
     );
 }
 
+function MuteToggle({ id, muted }: { id: string; muted: boolean }) {
+    const [working, setWorking] = useState(false);
+
+    async function toggle(e: React.MouseEvent) {
+        e.stopPropagation(); // don't open edit drawer
+        if (working) return;
+        setWorking(true);
+        const next = !muted;
+        setMutedLocal(id, next);
+        try {
+            const res = await fetch('/api/models', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, muted: next }),
+            });
+            if (!res.ok) throw new Error();
+        } catch {
+            setMutedLocal(id, !next); // revert
+        } finally {
+            setWorking(false);
+        }
+    }
+
+    return (
+        <button
+            type="button"
+            onClick={toggle}
+            disabled={working}
+            aria-pressed={muted}
+            aria-label={muted ? 'Unmute model' : 'Mute model'}
+            className={`relative h-4 w-7 shrink-0 rounded-full border transition-colors duration-300 ease-mechanical disabled:opacity-40 ${muted ? 'border-bronze/50 bg-bronze/15' : 'border-stone-line bg-transparent'}`}
+        >
+            <span
+                className={`absolute top-px h-2.5 w-2.5 rounded-full transition-all duration-300 ease-mechanical ${muted ? 'left-[calc(100%-0.75rem)] bg-bronze' : 'left-px bg-platinum-dim/50'}`}
+            />
+        </button>
+    );
+}
+
 function ModelRow({
     model,
+    muted,
     onEdit,
 }: {
     model: Model;
+    muted: boolean;
     onEdit: (m: Model) => void;
 }) {
     const tier = modelTier(model);
     return (
         <tr
-            className="group cursor-pointer border-b border-stone-line transition-colors duration-200 ease-mechanical hover:bg-charcoal/60"
+            className={`group cursor-pointer border-b border-stone-line transition-colors duration-200 ease-mechanical hover:bg-charcoal/60 ${muted ? 'opacity-40' : ''}`}
             onClick={() => onEdit(model)}
         >
             <td className="py-3 pl-6 pr-4">
                 <div className="flex items-center gap-2.5">
                     <TierBadge tier={tier} />
-                    <span className="font-serif text-[0.9rem] font-light text-marble">{model.label}</span>
+                    <span className={`font-serif text-[0.9rem] font-light ${muted ? 'text-platinum-dim line-through' : 'text-marble'}`}>
+                        {model.label}
+                    </span>
                 </div>
                 <p className="mt-0.5 font-mono text-[0.56rem] tracking-[0.1em] text-platinum-dim">{model.id}</p>
             </td>
@@ -57,7 +106,12 @@ function ModelRow({
             <td className="px-4 py-3 text-right font-mono text-[0.65rem] tracking-[0.08em] text-platinum-dim">
                 {model.maxTokens.toLocaleString()}
             </td>
-            <td className="py-3 pl-4 pr-6 text-right">
+            <td className="px-4 py-3 text-center">
+                <div className="flex justify-center">
+                    <MuteToggle id={model.id} muted={muted} />
+                </div>
+            </td>
+            <td className="py-3 pl-2 pr-6 text-right">
                 <span className="font-mono text-[0.52rem] uppercase tracking-[0.18em] text-stone-line opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Edit
                 </span>
@@ -80,9 +134,11 @@ interface EditState {
 function EditDrawer({
     model,
     onClose,
+    onDeleted,
 }: {
     model: Model;
     onClose: () => void;
+    onDeleted: () => void;
 }) {
     const [form, setForm] = useState<EditState>({
         id: model.id,
@@ -93,6 +149,8 @@ function EditDrawer({
         maxTokens: String(model.maxTokens),
     });
     const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [deleteStatus, setDeleteStatus] = useState<'idle' | 'deleting' | 'error'>('idle');
 
     function field(key: keyof EditState) {
         return {
@@ -123,6 +181,26 @@ function EditDrawer({
             setTimeout(() => { setStatus('idle'); onClose(); }, 800);
         } catch {
             setStatus('error');
+        }
+    }
+
+    async function deleteModel() {
+        if (!deleteConfirm) {
+            setDeleteConfirm(true);
+            return;
+        }
+        setDeleteStatus('deleting');
+        try {
+            const res = await fetch('/api/models', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: model.id }),
+            });
+            if (!res.ok) throw new Error();
+            onDeleted();
+        } catch {
+            setDeleteStatus('error');
+            setDeleteConfirm(false);
         }
     }
 
@@ -178,6 +256,45 @@ function EditDrawer({
                                 <input {...field('maxTokens')} type="number" step="1000" min="0" className={INPUT_CLS} />
                             </Field>
                         </div>
+                    </div>
+
+                    {/* ── danger zone ── */}
+                    <div className="mt-6 border-t border-stone-line pt-6">
+                        <p className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim">
+                            Danger zone
+                        </p>
+                        <p className="mt-1 mb-3 font-sans text-[0.6rem] leading-relaxed tracking-[0.04em] text-platinum-dim/60">
+                            Permanently removes the model from the catalogue.
+                        </p>
+                        {deleteStatus === 'error' && (
+                            <p className="mb-2 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-bronze-bright">
+                                ⚠ Delete failed
+                            </p>
+                        )}
+                        <button
+                            type="button"
+                            onClick={deleteModel}
+                            disabled={deleteStatus === 'deleting'}
+                            className={`border px-4 py-1.5 font-sans text-[0.6rem] uppercase tracking-[0.2em] transition-colors duration-200 disabled:opacity-40 ${deleteConfirm
+                                ? 'border-bronze-bright/60 text-bronze-bright hover:border-bronze-bright'
+                                : 'border-stone-line text-platinum-dim hover:border-platinum-dim hover:text-platinum'
+                                }`}
+                        >
+                            {deleteStatus === 'deleting'
+                                ? 'Deleting…'
+                                : deleteConfirm
+                                    ? 'Confirm delete'
+                                    : 'Remove model'}
+                        </button>
+                        {deleteConfirm && deleteStatus !== 'deleting' && (
+                            <button
+                                type="button"
+                                onClick={() => setDeleteConfirm(false)}
+                                className="ml-3 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-platinum-dim transition-colors duration-200 hover:text-platinum"
+                            >
+                                Cancel
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -236,6 +353,167 @@ function StatusLabel({ status }: { status: 'idle' | 'saving' | 'saved' | 'error'
     );
 }
 
+// ─── add model modal ──────────────────────────────────────────────────────────
+
+interface AddState {
+    id: string;
+    label: string;
+    inputCost: string;
+    outputCost: string;
+    context: string;
+    maxTokens: string;
+}
+
+const EMPTY_ADD: AddState = {
+    id: '',
+    label: '',
+    inputCost: '',
+    outputCost: '',
+    context: '',
+    maxTokens: '8000',
+};
+
+function AddModelModal({ onClose, onAdded }: { onClose: () => void; onAdded: () => void }) {
+    const [form, setForm] = useState<AddState>(EMPTY_ADD);
+    const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error' | 'duplicate'>('idle');
+
+    useEffect(() => {
+        const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+        window.addEventListener('keydown', fn);
+        return () => window.removeEventListener('keydown', fn);
+    }, [onClose]);
+
+    function field(key: keyof AddState) {
+        return {
+            value: form[key],
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                setForm((prev) => ({ ...prev, [key]: e.target.value })),
+        };
+    }
+
+    async function save() {
+        setStatus('saving');
+        try {
+            const res = await fetch('/api/models', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: form.id.trim(),
+                    label: form.label.trim(),
+                    inputCost: parseFloat(form.inputCost),
+                    outputCost: parseFloat(form.outputCost),
+                    context: form.context.trim(),
+                    maxTokens: parseInt(form.maxTokens, 10),
+                }),
+            });
+            if (res.status === 409) { setStatus('duplicate'); return; }
+            if (!res.ok) throw new Error();
+            setStatus('saved');
+            setTimeout(() => { onAdded(); onClose(); }, 600);
+        } catch {
+            setStatus('error');
+        }
+    }
+
+    const canSave =
+        form.id.trim() &&
+        form.label.trim() &&
+        form.inputCost !== '' &&
+        form.outputCost !== '' &&
+        form.context.trim() &&
+        form.maxTokens !== '' &&
+        status !== 'saving';
+
+    return (
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-obsidian/85 px-6 backdrop-blur-sm"
+            onClick={onClose}
+            role="dialog"
+            aria-modal
+            aria-label="Add model"
+        >
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="flex max-h-[85vh] w-full max-w-lg flex-col border border-stone-line-strong bg-charcoal"
+            >
+                <header className="flex shrink-0 items-center justify-between border-b border-stone-line px-6 py-4">
+                    <div>
+                        <p className="font-sans text-[0.5rem] uppercase tracking-[0.26em] text-platinum-dim">Settings · Models</p>
+                        <h2 className="mt-0.5 font-serif text-lg font-light tracking-wide text-marble">Add model</h2>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="font-sans text-[0.6rem] uppercase tracking-[0.28em] text-platinum-dim transition-colors duration-500 ease-mechanical hover:text-bronze-bright"
+                    >
+                        Close
+                    </button>
+                </header>
+
+                <div className="flex-1 overflow-y-auto px-6 py-6">
+                    <div className="flex flex-col gap-5">
+                        <Field label="OpenRouter ID" hint="e.g. anthropic/claude-sonnet-4-5">
+                            <input
+                                {...field('id')}
+                                className={INPUT_CLS}
+                                spellCheck={false}
+                                autoFocus
+                                placeholder="provider/model-name"
+                            />
+                        </Field>
+                        <Field label="Display label">
+                            <input {...field('label')} className={INPUT_CLS} placeholder="e.g. Claude Sonnet 4.5" />
+                        </Field>
+                        <div className="grid grid-cols-2 gap-4">
+                            <Field label="Input cost / 1M">
+                                <input {...field('inputCost')} type="number" step="0.01" min="0" className={INPUT_CLS} placeholder="0.00" />
+                            </Field>
+                            <Field label="Output cost / 1M">
+                                <input {...field('outputCost')} type="number" step="0.01" min="0" className={INPUT_CLS} placeholder="0.00" />
+                            </Field>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <Field label="Context window">
+                                <input {...field('context')} className={INPUT_CLS} placeholder="e.g. 200K" />
+                            </Field>
+                            <Field label="Max output tokens">
+                                <input {...field('maxTokens')} type="number" step="1000" min="0" className={INPUT_CLS} />
+                            </Field>
+                        </div>
+                    </div>
+
+                    {status === 'duplicate' && (
+                        <p className="mt-5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-bronze-bright">
+                            ⚠ A model with that ID already exists.
+                        </p>
+                    )}
+                </div>
+
+                <footer className="flex shrink-0 items-center justify-between border-t border-stone-line px-6 py-4">
+                    <StatusLabel status={status === 'duplicate' ? 'idle' : status} />
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="font-sans text-[0.6rem] uppercase tracking-[0.2em] text-platinum-dim transition-colors duration-200 hover:text-platinum"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            onClick={save}
+                            disabled={!canSave}
+                            className="border border-bronze/60 px-4 py-1.5 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-bronze transition-colors duration-200 hover:border-bronze hover:text-bronze-bright disabled:opacity-40"
+                        >
+                            {status === 'saving' ? 'Adding…' : 'Add model'}
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    );
+}
+
 // ─── search filter ────────────────────────────────────────────────────────────
 
 function filterModels(models: Model[], query: string): Model[] {
@@ -254,17 +532,37 @@ function filterModels(models: Model[], query: string): Model[] {
 export default function ModelsPage() {
     const grouped = modelsByTier();
     const [editing, setEditing] = useState<Model | null>(null);
+    const [adding, setAdding] = useState(false);
     const [query, setQuery] = useState('');
+    const muted = useMuted();
+
+    // Seed muted list from server on mount
+    useEffect(() => {
+        fetch('/api/models')
+            .then((r) => r.json())
+            .then(({ muted: ids }: { muted: string[] }) => seedMuted(ids))
+            .catch(() => {/* non-fatal */ });
+    }, []);
 
     const isFiltering = query.trim().length > 0;
     const filteredTotal = isFiltering ? filterModels(MODELS, query).length : MODELS.length;
+    const mutedCount = muted.size;
 
     return (
         <div className="flex h-[calc(100svh-4rem-1px)] flex-col overflow-hidden">
             {/* header */}
             <header className="shrink-0 border-b border-stone-line px-8 py-5">
                 <p className="font-sans text-[0.55rem] uppercase tracking-[0.26em] text-platinum-dim">Settings</p>
-                <h1 className="mt-1 font-serif text-2xl font-light tracking-[0.14em] text-marble">Models</h1>
+                <div className="mt-1 flex items-baseline justify-between gap-4">
+                    <h1 className="font-serif text-2xl font-light tracking-[0.14em] text-marble">Models</h1>
+                    <button
+                        type="button"
+                        onClick={() => setAdding(true)}
+                        className="shrink-0 border border-stone-line px-4 py-1.5 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-platinum-dim transition-colors duration-300 ease-mechanical hover:border-bronze/60 hover:text-bronze"
+                    >
+                        Add model
+                    </button>
+                </div>
                 <p className="mt-1.5 font-sans text-[0.65rem] leading-relaxed tracking-[0.06em] text-platinum-dim">
                     All models are routed through OpenRouter. Costs are USD per 1M tokens and shown for reference only.
                 </p>
@@ -321,12 +619,18 @@ export default function ModelsPage() {
                                         <th className="px-4 py-2 text-right font-sans text-[0.52rem] uppercase tracking-[0.2em] text-platinum-dim">Input</th>
                                         <th className="px-4 py-2 text-right font-sans text-[0.52rem] uppercase tracking-[0.2em] text-platinum-dim">Output</th>
                                         <th className="px-4 py-2 text-right font-sans text-[0.52rem] uppercase tracking-[0.2em] text-platinum-dim">Max tokens</th>
-                                        <th className="py-2 pl-4 pr-6" />
+                                        <th className="px-4 py-2 text-center font-sans text-[0.52rem] uppercase tracking-[0.2em] text-platinum-dim">Mute</th>
+                                        <th className="py-2 pl-2 pr-6" />
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {rows.map((m) => (
-                                        <ModelRow key={m.id} model={m} onEdit={setEditing} />
+                                        <ModelRow
+                                            key={m.id}
+                                            model={m}
+                                            muted={muted.has(m.id)}
+                                            onEdit={setEditing}
+                                        />
                                     ))}
                                 </tbody>
                             </table>
@@ -350,13 +654,30 @@ export default function ModelsPage() {
                         {isFiltering
                             ? `${filteredTotal} of ${MODELS.length} models`
                             : `${MODELS.length} models`}
+                        {mutedCount > 0 && (
+                            <span className="ml-3 text-platinum-dim/50">
+                                · {mutedCount} muted
+                            </span>
+                        )}
                     </span>
                 </div>
             </div>
 
             {/* edit drawer */}
             {editing && (
-                <EditDrawer model={editing} onClose={() => setEditing(null)} />
+                <EditDrawer
+                    model={editing}
+                    onClose={() => setEditing(null)}
+                    onDeleted={() => setEditing(null)}
+                />
+            )}
+
+            {/* add model modal */}
+            {adding && (
+                <AddModelModal
+                    onClose={() => setAdding(false)}
+                    onAdded={() => setAdding(false)}
+                />
             )}
         </div>
     );

@@ -10,6 +10,8 @@
 // fastest-starred repository in GitHub's history and produced almost no durable
 // deployment. None of this may reach a score.
 
+import fs from 'fs';
+import path from 'path';
 import { readPaper } from './engineData';
 // The pattern itself lives in plain JS so scripts/ can use it too — the archive
 // sweep and this lookup must agree on what counts as a repository.
@@ -89,15 +91,50 @@ export async function fetchRepo(owner: string, name: string): Promise<RepoFacts>
     }
 }
 
+/** The repository Hugging Face records as a paper's own, or null.
+ *
+ *  Written by `npm run hf`. A third party's assertion, not something the paper
+ *  says — kept out of repos.json for that reason, and treated here as one more
+ *  candidate rather than as the answer. It earns its place because it is often
+ *  the only pointer there is: a paper whose text names no repository, or names
+ *  six, still has one on HF about three times in five. */
+export function hfRepo(paperId: string): { owner: string; name: string } | null {
+    try {
+        const file = path.join(process.cwd(), 'papers', 'archive', 'hf.json');
+        const store = JSON.parse(fs.readFileSync(file, 'utf-8')) as {
+            papers?: Record<string, { repo?: string | null }>;
+        };
+        const slug = store.papers?.[paperId]?.repo;
+        if (typeof slug !== 'string') return null;
+        const [owner, name] = slug.split('/');
+        return owner && name ? { owner, name } : null;
+    } catch {
+        return null;
+    }
+}
+
 /** The sentence each link sits in. What the seat reads to tell an artefact from
- *  a baseline — the repository name alone rarely says. */
-export function linkContext(text: string, repos: { owner: string; name: string }[]): string {
+ *  a baseline — the repository name alone rarely says.
+ *
+ *  A repository that came from Hugging Face rather than from the prose has no
+ *  sentence to quote. Say where it came from instead: "not in the text" reads
+ *  as an argument against a candidate, and for this one it is not. */
+export function linkContext(
+    text: string,
+    repos: { owner: string; name: string }[],
+    hf: { owner: string; name: string } | null = null,
+): string {
     const out: string[] = [];
     for (const r of repos) {
         const needle = `github.com/${r.owner}/${r.name}`;
         const at = text.toLowerCase().indexOf(needle.toLowerCase());
         if (at === -1) {
-            out.push(`${r.owner}/${r.name}: [link not found in the paper text]`);
+            const fromHf = hf && hf.owner === r.owner && hf.name === r.name;
+            out.push(
+                fromHf
+                    ? `${r.owner}/${r.name}: [not named in the paper. Hugging Face records this as the paper's own repository — a reader's attribution, not the authors']`
+                    : `${r.owner}/${r.name}: [link not found in the paper text]`,
+            );
             continue;
         }
         const window = text.slice(Math.max(0, at - 320), at + 160).replace(/\s+/g, ' ').trim();
@@ -106,13 +143,21 @@ export function linkContext(text: string, repos: { owner: string; name: string }
     return out.join('\n\n');
 }
 
-/** Candidates named by a paper, before anything has judged them. */
+/** Candidates named by a paper, before anything has judged them.
+ *
+ *  The HF repository leads when there is one: it is the likeliest artefact, and
+ *  the six-candidate cap should not drop it in favour of a baseline that
+ *  happened to be cited earlier. */
 export function candidatesFor(paperId: string, extra: string[] = []) {
     const paper = readPaper(paperId);
     const haystack = [paper?.text ?? '', ...extra].join('\n');
+    const hf = hfRepo(paperId);
     // A paper can cite a dozen baselines; the seat decides which is its own.
-    const repos = findRepos(haystack).slice(0, 6);
-    return { repos, haystack };
+    const named = findRepos(haystack);
+    const dupe = (r: { owner: string; name: string }) =>
+        hf !== null && r.owner.toLowerCase() === hf.owner.toLowerCase() && r.name.toLowerCase() === hf.name.toLowerCase();
+    const repos = (hf ? [hf, ...named.filter((r) => !dupe(r))] : named).slice(0, 6);
+    return { repos, haystack, hf };
 }
 
 /** GitHub's current answer for each repository, in the order given. */

@@ -50,6 +50,17 @@ function htmlToText(html) {
         `\n\n${'#'.repeat(Number(n))} ${inner.replace(/<[^>]+>/g, '').trim()}\n`,
     );
     s = s.replace(/<\/p>|<\/div>|<br\s*\/?>/gi, '\n');
+    // An anchor that sits between two word characters is holding them apart, so
+    // removing it has to leave a space behind. LaTeXML writes bibliography notes
+    // as `<a>https://github.com/owner/name</a>GitHub repository. Accessed: …`,
+    // and dropping the tag with nothing in its place welds the label onto the
+    // URL — `owner/nameGitHub`, a repository that does not exist.
+    //
+    // Only where it actually welds, and only for anchors. Spacing every anchor
+    // would turn `[30]` into `[ 30]` across every citation in the corpus, and
+    // spacing every tag would split `well-formatted` and `key-value` down the
+    // middle — LaTeXML wraps hyphens and fragments of words in spans too.
+    s = s.replace(/(?<=[A-Za-z0-9])<\/?a\b[^>]*>(?=[A-Za-z0-9])/gi, ' ');
     s = s.replace(/<[^>]+>/g, '');
     s = s
         .replace(/&nbsp;/g, ' ')

@@ -59,6 +59,7 @@ const LINKS: NavItem[] = [
             { href: '/capital/GDP', label: 'GDP', icon: '₲' },
         ],
     },
+    { href: '/blockchain', label: 'Blockchain', icon: '₿' },
     {
         href: '/commodities/oil',
         label: 'Oil',
@@ -76,6 +77,7 @@ const LINKS: NavItem[] = [
 ];
 
 const STORAGE_KEY = 'kyros:sidebar:open';
+const COLLAPSED_KEY = 'kyros:sidebar:collapsed';
 
 // ─── component ────────────────────────────────────────────────────────────────
 
@@ -83,17 +85,65 @@ export default function Sidebar() {
     const pathname = usePathname();
     const [open, setOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
+    // set of parent hrefs that are manually collapsed
+    // All parents start collapsed by default
+    const allParentHrefs = LINKS.filter((item) => item.children).map((item) => item.href);
+    const [collapsed, setCollapsed] = useState<Set<string>>(new Set(allParentHrefs));
 
     useEffect(() => {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored !== null) setOpen(stored === 'true');
+
+        const storedCollapsed = localStorage.getItem(COLLAPSED_KEY);
+        if (storedCollapsed) {
+            try {
+                setCollapsed(new Set(JSON.parse(storedCollapsed)));
+            } catch {
+                // ignore malformed storage — keep the all-collapsed default
+            }
+        } else {
+            // First visit: persist the all-collapsed default
+            localStorage.setItem(COLLAPSED_KEY, JSON.stringify(allParentHrefs));
+        }
+
         setMounted(true);
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Auto-expand the parent whose section the current path is in
+    useEffect(() => {
+        const activeParent = LINKS.find(
+            (item) =>
+                item.children &&
+                (pathname === item.href || pathname.startsWith(item.href + '/'))
+        );
+        if (activeParent) {
+            setCollapsed((prev) => {
+                if (!prev.has(activeParent.href)) return prev;
+                const next = new Set(prev);
+                next.delete(activeParent.href);
+                localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...next]));
+                return next;
+            });
+        }
+    }, [pathname]);
 
     function toggle() {
         setOpen((prev) => {
             const next = !prev;
             localStorage.setItem(STORAGE_KEY, String(next));
+            return next;
+        });
+    }
+
+    function toggleCollapsed(href: string) {
+        setCollapsed((prev) => {
+            const next = new Set(prev);
+            if (next.has(href)) {
+                next.delete(href);
+            } else {
+                next.add(href);
+            }
+            localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...next]));
             return next;
         });
     }
@@ -146,44 +196,74 @@ export default function Sidebar() {
 
                 {LINKS.map((item) => {
                     const active = isActive(item.href, item.exact);
-                    // a parent is "open" if pathname is under it
-                    const parentOpen = item.children &&
-                        (pathname === item.href || pathname.startsWith(item.href + '/'));
+                    const hasChildren = !!item.children;
+                    // children are visible when: sidebar is expanded, has children, and not manually collapsed
+                    const childrenVisible = hasChildren && open && !collapsed.has(item.href);
+                    const isCollapsed = collapsed.has(item.href);
 
                     return (
                         <div key={item.href}>
-                            <NavLink item={item} active={active} sidebarOpen={open} />
+                            {/* parent row — link + optional collapse chevron */}
+                            <div className="group/parent relative flex items-center">
+                                <NavLink item={item} active={active} sidebarOpen={open} />
 
-                            {/* children — only visible when sidebar is expanded and we're under this parent */}
-                            {item.children && parentOpen && (
-                                <div className={`flex flex-col gap-px transition-[opacity] duration-300 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
-                                    {item.children.map((child) => {
+                                {hasChildren && open && (
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleCollapsed(item.href)}
+                                        aria-label={isCollapsed ? `Expand ${item.label}` : `Collapse ${item.label}`}
+                                        className={`absolute right-2 flex h-4 w-4 shrink-0 items-center justify-center text-platinum-dim transition-opacity duration-300 ease-mechanical hover:text-platinum group-hover/parent:opacity-100 ${isCollapsed ? 'opacity-60' : 'opacity-0'}`}
+                                    >
+                                        <svg
+                                            width="8"
+                                            height="8"
+                                            viewBox="0 0 10 10"
+                                            fill="none"
+                                            aria-hidden
+                                            className={`transition-transform duration-300 ease-mechanical ${isCollapsed ? '-rotate-90' : ''}`}
+                                        >
+                                            <path
+                                                d="M2 3.5L5 6.5L8 3.5"
+                                                stroke="currentColor"
+                                                strokeWidth="1.2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* children — a single rail descends from the parent's icon column */}
+                            {hasChildren && (
+                                <div
+                                    className={`relative flex flex-col overflow-hidden transition-[max-height,opacity] duration-300 ease-mechanical ${childrenVisible ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}
+                                >
+                                    <span
+                                        aria-hidden
+                                        className="absolute left-6 top-0 bottom-1 w-px bg-stone-line/60"
+                                    />
+
+                                    {item.children!.map((child) => {
                                         if (isSection(child)) {
                                             return (
-                                                <div key={child.section} className="relative flex items-stretch pl-3.5">
-                                                    {/* vertical connector line */}
-                                                    <span aria-hidden className="absolute left-[1.375rem] top-0 bottom-0 w-px bg-stone-line" />
-                                                    <span
-                                                        className={`px-4 pb-1.5 pt-4 font-sans text-[0.55rem] uppercase tracking-[0.22em] text-platinum-dim transition-opacity duration-500 ease-mechanical ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-                                                    >
-                                                        {child.section}
-                                                    </span>
+                                                <div
+                                                    key={child.section}
+                                                    className="pl-nav-label pr-3.5 pb-1 pt-3.5 font-sans text-[0.5rem] uppercase tracking-[0.25em] text-platinum-dim/40"
+                                                >
+                                                    {child.section}
                                                 </div>
                                             );
                                         }
 
-                                        const childActive = isActive(child.href, child.exact);
                                         return (
-                                            <div key={child.href} className="relative flex items-stretch pl-3.5">
-                                                {/* vertical connector line */}
-                                                <span aria-hidden className="absolute left-[1.375rem] top-0 bottom-0 w-px bg-stone-line" />
-                                                <NavLink
-                                                    item={child}
-                                                    active={childActive}
-                                                    sidebarOpen={open}
-                                                    indent
-                                                />
-                                            </div>
+                                            <NavLink
+                                                key={child.href}
+                                                item={child}
+                                                active={isActive(child.href, child.exact)}
+                                                sidebarOpen={open}
+                                                indent
+                                            />
                                         );
                                     })}
                                 </div>
@@ -212,18 +292,39 @@ function NavLink({
     sidebarOpen: boolean;
     indent?: boolean;
 }) {
+    if (indent) {
+        // Child item — shorter row, true left indent, same brightness as parent
+        return (
+            <Link
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={`group relative flex h-7 w-full items-center pl-nav-label pr-3.5 transition-colors duration-300 ease-mechanical ${active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'
+                    }`}
+            >
+                {/* active child lights up its segment of the rail */}
+                {active && (
+                    <span aria-hidden className="absolute inset-y-0 left-6 w-px bg-bronze" />
+                )}
+                <span
+                    className={`truncate font-sans text-[0.58rem] uppercase tracking-[0.15em] transition-[opacity,transform] duration-500 ease-mechanical ${sidebarOpen ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-1 opacity-0'
+                        }`}
+                >
+                    {item.label}
+                </span>
+            </Link>
+        );
+    }
+
+    // Top-level category item
     return (
         <Link
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`group relative flex h-9 w-full items-center gap-3 transition-colors duration-300 ease-mechanical ${indent ? 'pl-4 pr-3.5' : 'px-3.5'
-                } ${active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'}`}
+            className={`group relative flex h-9 w-full items-center gap-3 px-3.5 transition-colors duration-300 ease-mechanical ${active ? 'text-marble' : 'text-platinum-dim hover:text-platinum'
+                }`}
         >
-            {active && !indent && (
+            {active && (
                 <span aria-hidden className="absolute inset-y-1 left-0 w-px bg-bronze" />
-            )}
-            {active && indent && (
-                <span aria-hidden className="absolute inset-y-1 left-3.5 w-px bg-bronze" />
             )}
 
             <span
@@ -235,7 +336,7 @@ function NavLink({
 
             <span
                 className={`truncate font-sans text-[0.63rem] uppercase tracking-[0.2em] transition-[opacity,transform] duration-500 ease-mechanical ${sidebarOpen ? 'translate-x-0 opacity-100' : 'pointer-events-none -translate-x-1 opacity-0'
-                    } ${indent ? 'text-[0.6rem] tracking-[0.18em]' : ''}`}
+                    }`}
             >
                 {item.label}
             </span>
