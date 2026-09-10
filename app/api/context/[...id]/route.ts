@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import type { Paradigm } from '@/lib/paradigm';
-import { renderParadigm } from '@/lib/paradigm';
+import type { Paradigm } from '@/lib/engine/paradigm';
+import { renderParadigm } from '@/lib/engine/paradigm';
 
 const CONTEXT_ROOT = path.join(process.cwd(), 'context');
 

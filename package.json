@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "candidate": "node scripts/candidate.mjs",
+    "backtest": "tsx --env-file=.env.local scripts/backtest.ts",
+    "score": "tsx --env-file=.env.local scripts/score.ts",
     "due": "node scripts/due.mjs",
     "external": "node scripts/external.mjs",
     "external:update": "node scripts/external-update.mjs",

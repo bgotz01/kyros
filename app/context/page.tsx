@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PageRefMeta } from '@/app/components/council/types';
-import type { Paradigm, ParadigmBottleneck, ParadigmLayer } from '@/lib/paradigm';
+import type { Paradigm } from '@/lib/engine/paradigm';
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -72,194 +72,78 @@ function Chevron({ open, size = 7 }: { open: boolean; size?: number }) {
     );
 }
 
-// ─── paradigm viewer sub-components ──────────────────────────────────────────
-// Extracted from ParadigmModal so the context page can render the same
-// structured view without a modal wrapper.
+// ─── paradigm viewer ─────────────────────────────────────────────────────────
+// The same three collections ParadigmModal shows, without the modal chrome and
+// sized to fill the editor pane. One law per collection, and the ids are visible
+// because the ids are what a score selects.
 
-function Shares({ layer }: { layer: ParadigmLayer }) {
-    const d = layer.distribution;
-    if (!d) {
-        return (
-            <p className="font-sans text-[0.62rem] tracking-[0.03em] text-platinum-dim">
-                No defensible share at this date.
-            </p>
-        );
-    }
-    const sorted = [...d.entries].sort((a, b) => b.share - a.share);
+function Rows({
+    entries,
+}: {
+    entries: { id: string; text: string; tag?: string; detail?: string[] }[];
+}) {
     return (
-        <div className="flex flex-col gap-2">
-            <span aria-hidden className="flex h-1 w-full items-center gap-px">
-                {sorted.map((e, i) => (
-                    <span
-                        key={e.value}
-                        className="h-1 transition-[width] duration-700 ease-mechanical"
-                        style={{
-                            width: `${e.share * 100}%`,
-                            background: i === 0 ? 'var(--color-bronze)' : 'var(--color-bronze-dim)',
-                            opacity: i === 0 ? 1 : 0.55 - i * 0.12,
-                        }}
-                    />
-                ))}
-            </span>
-            <p className="font-mono text-[0.58rem] tracking-[0.06em] text-platinum-dim">
-                {sorted.map((e, i) => (
-                    <span key={e.value}>
-                        {i > 0 && ' · '}
-                        <span className={i === 0 ? 'text-marble' : undefined}>{e.value}</span>{' '}
-                        {Math.round(e.share * 100)}%
-                    </span>
-                ))}
-            </p>
-            <p className="font-sans text-[0.55rem] uppercase tracking-[0.16em] text-platinum-dim/70">
-                {d.basis}
-            </p>
-        </div>
-    );
-}
-
-function ParadigmLayerRow({ layer, n }: { layer: ParadigmLayer; n: number }) {
-    const [open, setOpen] = useState(false);
-    return (
-        <div className="border-t border-stone-line/60">
-            <button
-                type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                className="grid w-full grid-cols-[1.6rem_1fr_2.5rem] items-baseline gap-3 px-6 py-3 text-left"
-            >
-                <span className="font-mono text-[0.55rem] text-platinum-dim">
-                    {String(n).padStart(2, '0')}
-                </span>
-                <span className="min-w-0">
-                    <span className="block font-sans text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
-                        {layer.layer}
-                    </span>
-                    <span className="mt-1 block truncate font-sans text-[0.7rem] tracking-[0.03em] text-marble">
-                        {layer.paradigm}
-                    </span>
-                </span>
-                <span className="text-right font-mono text-[0.62rem] text-marble">
-                    {layer.importance}
-                    <span className="text-platinum-dim">/10</span>
-                </span>
-            </button>
-
-            {open && (
-                <div className="flex flex-col gap-4 border-t border-stone-line/60 bg-obsidian-800 px-6 py-4">
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            Assumption
+        <>
+            {entries.map((e, i) => (
+                <div key={e.id} className="border-t border-stone-line/60 px-8 py-3">
+                    <div className="grid grid-cols-[1.6rem_1fr_5rem] items-baseline gap-3">
+                        <span className="font-mono text-[0.55rem] text-platinum-dim">
+                            {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="border-l-2 border-bronze-dim pl-3 font-sans text-[0.72rem] leading-relaxed tracking-[0.03em] text-marble-dim">
-                            {layer.assumption}
-                        </p>
-                    </div>
-
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            Distribution
+                        <span className="min-w-0">
+                            <span className="block font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-marble">
+                                {e.text}
+                            </span>
+                            <span className="mt-1 block font-mono text-[0.52rem] tracking-[0.08em] text-platinum-dim/60">
+                                {e.id}
+                            </span>
+                            {e.detail?.length ? (
+                                <span className="mt-1.5 block font-mono text-[0.55rem] leading-relaxed tracking-[0.05em] text-platinum-dim">
+                                    {e.detail.join(' · ')}
+                                </span>
+                            ) : null}
                         </span>
-                        <Shares layer={layer} />
-                    </div>
-
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            Frontier
+                        <span className="text-right font-sans text-[0.5rem] uppercase tracking-[0.16em] text-bronze">
+                            {e.tag ?? ''}
                         </span>
-                        {layer.frontier.length === 0 ? (
-                            <p className="font-sans text-[0.66rem] tracking-[0.03em] text-platinum-dim">
-                                Nothing credible being pursued at this date.
-                            </p>
-                        ) : (
-                            <ul className="flex flex-col gap-1.5">
-                                {layer.frontier.map((f) => (
-                                    <li key={f} className="flex gap-2">
-                                        <span aria-hidden className="mt-[0.45em] h-px w-2 shrink-0 bg-bronze-dim" />
-                                        <span className="font-sans text-[0.66rem] leading-relaxed tracking-[0.03em] text-platinum">
-                                            {f}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            Evidence · every reference predates the snapshot
-                        </span>
-                        <ul className="flex flex-col gap-1">
-                            {layer.evidence.map((e) => (
-                                <li
-                                    key={e}
-                                    className="font-mono text-[0.56rem] leading-relaxed tracking-[0.04em] text-platinum-dim"
-                                >
-                                    {e}
-                                </li>
-                            ))}
-                        </ul>
                     </div>
                 </div>
-            )}
-        </div>
+            ))}
+        </>
     );
 }
 
-function ParadigmBottleneckRow({ bottleneck, n }: { bottleneck: ParadigmBottleneck; n: number }) {
-    const [open, setOpen] = useState(false);
+function Section({
+    symbol,
+    title,
+    question,
+    children,
+}: {
+    symbol: string;
+    title: string;
+    question: string;
+    children: React.ReactNode;
+}) {
     return (
-        <div className="border-t border-stone-line/60">
-            <button
-                type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                className="grid w-full grid-cols-[1.6rem_1fr_5.5rem_2.5rem] items-baseline gap-3 px-6 py-3 text-left"
-            >
-                <span className="font-mono text-[0.55rem] text-platinum-dim">
-                    {String(n).padStart(2, '0')}
+        <div className="border-t border-stone-line">
+            <div className="px-8 py-4">
+                <span className="flex items-baseline gap-2.5">
+                    <span className="font-serif text-[0.9rem] font-medium leading-none tracking-[0.04em] text-bronze-bright">
+                        {symbol}
+                    </span>
+                    <span className="font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
+                        {title}
+                    </span>
                 </span>
-                <span className="truncate font-sans text-[0.68rem] tracking-[0.03em] text-marble">
-                    {bottleneck.name}
-                </span>
-                <span className="truncate text-right font-mono text-[0.5rem] uppercase tracking-[0.08em] text-bronze">
-                    {bottleneck.status}
-                </span>
-                <span className="text-right font-mono text-[0.62rem] text-marble">
-                    {bottleneck.importance}
-                    <span className="text-platinum-dim">/10</span>
-                </span>
-            </button>
-
-            {open && (
-                <div className="flex flex-col gap-4 border-t border-stone-line/60 bg-obsidian-800 px-6 py-4">
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            The problem
-                        </span>
-                        <p className="border-l-2 border-bronze-dim pl-3 font-sans text-[0.7rem] leading-relaxed tracking-[0.03em] text-marble-dim">
-                            {bottleneck.problem}
-                        </p>
-                    </div>
-                    <div>
-                        <span className="mb-1.5 block font-sans text-[0.5rem] uppercase tracking-[0.24em] text-platinum-dim">
-                            Evidence · every reference predates the snapshot
-                        </span>
-                        <ul className="flex flex-col gap-1">
-                            {bottleneck.evidence.map((item) => (
-                                <li key={item} className="font-mono text-[0.56rem] leading-relaxed tracking-[0.04em] text-platinum-dim">
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            )}
+                <p className="mt-1.5 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
+                    {question}
+                </p>
+            </div>
+            {children}
         </div>
     );
 }
 
-/** Inline structured viewer for a paradigm snapshot — same layout as
- *  ParadigmModal but without the modal chrome, sized to fill the editor pane. */
 function ParadigmViewer({ p }: { p: Paradigm }) {
     return (
         <div className="flex-1 overflow-y-auto">
@@ -274,44 +158,57 @@ function ParadigmViewer({ p }: { p: Paradigm }) {
                 </div>
             </div>
 
-            <div className="border-t border-stone-line">
-                <div className="px-8 py-4">
-                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
-                        Bottlenecks · I² constraint surface
-                    </span>
-                    <p className="mt-1.5 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
-                        A paper must materially relieve one of these dated constraints for a high
-                        incentives score. No match or negligible impact caps I² at 2; incremental
-                        relief caps it at 4.
-                    </p>
-                </div>
-                {(p.bottlenecks ?? []).map((b, i) => (
-                    <ParadigmBottleneckRow key={b.id} bottleneck={b} n={i + 1} />
-                ))}
-                {!p.bottlenecks?.length && (
-                    <p className="border-t border-stone-line/60 px-8 py-4 font-sans text-[0.66rem] text-platinum-dim">
-                        No bottlenecks recorded in this snapshot. I² is capped at 2.
-                    </p>
-                )}
-            </div>
+            <Section
+                symbol="I¹"
+                title="Baseline · what is true now"
+                question="The standing claim on each force. A creation is scored on how far it moves ONE."
+            >
+                <Rows
+                    entries={p.dimensions.map((d) => ({
+                        id: d.id,
+                        text: d.baseline,
+                        tag: d.id,
+                        detail: d.evidence,
+                    }))}
+                />
+            </Section>
 
-            <div className="border-t border-stone-line">
-                <div className="px-8 py-4">
-                    <span className="block font-sans text-[0.58rem] uppercase tracking-[0.22em] text-bronze">
-                        Paradigm layers · I¹ assumption surface
-                    </span>
-                </div>
-                {p.layers.map((l, i) => (
-                    <ParadigmLayerRow key={l.layer} layer={l} n={i + 1} />
-                ))}
-            </div>
+            <Section
+                symbol="I²"
+                title="Incentive · what the field is pulling toward"
+                question="The concrete outcome each force wants delivered. A creation is scored on how directly and materially it delivers ONE."
+            >
+                <Rows
+                    entries={p.dimensions.map((d) => ({
+                        id: d.id,
+                        text: d.incentive,
+                        tag: d.id,
+                        detail: d.evidence,
+                    }))}
+                />
+            </Section>
+
+            <Section
+                symbol="I³"
+                title="Inflection · what would count as one"
+                question="Written before any paper is read. A creation is scored on how far it gets toward the change this snapshot named in advance — not on what is novel about it."
+            >
+                <Rows
+                    entries={p.dimensions.map((d) => ({
+                        id: d.id,
+                        text: d.inflection,
+                        tag: d.id,
+                        detail: d.evidence,
+                    }))}
+                />
+            </Section>
 
             <p className="border-t border-stone-line px-8 py-4 font-sans text-[0.62rem] leading-relaxed tracking-[0.03em] text-platinum-dim">
                 A candidate is judged against the snapshot standing when it was published,
-                never a later one.{' '}
-                <span className="text-platinum">Importance</span> is decided here, once,
-                and caps I¹. Bottleneck importance does the same for I². Neither is a
-                per-paper judgement.
+                never a later one. Nothing here is weighted:{' '}
+                <span className="text-platinum">membership is the judgement</span>, made once
+                when the snapshot was authored. How far a creation moves any of these is decided
+                per creation, on a 0–5 ladder that bounds the score.
             </p>
         </div>
     );

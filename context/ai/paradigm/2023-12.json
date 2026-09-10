@@ -1,266 +1,91 @@
 {
   "asOf": "2023-12-31",
   "mode": "reconstructed",
-  "thesis": "AI is dominated by large pretrained Transformer models built with enormous compute and web-scale data, then aligned for use as chat assistants. Capability improves primarily through scaling, while frontier models remain expensive, closed, static and unreliable.",
-  "layers": [
+  "thesis": "Frontier AI is a small number of very large pretrained Transformers, built on NVIDIA clusters from web-scale human text and sold as closed metered APIs behind a chat box. Capability is bought with pretraining scale. The models are expensive to run, frozen after release, retain nothing between conversations, and answer requests rather than carry out work.",
+  "dimensions": [
     {
-      "layer": "compute",
-      "paradigm": "NVIDIA GPU clusters dominate frontier training, under acute supply shortage",
-      "assumption": "Frontier capability requires large accelerator clusters, with NVIDIA GPUs as the industry default.",
-      "frontier": [
-        "TPU v5e/v5p",
-        "AMD MI300X",
-        "AWS Trainium and Inferentia",
-        "Cerebras and Groq inference silicon",
-        "fp8 training"
-      ],
-      "importance": 10,
+      "id": "compute",
+      "name": "Compute",
+      "baseline": "Frontier capability requires massive centralised compute.",
+      "incentive": "Reduce the compute and cost required for frontier capability.",
+      "inflection": "Frontier-level capability becomes achievable under fundamentally different compute economics.",
       "evidence": [
-        "NVIDIA H100 general availability and sustained shortage \u2014 2023",
-        "Llama 2 trained on A100 clusters \u2014 2023-07",
-        "Gemini 1 trained on TPU v4/v5 \u2014 2023-12",
-        "AMD MI300X launch \u2014 2023-12",
-        "CoWoS capacity named as the constraint \u2014 2023"
+        "GPT-4 training compute widely estimated in the tens of thousands of A100-years — 2023-03",
+        "Llama 2 trained on a 2,000-GPU A100 cluster — 2023-07",
+        "Inflection announces a 22,000-H100 cluster — 2023-06",
+        "H100 lead times reported at 6-11 months; sustained shortage through the year — 2023-08",
+        "CoWoS advanced packaging named as the binding supply constraint — 2023",
+        "Frontier training runs priced in the tens of millions of dollars — 2023"
       ]
     },
     {
-      "layer": "architecture",
-      "paradigm": "Decoder-only Transformers dominate, with grouped-query attention standard and sparsity and multimodality emerging",
-      "assumption": "Transformer attention remains the architecture for frontier models; gains come from sparsity, scale and multimodality rather than from replacing attention.",
-      "distribution": {
-        "basis": "architecture family of 7 selected frontier-scale models released 2023; every publicly described example is attention-based",
-        "entries": [
-          {
-            "value": "Transformer",
-            "share": 1.0
-          },
-          {
-            "value": "Non-attention architectures",
-            "share": 0.0
-          }
-        ]
-      },
-      "frontier": [
-        "Mixture-of-Experts at production scale",
-        "state-space models",
-        "multimodal and vision-language architectures",
-        "speculative decoding"
-      ],
-      "importance": 10,
+      "id": "architecture",
+      "name": "Architecture",
+      "baseline": "Transformers are the dominant frontier architecture.",
+      "incentive": "Improve capability or efficiency beyond what the dominant architecture permits.",
+      "inflection": "A different architecture or capability mechanism meaningfully challenges Transformer dominance at the frontier.",
       "evidence": [
-        "Mixtral 8x7B MoE \u2014 2023-12",
-        "Mamba \u2014 2023-12",
-        "GPT-4V multimodal \u2014 2023-09",
-        "Llama 2 grouped-query attention \u2014 2023-07",
-        "FlashAttention-2 \u2014 2023-07"
+        "Attention Is All You Need — 2017-06",
+        "Every frontier model released this year is a Transformer: GPT-4, Claude 2, Gemini 1, Llama 2 — 2023",
+        "FlashAttention-2 optimises the Transformer rather than replacing it — 2023-07",
+        "Mamba proposes a selective state-space alternative, at small scale and unproven at the frontier — 2023-12",
+        "RWKV and RetNet published as recurrent alternatives, neither at frontier scale — 2023"
       ]
     },
     {
-      "layer": "training",
-      "paradigm": "Pretraining, then instruction tuning and preference optimisation",
-      "assumption": "Capability comes from pretraining; behaviour and alignment come from preference-based post-training on human judgements.",
-      "frontier": [
-        "direct preference optimisation without a reward model",
-        "process supervision on reasoning steps",
-        "constitutional and AI-generated feedback",
-        "synthetic instruction data at scale"
-      ],
-      "importance": 9,
+      "id": "scaling",
+      "name": "Scaling",
+      "baseline": "Capability is primarily produced by larger pretraining runs on more human text.",
+      "incentive": "Find additional ways to increase capability beyond pretraining scale.",
+      "inflection": "A new scaling axis materially changes how additional capability is produced.",
       "evidence": [
-        "Direct Preference Optimization \u2014 2023-05",
-        "Let's Verify Step by Step \u2014 2023-05",
-        "Constitutional AI \u2014 2022-12",
-        "Textbooks Are All You Need \u2014 2023-06",
-        "Llama 2 RLHF methodology published \u2014 2023-07"
+        "Scaling Laws for Neural Language Models — 2020-01",
+        "Training Compute-Optimal Large Language Models (Chinchilla) — 2022-03",
+        "GPT-4 Technical Report attributes capability to scale and predictable scaling — 2023-03",
+        "Chain-of-Thought prompting raises measured capability without retraining, and is read as a prompting technique rather than a scaling axis — 2022-01",
+        "Projections that high-quality public text is exhausted within the decade — 2022-10"
       ]
     },
     {
-      "layer": "data",
-      "paradigm": "Web crawl plus curated and synthetic corpora, with legal access narrowing",
-      "assumption": "Enough high-quality text exists on the open web, and training on more of it reliably improves capability.",
-      "frontier": [
-        "synthetic textbook-quality generation",
-        "licensed and proprietary corpora",
-        "aggressive quality filtering",
-        "multimodal and code corpora"
-      ],
-      "importance": 8,
+      "id": "access",
+      "name": "Access",
+      "baseline": "Frontier capability is concentrated in a small number of closed providers.",
+      "incentive": "Make frontier capability cheaper, open or broadly accessible.",
+      "inflection": "Frontier capability becomes available through a materially different ownership or distribution model.",
       "evidence": [
-        "Textbooks Are All You Need (phi-1) \u2014 2023-06",
-        "New York Times v. OpenAI filed \u2014 2023-12",
-        "RedPajama open reproduction \u2014 2023-04",
-        "no defensible share data for this layer \u2014 distribution omitted"
-      ]
-    },
-    {
-      "layer": "scaling",
-      "paradigm": "Compute-optimal pretraining, with a growing interest in overtraining small models",
-      "assumption": "Capability follows training compute at predictable exponents.",
-      "frontier": [
-        "overtraining small models well past compute-optimal",
-        "sparse scaling at constant active compute",
-        "distillation into small serving models"
-      ],
-      "importance": 10,
-      "evidence": [
-        "Llama 2 trained past compute-optimal for inference economics \u2014 2023-07",
-        "Chinchilla \u2014 2022-03",
-        "Mistral 7B outperforming larger models \u2014 2023-09",
-        "no public source apportions frontier compute by strategy \u2014 distribution omitted"
-      ]
-    },
-    {
-      "layer": "context",
-      "paradigm": "100k+ token context windows with retrieval; weights frozen after training",
-      "assumption": "Weights are frozen at training; anything that must persist lives outside the model, in the context window or a retrieval index.",
-      "frontier": [
-        "state-space models for long sequences",
-        "persistent memory across sessions",
-        "context compression and KV-cache reuse"
-      ],
-      "importance": 9,
-      "evidence": [
-        "Claude 100k context \u2014 2023-05",
-        "GPT-4 Turbo 128k context \u2014 2023-11",
-        "Lost in the Middle, long-context failure modes \u2014 2023-07",
-        "context length is a property of the paradigm, not a share of it \u2014 distribution omitted"
-      ]
-    },
-    {
-      "layer": "interface",
-      "paradigm": "Chat dominates, with IDE and inline code assistants and function calling both in wide use",
-      "assumption": "The primary end-user interface for general AI is conversational chat.",
-      "frontier": [
-        "autonomous agent loops",
-        "custom assistants and GPT-style app surfaces",
-        "multimodal voice and vision input"
-      ],
-      "importance": 8,
-      "evidence": [
-        "ChatGPT reported ~100M users \u2014 2023-01",
-        "AutoGPT wave \u2014 2023-04",
-        "OpenAI function calling \u2014 2023-06",
-        "GPTs and Assistants API \u2014 2023-11",
-        "no public source apportions usage across surfaces \u2014 distribution omitted"
-      ]
-    },
-    {
-      "layer": "economics",
-      "paradigm": "Frontier capability is concentrated; capable open weights now arrive months rather than years behind",
-      "assumption": "Training the best models requires capital and compute available to only a small number of organisations.",
-      "frontier": [
-        "open weights at near-frontier capability",
-        "QLoRA and parameter-efficient tuning",
-        "quantised local inference",
-        "small models matching larger ones"
-      ],
-      "importance": 8,
-      "evidence": [
-        "Llama 2 released with commercial licence \u2014 2023-07",
-        "Mistral 7B \u2014 2023-09",
-        "QLoRA \u2014 2023-05",
-        "llama.cpp local inference \u2014 2023",
-        "GPT-4 technical report withholding architecture and data \u2014 2023-03"
-      ]
-    }
-  ],
-  "bottlenecks": [
-    {
-      "id": "compute-cost-and-availability",
-      "name": "Compute cost and availability",
-      "status": "binding",
-      "importance": 10,
-      "problem": "Frontier GPUs are scarce and extremely expensive; training a GPT-4-class model costs a fortune and the hardware cannot be bought quickly at any price.",
-      "evidence": [
-        "H100 shortage widely reported through the year \u2014 2023",
-        "CoWoS packaging capacity named as the supply constraint \u2014 2023",
-        "Llama 2 trained on large A100 clusters \u2014 2023-07"
-      ]
-    },
-    {
-      "id": "reliability",
-      "name": "Reliability",
-      "status": "binding",
-      "importance": 10,
-      "problem": "Models hallucinate and make reasoning errors, and their work cannot be trusted without a human checking it.",
-      "evidence": [
-        "Let's Verify Step by Step \u2014 2023-05",
-        "AgentBench \u2014 2023-08",
-        "SWE-bench \u2014 2023-10",
-        "hallucination cited in the New York Times complaint \u2014 2023-12"
+        "GPT-4, Claude 2 and Gemini 1 released as closed metered APIs — 2023",
+        "Llama 2 released under a community licence with use restrictions — 2023-07",
+        "Mistral 7B and Mixtral 8x7B released under Apache 2.0, below frontier capability — 2023-09, 2023-12",
+        "Best open-weight models trail the closed frontier on public leaderboards throughout the year — 2023",
+        "Adapting a frontier model to private work is limited to prompting and restricted fine-tuning endpoints — 2023"
       ]
     },
     {
       "id": "agency",
       "name": "Agency",
-      "status": "binding",
-      "importance": 9,
-      "problem": "Models can answer questions but cannot reliably complete long, multi-step tasks; autonomous attempts drift and fail.",
+      "baseline": "Models respond to requests; they do not carry out extended work.",
+      "incentive": "Make models able to reliably complete useful work with less human intervention.",
+      "inflection": "Models move from responding to requests to reliably executing extended work.",
       "evidence": [
-        "AutoGPT wave and its collapse \u2014 2023-04",
-        "OpenAI function calling \u2014 2023-06",
-        "AgentBench showing large gaps to human completion \u2014 2023-08"
+        "ChatGPT and Claude.ai are turn-taking chat interfaces — 2022-11, 2023-07",
+        "ReAct interleaves reasoning and tool calls within a single task — 2022-10",
+        "Toolformer teaches self-supervised API calls — 2023-02",
+        "AutoGPT, BabyAGI and Voyager attempt autonomous multi-step execution and are widely reported as unreliable beyond short horizons — 2023-04, 2023-05",
+        "Models are confidently wrong in ways they cannot detect, compounding over multi-step tasks — 2023"
       ]
     },
     {
-      "id": "inference-cost-and-latency",
-      "name": "Inference cost and latency",
-      "status": "binding",
-      "importance": 9,
-      "problem": "The most capable models are expensive and relatively slow to run at scale, which limits where they can be deployed.",
+      "id": "persistence",
+      "name": "Persistence",
+      "baseline": "Models are static after training and retain nothing across interactions.",
+      "incentive": "Let a deployed model accumulate and retain what it encounters, cheaply.",
+      "inflection": "A deployed model's capability improves from its own use without a new training run.",
       "evidence": [
-        "GPT-4 API pricing \u2014 2023-03",
-        "GPT-4 Turbo introduced at lower price and higher speed \u2014 2023-11",
-        "llama.cpp and quantised local inference emerging in response \u2014 2023"
-      ]
-    },
-    {
-      "id": "closed-frontier",
-      "name": "Closed frontier",
-      "status": "binding",
-      "importance": 9,
-      "problem": "The best models are controlled through APIs. Weights, data, architecture and training method are largely inaccessible, and developers depend on a handful of providers.",
-      "evidence": [
-        "GPT-4 technical report disclosing neither architecture nor data \u2014 2023-03",
-        "Llama 2 released with a restricted commercial licence \u2014 2023-07",
-        "Mistral 7B \u2014 2023-09"
-      ]
-    },
-    {
-      "id": "context-and-memory",
-      "name": "Context and memory",
-      "status": "binding",
-      "importance": 9,
-      "problem": "Models forget across sessions, have a finite effective context even where the window is large, and learn nothing from continued use.",
-      "evidence": [
-        "Claude 100k context \u2014 2023-05",
-        "GPT-4 Turbo 128k context \u2014 2023-11",
-        "Lost in the Middle \u2014 2023-07"
-      ]
-    },
-    {
-      "id": "data-quality-and-supply",
-      "name": "Data quality and supply",
-      "status": "binding",
-      "importance": 8,
-      "problem": "High-quality human-generated text is finite, noisy, duplicated and increasingly constrained by law and licensing.",
-      "evidence": [
-        "New York Times v. OpenAI filed \u2014 2023-12",
-        "Textbooks Are All You Need \u2014 2023-06",
-        "Will We Run Out of Data? \u2014 2022-10",
-        "RedPajama open reproduction \u2014 2023-04"
-      ]
-    },
-    {
-      "id": "customization",
-      "name": "Customization",
-      "status": "binding",
-      "importance": 7,
-      "problem": "Adapting a general model to a company, domain or individual remains cumbersome and imperfect.",
-      "evidence": [
-        "QLoRA \u2014 2023-05",
-        "GPTs and Assistants API \u2014 2023-11",
-        "fine-tuning unavailable on the leading closed models \u2014 2023"
+        "Weights are frozen at release; capability changes only through a new training run — 2023",
+        "Retrieval-Augmented Generation supplies context at inference and leaves weights untouched — 2020-05",
+        "LangChain and LlamaIndex ship external memory as application plumbing — 2023",
+        "MemGPT proposes paged virtual context to simulate longer memory — 2023-10",
+        "LoRA makes adaptation cheap but is an offline training step, not learning from use — 2021-06"
       ]
     }
   ]

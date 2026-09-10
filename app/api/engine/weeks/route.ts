@@ -1,4 +1,4 @@
-import { allWeeks } from '@/lib/engineData';
+import { allWeeks } from '@/lib/engine/data';
 
 // ─── GET /api/engine/weeks ───────────────────────────────────────────────────
 // The digest, as batches. `held` says whether a paper's text is in the archive —

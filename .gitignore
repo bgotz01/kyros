@@ -44,3 +44,7 @@ next-env.d.ts
 
 # one-off maintenance logs
 repair.log
+
+# Backtest runs — instrument checks, not readings. Never written to the ledger.
+backtest/
+backtest.log

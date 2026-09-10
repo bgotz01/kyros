@@ -134,46 +134,65 @@ model EngineScore {
   inversion Int
   /// A few words, for the ranked view. The detail sits below it.
   inversionHeadline String @default("")
-  /// What is being inverted, and how load-bearing it is. An inversion cannot
-  /// score higher than the importance of the thing it inverts — overturning a
-  /// prompting convention is not overturning attention.
-  paradigm           String @default("")
-  paradigmImportance Int    @default(0)
-
-  /// Which layer of the standing paradigm the candidate lands on, and what it
-  /// does to that layer's assumption. Not every paper attacking a layer inverts
-  /// it — FlashAttention optimises attention, the Transformer inverted
-  /// recurrence, and the two must not score alike. Null on rows scored before
-  /// the paradigm snapshots existed.
-  paradigmLayer    String?
-  paradigmRelation String?
-  /// What the candidate offers in the layer's place, resolved against the
-  /// snapshot to derive whether it was dominant, minor, on the frontier or absent.
-  paradigmProposes String?
-  /// The snapshot it was judged against. A delta means nothing without it.
-  paradigmAsOf     String?
+  /// The BASELINE claim this creation contradicts, selected by id out of the
+  /// sealed snapshot, plus that claim in its own words. The words are copied so
+  /// a row still reads if the snapshot is ever re-authored under the same id.
+  baselineId String?
+  paradigm   String @default("")
+  /// The rung on the 0-5 inversion ladder. The band it opens is what bounded
+  /// the 0-10 score beside it; the whole derivation is in `derivation`.
+  inversionLevel Int?
+  /// Filing only, copied from the selected claim's tag. Never read by a score.
+  paradigmTag String?
+  /// The snapshot every id on this row was selected from. A selection means
+  /// nothing without it.
+  paradigmAsOf String?
+  /// Which analyst prompt produced this row. 0 or null is the file constant.
+  /// The snapshot answers "measured against what"; this answers "measured how".
+  promptVersion Int?
   inverting Json
-  magnitude String
+
+  /// ─── retired with the layer/bottleneck schema ─────────────────────────────
+  /// Kept nullable so rows scored before the redesign still read. Nothing
+  /// writes them; the level ladder replaced every ceiling they fed.
+  paradigmImportance Int     @default(0)
+  paradigmLayer      String?
+  paradigmRelation   String?
+  paradigmProposes   String?
+  magnitude          String?
   /// Paired string[] — the prior approach against the proposed one, read
   /// side by side. Same length wherever the model can manage it.
   previous  Json?
   proposed  Json?
 
-  incentives          Int
-  incentivesHeadline  String @default("")
+  incentives         Int
+  incentivesHeadline String @default("")
+  /// The PRESSURE this creation acts on, selected by id out of the snapshot,
+  /// and what it does to that pressure. `incentiveAction` carries no ceiling of
+  /// its own — it is here so a paper that reveals or measures a constraint is
+  /// legible as such rather than reading as relief that failed.
+  pressureId      String?
+  incentiveAction String?
+  incentivesLevel Int?
   /// The shape of the practical gain — efficiency, cost, a new workflow.
-  outcomeKind         String @default("")
+  outcomeKind     String @default("")
   /// The size of it, in the paper's own units. "Not quantified" when the paper
   /// claims a gain without measuring one — which is itself worth recording.
-  outcomeEstimate     String @default("")
-  bottleneck          Json
+  outcomeEstimate String @default("")
+  bottleneck      Json
 
   inflection         Int
   inflectionHeadline String @default("")
-  unprecedented      Json
-  /// What had already been demonstrated before publication, read from the
-  /// paper's own related work. Caps I³ alongside where the proposal sat.
-  precedent          String?
+  /// The closest EXISTING PRODUCT, selected by id out of the snapshot. Null is
+  /// a claim — nothing listed is meaningfully prior art — and the row is
+  /// required to have argued it.
+  precedentId     String?
+  precedentName   String?
+  inflectionLevel Int?
+  unprecedented   Json
+
+  /// Retired with the two-axis I³. Nullable for rows scored before the redesign.
+  precedent String?
 
   /// How each law's score was reached — the model's claim, the ceilings that
   /// applied, and which one bound. Kept so the reasoning can be inspected and
@@ -182,6 +201,14 @@ model EngineScore {
 
   /// Derived from the three laws server-side, never taken from the model.
   product    Int
+  /// RETIRED. Briefly held a derived "this creation is paradigm-defining"
+  /// verdict combining a law at 9+ with a product threshold. The threshold was
+  /// a second hand-tuned number nobody had asked for, and it made a row with a
+  /// huge I² and an ordinary I¹/I³ read as a paradigm event — the exact case
+  /// the three separate laws exist to keep apart. A 9-10 now means
+  /// paradigm-defining ON THAT LAW, and the product carries overall magnitude.
+  /// Kept nullable so the rows written while it existed still read.
+  paradigmDefining Boolean?
   verdict    String
   confidence String
 
@@ -191,7 +218,8 @@ model EngineScore {
   completionTokens Int     @default(0)
   truncated        Boolean @default(false)
 
-  critique EngineCritique?
+  /// Every critic pass over this row, oldest first. They stack.
+  critiques EngineCritique[]
 
   scoredAt DateTime @default(now())
 
@@ -200,10 +228,27 @@ model EngineScore {
   @@index([product(sort: Desc)])
 }
 
+/// One pass of the critic seat. A score may have SEVERAL, and they stack rather
+/// than replace: each round reads the row as the rounds before it left it, and
+/// its accepted corrections layer on top.
+///
+/// It used to be one-per-score, and a re-run deleted the previous critique — so
+/// the resolutions recorded against its notes went with it and every accepted
+/// correction silently reverted to the analyst's original. The reasoning for
+/// that was "a decision about a note a different model never made is
+/// meaningless", which is true of REPLACING a critique and false of adding one:
+/// a second seat is a second reading of the same row, not a redo of the first.
 model EngineCritique {
   id      String      @id @default(cuid())
-  scoreId String      @unique
+  scoreId String
   score   EngineScore @relation(fields: [scoreId], references: [id], onDelete: Cascade)
+
+  /// 1-based pass number, so a reader can tell round two's objection from
+  /// round one's without comparing timestamps.
+  round Int @default(1)
+
+  /// Which critic prompt produced this pass. 0 or null is the file constant.
+  promptVersion Int?
 
   model            String
   cost             Float @default(0)
@@ -213,6 +258,8 @@ model EngineCritique {
   notes EngineNote[]
 
   createdAt DateTime @default(now())
+
+  @@index([scoreId, round])
 }
 
 /// One note per section. `resolution` is the analyst's decision on an
@@ -227,6 +274,13 @@ model EngineNote {
 
   /// string[]
   reasoning       Json
+  /// The three steps an objection can land on: which snapshot id should have
+  /// been selected, which rung it should have been classified as, and what the
+  /// score should read. An objection at step 1 makes the other two moot, and
+  /// keeping them apart is what lets a backtest count wrong-object errors
+  /// separately from disagreements about a number.
+  proposedId      String?
+  proposedLevel   Int?
   proposedScore   Int?
   proposedBullets Json?
 
@@ -290,4 +344,30 @@ model EngineAside {
 
   @@unique([domain, year, weekIdx, n])
   @@index([domain, year, weekIdx])
+}
+
+/// An edited seat prompt. The file constants in lib/engine/prompts.ts remain the
+/// BUILT-IN version; a row here overrides one, and the newest version per seat
+/// is what the routes send.
+///
+/// Versions are append-only for the same reason scores are: the ledger holds
+/// frozen predictions, and a prediction is only frozen if the instrument that
+/// produced it can still be read back. `EngineScore.promptVersion` and
+/// `EngineCritique.promptVersion` name the row that was actually used, so two
+/// scores taken a day apart can be told apart when the prompt moved between
+/// them. Editing in place would make that unanswerable.
+model EnginePrompt {
+  id   String @id @default(cuid())
+  /// 'analyst' | 'critic' | 'external'
+  seat String
+  /// 1-based, per seat. Version 0 is the file constant and is never stored.
+  version Int
+  text    String
+  /// Why it was changed, for the reader comparing two runs.
+  note String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([seat, version])
+  @@index([seat, version(sort: Desc)])
 }

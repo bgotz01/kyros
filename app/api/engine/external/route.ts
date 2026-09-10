@@ -8,10 +8,11 @@ import {
     linkContext,
     type RepoFacts,
     type RepoRole,
-} from '@/lib/engineExternal';
+} from '@/lib/engine/external';
 import { hasApiKey, openrouter } from '@/lib/openrouter';
 import { MODELS } from '@/lib/models';
-import { EXTERNAL_SYSTEM, buildExternalPrompt } from '@/lib/prompts/engine';
+import { buildExternalPrompt } from '@/lib/engine/prompts';
+import { activePrompt } from '@/lib/engine/promptStore';
 
 export const maxDuration = 120;
 
@@ -56,7 +57,7 @@ async function classify(
         const completion = await openrouter().chat.completions.create({
             model,
             messages: [
-                { role: 'system', content: EXTERNAL_SYSTEM },
+                { role: 'system', content: (await activePrompt('external')).text },
                 { role: 'user', content: buildExternalPrompt(title, candidates, context) },
             ],
             max_tokens: Math.min(meta?.maxTokens ?? 2000, 2000),

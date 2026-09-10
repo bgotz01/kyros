@@ -1,44 +1,73 @@
 import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
 import { frameReviewedAt } from '@/lib/pageContext';
-import type { StoredRun, StoredScore } from '@/lib/engineStore';
-import type { CriticNote, CriticSection } from '../critique/route';
+import type { StoredRun, StoredScore } from '@/lib/engine/store';
+import type { Critique, CriticNote, CriticSection } from '../critique/route';
 import {
-    layerOf,
-    loadParadigm,
-    positionOf,
-    type BottleneckAction,
-    type BottleneckFit,
-    type BottleneckImpact,
-    type ParadigmRelation,
-    type Precedent,
-    type LawDerivation,
-} from '@/lib/paradigm';
+    levelOf,
+    LEVEL_BAND,
+    reachOf,
+    byRank,
+    type AnyDerivation,
+    type ParadigmTag,
+} from '@/lib/engine/paradigm';
 
 /** Prisma returns Json columns as unknown; every one of ours is a bullet list. */
 function list(v: unknown): string[] {
     return Array.isArray(v) ? v.map(String) : [];
 }
 
-/** I² originally stored only its display bullets. New rows keep the complete
- *  dated bottleneck measurement in the same JSON column, so no destructive
- *  migration is needed and old scores retain their original shape. */
-function bottleneck(v: unknown) {
-    if (Array.isArray(v)) return { bottleneck: list(v) };
-    if (!v || typeof v !== 'object') return { bottleneck: [] as string[] };
+/** I²'s display bullets, out of a column that has held three shapes: a bare
+ *  string[] on the oldest rows, the fit/impact/ceiling object on rows scored
+ *  under the layer schema, and the pressure object written today. Only the
+ *  bullets are read back from it — every structured value now has its own
+ *  column, so this cannot drift out of step with the row beside it. */
+function bottleneckBullets(v: unknown): string[] {
+    if (Array.isArray(v)) return list(v);
+    if (!v || typeof v !== 'object') return [];
+    return list((v as Record<string, unknown>).bullets);
+}
+
+/** A law's rung and the band it opened, or nothing at all. Null means the row
+ *  predates the ladder; it must not be read as level 0. */
+function rung(level: number | null) {
+    if (level === null) return {};
+    const l = levelOf(level);
+    return { level: l, band: LEVEL_BAND[l] };
+}
+
+/** The force's INCENTIVE in the snapshot's own words, copied into the JSON
+ *  column at scoring time so a row reads without reopening the snapshot.
+ *
+ *  Three key names have occupied this slot. Rows scored on the six forces carry
+ *  `incentive`; the three-list schema wrote the pressure's `problem` there, and
+ *  the layer schema before it a bottleneck `name`. All three are read, because a
+ *  stored row is a frozen prediction and must go on rendering in the vocabulary
+ *  it was scored under — and because reading only the current name silently
+ *  blanked every I² line on the card, which is how this was found. */
+/** The SECOND force a law named, read back out of the derivation.
+ *
+ *  It lives there rather than in a column of its own because the derivation is
+ *  already the per-law record of how a score was reached, and adding three
+ *  nullable columns for a field that carries no weight would be a migration
+ *  bought with nothing. */
+function secondaryOf(derivation: unknown, law: string): string | undefined {
+    if (!Array.isArray(derivation)) return undefined;
+    const row = derivation.find(
+        (d): d is Record<string, unknown> =>
+            Boolean(d) && typeof d === 'object' && (d as Record<string, unknown>).law === law,
+    );
+    const id = row?.alsoAgainst;
+    return typeof id === 'string' && id ? id : undefined;
+}
+
+function incentiveLine(v: unknown): string {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return '';
     const row = v as Record<string, unknown>;
-    return {
-        bottleneck: list(row.bullets),
-        bottleneckId: typeof row.id === 'string' ? row.id : undefined,
-        bottleneckName: typeof row.name === 'string' ? row.name : undefined,
-        bottleneckFit: typeof row.fit === 'string' ? row.fit as BottleneckFit : undefined,
-        // Absent on rows scored before the action axis existed; those were all
-        // scored as relief, which is what an undefined action reads as.
-        action: typeof row.action === 'string' ? row.action as BottleneckAction : undefined,
-        impact: typeof row.impact === 'string' ? row.impact as BottleneckImpact : undefined,
-        bottleneckAsOf: typeof row.asOf === 'string' ? row.asOf : undefined,
-        ceiling: typeof row.ceiling === 'number' ? row.ceiling : undefined,
-    };
+    for (const key of ['incentive', 'problem', 'name']) {
+        if (typeof row[key] === 'string' && row[key]) return row[key] as string;
+    }
+    return '';
 }
 
 /** Every run for a week, newest first. Scores are append-only and a single
@@ -55,7 +84,7 @@ async function loadWeek(domain: string, year: string, weekIdx: number | number[]
         include: {
             scores: {
                 orderBy: { scoredAt: 'desc' },
-                include: { critique: { include: { notes: true } } },
+                include: { critiques: { include: { notes: true }, orderBy: { round: 'asc' } } },
             },
         },
     });
@@ -64,16 +93,6 @@ async function loadWeek(domain: string, year: string, weekIdx: number | number[]
 type RunRows = Awaited<ReturnType<typeof loadWeek>>;
 type ScoreRow = RunRows[number]['scores'][number];
 
-/** Where the proposal sat in the snapshot it was judged against. Derived on
- *  read rather than stored: the snapshot is sealed, so the answer is stable,
- *  and a stored copy could only ever fall out of step with it. */
-function derivePosition(asOf: string | null, layerId: string | null, proposes: string | null): string {
-    if (!asOf || !layerId || !proposes) return '';
-    const p = loadParadigm(asOf.slice(0, 7));
-    const layer = p ? layerOf(p, layerId) : undefined;
-    return layer ? positionOf(layer, proposes).position : '';
-}
-
 function serialiseScore(s: ScoreRow): StoredScore {
     return {
         scoreId: s.id,
@@ -81,47 +100,51 @@ function serialiseScore(s: ScoreRow): StoredScore {
         title: s.title,
         summary: list(s.summary),
         category: s.category,
-        level: s.level,
+        stratum: s.level,
         previousParadigm: s.previousParadigm,
         corePremise: s.corePremise,
         inversion: {
             score: s.inversion,
+            // Absent on rows scored before the ladder existed. Defaulting to 0
+            // would give them the [0,0] band and clamp every stored score to
+            // zero — a frozen prediction must read back as it was made.
+            ...rung(s.inversionLevel),
             headline: s.inversionHeadline,
-            paradigm: s.paradigm,
-            paradigmImportance: s.paradigmImportance,
+            dimensionId: s.baselineId,
+            ...(secondaryOf(s.derivation, 'inversion') ? { secondaryId: secondaryOf(s.derivation, 'inversion')! } : {}),
+            baseline: s.paradigm,
             inverting: list(s.inverting),
-            magnitude: s.magnitude,
             previous: list(s.previous),
             proposed: list(s.proposed),
         },
         incentives: {
             score: s.incentives,
+            ...rung(s.incentivesLevel),
             headline: s.incentivesHeadline,
+            dimensionId: s.pressureId,
+            ...(secondaryOf(s.derivation, 'incentives') ? { secondaryId: secondaryOf(s.derivation, 'incentives')! } : {}),
+            incentive: incentiveLine(s.bottleneck),
             outcomeKind: s.outcomeKind,
             outcomeEstimate: s.outcomeEstimate,
-            ...bottleneck(s.bottleneck),
+            bottleneck: bottleneckBullets(s.bottleneck),
         },
         inflection: {
             score: s.inflection,
+            ...rung(s.inflectionLevel),
             headline: s.inflectionHeadline,
+            dimensionId: s.precedentId,
+            ...(secondaryOf(s.derivation, 'inflection') ? { secondaryId: secondaryOf(s.derivation, 'inflection')! } : {}),
+            criterion: s.precedentName ?? '',
             unprecedented: list(s.unprecedented),
-            ...(s.precedent ? { precedent: s.precedent as Precedent } : {}),
         },
-        // Null on rows scored before the paradigm snapshots existed, so the
-        // card must read as it did then rather than showing an empty delta.
-        ...(s.paradigmLayer && s.paradigmRelation
-            ? {
-                  delta: {
-                      layer: s.paradigmLayer,
-                      relation: s.paradigmRelation as ParadigmRelation,
-                      proposes: s.paradigmProposes ?? '',
-                      position: derivePosition(s.paradigmAsOf, s.paradigmLayer, s.paradigmProposes),
-                      paradigmAsOf: s.paradigmAsOf ?? '',
-                  },
-              }
-            : {}),
-        ...(s.derivation ? { derivation: s.derivation as unknown as LawDerivation[] } : {}),
+        ...(s.paradigmTag ? { tag: s.paradigmTag as ParadigmTag } : {}),
+        paradigmAsOf: s.paradigmAsOf ?? '',
+        ...(s.derivation ? { derivation: s.derivation as unknown as AnyDerivation[] } : {}),
         product: s.product,
+        // Derived from columns the row already holds, so no stored prediction
+        // is rewritten and no migration is needed to rank a ledger of zeros.
+        reach: reachOf(s.inversion, s.incentives, s.inflection),
+        outsideFrame: !s.baselineId && !s.pressureId && !s.precedentId,
         verdict: s.verdict,
         confidence: s.confidence,
         model: s.model,
@@ -130,24 +153,25 @@ function serialiseScore(s: ScoreRow): StoredScore {
         completionTokens: s.completionTokens,
         truncated: s.truncated,
         scoredAt: s.scoredAt.toISOString(),
-        critique: s.critique
-            ? {
-                  id: s.paperId,
-                  model: s.critique.model,
-                  cost: s.critique.cost,
-                  promptTokens: s.critique.promptTokens,
-                  completionTokens: s.critique.completionTokens,
-                  notes: s.critique.notes.map((n): CriticNote => ({
-                      noteId: n.id,
-                      section: n.section as CriticSection,
-                      agrees: n.agrees,
-                      reasoning: list(n.reasoning),
-                      ...(n.proposedScore !== null ? { proposedScore: n.proposedScore } : {}),
-                      ...(n.proposedBullets ? { proposedBullets: list(n.proposedBullets) } : {}),
-                      resolution: (n.resolution as 'applied' | 'dismissed' | null) ?? null,
-                  })),
-              }
-            : undefined,
+        critiques: s.critiques.map((c): Critique => ({
+            id: c.id,
+            round: c.round,
+            model: c.model,
+            cost: c.cost,
+            promptTokens: c.promptTokens,
+            completionTokens: c.completionTokens,
+            notes: c.notes.map((n): CriticNote => ({
+                noteId: n.id,
+                section: n.section as CriticSection,
+                agrees: n.agrees,
+                reasoning: list(n.reasoning),
+                ...(n.proposedId !== null ? { proposedId: n.proposedId } : {}),
+                ...(n.proposedLevel !== null ? { proposedLevel: n.proposedLevel } : {}),
+                ...(n.proposedScore !== null ? { proposedScore: n.proposedScore } : {}),
+                ...(n.proposedBullets ? { proposedBullets: list(n.proposedBullets) } : {}),
+                resolution: (n.resolution as 'applied' | 'dismissed' | null) ?? null,
+            })),
+        })),
     };
 }
 
@@ -160,14 +184,14 @@ function serialise(runs: RunRows): StoredRun | null {
             if (!latest.has(s.paperId)) latest.set(s.paperId, serialiseScore(s));
         }
     }
-    const scores = [...latest.values()].sort((a, b) => b.product - a.product);
+    const scores = [...latest.values()].sort(byRank);
     if (scores.length === 0) return null;
 
     // Provenance comes from the scores themselves. A week assembled from several
     // runs has no single pair of seats, and the run's own columns would lie.
     const newest = scores.reduce((a, b) => (a.scoredAt > b.scoredAt ? a : b));
     const newestCritique = scores
-        .filter((s) => s.critique)
+        .filter((s) => s.critiques.length)
         .sort((a, b) => b.scoredAt.localeCompare(a.scoredAt))[0];
     // Attach new scores to the most recent run so a re-score joins its siblings.
     const head = runs[0];
@@ -179,7 +203,7 @@ function serialise(runs: RunRows): StoredRun | null {
         weekIdx: head.weekIdx,
         heading: head.heading,
         analystModel: newest.model,
-        criticModel: newestCritique?.critique?.model ?? null,
+        criticModel: newestCritique?.critiques.at(-1)?.model ?? null,
         frameReviewedAt: head.frameReviewedAt,
         startedAt: newest.scoredAt,
         scores,
@@ -291,9 +315,16 @@ export async function DELETE(req: NextRequest) {
         const year = url.searchParams.get('year');
         const weekIdx = url.searchParams.get('weekIdx');
         const paperId = url.searchParams.get('paperId');
+        // Clearing a whole week is asked for by name. A missing paperId is far
+        // more likely to be a caller's bug than an intention to delete every
+        // score in the week, so it is not enough on its own to mean "all".
+        const all = url.searchParams.get('all') === '1';
 
-        if (!year || weekIdx === null || !paperId || !/^\d{4}\.\d{4,5}$/.test(paperId)) {
-            return Response.json({ error: 'year, weekIdx and a valid paperId are required' }, { status: 400 });
+        if (!year || weekIdx === null) {
+            return Response.json({ error: 'year and weekIdx are required' }, { status: 400 });
+        }
+        if (!all && (!paperId || !/^\d{4}\.\d{4,5}$/.test(paperId))) {
+            return Response.json({ error: 'a valid paperId is required unless all=1' }, { status: 400 });
         }
         const index = Number(weekIdx);
         if (!Number.isInteger(index) || index < 0) {
@@ -306,7 +337,7 @@ export async function DELETE(req: NextRequest) {
         });
         const result = await db.engineScore.deleteMany({
             where: {
-                paperId,
+                ...(all ? {} : { paperId: paperId! }),
                 runId: { in: runs.map((run) => run.id) },
             },
         });

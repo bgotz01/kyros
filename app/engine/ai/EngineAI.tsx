@@ -7,23 +7,24 @@
 // pass. What changed is that the week stopped being a place — it is read where
 // it sits, in the month, at an address that says so.
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import EngineAISidebar from '@/app/components/engine/EngineAISidebar';
-import MonthHeader, { type Scope, type Stats } from '@/app/components/engine/MonthHeader';
-import CriticModal from '@/app/components/engine/CriticModal';
-import ParadigmModal from '@/app/components/engine/ParadigmModal';
-import BreakdownModal from '@/app/components/engine/BreakdownModal';
-import type { Paradigm } from '@/lib/paradigm';
-import PaperCard from '@/app/components/engine/PaperCard';
-import AsideList, { type AsideRow } from '@/app/components/engine/AsideList';
-import { useEnginePrefs } from '@/app/components/engine/storage';
-import { heldScore, type RowState } from '@/app/components/engine/types';
-import type { WeekRow, PaperRow } from '@/lib/engineData';
-import type { CriticSection } from '@/app/api/engine/critique/route';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import EngineAISidebar from '@/app/engine/components/EngineAISidebar';
+import MonthHeader, { type Scope, type Stats } from '@/app/engine/components/MonthHeader';
+import CriticModal from '@/app/engine/components/CriticModal';
+import ParadigmModal from '@/app/engine/components/ParadigmModal';
+import ScoringModal from '@/app/engine/components/ScoringModal';
+import BreakdownModal from '@/app/engine/components/BreakdownModal';
+import PaperCard from '@/app/engine/components/PaperCard';
+import AsideList, { type AsideRow } from '@/app/engine/components/AsideList';
+import { useEnginePrefs } from '@/app/engine/components/storage';
+import { heldScore, type RowState } from '@/app/engine/components/types';
+import type { WeekRow, PaperRow } from '@/lib/engine/data';
 import type { External } from '@/app/api/engine/external/route';
-import type { Aside } from '@/app/api/engine/aside/route';
-import { effectiveScore, type StoredRun, type StoredScore } from '@/lib/engineStore';
-import { MONTH_ORDER, monthFromSlug, paperAnchor, resolveMonth, weekAnchor } from '@/lib/engineRoutes';
+import { allNotes, effectiveScore, noteForSection, type StoredScore } from '@/lib/engine/store';
+import { MONTH_ORDER, paperAnchor } from '@/lib/engine/routes';
+import { useFragmentNavigation } from './useFragmentNavigation';
+import { useCriticDecisions } from './useCriticDecisions';
+import { useMonthData } from './useMonthData';
 
 const DOMAIN = 'ai';
 
@@ -44,56 +45,66 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     const { prefs, setPrefs } = useEnginePrefs();
     const { model, criticModel, externalModel, criticOn } = prefs;
 
-    const [weeks, setWeeks] = useState<WeekRow[]>([]);
-    const [states, setStates] = useState<Record<string, RowState>>({});
-    /** The stored run per week index. Read a week at a time rather than as one
-     *  merged answer: the run id, the seats and the date belong to a week, and
-     *  merging them would lose which week a score was made in. */
-    const [runs, setRuns] = useState<Record<number, StoredRun | null>>({});
-    const [loading, setLoading] = useState(false);
-    /** The month whose runs and repository rows are in hand. `loading` cannot
-     *  answer this: between the render that resolves a month and the effect
-     *  that starts fetching for it there is a frame where nothing has loaded
-     *  and nothing is loading, and a count read from empty state in that frame
-     *  renders a button only to take it away again. */
-    const [loadedFor, setLoadedFor] = useState<string | null>(null);
     // Keyed "<paperId>:<row>" — every rank and panel opens on its own.
     const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
-    const [openNote, setOpenNote] = useState<{ id: string; section: CriticSection } | null>(null);
+    /** Which week is on screen, or every one of them. The month reads as one
+     *  list by default — the week is where work is committed, so it is chosen
+     *  deliberately rather than being the shape the page arrives in. */
+    const [selected, setSelected] = useState<Scope>('all');
+    /** The fragment, owned here rather than by the navigation hook because both
+     *  hooks touch it: opening a different month re-reads it, and walking to a
+     *  paper writes it. Holding it in one of them would make the two circular. */
+    const [anchor, setAnchor] = useState('');
+
+    const {
+        weeks,
+        monthWeeks,
+        monthName,
+        states,
+        setStates,
+        runs,
+        setRuns,
+        aside,
+        setAside,
+        externals,
+        setExternals,
+        paradigms,
+        loading,
+        loadedFor,
+        error,
+        setError,
+        loadWeek,
+        isRead,
+    } = useMonthData({ year, monthParam, setSelected, setOpenRows, setAnchor });
+
+    /** The snapshot a given row was scored against — its own, not the month's.
+     *  A re-selected force can only be resolved against the paradigm the row
+     *  actually used, so an accepted "wrong force" objection needs this to be
+     *  applied at all.
+     *
+     *  Declared HERE, beside the data it closes over, because it is called from
+     *  render-time memos further down: a `const` further down the component body
+     *  is in the temporal dead zone when those run. */
+    const paradigmFor = useCallback(
+        (s: { paradigmAsOf?: string }) => paradigms.find((p) => p.asOf === s.paradigmAsOf),
+        [paradigms],
+    );
+
     const [showParadigm, setShowParadigm] = useState(false);
+    const [showScoring, setShowScoring] = useState(false);
     // The paper whose derivation is open — held by id, not by value. A critique
     // landing while the modal is open changes the score, and the breakdown is
     // the one place that must show it: freezing a copy would leave the modal
     // explaining a number no longer on the card.
     const [breakdown, setBreakdown] = useState<string | null>(null);
-    // The sealed snapshots, so a card can show the written assumption its I¹ was
-    // measured against rather than the model's paraphrase of it.
-    const [paradigms, setParadigms] = useState<Paradigm[]>([]);
-    const [externals, setExternals] = useState<Record<string, External>>({});
-    /** The digest rows taken out of the reading, as "<weekIdx>:<n>". Held as a
-     *  set of keys rather than of paper ids: the rows most worth setting aside
-     *  are the ones the digest never gave an arXiv id, so the id cannot be what
-     *  identifies them. */
-    const [aside, setAside] = useState<Set<string>>(new Set());
-    /** Which week is on screen, or every one of them. The month reads as one
-     *  list by default — the week is where work is committed, so it is chosen
-     *  deliberately rather than being the shape the page arrives in. */
-    const [selected, setSelected] = useState<Scope>('all');
     const [running, setRunning] = useState<Running>(null);
     const [clearingId, setClearingId] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
     const cancelled = useRef(false);
     // The request in flight. `cancelled` is only read between papers, so on its
     // own it makes stop mean "after this one finishes" — and an analyst call is
     // allowed 300 seconds. Holding the controller lets stop cut the current
     // request off instead of waiting it out.
     const inflight = useRef<AbortController | null>(null);
-
-    const monthName = useMemo(() => monthFromSlug(monthParam), [monthParam]);
-    const monthWeeks = useMemo(
-        () => (monthName ? resolveMonth(weeks, year, monthName) : []),
-        [weeks, year, monthName],
-    );
 
     /** A fetch the stop button can interrupt. Every call in a batch goes
      *  through this so there is never a request stop cannot reach. */
@@ -114,168 +125,6 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     /** A digest row's place in the archive — the one thing every row has. */
     const asideKey = (week: WeekRow, paper: PaperRow) => `${week.idx}:${paper.n}`;
 
-    /** One week's stored run, re-read without disturbing the rest of the month. */
-    const loadWeek = useCallback(async (week: WeekRow) => {
-        try {
-            const res = await fetch(
-                `/api/engine/runs?domain=${DOMAIN}&year=${week.year}&weekIdx=${week.idx}`,
-            );
-            const stored = (await res.json()) as StoredRun | null;
-            setRuns((prev) => ({ ...prev, [week.idx]: stored }));
-            if (stored) {
-                setStates((prev) => ({
-                    ...prev,
-                    ...Object.fromEntries(
-                        stored.scores.map((s) => [s.id, { status: 'done', score: s } as RowState]),
-                    ),
-                }));
-            }
-        } catch {
-            // The cards keep what they are already showing.
-        }
-    }, []);
-
-    /** Whatever was scored across the month last time, rehydrated. */
-    const loadMonth = useCallback(async (mWeeks: WeekRow[], key: string) => {
-        setLoading(true);
-        try {
-            const stored = await Promise.all(
-                mWeeks.map(async (w) => {
-                    try {
-                        const res = await fetch(
-                            `/api/engine/runs?domain=${DOMAIN}&year=${w.year}&weekIdx=${w.idx}`,
-                        );
-                        return [w.idx, (await res.json()) as StoredRun | null] as const;
-                    } catch {
-                        return [w.idx, null] as const;
-                    }
-                }),
-            );
-            setRuns(Object.fromEntries(stored));
-            setStates(
-                Object.fromEntries(
-                    stored.flatMap(([, run]) =>
-                        run
-                            ? run.scores.map((s) => [s.id, { status: 'done', score: s } as RowState])
-                            : [],
-                    ),
-                ),
-            );
-
-            const indices = mWeeks.map((w) => w.idx).join(',');
-
-            // Which rows are out of the reading. Fetched before anything is
-            // rendered from it, so a set-aside row never flashes into the week
-            // and then vanishes.
-            try {
-                const rows = (await (
-                    await fetch(
-                        `/api/engine/aside?domain=${DOMAIN}&year=${mWeeks[0].year}&weekIdx=${indices}`,
-                    )
-                ).json()) as Aside[];
-                setAside(new Set(rows.map((r) => `${r.weekIdx}:${r.n}`)));
-            } catch {
-                setAside(new Set());
-            }
-
-            // Repository evidence is keyed by paper, so it survives re-scores and
-            // is fetched for the whole month in one call.
-            const ids = mWeeks
-                .flatMap((w) => w.papers.map((p) => p.id))
-                .filter(Boolean)
-                .join(',');
-            if (ids) {
-                try {
-                    const rows = (await (
-                        await fetch(`/api/engine/external?ids=${ids}`)
-                    ).json()) as External[];
-                    setExternals(Object.fromEntries(rows.map((r) => [r.paperId, r])));
-                } catch {
-                    setExternals({});
-                }
-            } else {
-                setExternals({});
-            }
-
-            setLoadedFor(key);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetch('/api/engine/weeks')
-            .then((r) => r.json())
-            .then((rows: WeekRow[]) => setWeeks(rows))
-            .catch(() => setError('Could not load the digests.'));
-    }, []);
-
-    useEffect(() => {
-        fetch('/api/engine/paradigm')
-            .then((r) => r.json())
-            .then((rows: Paradigm[]) => setParadigms(Array.isArray(rows) ? rows : []))
-            .catch(() => setParadigms([]));
-    }, []);
-
-    /** The path is the reading. Which month is open is resolved from it rather
-     *  than held beside it, so the rail, the back button and a pasted link can
-     *  never disagree about what is on screen.
-     *
-     *  Guarded by the month actually loaded: the fragment moves as the reader
-     *  walks between weeks and papers, and re-reading every run each time would
-     *  blank the scores already on the cards. */
-    const loadedKey = useRef<string | null>(null);
-
-    useEffect(() => {
-        if (weeks.length === 0) return;
-
-        if (!monthName) {
-            setError(`No month named "${monthParam}".`);
-            return;
-        }
-        if (monthWeeks.length === 0) {
-            setError(`No digests for ${monthName} ${year}.`);
-            return;
-        }
-
-        const key = `${year}:${monthName}`;
-        if (loadedKey.current === key) return;
-        loadedKey.current = key;
-
-        setStates({});
-        setRuns({});
-        setAside(new Set());
-        setSelected('all');
-        setOpenRows({});
-        setError(null);
-        setLoadedFor(null);
-        setAnchor(window.location.hash.slice(1));
-        void loadMonth(monthWeeks, key);
-    }, [weeks, year, monthParam, monthName, monthWeeks, loadMonth]);
-
-    /** The layer assumption a scored row was judged against. */
-    const assumptionFor = useCallback(
-        (state: RowState | undefined): string | undefined => {
-            const delta = heldScore(state)?.delta;
-            if (!delta) return undefined;
-            const snapshot = paradigms.find((p) => p.asOf === delta.paradigmAsOf);
-            return snapshot?.layers.find((l) => l.layer === delta.layer)?.assumption;
-        },
-        [paradigms],
-    );
-
-    /** Whether a paper already holds a reading. The batch and the card's own
-     *  ▷ both ask this: a score is never overwritten, so the way back to an
-     *  unread paper is CLEAR, which removes every saved reading of it. */
-    const isRead = useCallback(
-        (paper: PaperRow): boolean => Boolean(paper.id && heldScore(states[paper.id])),
-        [states],
-    );
-
-    /** The rows of a week still in the reading. Everything a week reports — its
-     *  cards, its counters, what a batch will run — is measured on these, so a
-     *  row set aside stops costing the week space and stops inflating what it
-     *  says is left to do. */
     const visibleFor = useCallback(
         (week: WeekRow): PaperRow[] => week.papers.filter((p) => !aside.has(asideKey(week, p))),
         [aside],
@@ -286,6 +135,16 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         () => (selected === 'all' ? monthWeeks : monthWeeks.filter((w) => w.idx === selected)),
         [monthWeeks, selected],
     );
+
+    const { openNote, setOpenNote, flagNotes, resolveNote, resolveFlags } = useCriticDecisions({
+        states,
+        setStates,
+        scopeWeeks,
+        visibleFor,
+        running,
+        setError,
+    });
+
 
     /** The week the filter is on, or null while the month is read whole. */
     const selectedWeek = selected === 'all' ? null : (scopeWeeks[0] ?? null);
@@ -298,7 +157,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     const shown = useMemo((): { week: WeekRow; paper: PaperRow }[] => {
         const product = (paper: PaperRow): number => {
             const held = heldScore(paper.id ? states[paper.id] : undefined);
-            return held ? effectiveScore(held, held.critique?.notes ?? []).product : -1;
+            return held ? effectiveScore(held, allNotes(held), paradigmFor(held)).product : -1;
         };
         const rows = scopeWeeks.flatMap((week) =>
             visibleFor(week).map((paper) => ({ week, paper })),
@@ -309,7 +168,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 b.week.idx - a.week.idx ||
                 a.paper.n - b.paper.n,
         );
-    }, [scopeWeeks, visibleFor, states]);
+    }, [scopeWeeks, visibleFor, states, paradigmFor]);
 
     /** Set aside within whatever is on screen — the month, or the chosen week. */
     const asideRows = useMemo((): AsideRow[] => {
@@ -341,44 +200,25 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 done: rows.filter((s) => s?.status === 'done').length,
                 spend: rows.reduce(
                     (n, s) =>
-                        n + (s?.status === 'done' ? s.score.cost + (s.score.critique?.cost ?? 0) : 0),
+                        n + (s?.status === 'done'
+                            ? s.score.cost + (s.score.critiques ?? []).reduce((c, x) => c + x.cost, 0)
+                            : 0),
                     0,
                 ),
                 pendingExternal: papers.filter((p) => p.id && !externals[p.id]).length,
-                pendingCritique: rows.filter((s) => s?.status === 'done' && !s.score.critique).length,
+                pendingCritique: rows.filter((s) => s?.status === 'done' && !s.score.critiques?.length).length,
                 openFlags: rows.reduce((n, s) => {
-                    if (s?.status !== 'done' || !s.score.critique) return n;
-                    return n + s.score.critique.notes.filter((x) => !x.agrees && !x.resolution).length;
+                    if (s?.status !== 'done') return n;
+                    return n + allNotes(s.score).filter((x) => !x.agrees && !x.resolution).length;
                 }, 0),
                 totalScore: rows.reduce((n, s) => {
                     if (s?.status !== 'done') return n;
-                    return n + effectiveScore(s.score, s.score.critique?.notes ?? []).product;
+                    return n + effectiveScore(s.score, allNotes(s.score), paradigmFor(s.score)).product;
                 }, 0),
             };
         },
-        [states, externals, visibleFor, isRead],
+        [states, externals, visibleFor, isRead, paradigmFor],
     );
-
-    /** The critic's objections across what is on screen, split by whether a
-     *  decision has been taken on them. A note carries its own id, so both of
-     *  these are the exact set the bulk endpoint will write. */
-    const flagNotes = useMemo(() => {
-        const open: string[] = [];
-        const applied: string[] = [];
-        for (const week of scopeWeeks) {
-            for (const paper of visibleFor(week)) {
-                if (!paper.id) continue;
-                const held = heldScore(states[paper.id]);
-                for (const note of held?.critique?.notes ?? []) {
-                    if (!note.noteId) continue;
-                    if (note.agrees) continue;
-                    if (!note.resolution) open.push(note.noteId);
-                    else if (note.resolution === 'applied') applied.push(note.noteId);
-                }
-            }
-        }
-        return { open, applied };
-    }, [scopeWeeks, visibleFor, states]);
 
     /** Rows the engine has nothing to read: the digest linked somewhere other
      *  than arXiv, or the text was never pulled. They can never be scored, so
@@ -508,7 +348,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
 
             void loadWeek(week);
         },
-        [model, loadWeek, send, visibleFor, isRead],
+        [model, loadWeek, send, visibleFor, isRead, setError, setStates],
     );
 
     /** The analyst pass over what is on screen. Under a week that is its ten
@@ -531,7 +371,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         }
 
         setRunning(null);
-    }, [running, scopeWeeks, analyseWeek]);
+    }, [running, scopeWeeks, analyseWeek, setError]);
 
     /** One paper, on demand. Reuses its week's open run when there is one so a
      *  re-score lands beside its siblings rather than opening a run of one. */
@@ -579,7 +419,12 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 setStates((prev) => ({
                     ...prev,
                     [id]: res.ok
-                        ? { status: 'done', score: data as StoredScore }
+                        ? {
+                              status: 'done',
+                              // Defensive as well as fixed server-side: a cached
+                              // response from before that fix must not crash the page.
+                              score: { ...(data as StoredScore), critiques: data.critiques ?? [] },
+                          }
                         : { status: 'error', message: data.error ?? 'Analysis failed' },
                 }));
             } catch (err) {
@@ -597,7 +442,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
             // with the previously stored score and hide that anything went wrong.
             if (ok) void loadWeek(week);
         },
-        [runs, model, running, loadWeek, send, isRead],
+        [runs, model, running, loadWeek, send, isRead, setError, setStates],
     );
 
     /** One critique, on demand. Same guard as the batch: a score that has
@@ -635,7 +480,11 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                         id: score.id,
                         title: score.title,
                         model: criticModel,
-                        score,
+                        // A later round reads the row as the rounds before it
+                        // left it — analyst plus every accepted correction —
+                        // so the seats build on each other instead of each one
+                        // re-litigating the original from scratch.
+                        score: effectiveScore(score, allNotes(score), paradigmFor(score)),
                         scoreId: score.scoreId,
                     }),
                 });
@@ -643,7 +492,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 setStates((prev) => ({
                     ...prev,
                     [score.id]: res.ok
-                        ? { status: 'done', score: { ...score, critique: data } }
+                        ? { status: 'done', score: { ...score, critiques: [...(score.critiques ?? []), data] } }
                         : { status: 'done', score },
                 }));
             } catch {
@@ -651,7 +500,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
             }
             setRunning(null);
         },
-        [states, runs, criticModel, running, send],
+        [states, runs, criticModel, running, send, setError, setStates, paradigmFor],
     );
 
     /** Remove every saved reading of this paper in its week. Runs are
@@ -705,7 +554,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 setClearingId(null);
             }
         },
-        [running, clearingId, states],
+        [running, clearingId, states, setError, setOpenNote, setRuns, setStates],
     );
 
     /** Every paper in the week that has not been looked up. GitHub allows sixty
@@ -736,7 +585,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 }
             }
         },
-        [externals, externalModel, send, visibleFor],
+        [externals, externalModel, send, visibleFor, setExternals],
     );
 
     /** The repository sweep over what is on screen. Sixty unauthenticated calls
@@ -754,7 +603,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         }
 
         setRunning(null);
-    }, [running, scopeWeeks, externalWeek]);
+    }, [running, scopeWeeks, externalWeek, setError]);
 
     /** The critic over one week's scores. Walks the ones already on the page
      *  that have not been challenged, so it can be re-run against a different
@@ -765,7 +614,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 .map((p) => (p.id ? states[p.id] : undefined))
                 .filter(
                     (s): s is Extract<RowState, { status: 'done' }> =>
-                        s?.status === 'done' && !s.score.critique,
+                        s?.status === 'done' && !s.score.critiques?.length,
                 );
             if (pending.length === 0) return;
 
@@ -794,7 +643,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                             id: score.id,
                             title: score.title,
                             model: criticModel,
-                            score,
+                            score: effectiveScore(score, allNotes(score), paradigmFor(score)),
                             scoreId: score.scoreId,
                         }),
                     });
@@ -804,7 +653,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                     setStates((prev) => ({
                         ...prev,
                         [score.id]: res.ok
-                            ? { status: 'done', score: { ...score, critique: data } }
+                            ? { status: 'done', score: { ...score, critiques: [...(score.critiques ?? []), data] } }
                             : { status: 'done', score },
                     }));
                 } catch (err) {
@@ -814,7 +663,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 }
             }
         },
-        [states, runs, criticModel, send, visibleFor],
+        [states, runs, criticModel, send, visibleFor, setStates, paradigmFor],
     );
 
     /** The critic pass over what is on screen. The most expensive button on the
@@ -833,7 +682,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         }
 
         setRunning(null);
-    }, [running, scopeWeeks, critiqueWeek]);
+    }, [running, scopeWeeks, critiqueWeek, setError]);
 
     /** Take a row out of the reading, or put it back. Written through to the
      *  server and reflected locally at once: the row leaves the week the moment
@@ -883,7 +732,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 );
             }
         },
-        [],
+        [setAside, setError],
     );
 
     /** Clear every row the engine cannot read, in one statement. The rows go
@@ -916,70 +765,7 @@ export default function EngineAI({ year, month: monthParam }: Props) {
             });
             setError('Could not set those rows aside.');
         }
-    }, [running, unrunnable, scopeWeeks]);
-
-    /** Take one decision over every objection on screen.
-     *
-     *  Applying is not an edit: the analyst's row stays frozen and the accepted
-     *  correction is layered over it at read time, which is exactly why the
-     *  same button can be pressed backwards. Reverting returns the applied
-     *  notes to undecided, so the numbers go back to the analyst's originals
-     *  and the flags come back with them.
-     *
-     *  Dismissals are left alone by both. A dismissed objection changed no
-     *  number, so sweeping it up in a revert would only discard a judgement
-     *  someone made on purpose. */
-    const resolveFlags = useCallback(
-        async (ids: string[], resolution: 'applied' | null) => {
-            if (running || ids.length === 0) return;
-            const targets = new Set(ids);
-
-            const patch = (next: 'applied' | null) =>
-                setStates((prev) => {
-                    const out = { ...prev };
-                    for (const [id, state] of Object.entries(prev)) {
-                        if (state.status !== 'done' || !state.score.critique) continue;
-                        const notes = state.score.critique.notes;
-                        if (!notes.some((n) => n.noteId && targets.has(n.noteId))) continue;
-                        out[id] = {
-                            ...state,
-                            score: {
-                                ...state.score,
-                                critique: {
-                                    ...state.score.critique,
-                                    notes: notes.map((n) =>
-                                        n.noteId && targets.has(n.noteId)
-                                            ? { ...n, resolution: next ?? undefined }
-                                            : n,
-                                    ),
-                                },
-                            },
-                        };
-                    }
-                    return out;
-                });
-
-            patch(resolution);
-            setError(null);
-
-            try {
-                const res = await fetch('/api/engine/notes', {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ids, resolution }),
-                });
-                if (!res.ok) throw new Error();
-            } catch {
-                patch(resolution === 'applied' ? null : 'applied');
-                setError(
-                    resolution === 'applied'
-                        ? 'Could not apply those corrections.'
-                        : 'Could not revert those corrections.',
-                );
-            }
-        },
-        [running],
-    );
+    }, [running, unrunnable, scopeWeeks, setAside, setError]);
 
     function stop() {
         cancelled.current = true;
@@ -987,51 +773,6 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         // sent. Without it, stop is a request to stop soon.
         inflight.current?.abort();
     }
-
-    /** Records the decision on the note. The stored score is left alone — the
-     *  analyst's original is the prediction, and a row with two live scores is
-     *  not a row. The interface layers accepted corrections at read time. */
-    const resolveNote = useCallback(
-        async (id: string, section: CriticSection, resolution: 'applied' | 'dismissed') => {
-            setStates((prev) => {
-                const s = prev[id];
-                if (s?.status !== 'done' || !s.score.critique) return prev;
-                return {
-                    ...prev,
-                    [id]: {
-                        ...s,
-                        score: {
-                            ...s.score,
-                            critique: {
-                                ...s.score.critique,
-                                notes: s.score.critique.notes.map((n) =>
-                                    n.section === section ? { ...n, resolution } : n,
-                                ),
-                            },
-                        },
-                    },
-                };
-            });
-            setOpenNote(null);
-
-            const state = states[id];
-            const noteId =
-                state?.status === 'done'
-                    ? state.score.critique?.notes.find((n) => n.section === section)?.noteId
-                    : undefined;
-            if (!noteId) return;
-            try {
-                await fetch(`/api/engine/notes/${noteId}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ resolution }),
-                });
-            } catch {
-                setError('Decision was not saved.');
-            }
-        },
-        [states],
-    );
 
     /** The open rows for one card, unprefixed. */
     const rowsFor = useCallback(
@@ -1049,89 +790,74 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     // Which week or paper the address points at. Held in state as well as in the
     // bar because the hash is what the page reads to decide where to scroll and
     // which card to mark, and a hash written with replaceState fires no event.
-    const [anchor, setAnchor] = useState('');
+    const { selectScope } = useFragmentNavigation({
+        year,
+        monthParam,
+        monthWeeks,
+        anchor,
+        setAnchor,
+        setSelected,
+        settleOn: [shown, externals, loading],
+    });
 
-    useEffect(() => {
-        const read = () => setAnchor(window.location.hash.slice(1));
-        read();
-        window.addEventListener('hashchange', read);
-        return () => window.removeEventListener('hashchange', read);
-    }, []);
+    const clearScope = useCallback(async () => {
+        if (running || clearingId) return;
+        const ids = scopeWeeks.flatMap((week) =>
+            visibleFor(week)
+                .map((p) => p.id)
+                .filter((id): id is string => Boolean(id) && Boolean(heldScore(states[id!]))),
+        );
+        if (ids.length === 0) return;
 
-    /** A week named in the address selects it rather than scrolling to it —
-     *  the rail still points at weeks, and a week is now a filter rather than a
-     *  section of the page. A paper in the address leaves the filter alone: the
-     *  card it names is on screen under "All", which is where a cold load
-     *  starts. */
-    useEffect(() => {
-        const week = monthWeeks.find((w) => weekAnchor(w) === anchor);
-        if (week) setSelected(week.idx);
-    }, [anchor, monthWeeks]);
+        const where = selectedWeek ? 'this week' : `${monthName} ${year}`;
+        const confirmed = window.confirm(
+            `Clear every saved score and critic result for ${ids.length} ${ids.length === 1 ? 'paper' : 'papers'} in ${where}?\n\nThis cannot be undone. Repository metadata and the archived papers will remain.`,
+        );
+        if (!confirmed) return;
 
-    /** Choosing from the toggles. Written into the address as well as the state
-     *  so the rail lights the same week the page is showing, and so the reading
-     *  can be handed to someone else as it stands. */
-    const selectScope = useCallback(
-        (scope: Scope) => {
-            setSelected(scope);
-            const week = scope === 'all' ? null : monthWeeks.find((w) => w.idx === scope);
-            const next = week ? weekAnchor(week) : '';
-            setAnchor(next);
-            window.history.replaceState(null, '', next ? `#${next}` : window.location.pathname);
-        },
-        [monthWeeks],
-    );
+        setClearingId('*');
+        setError(null);
+        try {
+            for (const week of scopeWeeks) {
+                const params = new URLSearchParams({
+                    domain: DOMAIN,
+                    year: week.year,
+                    weekIdx: String(week.idx),
+                    all: '1',
+                });
+                const res = await fetch(`/api/engine/runs?${params}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error ?? 'Failed to clear results');
+            }
 
-    /** Naming a paper in the address, or clearing it. Written with replaceState
-     *  rather than pushed: walking the cards of a month should not fill the back
-     *  button with every card looked at on the way. */
-    const anchorPaper = useCallback(
-        (id: string) => {
-            const next = anchor === paperAnchor(id) ? '' : paperAnchor(id);
-            setAnchor(next);
-            window.history.replaceState(
-                null,
-                '',
-                next ? `#${next}` : window.location.pathname,
+            const cleared = new Set(ids);
+            setStates((prev) =>
+                Object.fromEntries(Object.entries(prev).filter(([id]) => !cleared.has(id))),
             );
-        },
-        [anchor],
-    );
+            setOpenRows((prev) =>
+                Object.fromEntries(
+                    Object.entries(prev).filter(([key]) => !cleared.has(key.split(':')[0])),
+                ),
+            );
+            setOpenNote((prev) => (prev && cleared.has(prev.id) ? null : prev));
+            setRuns((prev) => {
+                const next = { ...prev };
+                for (const week of scopeWeeks) next[week.idx] = null;
+                return next;
+            });
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to clear results');
+        } finally {
+            setClearingId(null);
+        }
+    }, [running, clearingId, scopeWeeks, visibleFor, states, selectedWeek, monthName, year, setError, setOpenNote, setRuns, setStates]);
 
-    /** The card the address points at, brought into view once per address
-     *  rather than on every render: the cards are ranked by score, so they
-     *  reorder as a run lands, and re-scrolling on each arrival would drag the
-     *  page out from under whoever is reading it. A week anchor finds no
-     *  element and falls through — it selects a filter, it is not a place.
-     *
-     *  Held open until the target actually arrives. A month's page grows as
-     *  scores and repository tags fill in, and a scroll asked for against the
-     *  short first layout has nowhere to go — so an address only counts as
-     *  reached once its target is where it was sent, or as close as the page
-     *  allows.
-     *
-     *  The jump is instant, not eased: this is where the reading starts, not a
-     *  movement through it. */
-    const scrolled = useRef<string | null>(null);
-    useEffect(() => {
-        if (!anchor) return;
-        const key = `${year}:${monthParam}:${anchor}`;
-        if (scrolled.current === key) return;
-        const el = document.getElementById(anchor);
-        if (!el) return;
-
-        el.scrollIntoView({ behavior: 'auto', block: 'start' });
-        // Where it should have landed is the element's own scroll margin — the
-        // room left for the bars stuck above it. Read from the element rather
-        // than held as a constant here, so the two cannot drift apart.
-        const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
-        const doc = document.documentElement;
-        const atEnd = window.scrollY >= doc.scrollHeight - window.innerHeight - 1;
-        if (el.getBoundingClientRect().top <= margin + 8 || atEnd) scrolled.current = key;
-    }, [anchor, year, monthParam, shown, externals, loading]);
-
+    /** Every card already answers to #paper-<id> — the address exists whether or
+     *  not anyone asks for it, so there is nothing here to switch on. This only
+     *  puts that address on the clipboard. */
     /** Whether the numbers on screen mean anything yet. */
     const ready = loadedFor === `${year}:${monthName}`;
+
 
     /** The snapshot this month's papers were scored against: the newest one
      *  sealed strictly before them. Mirrors `loadParadigm` on the server, so
@@ -1158,11 +884,15 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     const activeNote = useMemo(() => {
         if (!openNote) return null;
         const s = states[openNote.id];
-        if (s?.status !== 'done' || !s.score.critique) return null;
-        const note = s.score.critique.notes.find((n) => n.section === openNote.section);
+        if (s?.status !== 'done') return null;
+        const note = noteForSection(s.score, openNote.section);
         if (!note) return null;
+        // Which pass raised it — the newest round holding a note for this section.
+        const round = (s.score.critiques ?? []).findLast((c) =>
+            c.notes.some((n) => n.noteId === note.noteId),
+        );
         const current = openNote.section === 'summary' ? undefined : s.score[openNote.section].score;
-        return { note, current };
+        return { note, current, round: round?.round, criticModel: round?.model };
     }, [openNote, states]);
 
     return (
@@ -1197,11 +927,14 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                     ready={ready}
                     criticOn={criticOn}
                     onParadigm={() => setShowParadigm(true)}
+                    onScoring={() => setShowScoring(true)}
                     onRunWeek={() => void runBatch()}
                     onRunCritic={() => void runCritic()}
                     onRunExternal={() => void runExternal()}
                     unrunnable={unrunnable.length}
                     onAsideUnrunnable={() => void asideUnrunnable()}
+                    onClearAll={() => void clearScope()}
+                    clearing={clearingId === '*'}
                     openFlags={flagNotes.open.length}
                     appliedFlags={flagNotes.applied.length}
                     onApplyFlags={() => void resolveFlags(flagNotes.open, 'applied')}
@@ -1236,8 +969,11 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                                     key={key}
                                     paper={paper}
                                     anchored={Boolean(paper.id) && anchor === paperAnchor(paper.id!)}
-                                    onAnchor={paper.id ? () => anchorPaper(paper.id!) : undefined}
                                     state={(paper.id && states[paper.id]) || { status: 'idle' }}
+                                    paradigm={(() => {
+                                        const held = paper.id ? heldScore(states[paper.id]) : undefined;
+                                        return held ? paradigmFor(held) : undefined;
+                                    })()}
                                     openRows={rowsFor(key)}
                                     onToggleRow={(row) =>
                                         setOpenRows((prev) => ({
@@ -1254,9 +990,6 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                                     onClear={() => void clearPaper(paper, week)}
                                     onAside={() => void setRowAside(week, paper, true)}
                                     external={paper.id ? externals[paper.id] : undefined}
-                                    standingAssumption={assumptionFor(
-                                        paper.id ? states[paper.id] : undefined,
-                                    )}
                                     busy={running !== null || clearingId !== null}
                                 />
                             );
@@ -1278,12 +1011,12 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                 />
             )}
 
+            {showScoring && <ScoringModal onClose={() => setShowScoring(false)} />}
+
             {breakdownScore && (
                 <BreakdownModal
                     score={breakdownScore}
-                    paradigm={paradigms.find(
-                        (p) => p.asOf === breakdownScore.delta?.paradigmAsOf,
-                    )}
+                    paradigm={paradigms.find((p) => p.asOf === breakdownScore.paradigmAsOf)}
                     onClose={() => setBreakdown(null)}
                 />
             )}
@@ -1294,6 +1027,9 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                     currentScore={activeNote.current}
                     onApply={() => resolveNote(openNote.id, openNote.section, 'applied')}
                     onDismiss={() => resolveNote(openNote.id, openNote.section, 'dismissed')}
+                    onRevert={() => resolveNote(openNote.id, openNote.section, null)}
+                    round={activeNote.round}
+                    criticModel={activeNote.criticModel}
                     onClose={() => setOpenNote(null)}
                 />
             )}

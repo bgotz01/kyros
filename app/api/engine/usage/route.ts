@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
 
         const runs = await db.engineRun.findMany({
             where: { domain },
-            include: { scores: { include: { critique: true } } },
+            include: { scores: { include: { critiques: true } } },
         });
 
         const report: UsageReport = {
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
             for (const score of run.scores) {
                 for (const [seat, row] of [
                     ['analyst', score] as const,
-                    ...(score.critique ? ([['critic', score.critique]] as const) : []),
+                    ...(score.critiques ?? []).map((c) => ['critic', c] as const),
                 ]) {
                     add(report.total, row);
                     add(report[seat], row);

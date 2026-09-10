@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { allWeeks } from '@/lib/engineData';
-import { monthHref, weekEnd } from '@/lib/engineRoutes';
+import { allWeeks } from '@/lib/engine/data';
+import { monthHref, weekEnd } from '@/lib/engine/routes';
 
 // ─── /engine/ai ──────────────────────────────────────────────────────────────
 // The bare path is not a page, it is a question — which month? Answered here,

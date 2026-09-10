@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
-import { allParadigms, loadParadigm, type Paradigm } from '@/lib/paradigm';
+import type { Paradigm } from '@/lib/engine/paradigm';
+import { allParadigms, loadParadigm } from '@/lib/engine/paradigmStore';
 
 // ─── GET /api/engine/paradigm ────────────────────────────────────────────────
 // The standing paradigms, for reading. The scorer does not come through here —

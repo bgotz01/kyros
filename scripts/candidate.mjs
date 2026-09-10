@@ -106,9 +106,9 @@ Reproduced by:     not yet
 ## 2 · Inversion — what does it invert?
 
 Inverts:     <held necessary>  →  <shown optional>
-Level:       Representation | Model architecture | Training | Inference | AI systems
-Magnitude:   local | subsystem | stack | paradigm
-Assumption:  <which §2 prevailing-paradigm item it contradicts — or "none on the list">
+Stratum:     Representation | Model architecture | Training | Inference | AI systems
+Baseline:    <the id of the baseline claim it bears on, from the dated snapshot — or "outside this snapshot">
+Inversion:   <0-5 on the inversion ladder: 0 contradicts nothing · 3 a clear alternative · 5 makes it unnecessary>
 
 <Rationale.>
 

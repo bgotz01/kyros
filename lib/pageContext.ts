@@ -13,7 +13,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadParadigm, renderParadigm } from './paradigm';
+import { renderParadigm } from './engine/paradigm';
+import { loadParadigm } from './engine/paradigmStore';
 
 const CONTEXT_ROOT = path.join(process.cwd(), 'context');
 
@@ -264,23 +265,21 @@ export function buildFrameBlock(): string {
     ].join('\n');
 }
 
-/** The engine receives a dated snapshot of its own, so injecting the rolling
- *  §2 beside it would give the model two incompatible baselines. Keep the laws
- *  here and let the snapshot below be the sole answer to "what was normal?". */
-function buildScoringLawsBlock(): string {
-    const content = readMd(FRAME_FILE);
-    if (content.startsWith('[Content unavailable')) return '';
-    const paradigm = content.indexOf('# 2 — The prevailing paradigm');
-    const laws = paradigm === -1 ? content : content.slice(0, paradigm).trim();
-    return [
-        '─── I³ SCORING LAWS ─────────────────────────────────────────────────────────',
-        'These are the definitions only. The dated snapshot that follows is the sole',
-        'paradigm baseline for this paper; do not import the current paradigm.',
-        '',
-        laws,
-        '─── END OF I³ SCORING LAWS ─────────────────────────────────────────────────',
-    ].join('\n');
-}
+// `buildScoringLawsBlock` lived here and is gone. It prepended §1 of the frame —
+// 376 lines defining the same three laws — to every engine seat, ahead of both
+// the snapshot and the law pages, and it had never been updated for the six
+// forces: it still taught pressures, 0-5 levels, bands, bottleneck ceilings, the
+// relieves/reveals/measures/bounds table and the class-boundary I³.
+//
+// So the analyst was receiving TWO conflicting definitions of each law with the
+// retired one first, which is the position of authority in a prompt. It is also
+// where the critic found `Bottlenecks · Data and the Token Supply` — a phrase on
+// line 170 of the frame, not a stale memory as it first appeared.
+//
+// The engine now scores from context/kyros/{inversion,incentives,inflection}.md,
+// assembled per seat. The frame itself is untouched and still serves the council
+// through `buildFrameBlock`, and `frameReviewedAt` still stamps runs with its
+// date — but §1 is no longer the engine's definition of anything.
 
 // ─── bottleneck index ────────────────────────────────────────────────────────
 // Rolling name and status only, retained for present-day/council surfaces.
@@ -339,9 +338,7 @@ export function buildSeatContext(when: string): string {
     const paradigm = loadParadigm(when);
     // Bottlenecks live inside the dated snapshot. Appending the rolling index
     // here would recreate the hindsight bug that snapshots exist to prevent.
-    return [buildScoringLawsBlock(), paradigm ? renderParadigm(paradigm) : '']
-        .filter(Boolean)
-        .join('\n\n');
+    return paradigm ? renderParadigm(paradigm) : '';
 }
 
 /** How much of a paper either seat reads. Shared so a critic can never be

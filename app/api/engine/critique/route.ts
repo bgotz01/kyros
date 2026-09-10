@@ -2,9 +2,10 @@ import { NextRequest } from 'next/server';
 import { hasApiKey, MISSING_KEY_MESSAGE, openrouter } from '@/lib/openrouter';
 import { MODELS, DEFAULT_MODEL } from '@/lib/models';
 import { buildSeatContext, MAX_PAPER_CHARS } from '@/lib/pageContext';
-import { paperPeriod } from '@/lib/paradigm';
-import { CRITIC_SYSTEM, buildCritiquePrompt, buildPaperPrompt } from '@/lib/prompts/engine';
-import { readPaper } from '@/lib/engineData';
+import { coherentScore, paperPeriod, scoreOf } from '@/lib/engine/paradigm';
+import { buildCritiquePrompt, buildPaperPrompt } from '@/lib/engine/prompts';
+import { activePrompt, lawContexts } from '@/lib/engine/promptStore';
+import { readPaper } from '@/lib/engine/data';
 import { db } from '@/lib/db';
 import type { EngineScore } from '../analyze/route';
 
@@ -19,6 +20,11 @@ export interface CriticNote {
     section: CriticSection;
     agrees: boolean;
     reasoning: string[];
+    /** The three steps an objection can land on. `proposedId` is the sharpest:
+     *  a row that selected the wrong baseline claim, pressure or precedent did
+     *  not score badly, it measured the wrong thing. */
+    proposedId?: string;
+    proposedLevel?: number;
     /** Present only on a disagreement over one of the three laws. */
     proposedScore?: number;
     proposedBullets?: string[];
@@ -28,6 +34,9 @@ export interface CriticNote {
 
 export interface Critique {
     id: string;
+    /** 1-based pass number. Rounds stack: each reads the row as the rounds
+     *  before it left it, and its accepted corrections layer on top. */
+    round: number;
     notes: CriticNote[];
     model: string;
     cost: number;
@@ -89,7 +98,15 @@ export async function POST(req: NextRequest) {
         // from different definitions produces noise, not scrutiny; one judging
         // I¹ from its own memory of the prevailing paradigm is doing the very
         // thing its first rule forbids.
-        const system = [buildSeatContext(paperPeriod(id, paper.published)), CRITIC_SYSTEM]
+        const prompt = await activePrompt('critic');
+        // The critic reads the same law pages the analyst did — an objection
+        // argued from different definitions is noise, not scrutiny.
+        const system = [
+            buildSeatContext(paperPeriod(id, paper.published)),
+            '─── KYROS · THE THREE LAWS ─────────────────────────────────────────────────────',
+            await lawContexts(),
+            prompt.text,
+        ]
             .filter(Boolean)
             .join('\n\n');
 
@@ -106,16 +123,17 @@ export async function POST(req: NextRequest) {
                         text,
                     })}\n\n${buildCritiquePrompt({
                         summary: score.summary,
-                        level: score.level,
+                        stratum: score.stratum,
+                        // Each law's row carries the id it selected, the level it
+                        // classified and the band that level opened. Without them
+                        // the critic cannot tell a score the analyst argued for
+                        // from one a band clamped, and can only quarrel about
+                        // numbers — which is the objection it is told to avoid.
                         inversion: score.inversion,
                         incentives: score.incentives,
                         inflection: score.inflection,
+                        paradigmAsOf: score.paradigmAsOf,
                         verdict: score.verdict,
-                        // Which layer was named, what relation was assigned and
-                        // what the paper was said to offer instead. Without it
-                        // the critic cannot tell whether an I¹ was capped by the
-                        // relation or arrived at freely.
-                        delta: score.delta,
                     })}`,
                 },
             ],
@@ -159,7 +177,32 @@ export async function POST(req: NextRequest) {
             if (!found) return { section, agrees: true, reasoning: [] };
 
             const reasoning = bullets(found.reasoning);
-            const proposed = Number(found.proposedScore);
+            // Back to a score, because the analyst writes one again: the
+            // eleven-rung scale IS the classification, so an objection to the
+            // number is the objection. `proposedLevel` is still read for a
+            // critic prompted under the retired 0-5 ladder.
+            // **A 0 AGAINST A NAMED FORCE IS COERCED HERE, NOT ON APPLY.**
+            //
+            // The layering guard already refused to let such a score reach a
+            // row, but it fired at read time — so the note was still WRITTEN as
+            // 0, shown as 0 in the flag, and then quietly applied as 1. The
+            // objection and its own consequence disagreed, which is worse than
+            // either. Five notes in the ledger read that way.
+            //
+            // 0 means the creation moves none of the six forces. A critic that
+            // believes the row should have selected nothing cannot say so —
+            // there is no null re-selection — so it must argue that in prose;
+            // the number it writes is held to the row it is objecting to.
+            const namedHere =
+                section !== 'summary' && Boolean(score[section]?.dimensionId);
+            const proposed = Number.isFinite(Number(found.proposedScore))
+                ? coherentScore(scoreOf(found.proposedScore), namedHere)
+                : Number.NaN;
+            const proposedLevel = Number(found.proposedLevel);
+            const proposedId =
+                typeof found.proposedId === 'string' && found.proposedId.trim()
+                    ? found.proposedId.trim()
+                    : undefined;
             // Replacement content has the same compact two-bullet contract as
             // the analyst row. The critic's reasoning may remain longer.
             const proposedBullets = bullets(found.proposedBullets).slice(0, 2);
@@ -169,7 +212,11 @@ export async function POST(req: NextRequest) {
             // analyst cannot act on is worse than no flag.
             const actionable =
                 reasoning.length > 0 &&
-                (Number.isFinite(proposed) || proposedBullets.length > 0 || section === 'summary');
+                (Number.isFinite(proposed)
+                    || Number.isFinite(proposedLevel)
+                    || Boolean(proposedId)
+                    || proposedBullets.length > 0
+                    || section === 'summary');
 
             const agrees = found.agrees === false && actionable ? false : true;
 
@@ -182,6 +229,10 @@ export async function POST(req: NextRequest) {
                 section,
                 agrees,
                 reasoning,
+                ...(proposedId && section !== 'summary' ? { proposedId } : {}),
+                ...(Number.isFinite(proposedLevel) && section !== 'summary'
+                    ? { proposedLevel: Math.min(5, Math.max(0, Math.round(proposedLevel))) }
+                    : {}),
                 ...(Number.isFinite(proposed) && section !== 'summary'
                     ? { proposedScore: Math.min(10, Math.max(0, Math.round(proposed))) }
                     : {}),
@@ -193,6 +244,7 @@ export async function POST(req: NextRequest) {
             | { cost?: number; prompt_tokens?: number; completion_tokens?: number }
             | undefined;
         const critique: Critique = {
+            round: 1,
             id,
             notes,
             model: resolvedModel,
@@ -202,16 +254,21 @@ export async function POST(req: NextRequest) {
         };
 
         if (scoreId) {
-            // A score may be challenged as often as you like — by a different
-            // seat, or by the same one again. The critique is one-per-score, so
-            // a re-run replaces the last one rather than accumulating; the
-            // resolutions recorded against the old notes go with it, because a
-            // decision about a note a different model never made is meaningless.
-            await db.engineCritique.deleteMany({ where: { scoreId } });
+            // Rounds ACCUMULATE. A re-run used to delete the previous critique,
+            // which cascaded to its notes and took their resolutions with it —
+            // so every correction you had accepted silently reverted to the
+            // analyst's original the moment a second seat ran.
+            //
+            // A second critic is a second reading of the row as it now stands,
+            // not a redo of the first, so nothing is discarded and the new pass
+            // is appended.
+            const prior = await db.engineCritique.count({ where: { scoreId } });
 
             const row = await db.engineCritique.create({
                 data: {
                     scoreId,
+                    round: prior + 1,
+                    promptVersion: prompt.version,
                     model: resolvedModel,
                     cost: critique.cost,
                     promptTokens: critique.promptTokens,
@@ -221,6 +278,8 @@ export async function POST(req: NextRequest) {
                             section: n.section,
                             agrees: n.agrees,
                             reasoning: n.reasoning,
+                            proposedId: n.proposedId ?? null,
+                            proposedLevel: n.proposedLevel ?? null,
                             proposedScore: n.proposedScore ?? null,
                             proposedBullets: n.proposedBullets ?? undefined,
                         })),
@@ -229,6 +288,7 @@ export async function POST(req: NextRequest) {
                 include: { notes: true },
             });
             // Hand back the database ids so a flag can be resolved without a reload.
+            critique.round = row.round;
             critique.notes = notes.map((n) => ({
                 ...n,
                 noteId: row.notes.find((r) => r.section === n.section)?.id,

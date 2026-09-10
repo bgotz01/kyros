@@ -1,0 +1,332 @@
+{
+  "asOf": "2023-12-31",
+  "mode": "reconstructed",
+  "thesis": "Frontier AI is a small number of very large pretrained Transformers, built on NVIDIA clusters from web-scale text, aligned on human preference and sold as closed metered APIs behind a chat box. Capability is bought with scale. The models are expensive to run, frozen after training, unreliable in ways they cannot detect, and wait to be asked.",
+  "baseline": [
+    {
+      "id": "centralized-compute",
+      "claim": "Frontier capability requires massive centralised compute.",
+      "tag": "compute",
+      "evidence": [
+        "GPT-4 training compute widely estimated in the tens of thousands of A100-years — 2023-03",
+        "Llama 2 trained on a 2,000-GPU A100 cluster — 2023-07",
+        "Inflection announces a 22,000-H100 cluster — 2023-06",
+        "H100 general availability and sustained shortage through the year — 2023",
+        "CoWoS advanced packaging named as the binding supply constraint — 2023"
+      ]
+    },
+    {
+      "id": "transformer-dominance",
+      "claim": "Transformers are the dominant frontier architecture.",
+      "tag": "architecture",
+      "evidence": [
+        "Every publicly described frontier model of 2023 is attention-based — 2023",
+        "Llama 2 architecture disclosure: decoder-only with grouped-query attention — 2023-07",
+        "Gemini 1 technical report describes a Transformer — 2023-12"
+      ]
+    },
+    {
+      "id": "pretraining-and-scaling",
+      "claim": "Capability is primarily produced through pretraining and scaling.",
+      "tag": "training",
+      "evidence": [
+        "GPT-4 technical report attributes capability to pretraining scale — 2023-03",
+        "Llama 2 reports post-training as behaviour shaping, not capability creation — 2023-07",
+        "Scaling Laws for Neural Language Models — 2020-01",
+        "Chinchilla compute-optimal scaling — 2022-03"
+      ]
+    },
+    {
+      "id": "human-data-primary",
+      "claim": "High-quality human data is the primary training resource.",
+      "tag": "data",
+      "evidence": [
+        "RedPajama and SlimPajama reproduce trillion-token open web corpora — 2023-06",
+        "Llama 2 trained on 2T tokens drawn from public sources — 2023-07",
+        "Llama 2 RLHF built on human preference judgements — 2023-07"
+      ]
+    },
+    {
+      "id": "closed-frontier",
+      "claim": "Frontier capability is concentrated in closed providers.",
+      "tag": "economics",
+      "evidence": [
+        "GPT-4 technical report withholds architecture, data and training details — 2023-03",
+        "Claude 2 and Gemini available only as hosted services — 2023",
+        "The strongest open-weight model of the year trails the closed frontier on every public benchmark — 2023-12"
+      ]
+    },
+    {
+      "id": "static-weights",
+      "claim": "Models are static after training.",
+      "tag": "training",
+      "evidence": [
+        "No frontier model updates weights from deployment — 2023",
+        "Retrieval and long context marketed as the answer to knowledge staleness — 2023-11"
+      ]
+    },
+    {
+      "id": "reactive-chat",
+      "claim": "Chat and reactive interaction are the dominant interface.",
+      "tag": "interface",
+      "evidence": [
+        "ChatGPT reaches 100M weekly users — 2023-11",
+        "Claude, Bard and Copilot Chat all ship the same surface — 2023",
+        "OpenAI DevDay frames assistants as chat threads — 2023-11",
+        "The 2023 autonomous-agent wave fails to produce a reliable product — 2023",
+        "Function calling framed as a single-turn tool invocation — 2023-06"
+      ]
+    },
+    {
+      "id": "diffusion-media",
+      "claim": "Generative media is diffusion-based.",
+      "tag": "architecture",
+      "evidence": [
+        "Stable Diffusion establishes latent diffusion as the open default — 2022-08",
+        "DALL·E 3 and Midjourney v5 are both diffusion systems — 2023-10",
+        "Stable Video Diffusion extends the same formulation to video — 2023-11"
+      ]
+    }
+  ],
+  "pressures": [
+    {
+      "id": "compute-cost",
+      "problem": "Frontier training compute is scarce and expensive.",
+      "tag": "compute",
+      "evidence": [
+        "H100 lead times reported at 6-11 months — 2023-08",
+        "CoWoS packaging capacity named as the binding constraint — 2023",
+        "Frontier training runs priced in the tens of millions of dollars — 2023"
+      ]
+    },
+    {
+      "id": "inference-cost",
+      "problem": "Running a frontier model is expensive and slow.",
+      "tag": "compute",
+      "evidence": [
+        "GPT-4 priced at 30x GPT-3.5 per token — 2023-03",
+        "Inference described as the dominant lifetime cost of a deployed model — 2023",
+        "Latency cited as the blocker for interactive and high-volume use — 2023"
+      ]
+    },
+    {
+      "id": "reliability",
+      "problem": "Models are confidently wrong in ways they cannot detect.",
+      "evidence": [
+        "GPT-4 technical report documents persistent hallucination — 2023-03",
+        "Calibration degrades after RLHF — 2023-03",
+        "Hallucinated citations sanctioned in Mata v. Avianca — 2023-06"
+      ]
+    },
+    {
+      "id": "agency",
+      "problem": "Models cannot reliably complete long multi-step tasks.",
+      "evidence": [
+        "AutoGPT and its successors fail to convert attention into working products — 2023",
+        "Per-step error compounds: 95% over twenty steps is roughly 36% end to end — 2023",
+        "No production system delegates unsupervised multi-step work — 2023-12"
+      ]
+    },
+    {
+      "id": "closed-access",
+      "problem": "Frontier capability is controlled by a small number of providers.",
+      "tag": "economics",
+      "evidence": [
+        "Frontier weights, data and methods undisclosed across all leading labs — 2023",
+        "Llama 2's licence restricts the largest commercial users — 2023-07",
+        "Researchers cannot reproduce or audit the systems they are asked to evaluate — 2023"
+      ]
+    },
+    {
+      "id": "data-supply",
+      "problem": "High-quality human training text is finite and legal access is closing.",
+      "tag": "data",
+      "evidence": [
+        "New York Times v. OpenAI filed — 2023-12",
+        "Reddit and Stack Overflow move to charge for API data access — 2023-06",
+        "Projections of high-quality text exhaustion within the decade — 2022-10"
+      ]
+    },
+    {
+      "id": "memory",
+      "problem": "Models retain nothing across interactions.",
+      "evidence": [
+        "Every session begins from the same frozen weights — 2023",
+        "Long context and retrieval offered as workarounds rather than solutions — 2023-11",
+        "No deployed mechanism for a model to accumulate experience — 2023-12"
+      ]
+    },
+    {
+      "id": "customization",
+      "problem": "Adapting a frontier model to private work is expensive and limited.",
+      "tag": "training",
+      "evidence": [
+        "Fine-tuning unavailable on the strongest closed models for most of the year — 2023",
+        "Full fine-tuning of an open model requires cluster-scale memory — 2023",
+        "Enterprises cite data residency and control as blockers to hosted fine-tuning — 2023"
+      ]
+    }
+  ],
+  "existingClasses": [
+    {
+      "id": "chat-assistants",
+      "name": "General-purpose chat assistants",
+      "tag": "interface",
+      "examples": [
+        {
+          "name": "ChatGPT",
+          "date": "2022-11"
+        },
+        {
+          "name": "Bard",
+          "date": "2023-03"
+        },
+        {
+          "name": "Claude.ai",
+          "date": "2023-07"
+        }
+      ]
+    },
+    {
+      "id": "closed-frontier-apis",
+      "name": "Closed frontier model APIs",
+      "tag": "economics",
+      "examples": [
+        {
+          "name": "GPT-4",
+          "date": "2023-03"
+        },
+        {
+          "name": "Claude 2",
+          "date": "2023-07"
+        },
+        {
+          "name": "Gemini 1",
+          "date": "2023-12"
+        }
+      ]
+    },
+    {
+      "id": "open-weight-llms",
+      "name": "Open-weight language models",
+      "tag": "economics",
+      "examples": [
+        {
+          "name": "Llama 2",
+          "date": "2023-07"
+        },
+        {
+          "name": "Mistral 7B",
+          "date": "2023-09"
+        },
+        {
+          "name": "Mixtral 8x7B",
+          "date": "2023-12"
+        }
+      ]
+    },
+    {
+      "id": "code-assistants",
+      "name": "AI coding assistants",
+      "tag": "interface",
+      "examples": [
+        {
+          "name": "GitHub Copilot",
+          "date": "2021-06"
+        },
+        {
+          "name": "Code Llama",
+          "date": "2023-08"
+        }
+      ]
+    },
+    {
+      "id": "rag-systems",
+      "name": "Retrieval-augmented AI systems",
+      "tag": "data",
+      "examples": [
+        {
+          "name": "RAG (Lewis et al.)",
+          "date": "2020-05"
+        },
+        {
+          "name": "LangChain",
+          "date": "2022-10"
+        },
+        {
+          "name": "LlamaIndex",
+          "date": "2022-11"
+        }
+      ]
+    },
+    {
+      "id": "multimodal-models",
+      "name": "Multimodal models",
+      "tag": "architecture",
+      "examples": [
+        {
+          "name": "LLaVA",
+          "date": "2023-04"
+        },
+        {
+          "name": "GPT-4V",
+          "date": "2023-09"
+        },
+        {
+          "name": "Gemini 1",
+          "date": "2023-12"
+        }
+      ]
+    },
+    {
+      "id": "generative-media",
+      "name": "Generative image and video models",
+      "tag": "architecture",
+      "examples": [
+        {
+          "name": "Stable Diffusion",
+          "date": "2022-08"
+        },
+        {
+          "name": "Midjourney v5",
+          "date": "2023-03"
+        },
+        {
+          "name": "DALL·E 3",
+          "date": "2023-10"
+        },
+        {
+          "name": "Runway Gen-2",
+          "date": "2023-06"
+        },
+        {
+          "name": "Pika 1.0",
+          "date": "2023-11"
+        },
+        {
+          "name": "Stable Video Diffusion",
+          "date": "2023-11"
+        }
+      ]
+    },
+    {
+      "id": "autonomous-agents",
+      "name": "Autonomous agent systems",
+      "tag": "interface",
+      "examples": [
+        {
+          "name": "AutoGPT",
+          "date": "2023-03"
+        },
+        {
+          "name": "BabyAGI",
+          "date": "2023-04"
+        },
+        {
+          "name": "Voyager",
+          "date": "2023-05"
+        }
+      ]
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 # The Standing Frame
 
-**Last reviewed: 2026-09-08.** This file is the frame every candidate is judged
+**Last reviewed: 2026-09-09.** This file is the frame every candidate is judged
 against. It is not attached by choice — it is always present. Everything else in
 the corpus is evidence; this is the instrument.
 
 Three parts:
 
 1. **The laws** — what is being measured.
-2. **The prevailing paradigm** — what a candidate would have to invert.
+2. **The prevailing paradigm** — where the thing to invert is written down.
 3. **The corpus** — what the evidence is and how to read it.
 
 ---
@@ -52,8 +52,10 @@ there probably isn't one — say so and score low.
 
 **Failure mode:** mistaking a new *result* for a new *constraint structure*.
 
-**This law cannot be scored without §2 of this file.** "Opposite" is meaningless
-until the prevailing assumption is written down.
+**This law cannot be scored without a dated paradigm snapshot.** "Opposite" is
+meaningless until the prevailing assumption is written down. The snapshot's
+`baseline` is that writing-down: a list of atomic, falsifiable claims about what
+is normal, and I¹ names exactly one of them.
 
 **Examples**
 
@@ -70,6 +72,21 @@ The shape is always **A → not-A**, never A → better-A. *RNN → Transformer*
 *CPU → GPU* are the same move at different layers: the substrate the computation
 must run **as**, and the substrate it must run **on**. Both were held to be
 settled; both flipped sign.
+
+**Prior attempts do not deflate an inversion.** I¹ asks whether the creation
+contradicts the claim as written — not whether anyone tried before. While a
+baseline claim stands, *every* creation that contradicts it inverts it, the tenth
+as much as the first; the tenth then scores low on **I³**, because by then the
+class is crowded. High I¹ with low I³ is not a contradiction to be smoothed away.
+It is the normal shape of a creation arriving into a crowded direction, and
+producing it is what having three laws is for.
+
+Using prior art to argue I¹ down is the commonest way the two collapse into one.
+`open-weight-llms` existing in December 2023 does not falsify "frontier capability
+is concentrated in closed providers" — the snapshot's own evidence records that
+the best open model *trailed the closed frontier on every public benchmark*. An
+open model that later reaches parity contradicts the claim outright, however many
+tried before it.
 
 **Counter-example.** `Canon · FlashAttention` scores **2** here. It computes
 exactly the same attention, faster. Nothing held necessary was shown to be
@@ -116,13 +133,15 @@ wall is there, or being able to measure the distance to it, is worth less than
 removing the wall and considerably more than nothing. An instrument that scores
 only relief cannot see the result that redirects the field without improving it.
 
-- **10** — relieves a constraint in `Bottlenecks/` that is marked binding, or
-  serves a numbered item in `Bottlenecks · Desired Capabilities`, and the benefit
+- **10** — acts on one of the `pressures` in the dated snapshot, and the benefit
   needs no explanation to anyone in the field.
 - **1** — the value requires an argument. Nobody's constraint moved, and nothing
   new is known about any of them.
 
-Name the bottleneck. An unnamed bottleneck is not an incentive.
+Name the pressure, by its id in the snapshot. An unnamed pressure is not an
+incentive. Every pressure a snapshot admits is major by construction, so the
+score measures how directly the creation acts on the one it names — not how
+important that pressure is against the others.
 
 **Failure mode:** scoring the *quality* of the work rather than the obviousness of
 the need it serves. Elegant work on a constraint nobody is paying to relieve
@@ -171,10 +190,11 @@ for the trajectory while the creative lens names it for the artefact. The word
 *potential* carries the whole distinction: you are scoring the outlier in front
 of you. The consequences that would confirm it belong to the confirmation pass.
 
-Not "is it important." Outlierness is a measure of distance from the pack. Read
-the last two years of work on the same problem and ask where this sits. Most
-papers cluster; the ones that matter are usually visibly off the axis on
-publication day.
+Not "is it important." Outlierness is a measure of distance from the pack. The
+snapshot's `existingClasses` is that pack, written down: the five to ten classes
+of thing the field could already make, every one carrying an instance that
+actually shipped. I³ names the closest and says how far past it this lands. Most papers cluster; the ones
+that matter are usually visibly off the axis on publication day.
 
 - **10** — no prior system had demonstrated this, and the method is not a variant
   of the standard approach. Genuinely off-distribution.
@@ -187,6 +207,28 @@ above, name the canon case the candidate is standing beside and say why it
 belongs there. A paper from a weekly digest is almost never one of these — the
 normal answer is 2 to 4, and a ledger where a tenth of a year's papers sit at 7
 is measuring something other than distance from the pack.
+
+**Inflection measures unprecedented creation, not unprecedented execution
+quality.** This is why weak instances still occupy a class in the snapshot. The
+2023 agent wave produced nothing that reliably worked and established
+`autonomous-agents` all the same — which is exactly what stops a later agent that
+finally works from scoring 10 for being the first *good* one. Being much better at
+something the field could already make is a 3–6, however large the margin.
+
+**The class boundary is the test for the top two bands.** Having named the closest
+class, ask what the creation does to it:
+
+| | |
+|---|---|
+| **3–6** | It advances the class — a better instance of the same thing |
+| **7–8** | It challenges the *boundary* of the class — the class still describes it, but barely |
+| **9–10** | The class is *no longer sufficient* to describe what has been created |
+
+A coding tool that suggests better completions advances `code-assistants`, however
+good the completions. One that operates autonomously across a whole project for
+hours is straining the word "assistant" — the 7–8 case. One where "coding
+assistant" has stopped being a description of the thing has established something
+the class cannot hold.
 
 **Novelty by conjunction is not distance.** Every paper is a unique combination
 of its own components, so "combines A, B, C and D" is a sentence that can be
@@ -227,24 +269,90 @@ appeared, whatever it later enabled.
 
 Each law 0–10. `I³ score = I¹ × I² × I³`, range 0–1,000.
 
-| Score | Band |
-|---|---|
-| 900+ | Historical outlier |
-| 600+ | Exceptional inflection |
-| 300+ | Paradigm-defining |
-| 100+ | Structural shift |
-| 27+ | Significant contribution |
-| 1+ | Enabling contribution |
+**A score is written in three steps, never one.** Select the object out of the
+dated snapshot — a baseline claim, a pressure, an existing class. Classify the
+relationship on the 0–5 ladder that law carries. Then write the 0–10 score inside
+the band that classification opens:
 
-**The bands are provisional calibration; the mathematics is not.** The product is
-the score. The bands are a reading aid fitted to eighteen canon entries, several
-of which are pending rescore, and they should be re-fitted as the ledger grows.
-Never adjust a law's score to land a candidate in a band.
+| Level | 0 | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|---|
+| **Band** | 0 | 1–2 | 3–4 | 5–6 | 7–8 | **9–10** |
 
-Multiplication encodes a structural claim: **a paradigm-defining development
-requires convergence across all three.** Radically novel but not obvious, or
-obvious but not opposite, collapses toward zero — correctly. The Transformer is a
-statistical freak because it scored 10 × 10 × 10.
+The ladder is a classification, not a second scale. The 0–10 scores and the
+anchors below are unchanged by it, and every canon figure in this file sits
+inside its own rung's band — which is why the ladder could be adopted without
+refitting a single historical score. Choosing a number first and reverse-engineering
+a level to fit it is the failure the three steps exist to prevent.
+
+### What a score means
+
+The same scale, read the same way, for all three laws — and it has three tiers:
+
+The boundaries never move; the **names differ by law**, because the laws differ.
+I¹ and I³ measure movement of the paradigm. I² measures the **strength of the
+incentive** — and a creation can answer the field's most fundamental pressure
+without having defined anything.
+
+| Score | I¹ Inversion · I³ Inflection | I² Incentives |
+|---|---|---|
+| **9–10** | **Paradigm defining** | **Exceptional incentive** |
+| **7–8** | **Paradigm questioning** | **Paradigm-level incentive** |
+| 5–6 | Workflow improvement | Workflow incentive |
+| 3–4 | Minor improvement | Minor incentive |
+| 0–2 | No relationship | No relationship |
+
+**0–6 is progress inside the paradigm**, which is what almost all work is,
+including work of enormous value. **7–8 claims the creation touched the paradigm.
+9–10 claims it changed it** — or, on I², that it answers one of the paradigm's
+most fundamental pressures.
+
+So a row reading **I¹ 6 · I² 10 · I³ 6** says something precise and true: an
+enormous answer to an enormous need, inside the standing paradigm. There is
+deliberately **no overall "this creation is paradigm-defining" verdict** — a 9–10
+means paradigm-defining *on that law*, and the product already carries overall
+magnitude. A second threshold across the three would be another hand-tuned number
+to calibrate before the evidence has asked for one.
+
+> **Do not give 7 or above merely because a creation is important, impressive,
+> highly cited, commercially successful, or technically difficult. Scores of 7+
+> require a relationship to the paradigm itself.**
+
+That sentence is the single strongest guard against inflation in this file. Every
+historical over-score in the ledger has the same shape: the work was important,
+and importance was read as paradigm relevance. It is not. A result can be the most
+valuable paper of its year and still sit at 5.
+
+Read per law:
+
+| | I¹ Inversion | I² Incentives | I³ Inflection |
+|---|---|---|---|
+| **0–2** | No inversion | No meaningful pressure relationship | Nothing meaningfully new |
+| **3–4** | Minor implementation variation | Small efficiency or convenience gain | Incremental product improvement |
+| **5–6** | Meaningful workflow or process inversion | Solves an important workflow bottleneck | New workflow, or substantial improvement to a class |
+| **7–8** | Directly questions or tests a core baseline assumption | Attacks or exposes a major paradigm-level pressure | Unprecedented enough to stretch the paradigm's boundaries |
+| **9–10** | Overturns or makes a core baseline assumption obsolete | Resolves or reveals a pressure fundamental enough to reshape the paradigm | Introduces a genuinely paradigm-defining product, capability, architecture or approach |
+
+**The scale and the list limit hold each other up.** A 7 means something only
+because the snapshot's lists are short: with five to ten entries each, holding
+only the most consequential assumptions, pressures and classes, a scorer *cannot*
+reach 7 by matching a minor technical detail — there are none in the snapshot. Let
+the lists grow to forty objects and a 7 becomes cheap, silently.
+
+**Scope is part of the scale.** A baseline claim is a statement about the field,
+so a result demonstrated on one benchmark or one narrow domain questions the claim
+only where it was measured — a 5–6, however large the margin. And check what the
+result actually beat: a general-purpose model evaluated zero-shot on a specialised
+benchmark is a weak baseline, not the frontier defending its claim.
+
+`Canon · FlashAttention` is the case to hold in mind at **I¹ 2, I² 8, I³ 2**: it
+computes exactly the same attention, faster. Nothing about the architecture claim
+is disturbed and no new class appears — and it attacks a major paradigm-level
+pressure head-on. That is not a mixed verdict, it is a precise one.
+
+**This is why the snapshot models no paradigm/within-paradigm distinction.** The
+snapshot supplies the historical reference frame and nothing more; the *score*
+decides which side of the line a creation falls on. Encoding the distinction in
+the frame as well would be two sources of truth for one judgement.
 
 ### Score at publication. Confirm later.
 
@@ -281,63 +389,70 @@ figures rather than their I³.
 
 # 2 — The prevailing paradigm
 
-*What a candidate arriving today would have to invert.* I¹ is unscoreable without
-this list, and this list decays. Re-date it on review; a stale frame silently
-mis-scores every candidate after it.
+*What a candidate arriving today would have to invert.*
 
-Each assumption below is **currently load-bearing** in the field. The sources are
-this corpus's own bottleneck files.
+**This section no longer holds a list.** It used to carry nine numbered
+assumptions, restated here by hand, and that was a rolling document: it destroyed
+its own history on every review, so nothing could be scored against it
+retrospectively, and it silently mis-scored every candidate whenever it went
+stale.
 
-1. **Capability follows compute and data at predictable exponents.**
-   `Canon · Scaling Laws`, `Canon · Chinchilla`. Partially inverted already by
-   `Canon · Test-Time Compute` — inference is now a second scaling axis — but the
-   underlying belief that spend converts to capability is intact and is what the
-   current capital cycle is built on.
+The paradigm now lives in **dated snapshots** under `context/ai/paradigm/`, one
+file per date, each written only from evidence published on or before its own
+date. A candidate is judged against the newest snapshot standing *strictly
+before* its publication month — never a later one, and never one that already
+names it.
 
-2. **Reasoning gains transfer from verifiable to judgement domains.**
-   Named in `Bottlenecks · Reliability and Verification` as *the most important
-   open question in the field*, assumed by a large share of current investment,
-   and **not yet evidenced**. The single highest-value assumption to watch: a
-   credible inversion here reprices the sector.
+Each snapshot holds exactly three collections, one per law, and nothing else.
+Each targets **five to ten entries**, and each has a one-line admission test:
 
-3. **Weights are frozen at training; learning happens in the context window.**
-   `Bottlenecks · Memory and Continual Learning` — binding, unsolved, oldest open
-   problem in the corpus.
+| Collection | Law | Admission test | The comparison |
+|---|---|---|---|
+| `baseline` | I¹ | *Does this define how the field works?* | Which structural truth does this move? |
+| `pressures` | I² | *Does this define what the field wants solved?* | Which constraint does this act on? |
+| `existingClasses` | I³ | *Does this define what the field can already make?* | Which class is closest, and how far past it does this land? |
 
-4. **The binding constraint is industrial, not algorithmic.**
-   Fabrication, advanced packaging, grid interconnection, cooling. Multi-year lead
-   times that do not respond to capital on a software timescale
-   (`Bottlenecks · Compute and Energy`). Historically the fastest relief valve has
-   been order-of-magnitude efficiency, not new supply.
+> **If a list exceeds ten, combine or remove detail until only the
+> paradigm-defining categories remain.**
 
-5. **Efficiency gains increase total consumption.** The Jevons branch has been the
-   empirical norm. Any candidate cutting inference cost must be modelled on both
-   branches — this was the central analytical question of the DeepSeek-R1 market
-   reaction.
+Combining is usually the right move. "NVIDIA is the default accelerator" is a
+*manifestation* of "frontier capability requires massive centralised compute", not
+a second structural truth; pretraining, scaling and preference alignment are one
+claim about where capability comes from, not three.
 
-6. **Autonomous horizon is limited by arithmetic, not intelligence.**
-   95% per-step over twenty steps is ~36% end-to-end. This killed
-   `False Positives · The AutoGPT Wave` and still governs.
+`existingClasses` holds **classes, not techniques**. The first draft of the
+December 2023 list ran to nineteen entries with DPO, process supervision,
+inference kernels and parameter-efficient fine-tuning sitting beside "closed
+frontier APIs" — which is what happens with no admission rule: it stopped being a
+paradigm and became an index of the field. Those techniques still matter when
+reading a particular creation; they do not define what exists.
 
-7. **What limits deployment is permission, not capability.**
-   `Bottlenecks · Agency` — audit trails, liability, insurance and delegated
-   authority move on a slower clock than the technology, and the *capable /
-   permitted* gap is widening.
+A whole snapshot is therefore **twenty to thirty objects** — small enough to hold
+in one view, which is the point. Every entry carries dated evidence, and every
+class carries an instance that shipped on or before the snapshot date.
 
-8. **High-quality training text is finite and access is closing.**
-   `Bottlenecks · Data` — the resolution here is more likely legal than technical.
+**Nothing in a snapshot is weighted.** There are no importance scores. Significance
+is decided by *membership*, and the list limit is what keeps membership a real
+filter.
 
-9. **Deployment economics are set by where verification effort lands.**
-   If a human must check everything carefully, the labour saved is small and
-   sometimes negative.
+Tags on snapshot entries (`compute`, `architecture`, `training`, `data`,
+`interface`, `economics`) are filing for the interface and have **zero effect on
+scoring**.
 
 ### Known gap in this frame
 
 **The canon ends at January 2025** (`Canon · DeepSeek-R1`). Nothing between then
 and this review date has been scored or added. Any candidate whose inversion
 target is an assumption formed *after* Jan 2025 cannot currently be scored
-correctly against this list. Closing that gap is prerequisite to running the
-frame forward, and it is the known weakness of every verdict issued until it is.
+correctly, and closing that gap is the known weakness of every verdict issued
+until it is.
+
+**Snapshot coverage is currently December 2023 only** (8 baseline claims, 8
+pressures, 8 existing classes). The 2024 and 2025
+snapshots are held in `context/ai/paradigm/legacy/` in the retired layer schema
+and are not loadable: scoring is available for papers published after December
+2023 and before the next authored snapshot, and refused elsewhere rather than run
+against nothing. Converting them is gated on the 2024 backtest.
 
 ---
 
@@ -347,8 +462,8 @@ frame forward, and it is the known weakness of every verdict issued until it is.
 |---|---|---|
 | `Canon` | Resolved cases that confirmed | Calibrate the top of the scale |
 | `False Positives` | Resolved cases that did not | Counter-calibrate; the more useful half |
-| `Bottlenecks` | The live constraint surface, status-tagged | Score I² against it |
-| `Bottlenecks · Desired Capabilities` | The demand side | Which numbered item does the candidate advance? |
+| `Paradigm` | Dated snapshots — baseline, pressures, prior art | Score all three laws against the one standing at publication |
+| `Bottlenecks` | The live constraint surface, as essays | Background reading. **Not** the I² list — that is the snapshot's `pressures` |
 | `Method` | Procedure | How to run a candidate through |
 
 The corpus is not a reading list. It is a set of resolved cases used to calibrate
@@ -362,15 +477,18 @@ defensible at the time.
 
 # Order of operations
 
-1. Locate the candidate against §2. Which assumption does it contradict? If none,
-   I¹ is low and the rest usually follows.
-2. Score I¹, I², I³ independently, each on the artefact alone. Do not let one
-   score justify another — that defeats the multiplication.
-3. Multiply. Read the band.
-4. **Freeze the score with its date.** It is now a prediction.
-5. Pre-register the confirmation: the observable that would settle it, and roughly
+1. Load the snapshot standing strictly before the candidate's publication month.
+2. For each law, select the object, classify the level, then score inside its band.
+   Which baseline claim does it contradict? If none, I¹ is 0 and the rest usually
+   follows.
+3. Score I¹, I², I³ independently, each on the artefact alone. Do not let one
+   score justify another — that defeats the multiplication. Three identical levels
+   is usually one judgement copied across.
+4. Multiply. Read the band.
+5. **Freeze the score with its date.** It is now a prediction.
+6. Pre-register the confirmation: the observable that would settle it, and roughly
    when. `Signals and Base Rates` gives the window.
-6. Do not issue a verdict the evidence does not support. `latent` — real inversion,
+7. Do not issue a verdict the evidence does not support. `latent` — real inversion,
    consequence not yet surfaced — is a complete answer and is preferred to a
    forced call.
 
