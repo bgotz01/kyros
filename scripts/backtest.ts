@@ -19,7 +19,6 @@ import {
     paperPeriod,
     PARADIGM_DEFINING_SCORE,
     scoreBand,
-    type Paradigm,
 } from '../lib/engine/paradigm';
 import { loadParadigm } from '../lib/engine/paradigmStore';
 import { buildSeatContext, MAX_PAPER_CHARS } from '../lib/pageContext';
@@ -80,9 +79,24 @@ interface Row {
     raw?: unknown;
 }
 
-async function scoreOne(id: string, paradigm: Paradigm): Promise<Row> {
+/** Each paper is scored against the snapshot sealed strictly before it — the
+ *  same resolution the engine route uses.
+ *
+ *  The harness used to take ONE snapshot for the whole run, which was harmless
+ *  while the corpus held a single converted snapshot and every sampled paper was
+ *  from 2024. With 2023-12, 2024-12 and 2025-12 in the corpus it is not: the
+ *  model was shown the correct dated snapshot in its prompt while its selections
+ *  were resolved, and `paradigmAsOf` recorded, against whichever one main()
+ *  happened to load. A row that names the wrong snapshot cannot be read back. */
+async function scoreOne(id: string): Promise<Row> {
     const paper = readPaper(id);
     if (!paper) return { id, ok: false, error: 'no text in archive' };
+
+    // The snapshot sealed strictly before this paper — the same resolution the
+    // engine route uses, and the one its prompt is built from below.
+    const period = paperPeriod(id, paper.published);
+    const paradigm = loadParadigm(period);
+    if (!paradigm) return { id, ok: false, error: `no snapshot stands before ${period}` };
 
     const truncated = paper.text.length > MAX_PAPER_CHARS;
     const text = truncated ? paper.text.slice(0, MAX_PAPER_CHARS) : paper.text;
@@ -95,7 +109,7 @@ async function scoreOne(id: string, paradigm: Paradigm): Promise<Row> {
             {
                 role: 'system',
                 content: [
-                    buildSeatContext(paperPeriod(id, paper.published)),
+                    buildSeatContext(period),
                     '─── KYROS · THE THREE LAWS ─────────────────────────────────────────────────────',
                     await lawContexts(),
                     (await activePrompt('analyst')).text,
@@ -184,7 +198,10 @@ function spearman(a: number[], b: number[]): number {
     return da && dbb ? num / Math.sqrt(da * dbb) : 0;
 }
 
-function report(rows: Row[], paradigm: Paradigm): string {
+function report(rows: Row[]): string {
+    // A run may span several snapshots now, so the report names the ones the
+    // rows actually used rather than assuming one.
+    const used = [...new Set(rows.map((r) => r.score?.paradigmAsOf).filter(Boolean))].sort();
     const ok = rows.filter((r) => r.ok && r.score).map((r) => r.score!);
     const failed = rows.filter((r) => !r.ok);
     const out: string[] = [];
@@ -198,7 +215,7 @@ function report(rows: Row[], paradigm: Paradigm): string {
     p('═══ KYROS BACKTEST · 2024 papers against the rewritten 2023-12 snapshot ═══');
     p();
     p(`Model          ${MODEL}`);
-    p(`Snapshot       ${paradigm.asOf} · ${paradigm.mode}`);
+    p(`Snapshots      ${used.length ? used.join(', ') : 'none'}`);
     p(`Scored         ${ok.length} of ${rows.length}${failed.length ? ` · ${failed.length} failed` : ''}`);
     p(`Cost           $${ok.reduce((s, r) => s + r.cost, 0).toFixed(3)}`);
     p();
@@ -272,7 +289,8 @@ function report(rows: Row[], paradigm: Paradigm): string {
     // All three laws now select from the same six dimensions, so these three
     // tables read together: a force that never appears under any law is one the
     // snapshot claims is driving the paradigm and the ledger never sees move.
-    const dimensionIds: string[] = paradigm.dimensions.map((d) => d.id);
+    // The six ids are stable across snapshots by design, so one list serves.
+    const dimensionIds: string[] = ['compute', 'architecture', 'scaling', 'access', 'agency', 'persistence'];
 
     // A law may name a second force. It is not scored against, so it does not
     // belong in the counts below — but a field nobody uses is decoration, and
@@ -422,12 +440,11 @@ function report(rows: Row[], paradigm: Paradigm): string {
 // ─── run ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-    const paradigm = loadParadigm('2024-12');
-    if (!paradigm) throw new Error('No converted snapshot stands before 2024-12');
-
     const ids = IDS ? IDS.split(',').map((x) => x.trim()).filter(Boolean) : sample(N);
     fs.mkdirSync(OUT, { recursive: true });
-    console.log(`Scoring ${ids.length} papers against ${paradigm.asOf} with ${MODEL}\n`);
+    // Each paper resolves its own snapshot, so a run may span several. Naming
+    // one in the header would have been a claim the rows do not support.
+    console.log(`Scoring ${ids.length} papers with ${MODEL}\n`);
 
     const rows: Row[] = [];
     let done = 0;
@@ -439,7 +456,7 @@ async function main() {
                 const id = queue.shift();
                 if (!id) return;
                 try {
-                    const row = await scoreOne(id, paradigm);
+                    const row = await scoreOne(id);
                     rows.push(row);
                     done += 1;
                     const s = row.score;
@@ -464,7 +481,7 @@ async function main() {
     const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
     fs.writeFileSync(path.join(OUT, `${stamp}.json`), JSON.stringify(rows, null, 2));
 
-    const text = report(rows, paradigm);
+    const text = report(rows);
     fs.writeFileSync(path.join(OUT, `${stamp}.txt`), text);
     console.log(`\n${text}`);
     console.log(`\nTranscript: backtest/${stamp}.json\nReport:     backtest/${stamp}.txt`);

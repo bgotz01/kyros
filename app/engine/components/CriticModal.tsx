@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import type { CriticNote } from '@/app/api/engine/critique/route';
 import Bullets from './Bullets';
+import Comparison from './Comparison';
 import { LAWS } from './types';
 
 /** One objection, opened from the flag on its row. The decision taken here is
@@ -10,6 +11,8 @@ import { LAWS } from './types';
 export default function CriticModal({
     note,
     currentScore,
+    currentBullets,
+    currentForce,
     onApply,
     onDismiss,
     onRevert,
@@ -19,6 +22,12 @@ export default function CriticModal({
 }: {
     note: CriticNote;
     currentScore?: number;
+    /** What the row says now, so the modal can show what an objection actually
+     *  CHANGES rather than only what it proposes. A third of objections in the
+     *  ledger move neither the score nor the force — they replace prose — and
+     *  presented as "8 → 8" they read as a no-op. */
+    currentBullets?: string[];
+    currentForce?: string | null;
     onApply: () => void;
     onDismiss: () => void;
     /** Undo a decision, putting the analyst's original score back. Absent while
@@ -38,6 +47,16 @@ export default function CriticModal({
     }, [onClose]);
 
     const law = LAWS.find((l) => l.key === note.section);
+
+    // What this objection would actually do, field by field.
+    const movesScore =
+        note.proposedScore !== undefined
+        && currentScore !== undefined
+        && note.proposedScore !== currentScore;
+    const movesForce =
+        Boolean(note.proposedId) && note.proposedId !== (currentForce ?? undefined);
+    const movesProse = Boolean(note.proposedBullets?.length);
+    const proseOnly = !movesScore && !movesForce && movesProse;
 
     return (
         <div
@@ -76,25 +95,65 @@ export default function CriticModal({
                 </header>
 
                 <div className="flex-1 overflow-y-auto">
-                    {note.proposedScore !== undefined && currentScore !== undefined && (
-                        <div className="flex items-center gap-6 border-b border-stone-line px-6 py-4">
+                    {/* What changes, stated before the argument for it. */}
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-stone-line px-6 py-4">
+                        {movesScore ? (
+                            <>
+                                <div>
+                                    <span className="block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
+                                        Analyst
+                                    </span>
+                                    <span className="font-serif text-2xl font-light text-marble">
+                                        {currentScore}
+                                    </span>
+                                </div>
+                                <span aria-hidden className="font-mono text-sm text-platinum-dim">
+                                    →
+                                </span>
+                                <div>
+                                    <span className="block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
+                                        Critic
+                                    </span>
+                                    <span className="font-serif text-2xl font-light text-bronze-bright">
+                                        {note.proposedScore}
+                                    </span>
+                                </div>
+                            </>
+                        ) : (
                             <div>
                                 <span className="block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
-                                    Analyst
+                                    Score
                                 </span>
-                                <span className="font-serif text-2xl font-light text-marble">{currentScore}</span>
+                                <span className="font-serif text-2xl font-light text-marble">
+                                    {currentScore ?? '—'}
+                                    <span className="ml-2 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-platinum-dim">
+                                        unchanged
+                                    </span>
+                                </span>
                             </div>
-                            <span aria-hidden className="font-mono text-sm text-platinum-dim">→</span>
+                        )}
+
+                        {movesForce && (
                             <div>
                                 <span className="block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
-                                    Critic
+                                    Force
                                 </span>
-                                <span className="font-serif text-2xl font-light text-bronze-bright">
-                                    {note.proposedScore}
+                                <span className="font-mono text-[0.7rem] tracking-[0.1em] text-marble">
+                                    {currentForce ?? '—'}
+                                    <span className="mx-2 text-platinum-dim">→</span>
+                                    <span className="text-bronze-bright">{note.proposedId}</span>
                                 </span>
                             </div>
-                        </div>
-                    )}
+                        )}
+
+                        <span className="ml-auto font-sans text-[0.55rem] uppercase tracking-[0.2em] text-platinum-dim">
+                            {proseOnly
+                                ? 'Rewording only'
+                                : [movesScore && 'score', movesForce && 'force', movesProse && 'wording']
+                                      .filter(Boolean)
+                                      .join(' · ')}
+                        </span>
+                    </div>
 
                     <div className="border-b border-stone-line px-6 py-4">
                         <span className="mb-2 block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
@@ -103,12 +162,22 @@ export default function CriticModal({
                         <Bullets items={note.reasoning} />
                     </div>
 
-                    {note.proposedBullets && note.proposedBullets.length > 0 && (
+                    {movesProse && (
                         <div className="px-6 py-4">
                             <span className="mb-2 block font-sans text-[0.52rem] uppercase tracking-[0.24em] text-platinum-dim">
-                                Proposed replacement
+                                {currentBullets?.length ? 'Wording' : 'Proposed replacement'}
                             </span>
-                            <Bullets items={note.proposedBullets} />
+                            {/* Against what it replaces. A replacement shown alone
+                                cannot be judged — the question is always whether
+                                it is better than the line already there. */}
+                            {currentBullets?.length ? (
+                                <Comparison
+                                    previous={currentBullets}
+                                    proposed={note.proposedBullets ?? []}
+                                />
+                            ) : (
+                                <Bullets items={note.proposedBullets ?? []} />
+                            )}
                         </div>
                     )}
                 </div>

@@ -82,8 +82,8 @@ Run the four steps in order. Each is the subject of the next:
               against the proposed one point by point.
 3. INCENTIVE  Which force's incentive did this creation have an obvious reason
               to deliver, and how materially does it deliver it?
-4. INFLECTION Which force's pre-written inflection criterion does this come
-              closest to satisfying, and how far short does it fall?
+4. INFLECTION Along which force is this creation the strongest outlier, and how
+              far from the norm does it stretch?
 
 Every law also gets a HEADLINE: at most seven words, no punctuation beyond a middle dot, readable on its own by someone who will not open the detail. It is the whole row for most readers. Write it last, once you know the score.
 
@@ -190,7 +190,7 @@ they are what you score against:
 
     I¹ INVERSION    how inverted is it?      creation ↔ the force's BASELINE
     I² INCENTIVES   how obvious is it?       creation ↔ the force's INCENTIVE
-    I³ INFLECTION   how unprecedented is it? creation ↔ the force's CRITERION
+    I³ INFLECTION   how far from the norm?    creation ↔ the force's CRITERION
 
 Read the law's page before scoring that law. Do not score one law from another
 law's reasoning — they are separate questions and are supposed to disagree.
@@ -286,6 +286,9 @@ Then the standing failures, which survive the redesign:
 — INFLATION. Most papers sit at 1 to 4 on I¹, and **inflation is the failure this seat exists to catch.** A score of 7 or above needs the contradicted baseline stated plainly as "<held necessary> → <shown optional>"; if the analyst could not write that sentence, I¹ is wrong. A zero needs no defending at all: work that moves none of the six forces is the ordinary case, not an omission to be corrected upward.
 — DEFLATION. A real inversion classified low because the paper is short, unfashionable, or from an unknown group.
 — NOVELTY BY CONJUNCTION. The commonest inflation on I³. A high level justified by a list — "combines agent-generated hypotheses, ablation design, repeated execution and verification" — describes a system, not a distance. Every paper is a unique combination of its own parts, so the argument proves nothing. Ask which single thing no prior system could do; if the row cannot answer, the score is at most 4.
+— I³ ON THE WRONG FORCE. I³ selects the force whose CRITERION the creation comes closest to meeting, independently of I¹ and I². A row that inherited I¹'s force by habit can be a follow-on there while another force holds the criterion it actually crossed — DeepSeek-V3 reads as second on \`access\` and as the crossing on \`compute\`. When I³ is low and all three laws named the same force, check the other five criteria before accepting it.
+— I³ CROWDED OUT ON A CATEGORY. The row scored I³ low because "similar work predated this" without naming one creation, dated before the paper, that meets the criterion's own words. Prior work that fell SHORT of the threshold is the run-up to a transition, not the transition. Ask for the name; if the row cannot give one, the crowding rule does not apply and the score is too low.
+— I³ CONTRADICTS ITSELF. A row cannot both say the change had already been made and say this creation fails to establish it — if others got there first the criterion is met, and if it falls short there was nothing to be second to. When you find both, the shortfall claim is usually the true one and the crowding claim is the error.
 — UNCALIBRATED I³. 9-10 asserts the snapshot's own inflection criterion is MET, or that a seventh force is required. It is a once-a-year finding. A row at 7 or above must argue against the criterion's own words, not against the field in general. The canon is severe: AlphaFold 2 is a 7 and Chain-of-Thought a 4.
 — MARKET INSTEAD OF OUTCOME. I² scored from who would buy it rather than which of the six outcomes it delivers. Commercial pull is evidence that a force is real; it is not the measurement.
 — UNMEASURED GAIN. An efficiency or cost claim at 7 or above whose \`outcomeEstimate\` is "Not quantified". A gain nobody measured is a hope; say so and lower the score.

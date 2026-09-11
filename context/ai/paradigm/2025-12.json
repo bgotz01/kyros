@@ -1,0 +1,89 @@
+{
+  "asOf": "2025-12-31",
+  "mode": "reconstructed",
+  "thesis": "Frontier AI is a small number of sparse Transformers whose capability now comes as much from reinforcement learning on verifiable rewards and from reasoning at inference time as from pretraining scale. Open weights sit at or near the frontier, months behind rather than generations. Models complete substantial multi-step work where outcomes can be checked, and are supervised because they fail in ways they cannot detect. They remain frozen after release, with memory built around the weights rather than inside them.",
+  "dimensions": [
+    {
+      "id": "compute",
+      "name": "Compute",
+      "baseline": "Frontier training remains concentrated in a few large compute holders, while frontier-level capability is reproducible far more cheaply than a year earlier.",
+      "incentive": "Reduce the compute and cost required for frontier capability.",
+      "inflection": "Frontier-level capability becomes reproducible without frontier-scale infrastructure at all.",
+      "evidence": [
+        "DeepSeek-R1 released with reported training costs orders of magnitude below Western frontier runs — 2025-01",
+        "Distillation of large reasoning models into small open models becomes routine — 2025",
+        "Inference costs continue falling sharply across providers — 2025",
+        "Frontier labs announce datacentre commitments at the tens-of-billions scale — 2025",
+        "Serving cost, not training cost, increasingly described as the binding constraint for reasoning models — 2025"
+      ]
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture",
+      "baseline": "Transformers remain the frontier architecture; sparsity and long context are assumed rather than notable.",
+      "incentive": "Improve capability or efficiency beyond what the dominant architecture permits.",
+      "inflection": "A different architecture or capability mechanism meaningfully challenges Transformer dominance at the frontier.",
+      "evidence": [
+        "Every frontier release of the year is a Transformer, near-universally mixture-of-experts — 2025",
+        "Hybrid attention/state-space models ship at production scale without displacing attention — 2025",
+        "Architectural effort concentrates on serving efficiency rather than on replacing the Transformer — 2025",
+        "Long context is a product feature rather than a research frontier — 2025"
+      ]
+    },
+    {
+      "id": "scaling",
+      "name": "Scaling",
+      "baseline": "Capability comes from reinforcement learning on verifiable rewards and inference-time reasoning as much as from pretraining scale.",
+      "incentive": "Find additional ways to increase capability beyond pretraining scale.",
+      "inflection": "A scaling axis beyond pretraining and reinforced reasoning materially changes how capability is produced.",
+      "evidence": [
+        "DeepSeek-R1 demonstrates reasoning emerging from RL on verifiable rewards, with the recipe published — 2025-01",
+        "Reasoning models become the default frontier product line across labs — 2025",
+        "Reported returns to pretraining scale alone widely described as diminishing — 2025",
+        "Verifiable-reward RL concentrated in mathematics and code, where answers can be checked — 2025",
+        "Synthetic and model-generated training data in routine frontier use — 2025"
+      ]
+    },
+    {
+      "id": "access",
+      "name": "Access",
+      "baseline": "Open-weight models are at or near the closed frontier, and the gap is measured in months.",
+      "incentive": "Make frontier capability cheaper, open or broadly accessible.",
+      "inflection": "Open-weight models lead rather than follow the closed frontier.",
+      "evidence": [
+        "DeepSeek-R1 released with open weights and a published RL recipe, matching closed reasoning models on public benchmarks — 2025-01",
+        "Chinese open-weight labs sustain a rapid release cadence through the year — 2025",
+        "Open reasoning models become widely self-hosted in production — 2025",
+        "The strongest publicly reported systems remain closed at year end — 2025",
+        "Open-weight releases increasingly ship under genuinely permissive licences — 2025"
+      ]
+    },
+    {
+      "id": "agency",
+      "name": "Agency",
+      "baseline": "Models complete substantial multi-step work in verifiable domains, and are supervised because they fail in ways they cannot detect.",
+      "incentive": "Make models able to reliably complete useful work with less human intervention.",
+      "inflection": "Models complete extended real work reliably enough to be left unsupervised.",
+      "evidence": [
+        "Agentic coding tools reach broad professional use, running for many steps against real repositories — 2025",
+        "Reported SWE-bench Verified resolution rates rise substantially over 2024 — 2025",
+        "Computer-use and browser agents ship as products — 2025",
+        "Long-horizon reliability remains the limiting factor; human review remains standard practice — 2025",
+        "Agent capability is markedly stronger where outcomes are checkable than where they are not — 2025"
+      ]
+    },
+    {
+      "id": "persistence",
+      "name": "Persistence",
+      "baseline": "Models are static after training; memory is a product feature built around the weights, not learning inside them.",
+      "incentive": "Let a deployed model accumulate and retain what it encounters, cheaply.",
+      "inflection": "A deployed model's capability improves from its own use without a new training run.",
+      "evidence": [
+        "Assistant memory features ship widely, storing retrieved text rather than updating weights — 2025",
+        "Weights remain frozen at release across every frontier product — 2025",
+        "Context windows and retrieval continue to substitute for retention — 2025",
+        "Continual-learning results remain research-stage and are not deployed at the frontier — 2025"
+      ]
+    }
+  ]
+}

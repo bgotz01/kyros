@@ -248,8 +248,8 @@ export const SCORE_BANDS: ScoreBandRow[] = [
             note: "Directly and materially delivers this force's incentive.",
         },
         inflection: {
-            label: 'Inflection',
-            note: "Meets this force's pre-written inflection criterion, or forces a new one.",
+            label: 'Resets the norm',
+            note: 'Establishes a new paradigm state along this force, or resets what is normal.',
         },
     },
     {
@@ -264,8 +264,8 @@ export const SCORE_BANDS: ScoreBandRow[] = [
             note: 'Delivers the incentive materially, or first makes it measurable.',
         },
         inflection: {
-            label: 'Inflection reachable',
-            note: 'Demonstrates the criterion is reachable, without meeting it.',
+            label: 'Threshold crossed',
+            note: 'Stretches past a meaningful threshold, into a clearly different state.',
         },
     },
     {
@@ -280,8 +280,8 @@ export const SCORE_BANDS: ScoreBandRow[] = [
             note: 'Solves a real bottleneck in how the work gets done.',
         },
         inflection: {
-            label: 'Toward the criterion',
-            note: 'Substantial progress toward the criterion, still clearly short of it.',
+            label: 'Strong outlier',
+            note: 'Well outside the norm, and still inside what the paradigm contains.',
         },
     },
     {
@@ -296,8 +296,8 @@ export const SCORE_BANDS: ScoreBandRow[] = [
             note: 'A small saving in effort or cost.',
         },
         inflection: {
-            label: 'Minor progress',
-            note: 'Incremental progress along this force, well short of the criterion.',
+            label: 'Noticeable outlier',
+            note: 'A visible deviation from the norm, well short of a threshold.',
         },
     },
     {
@@ -397,25 +397,36 @@ export const INCENTIVE_SCALE: Record<Score, string> = {
     10: 'Resolves the incentive',
 };
 
-/** I³ — how far the creation gets toward the selected force's PRE-REGISTERED
- *  INFLECTION CRITERION. Not what is novel about it.
+/** I³ — how far the creation stretches beyond what was NORMAL, along the axis
+ *  the force's inflection criterion names.
  *
- *  The criterion is written into the snapshot before the paper is read, so the
- *  question is closed: did this produce the change we named, and how much of the
- *  way there did it get? 9-10 asserts the criterion is MET, which is a
- *  once-a-year finding in a weekly digest. */
+ *  This is the outlier law, and the three now have genuinely distinct jobs:
+ *  I¹ measures direction (A → not-A), I² measures incentive, I³ measures
+ *  EXTREMITY (normal → extreme). A new mechanism whose result is ordinary scores
+ *  low here; a familiar mechanism whose result is extreme scores high.
+ *
+ *  The criterion is a DIRECTION, not an event. Read as an event it is answered
+ *  once and never again — which is why the previous framing put every creation
+ *  after a crossing permanently at 0-3, including ones that pushed considerably
+ *  further. Read as an axis, a creation can travel a long way without arriving,
+ *  and a later creation can still establish a further state.
+ *
+ *  Distance can also COMPOUND. Frontier capability, at far lower compute, at far
+ *  lower cost, with open weights, sits much further from the norm than any one
+ *  of those links. The constraint that keeps that from becoming novelty by
+ *  conjunction is that every link must add meaningful distance on its own. */
 export const INFLECTION_SCALE: Record<Score, string> = {
-    0: "Bears on no force's criterion — NO force named. A coverage finding",
-    1: 'A force is named: the creation bears on its criterion and moves nothing toward it',
-    2: 'Incremental progress, far short of the criterion',
-    3: 'Real progress, clearly short of it',
-    4: 'Substantial progress toward the criterion',
-    5: 'Strong progress; the criterion stays out of reach',
-    6: 'The furthest a creation gets while the criterion plainly stands',
-    7: 'Demonstrates the criterion is reachable',
-    8: 'Demonstrates it is reachable and largely shows how',
-    9: 'Meets the criterion in the case demonstrated',
-    10: 'Meets the criterion, or forces a new force into the paradigm',
+    0: 'Moves none of the six forces — NO force named. Not a low score; a coverage finding',
+    1: 'A force is named: normal, with little or no meaningful deviation',
+    2: 'Minor deviation from the norm',
+    3: 'Noticeable outlier',
+    4: 'Substantial outlier',
+    5: 'Strong outlier',
+    6: 'Extreme, but still inside the existing paradigm',
+    7: 'Crosses a meaningful threshold',
+    8: 'Creates a clearly different state',
+    9: 'Establishes a new paradigm state',
+    10: 'Resets the norm',
 };
 
 export const LAW_SCALE: Record<LawId, Record<Score, string>> = {

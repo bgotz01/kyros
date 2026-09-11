@@ -1,76 +1,121 @@
 # I³ INFLECTION
 
-**Question: how unprecedented is it?**
+**Question: how far from the norm is it?**
 
-This is the game-changer law. It asks whether a CHANGE OF KIND happened — whether
-something became possible, available or viable that was not — and whether this
-creation is the thing that did it.
+Measure how far the creation stretches beyond what was normal at the time, in the
+direction the force's INFLECTION criterion names.
 
-Measure the creation against the force's INFLECTION CRITERION: the change this
-snapshot named, in writing, before this paper was read.
+    1   Normal — little or no meaningful deviation
+    2   Minor deviation
+    3   Noticeable outlier
+    4   Substantial outlier
+    5   Strong outlier
+    6   Extreme, but still inside the existing paradigm
+    7   Crosses a meaningful threshold
+    8   Creates a clearly different state
+    9   Establishes a new paradigm state
+    10  Resets the norm
 
-    1   Bears on the criterion and moves nothing toward it
-    2   Incremental progress, far short of the criterion
-    3   Real progress, clearly short of it
-    4   Substantial progress toward the criterion
-    5   Strong progress; the criterion stays out of reach
-    6   The furthest a creation gets while the criterion plainly stands
-    7   Demonstrates the criterion is reachable
-    8   Demonstrates it is reachable and largely shows how
-    9   Meets the criterion in the case demonstrated
-    10  Meets the criterion, or forces a new force into the paradigm
+Selecting no force at all scores 0. That is a statement about this snapshot's
+coverage, not a low score.
 
-Selecting no force at all scores 0.
+## This is the outlier law
 
-## Why the criterion, and not "what is new about this paper"
+Each law has a distinct job and they are not versions of each other:
 
-"What is unprecedented here?" is a question every paper can answer about itself,
-which is why asking it directly does not work — novelty by conjunction ("this
-combines A, B, C and D") will always be available. The criterion is that same
-question asked in a form the paper cannot move: it was written first, it names a
-transition, and either the transition happened or it did not.
+    I¹  direction   A → not-A.  How inverted is it?
+    I²  incentive   How strongly does it deliver what the field wants?
+    I³  extremity   Normal → extreme.  How far from the norm is it?
 
-Read the criterion as an unprecedentedness claim, because that is what it is.
-*"Frontier capability becomes available through a materially different ownership
-model"* asserts that this has not happened yet and states what it would look like.
+So a new mechanism scores LOW here if its result is ordinary, and a familiar
+mechanism scores HIGH if its result is extreme. Novelty is not distance.
 
-## Being second is not being the inflection
+## The criterion is a direction, not an event
 
-**If the change the criterion names had ALREADY HAPPENED by this paper's
-publication date — through other work — then this creation is not the inflection,
-however well it performs.** Name what got there first, and score low.
+The force's inflection line is not a prediction that one exact thing must happen.
+It names the axis along which distance counts, and roughly where the paradigm
+stops containing the result.
 
-This is the crowding rule, and it is what "unprecedented" means in practice. The
-2023 agent wave produced nothing that reliably worked and established the class
-all the same; a later agent that finally works well is not a 9 for being the
-first GOOD one. A second frontier open-weight release three months after the
-first is a follow-on: strong work, low I³.
+    "Frontier-level capability becomes routinely reproducible outside the
+     largest compute holders."
 
-You may use anything published up to this paper's own date to decide that, and
+Read as an event, that is answered yes or no once and never again. Read as a
+direction — which is correct — the question becomes: *how far did this creation
+stretch the compute distribution toward that state?* A creation can move a long
+way along the axis without arriving, and that is what 4, 5 and 6 are for.
+
+## Magnitude counts when it changes the kind
+
+    10% cheaper   → better
+    20× cheaper   → potentially a different economic reality
+
+The test is never the size of the number on its own. Ask what becomes possible,
+viable, accessible or competitive BECAUSE of the result — and if the honest
+answer is "the same things, slightly more cheaply", the score is low however
+large the margin.
+
+## Outlier chains
+
+A creation need not be exceptional on one axis. Extremes compound, and the
+conjunction can sit much further from the norm than any single link:
+
+    frontier capability
+      → at dramatically lower compute
+      → at dramatically lower cost
+      → with open weights
+
+**Every link must add meaningful distance from the historical norm.** That
+constraint is the whole of it, because without it this becomes the oldest
+inflation route there is — novelty by conjunction:
+
+    NOT a chain:  "first 7B multilingual MoE trained on dataset X with optimiser Y"
+
+Those are descriptors. Every creation is a unique combination of its own parts,
+so a chain assembled from properties that are merely true proves nothing. If a
+link would not raise the score on its own, it does not raise it in a chain.
+
+## The first MEANINGFUL crossing owns the inflection
+
+Being technically first is not enough. A prototype, a narrow benchmark result or
+an impractical implementation can be an outlier without pushing far enough for
+the new state to be real.
+
+**Before claiming the threshold was already crossed, name the earlier creation,
+its date, and how it meaningfully met the same criterion.** Not a category, not a
+trend, not "similar work existed" — one identifiable creation. If you cannot name
+it, the crossing had not happened and this creation may own it.
+
+Prior work that fell SHORT of the threshold is the run-up to a transition, not
+the transition. And a later creation can still hold an inflection of its own if it
+stretches far enough to establish a further state — the norm having moved once
+does not close the axis.
+
+You may use anything published up to this paper's own date to decide this, and
 nothing after it.
 
-Note that this can put a strong paper low on I³ for timing alone. That is
-correct and deliberate — I¹ and I² still carry what it did and why it mattered.
+## Selecting the force
 
-## Measure the change, not the execution
+I³ selects independently of I¹ and I². Read all six INFLECTION criteria and take
+the force along which this creation is the strongest meaningful outlier — not the
+force it inverts, and not the one whose incentive it delivers.
 
-Being much better at something the field could already do does not satisfy a
-criterion phrased as a state transition, HOWEVER LARGE THE MARGIN — and that
-includes margins in cost, compute, data or openness. A frontier-quality model at
-a twentieth of the cost is an enormous result and it is an I² result; let I²
-carry it.
+Taking I¹'s answer by habit is the commonest way this law goes wrong, and the two
+readings can both be true at once:
 
-But magnitude is not irrelevant, because magnitude is sometimes what changes the
-kind. The same approach becoming 10% cheaper and becoming 20× cheaper can differ
-here, and the test is whether the criterion's own words are met — does something
-previously impractical become viable, something scarce become accessible, a
-binding constraint stop binding.
+    DeepSeek-V3 on `access`   — open-weight near-frontier models already existed,
+                                so the distance added is modest. Low.
+    DeepSeek-V3 on `compute`  — frontier capability at $5.6M, an order of
+                                magnitude below comparable runs. Far out. High.
+
+If two forces apply, take the one this creation is furthest along, and say in the
+bullets why the other falls short.
 
 ## Writing the row
 
-Quote the criterion in the second `unprecedented` bullet and say plainly how far
-short the creation falls, or what got there first. A row at 7 or above must argue
-against the criterion's own words, not against the field in general.
+Quote the criterion in the second `unprecedented` bullet and say how far the
+creation travels toward it — or name what got there first. A row at 7 or above
+must argue against the criterion's own words, not against the field in general.
 
-9-10 is a once-a-year finding in a weekly digest. The canon is severe: AlphaFold 2
-is a 7 and Chain-of-Thought a 4.
+Most creations are 1 to 4. 7+ requires a meaningful threshold crossing, and 9-10
+should be rare — the canon is severe: GPT-3 is a 10, ChatGPT a 9, AlphaFold 2 and
+Stable Diffusion 7, Chain-of-Thought a 4.

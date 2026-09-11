@@ -20,7 +20,13 @@ import { useEnginePrefs } from '@/app/engine/components/storage';
 import { heldScore, type RowState } from '@/app/engine/components/types';
 import type { WeekRow, PaperRow } from '@/lib/engine/data';
 import type { External } from '@/app/api/engine/external/route';
-import { allNotes, effectiveScore, noteForSection, type StoredScore } from '@/lib/engine/store';
+import {
+    allNotes,
+    effectiveScore,
+    lawBullets,
+    noteForSection,
+    type StoredScore,
+} from '@/lib/engine/store';
 import { MONTH_ORDER, paperAnchor } from '@/lib/engine/routes';
 import { useFragmentNavigation } from './useFragmentNavigation';
 import { useCriticDecisions } from './useCriticDecisions';
@@ -47,6 +53,8 @@ export default function EngineAI({ year, month: monthParam }: Props) {
 
     // Keyed "<paperId>:<row>" — every rank and panel opens on its own.
     const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
+    type SortBy = 'score' | 'alpha' | 'stars';
+    const [sortBy, setSortBy] = useState<SortBy>('score');
     /** Which week is on screen, or every one of them. The month reads as one
      *  list by default — the week is where work is committed, so it is chosen
      *  deliberately rather than being the shape the page arrives in. */
@@ -149,26 +157,53 @@ export default function EngineAI({ year, month: monthParam }: Props) {
     /** The week the filter is on, or null while the month is read whole. */
     const selectedWeek = selected === 'all' ? null : (scopeWeeks[0] ?? null);
 
-    /** Everything on screen, highest first, unscored last. Across the whole
-     *  month under "All": the digest's week boundary is arbitrary, and ranking
-     *  within it would only ever compare a paper against the nine that happened
-     *  to be drawn beside it. Ties fall back to the newest week, then to the
-     *  digest's own order. */
+    /** Everything on screen, sorted by the active sort order.
+     *  score: highest first, unscored last; ties fall back to newest week then
+     *         digest position.
+     *  alpha: title A→Z, case-insensitive.
+     *  stars: highest artefact-repo star count first; papers with no repo or no
+     *         star data sink to the bottom, ordered by score among themselves. */
     const shown = useMemo((): { week: WeekRow; paper: PaperRow }[] => {
         const product = (paper: PaperRow): number => {
             const held = heldScore(paper.id ? states[paper.id] : undefined);
             return held ? effectiveScore(held, allNotes(held), paradigmFor(held)).product : -1;
         };
+        // Returns the star count of the paper's own artefact repo, or -Infinity
+        // if there is no artefact repo. This matches what the card displays under
+        // GITHUB — a paper whose only repos are baselines/tooling shows "none".
+        const bestStars = (paper: PaperRow): number => {
+            if (!paper.id) return -Infinity;
+            const ext = externals[paper.id];
+            if (!ext) return -Infinity;
+            const artefacts = ext.repos.filter((r) => r.role === 'artefact');
+            if (!artefacts.length) return -Infinity;
+            return Math.max(...artefacts.map((r) => r.stars ?? 0));
+        };
         const rows = scopeWeeks.flatMap((week) =>
             visibleFor(week).map((paper) => ({ week, paper })),
         );
+        if (sortBy === 'alpha') {
+            return rows.sort((a, b) =>
+                a.paper.title.localeCompare(b.paper.title, undefined, { sensitivity: 'base' }),
+            );
+        }
+        if (sortBy === 'stars') {
+            return rows.sort(
+                (a, b) =>
+                    bestStars(b.paper) - bestStars(a.paper) ||
+                    product(b.paper) - product(a.paper) ||
+                    b.week.idx - a.week.idx ||
+                    a.paper.n - b.paper.n,
+            );
+        }
+        // default: 'score'
         return rows.sort(
             (a, b) =>
                 product(b.paper) - product(a.paper) ||
                 b.week.idx - a.week.idx ||
                 a.paper.n - b.paper.n,
         );
-    }, [scopeWeeks, visibleFor, states, paradigmFor]);
+    }, [scopeWeeks, visibleFor, states, paradigmFor, externals, sortBy]);
 
     /** Set aside within whatever is on screen — the month, or the chosen week. */
     const asideRows = useMemo((): AsideRow[] => {
@@ -420,11 +455,11 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                     ...prev,
                     [id]: res.ok
                         ? {
-                              status: 'done',
-                              // Defensive as well as fixed server-side: a cached
-                              // response from before that fix must not crash the page.
-                              score: { ...(data as StoredScore), critiques: data.critiques ?? [] },
-                          }
+                            status: 'done',
+                            // Defensive as well as fixed server-side: a cached
+                            // response from before that fix must not crash the page.
+                            score: { ...(data as StoredScore), critiques: data.critiques ?? [] },
+                        }
                         : { status: 'error', message: data.error ?? 'Analysis failed' },
                 }));
             } catch (err) {
@@ -891,9 +926,20 @@ export default function EngineAI({ year, month: monthParam }: Props) {
         const round = (s.score.critiques ?? []).findLast((c) =>
             c.notes.some((n) => n.noteId === note.noteId),
         );
-        const current = openNote.section === 'summary' ? undefined : s.score[openNote.section].score;
-        return { note, current, round: round?.round, criticModel: round?.model };
-    }, [openNote, states]);
+        // The row as it stands, so the modal can show what the objection moves
+        // rather than only what it proposes.
+        const eff = effectiveScore(s.score, allNotes(s.score), paradigmFor(s.score));
+        const law = openNote.section === 'summary' ? undefined : eff[openNote.section];
+        return {
+            note,
+            current: law?.score,
+            currentBullets:
+                openNote.section === 'summary' ? eff.summary : lawBullets(eff, openNote.section),
+            currentForce: law?.dimensionId ?? null,
+            round: round?.round,
+            criticModel: round?.model,
+        };
+    }, [openNote, states, paradigmFor]);
 
     return (
         <div className="flex flex-1 items-start">
@@ -954,6 +1000,29 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                             Nothing pulled here yet. Run{' '}
                             <span className="text-bronze">npm run pull</span> to fill the archive.
                         </p>
+                    )}
+
+                    {shown.length > 0 && (
+                        <div className="mb-4 flex items-center gap-1">
+                            {(
+                                [
+                                    { key: 'score', label: 'TOP SCORE' },
+                                    { key: 'alpha', label: 'A–Z' },
+                                    { key: 'stars', label: 'STARS' },
+                                ] as { key: 'score' | 'alpha' | 'stars'; label: string }[]
+                            ).map(({ key, label }) => (
+                                <button
+                                    key={key}
+                                    onClick={() => setSortBy(key)}
+                                    className={`border px-2.5 py-1 font-mono text-[0.55rem] tracking-[0.12em] transition-colors duration-300 ease-mechanical ${sortBy === key
+                                        ? 'border-bronze text-bronze'
+                                        : 'border-stone-line text-platinum-dim hover:border-bronze-dim hover:text-bronze-dim'
+                                        }`}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
                     )}
 
                     <div className="flex flex-col gap-3">
@@ -1028,6 +1097,8 @@ export default function EngineAI({ year, month: monthParam }: Props) {
                     onApply={() => resolveNote(openNote.id, openNote.section, 'applied')}
                     onDismiss={() => resolveNote(openNote.id, openNote.section, 'dismissed')}
                     onRevert={() => resolveNote(openNote.id, openNote.section, null)}
+                    currentBullets={activeNote.currentBullets}
+                    currentForce={activeNote.currentForce}
                     round={activeNote.round}
                     criticModel={activeNote.criticModel}
                     onClose={() => setOpenNote(null)}

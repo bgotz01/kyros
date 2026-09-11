@@ -1,0 +1,90 @@
+{
+  "asOf": "2024-12-31",
+  "mode": "reconstructed",
+  "thesis": "Frontier AI is a small number of very large sparse Transformers, still built on massive centralised compute, but the cost of reaching the frontier has fallen sharply and open weights now trail it by months rather than generations. Capability has acquired a second source in compute spent at inference time. Models reach for tools and attempt extended work, and fail at it often enough that every step is supervised. They remain frozen after release and retain nothing of their own.",
+  "dimensions": [
+    {
+      "id": "compute",
+      "name": "Compute",
+      "baseline": "Frontier capability requires massive centralised compute, though the cost of reaching it has begun to fall sharply.",
+      "incentive": "Reduce the compute and cost required for frontier capability.",
+      "inflection": "Frontier-level capability becomes routinely reproducible outside the largest compute holders.",
+      "evidence": [
+        "GPT-4-class training runs still priced in the tens to hundreds of millions of dollars — 2024",
+        "Meta discloses Llama 3.1 405B trained on 16,384 H100s — 2024-07",
+        "DeepSeek-V3 reports frontier-comparable performance for 2.788M H800 GPU-hours, about $5.576M — 2024-12",
+        "H100 supply eases through the year while demand stays ahead of it — 2024",
+        "Frontier labs announce multi-gigawatt datacentre commitments — 2024"
+      ]
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture",
+      "baseline": "Transformers are the dominant frontier architecture, now routinely sparse rather than dense.",
+      "incentive": "Improve capability or efficiency beyond what the dominant architecture permits.",
+      "inflection": "A different architecture or capability mechanism meaningfully challenges Transformer dominance at the frontier.",
+      "evidence": [
+        "Every frontier model released this year is a Transformer: GPT-4o, Claude 3.5 Sonnet, Gemini 1.5, Llama 3.1 — 2024",
+        "Mixture-of-Experts becomes standard at the frontier: Mixtral, DeepSeek-V3's 671B/37B-active design — 2024",
+        "Mamba-2 and hybrid SSM-attention models published, none at frontier scale — 2024",
+        "Long-context Transformers reach 1M+ tokens in Gemini 1.5, without an architectural replacement — 2024-02"
+      ]
+    },
+    {
+      "id": "scaling",
+      "name": "Scaling",
+      "baseline": "Capability comes from pretraining scale and, newly, from compute spent at inference time.",
+      "incentive": "Find additional ways to increase capability beyond pretraining scale.",
+      "inflection": "A scaling axis beyond pretraining and inference-time search materially changes how capability is produced.",
+      "evidence": [
+        "OpenAI o1 trades inference-time compute for reasoning capability, establishing a second axis — 2024-09",
+        "o1 scaling curves reported for both train-time RL and test-time search — 2024-09",
+        "o3 announced with large gains on ARC-AGI and competition mathematics — 2024-12",
+        "Chinchilla-optimal pretraining remains the base recipe for every frontier release — 2024",
+        "Public high-quality text increasingly described as a near-term ceiling — 2024"
+      ]
+    },
+    {
+      "id": "access",
+      "name": "Access",
+      "baseline": "Open-weight models trail the closed frontier by months rather than generations.",
+      "incentive": "Make frontier capability cheaper, open or broadly accessible.",
+      "inflection": "Open-weight models lead rather than follow the closed frontier.",
+      "evidence": [
+        "Llama 3.1 405B released with open weights, claimed competitive with closed frontier models — 2024-07",
+        "Qwen 2.5 family released openly across sizes to 72B — 2024-09",
+        "DeepSeek-V3 released with open weights at 671B, reported comparable to leading closed models — 2024-12",
+        "GPT-4o, Claude 3.5 Sonnet and Gemini remain closed and lead most public evaluations — 2024",
+        "Inference prices fall by roughly an order of magnitude across providers — 2024"
+      ]
+    },
+    {
+      "id": "agency",
+      "name": "Agency",
+      "baseline": "Models attempt extended work through tools, and fail at it often enough that people supervise every step.",
+      "incentive": "Make models able to reliably complete useful work with less human intervention.",
+      "inflection": "Models complete extended real work reliably enough to be left unsupervised.",
+      "evidence": [
+        "Anthropic ships computer use, driving a desktop directly — 2024-10",
+        "SWE-bench Verified released; frontier models resolve a minority of real issues — 2024-08",
+        "Devin and comparable autonomous coding agents demonstrated, reliability widely disputed — 2024",
+        "Tool use and function calling become standard across frontier APIs — 2024",
+        "Agent benchmarks report compounding failure over long horizons — 2024"
+      ]
+    },
+    {
+      "id": "persistence",
+      "name": "Persistence",
+      "baseline": "Models are static after training; what they retain between sessions is supplied from outside the weights.",
+      "incentive": "Let a deployed model accumulate and retain what it encounters, cheaply.",
+      "inflection": "A deployed model's capability improves from its own use without a new training run.",
+      "evidence": [
+        "Weights remain frozen at release; capability changes only through a new training run — 2024",
+        "Context windows reach 1M+ tokens, substituting for memory rather than providing it — 2024-02",
+        "Retrieval and external memory remain application plumbing, not weight-level learning — 2024",
+        "Prompt caching ships across providers, reducing cost without retaining anything — 2024",
+        "Fine-tuning endpoints remain an offline step, not learning from deployment — 2024"
+      ]
+    }
+  ]
+}

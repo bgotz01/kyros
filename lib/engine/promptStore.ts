@@ -126,15 +126,22 @@ export async function activePrompt(seat: Seat): Promise<ActivePrompt> {
             where: { seat },
             orderBy: { version: 'desc' },
         });
-        const active: ActivePrompt = row
-            ? {
-                  seat,
-                  version: row.version,
-                  text: row.text,
-                  note: row.note,
-                  editedAt: row.createdAt.toISOString(),
-              }
-            : builtIn;
+        // ONLY a stored row is cached. The built-in text is read from disk on
+        // every call, because its source is a file that changes: caching it
+        // pinned whatever `context/kyros/*.md` said when the process started, so
+        // an edit to a law page was invisible until a restart — and a scoring
+        // run would keep using the old text while the file on disk said
+        // otherwise. The round-trips this cache exists to remove are the
+        // database ones; a 5KB local read is not the cost.
+        if (!row) return builtIn;
+
+        const active: ActivePrompt = {
+            seat,
+            version: row.version,
+            text: row.text,
+            note: row.note,
+            editedAt: row.createdAt.toISOString(),
+        };
         cache.set(seat, active);
         return active;
     } catch {
